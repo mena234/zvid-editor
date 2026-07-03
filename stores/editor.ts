@@ -10,6 +10,7 @@ export type ModalKind =
   | 'shortcuts'
   | 'render'
   | 'projects'
+  | 'designer'
 
 export const useEditorStore = defineStore('editor', {
   state: () => ({
@@ -46,6 +47,8 @@ export const useEditorStore = defineStore('editor', {
     /* panels */
     leftPanel: 'add' as LeftPanel,
     modal: null as ModalKind,
+    /** visual _id being edited in the Design Studio (null = create new) */
+    designerTargetId: null as string | null,
     inspectorTab: 'design',
 
     /* transient UI */
@@ -135,6 +138,12 @@ export const useEditorStore = defineStore('editor', {
     },
     closeModal() {
       this.modal = null
+      this.designerTargetId = null
+    },
+    /** Open the Design Studio — targetId edits an existing visual, null creates. */
+    openDesigner(targetId: string | null = null) {
+      this.designerTargetId = targetId
+      this.modal = 'designer'
     },
   },
 })

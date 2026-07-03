@@ -466,6 +466,14 @@ const kindLabel = computed(
           <UiIcon name="text" :size="18" />
           Text
         </button>
+        <button
+          class="type-card design"
+          title="Visually build an animated illustration — layers, text animations, templates"
+          @click="editor.openDesigner(null)"
+        >
+          <UiIcon name="magic" :size="18" />
+          Design
+        </button>
         <button class="type-card" @click="mediaKind = mediaKind === 'AUDIO' ? null : 'AUDIO'">
           <UiIcon name="audio" :size="18" />
           Audio
@@ -593,6 +601,15 @@ const kindLabel = computed(
   border-color: var(--accent);
   color: var(--text-0);
   background: var(--bg-3);
+}
+.type-card.design {
+  border-color: rgba(157, 107, 255, 0.45);
+  color: #cbaaff;
+}
+.type-card.design:hover {
+  border-color: #9d6bff;
+  background: rgba(157, 107, 255, 0.12);
+  color: #e2d2ff;
 }
 .url-form {
   display: flex;

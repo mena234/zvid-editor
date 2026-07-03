@@ -185,6 +185,7 @@ const toastIcon = computed(() =>
     <ModalsExamplesModal v-if="editor.modal === 'examples'" />
     <ModalsShortcutsModal v-if="editor.modal === 'shortcuts'" />
     <ModalsRenderModal v-if="editor.modal === 'render'" />
+    <ModalsDesignerModal v-if="editor.modal === 'designer'" />
 
     <Transition name="fade">
       <div v-if="editor.toast" class="toast" :class="editor.toast.kind">

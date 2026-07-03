@@ -115,6 +115,13 @@ const style = computed(() => ({
         </button>
       </template>
       <div class="sep" />
+      <template v-if="type === 'TEXT'">
+        <button @click="run(() => editor.openDesigner(itemId))">
+          <UiIcon name="magic" :size="13" />
+          {{ (item as any)?.designer ? 'Edit in Design Studio' : 'Open in Design Studio' }}
+        </button>
+        <div class="sep" />
+      </template>
       <template v-if="type === 'VIDEO' || type === 'IMAGE' || type === 'GIF'">
         <button @click="run(() => fit('cover'))">Fill frame (cover)</button>
         <button @click="run(() => fit('contain'))">Fit frame (contain)</button>

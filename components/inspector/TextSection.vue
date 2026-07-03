@@ -2,10 +2,12 @@
 import { computed, ref } from 'vue'
 import type { VisualDoc } from '~/shared/schema/types'
 import { useProjectStore } from '~/stores/project'
+import { useEditorStore } from '~/stores/editor'
 import { POPULAR_GOOGLE_FONTS, loadGoogleFont } from '~/utils/fonts'
 
 const props = defineProps<{ item: VisualDoc }>()
 const project = useProjectStore()
+const editor = useEditorStore()
 
 const mode = computed<'text' | 'html'>(() =>
   props.item.html && !props.item.text ? 'html' : props.item.text !== undefined ? 'text' : 'html'
@@ -88,6 +90,20 @@ function addExtra() {
 
 <template>
   <div>
+    <UiSection title="Design Studio">
+      <button class="btn design-btn" @click="editor.openDesigner(item._id)">
+        <UiIcon name="magic" :size="14" />
+        {{ item.designer ? 'Edit design visually' : 'Create an animated design' }}
+      </button>
+      <p class="hint">
+        {{
+          item.designer
+            ? 'This element was built in the Design Studio — reopen it to keep editing layers and animations visually.'
+            : 'Layered illustrations, letter-by-letter text animations and templates — no HTML/CSS needed.'
+        }}
+      </p>
+    </UiSection>
+
     <UiSection title="Content">
       <div class="seg">
         <button :class="{ on: mode === 'text' }" @click="setMode('text')">Plain text</button>
@@ -268,6 +284,17 @@ function addExtra() {
 </template>
 
 <style scoped>
+.design-btn {
+  width: 100%;
+  justify-content: center;
+  border-color: rgba(157, 107, 255, 0.5);
+  color: #cbaaff;
+}
+.design-btn:hover {
+  border-color: #9d6bff;
+  background: rgba(157, 107, 255, 0.12);
+  color: #e2d2ff;
+}
 .seg {
   display: flex;
   border: 1px solid var(--border-1);
