@@ -1,0 +1,311 @@
+{
+  "name": "pizza-margherita-social",
+  "resolution": "instagram-reel",
+  "duration": 25.04,
+  "frameRate": 30,
+  "backgroundColor": "#000000",
+  "visuals": [
+    {
+      "type": "IMAGE",
+      "src": "https://cdn.zvid.io/assets/header/pizza-margherita/scene-01-hook.png",
+      "width": 1080,
+      "height": 1920,
+      "position": "center-center",
+      "resize": "cover",
+      "enterBegin": 0,
+      "exitEnd": 3.76
+    },
+    {
+      "type": "IMAGE",
+      "src": "https://cdn.zvid.io/assets/header/pizza-margherita/scene-02-ingredients.png",
+      "width": 1080,
+      "height": 1920,
+      "position": "center-center",
+      "resize": "cover",
+      "enterBegin": 3.16,
+      "enterEnd": 3.41,
+      "exitEnd": 6.48,
+      "enterAnimation": "slideleft"
+    },
+
+    {
+      "type": "IMAGE",
+      "src": "https://cdn.zvid.io/assets/header/pizza-margherita/scene-03-dough.png",
+      "width": 1080,
+      "height": 1920,
+      "position": "center-center",
+      "resize": "cover",
+      "enterBegin": 5.88,
+      "enterEnd": 6.13,
+      "exitEnd": 8.96,
+      "enterAnimation": "slideleft"
+    },
+
+    {
+      "type": "IMAGE",
+      "src": "https://cdn.zvid.io/assets/header/pizza-margherita/scene-04-sauce.png",
+      "width": 1080,
+      "height": 1920,
+      "position": "center-center",
+      "resize": "cover",
+      "enterBegin": 8.36,
+      "enterEnd": 8.61,
+      "exitEnd": 12.4,
+      "enterAnimation": "slideleft"
+    },
+
+    {
+      "type": "IMAGE",
+      "src": "https://cdn.zvid.io/assets/header/pizza-margherita/scene-05-mozzarella.png",
+      "width": 1080,
+      "height": 1920,
+      "position": "center-center",
+      "resize": "cover",
+      "enterBegin": 11.8,
+      "enterEnd": 12.05,
+      "exitEnd": 15.28,
+      "enterAnimation": "slideleft"
+    },
+
+    {
+      "type": "IMAGE",
+      "src": "https://cdn.zvid.io/assets/header/pizza-margherita/scene-06-bake.png",
+      "width": 1080,
+      "height": 1920,
+      "position": "center-center",
+      "resize": "cover",
+      "enterBegin": 14.68,
+      "enterEnd": 14.93,
+      "exitBegin": 18.21,
+      "enterAnimation": "slideleft"
+    },
+
+    {
+      "type": "IMAGE",
+      "src": "https://cdn.zvid.io/assets/header/pizza-margherita/scene-07-final-touch.png",
+      "width": 1080,
+      "height": 1920,
+      "position": "center-center",
+      "resize": "cover",
+      "enterBegin": 17.96,
+      "enterEnd": 18.21,
+      "exitBegin": 21.41,
+      "enterAnimation": "slideleft"
+    },
+
+    {
+      "type": "IMAGE",
+      "src": "https://cdn.zvid.io/assets/header/pizza-margherita/scene-08-final-shot.png",
+      "width": 1080,
+      "height": 1920,
+      "position": "center-center",
+      "resize": "cover",
+      "enterBegin": 21.16,
+      "enterEnd": 21.41,
+      "exitEnd": 25.04,
+      "enterAnimation": "slideleft"
+    }
+  ],
+  "audios": [
+    {
+      "src": "https://cdn.zvid.io/assets/header/pizza-margherita/voice-over.mp3",
+      "volume": 1
+    }
+  ],
+  "subtitle": {
+    "styles": {
+      "color": "#ffffff",
+      "isBold": true,
+      "fontSize": 98,
+      "fontFamily": "Montserrat",
+      "marginV": 180,
+      "marginH": 100,
+      "outline": { "width": 4, "color": "#000000" },
+      "mode": "karaoke",
+      "activeWord": { "color": "#FFD700" }
+    },
+    "captions": [
+      {
+        "start": 0.24,
+        "end": 2.96,
+        "text": "Want to make authentic",
+        "words": [
+          { "start": 0.24, "end": 0.36, "text": "Want" },
+          { "start": 0.36, "end": 0.52, "text": "to" },
+          { "start": 0.52, "end": 0.72, "text": "make" },
+          { "start": 0.72, "end": 1.28, "text": "authentic" }
+        ]
+      },
+      {
+        "start": 1.28,
+        "end": 3.44,
+        "text": "Italian pizza margherita at home,",
+        "words": [
+          { "start": 1.28, "end": 1.84, "text": "Italian" },
+          { "start": 1.84, "end": 2.28, "text": "pizza" },
+          { "start": 2.28, "end": 2.96, "text": "margherita" },
+          { "start": 2.96, "end": 3.44, "text": "at home," }
+        ]
+      },
+      {
+        "start": 3.76,
+        "end": 6.16,
+        "text": "You only need six",
+        "words": [
+          { "start": 3.76, "end": 4.12, "text": "You" },
+          { "start": 4.12, "end": 4.44, "text": "only" },
+          { "start": 4.44, "end": 4.8, "text": "need" },
+          { "start": 4.8, "end": 5.16, "text": "six" }
+        ]
+      },
+      {
+        "start": 5.16,
+        "end": 6.16,
+        "text": "simple ingredients.",
+        "words": [
+          { "start": 5.16, "end": 5.6, "text": "simple" },
+          { "start": 5.6, "end": 6.16, "text": "ingredients." }
+        ]
+      },
+      {
+        "start": 6.48,
+        "end": 7.72,
+        "text": "Stretch your dough gently.",
+        "words": [
+          { "start": 6.48, "end": 6.92, "text": "Stretch" },
+          { "start": 6.92, "end": 7.08, "text": "your" },
+          { "start": 7.08, "end": 7.36, "text": "dough" },
+          { "start": 7.36, "end": 7.72, "text": "gently." }
+        ]
+      },
+      {
+        "start": 7.72,
+        "end": 8.8,
+        "text": "Using your hands,",
+        "words": [
+          { "start": 7.72, "end": 8.0, "text": "Using" },
+          { "start": 8.0, "end": 8.32, "text": "your" },
+          { "start": 8.32, "end": 8.8, "text": "hands," }
+        ]
+      },
+      {
+        "start": 8.96,
+        "end": 11.04,
+        "text": "Spread a thin layer",
+        "words": [
+          { "start": 8.96, "end": 9.4, "text": "Spread" },
+          { "start": 9.4, "end": 9.52, "text": "a" },
+          { "start": 9.52, "end": 9.72, "text": "thin" },
+          { "start": 9.72, "end": 10.04, "text": "layer" }
+        ]
+      },
+      {
+        "start": 10.04,
+        "end": 11.04,
+        "text": "of tomato sauce.",
+        "words": [
+          { "start": 10.04, "end": 10.2, "text": "of" },
+          { "start": 10.2, "end": 10.68, "text": "tomato" },
+          { "start": 10.68, "end": 11.04, "text": "sauce." }
+        ]
+      },
+      {
+        "start": 11.2,
+        "end": 12.08,
+        "text": "Less is more.",
+        "words": [
+          { "start": 11.2, "end": 11.56, "text": "Less" },
+          { "start": 11.56, "end": 11.8, "text": "is" },
+          { "start": 11.8, "end": 12.08, "text": "more." }
+        ]
+      },
+      {
+        "start": 12.4,
+        "end": 15.04,
+        "text": "Tear fresh mozzarella and",
+        "words": [
+          { "start": 12.4, "end": 12.8, "text": "Tear" },
+          { "start": 12.8, "end": 13.12, "text": "fresh" },
+          { "start": 13.12, "end": 13.88, "text": "mozzarella" },
+          { "start": 13.88, "end": 14.08, "text": "and" }
+        ]
+      },
+      {
+        "start": 14.08,
+        "end": 15.04,
+        "text": "place it evenly.",
+        "words": [
+          { "start": 14.08, "end": 14.28, "text": "place" },
+          { "start": 14.28, "end": 14.44, "text": "it" },
+          { "start": 14.44, "end": 15.04, "text": "evenly." }
+        ]
+      },
+      {
+        "start": 15.28,
+        "end": 16.88,
+        "text": "Bake at the highest",
+        "words": [
+          { "start": 15.28, "end": 15.68, "text": "Bake" },
+          { "start": 15.68, "end": 15.959, "text": "at" },
+          { "start": 15.959, "end": 16.16, "text": "the" },
+          { "start": 16.16, "end": 16.48, "text": "highest" }
+        ]
+      },
+      {
+        "start": 16.48,
+        "end": 18.4,
+        "text": "temperature for 7-10 minutes.",
+        "words": [
+          { "start": 16.48, "end": 16.88, "text": "temperature" },
+          { "start": 16.88, "end": 17.2, "text": "for" },
+          { "start": 17.2, "end": 17.92, "text": "7-10" },
+          { "start": 17.92, "end": 18.4, "text": "minutes." }
+        ]
+      },
+      {
+        "start": 18.56,
+        "end": 20.36,
+        "text": "Finish with fresh basil",
+        "words": [
+          { "start": 18.56, "end": 19.0, "text": "Finish" },
+          { "start": 19.0, "end": 19.2, "text": "with" },
+          { "start": 19.2, "end": 19.56, "text": "fresh" },
+          { "start": 19.56, "end": 20.04, "text": "basil" }
+        ]
+      },
+      {
+        "start": 20.04,
+        "end": 21.44,
+        "text": "and a drizzle of olive oil.",
+        "words": [
+          { "start": 20.04, "end": 20.2, "text": "and" },
+          { "start": 20.2, "end": 20.36, "text": "a" },
+          { "start": 20.36, "end": 20.76, "text": "drizzle" },
+          { "start": 20.76, "end": 20.88, "text": "of" },
+          { "start": 20.88, "end": 21.16, "text": "olive" },
+          { "start": 21.16, "end": 21.44, "text": "oil." }
+        ]
+      },
+      {
+        "start": 21.76,
+        "end": 22.56,
+        "text": "And that's it.",
+        "words": [
+          { "start": 21.76, "end": 22.04, "text": "And" },
+          { "start": 22.04, "end": 22.28, "text": "that's" },
+          { "start": 22.28, "end": 22.56, "text": "it." }
+        ]
+      },
+      {
+        "start": 22.72,
+        "end": 25.04,
+        "text": "Simple, fresh, delicious.",
+        "words": [
+          { "start": 22.72, "end": 23.36, "text": "Simple," },
+          { "start": 23.52, "end": 24.0, "text": "fresh," },
+          { "start": 24.32, "end": 25.04, "text": "delicious." }
+        ]
+      }
+    ]
+  }
+}

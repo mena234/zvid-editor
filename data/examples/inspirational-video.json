@@ -1,0 +1,365 @@
+{
+  "name": "inspirational",
+  "resolution": "hd",
+  "duration": 28,
+  "backgroundColor": "#000000",
+  "visuals": [
+    {
+      "type": "VIDEO",
+      "id": "scene-1",
+      "src": "https://www.pexels.com/download/video/4927963/",
+      "width": 1280,
+      "height": 720,
+      "resize": "cover",
+      "position": "center-center",
+      "anchor": "center-center",
+      "volume": 0,
+      "videoBegin": 0,
+      "videoEnd": 4.8,
+      "enterBegin": 0.16,
+      "exitEnd": 4.96,
+      "transition": "fade",
+      "transitionDuration": 0.6,
+      "transitionId": "scene-2"
+    },
+    {
+      "type": "VIDEO",
+      "id": "scene-2",
+      "src": "https://www.pexels.com/download/video/5417879/",
+      "width": 1280,
+      "height": 720,
+      "resize": "cover",
+      "position": "center-center",
+      "anchor": "center-center",
+      "volume": 0,
+      "videoBegin": 0,
+      "videoEnd": 4.64,
+      "enterBegin": 4.96,
+      "exitEnd": 9.6,
+      "transition": "smoothleft",
+      "transitionDuration": 0.7,
+      "transitionId": "scene-3"
+    },
+    {
+      "type": "VIDEO",
+      "id": "scene-3",
+      "src": "https://www.pexels.com/download/video/5310849/",
+      "width": 1280,
+      "height": 720,
+      "resize": "cover",
+      "position": "center-center",
+      "anchor": "center-center",
+      "volume": 0,
+      "videoBegin": 0,
+      "videoEnd": 4.08,
+      "enterBegin": 9.6,
+      "exitEnd": 13.68,
+      "transition": "fadeblack",
+      "transitionDuration": 0.6,
+      "transitionId": "scene-4"
+    },
+    {
+      "type": "VIDEO",
+      "id": "scene-4",
+      "src": "https://www.pexels.com/download/video/5946138/",
+      "width": 1280,
+      "height": 720,
+      "resize": "cover",
+      "position": "center-center",
+      "anchor": "center-center",
+      "volume": 0,
+      "videoBegin": 0,
+      "videoEnd": 4.8,
+      "enterBegin": 13.68,
+      "exitEnd": 18.48,
+      "transition": "dissolve",
+      "transitionDuration": 0.6,
+      "transitionId": "scene-5"
+    },
+    {
+      "type": "VIDEO",
+      "id": "scene-5",
+      "src": "https://www.pexels.com/download/video/6607460/",
+      "width": 1280,
+      "height": 720,
+      "resize": "cover",
+      "position": "center-center",
+      "anchor": "center-center",
+      "volume": 0,
+      "videoBegin": 0,
+      "videoEnd": 5.52,
+      "enterBegin": 18.48,
+      "exitEnd": 24.0,
+      "transition": "fadewhite",
+      "transitionDuration": 0.7,
+      "transitionId": "scene-6"
+    },
+    {
+      "type": "VIDEO",
+      "id": "scene-6",
+      "src": "https://www.pexels.com/download/video/2558580/",
+      "width": 1280,
+      "height": 720,
+      "resize": "cover",
+      "position": "center-center",
+      "anchor": "center-center",
+      "volume": 0,
+      "videoBegin": 0,
+      "videoEnd": 4.0,
+      "enterBegin": 24.0,
+      "exitEnd": 28.0
+    }
+  ],
+  "audios": [
+    {
+      "src": "https://cdn.zvid.io/assets/header/inspiration/voice-over.mp3",
+      "volume": 1
+    },
+    {
+      "src": "https://cdn.pixabay.com/audio/2026/02/24/audio_3f375fdf97.mp3",
+      "volume": 0.2
+    }
+  ],
+  "subtitle": {
+    "styles": {
+      "color": "#ffffff",
+      "isBold": true,
+      "fontSize": 86,
+      "fontFamily": "Montserrat",
+      "position": "center-center",
+      "outline": { "width": 4, "color": "#000000" },
+      "mode": "karaoke",
+      "activeWord": { "color": "#f3efa2" }
+    },
+    "captions": [
+      {
+        "start": 0.16,
+        "end": 0.92,
+        "text": "You don't need to see",
+        "words": [
+          { "text": "You", "start": 0.16, "end": 0.28 },
+          { "text": "don't", "start": 0.28, "end": 0.48 },
+          { "text": "need", "start": 0.48, "end": 0.6 },
+          { "text": "to", "start": 0.6, "end": 0.76 },
+          { "text": "see", "start": 0.76, "end": 0.92 }
+        ]
+      },
+      {
+        "start": 0.92,
+        "end": 1.68,
+        "text": "the whole path.",
+        "words": [
+          { "text": "the", "start": 0.92, "end": 1.04 },
+          { "text": "whole", "start": 1.04, "end": 1.28 },
+          { "text": "path.", "start": 1.28, "end": 1.68 }
+        ]
+      },
+      {
+        "start": 2.0,
+        "end": 3.16,
+        "text": "You just need the courage",
+        "words": [
+          { "text": "You", "start": 2.0, "end": 2.28 },
+          { "text": "just", "start": 2.28, "end": 2.48 },
+          { "text": "need", "start": 2.48, "end": 2.68 },
+          { "text": "the", "start": 2.68, "end": 2.84 },
+          { "text": "courage", "start": 2.84, "end": 3.16 }
+        ]
+      },
+      {
+        "start": 3.16,
+        "end": 4.4,
+        "text": "to take the first step.",
+        "words": [
+          { "text": "to", "start": 3.16, "end": 3.36 },
+          { "text": "take", "start": 3.36, "end": 3.6 },
+          { "text": "the", "start": 3.6, "end": 3.8 },
+          { "text": "first", "start": 3.8, "end": 4.04 },
+          { "text": "step.", "start": 4.04, "end": 4.4 }
+        ]
+      },
+      {
+        "start": 4.96,
+        "end": 6.48,
+        "text": "Every great journey begins with",
+        "words": [
+          { "text": "Every", "start": 4.96, "end": 5.28 },
+          { "text": "great", "start": 5.28, "end": 5.56 },
+          { "text": "journey", "start": 5.56, "end": 5.96 },
+          { "text": "begins", "start": 5.96, "end": 6.32 },
+          { "text": "with", "start": 6.32, "end": 6.48 }
+        ]
+      },
+      {
+        "start": 6.48,
+        "end": 7.28,
+        "text": "uncertainty,",
+        "words": [{ "text": "uncertainty,", "start": 6.48, "end": 7.28 }]
+      },
+      {
+        "start": 7.28,
+        "end": 8.72,
+        "text": "and that's where growth is",
+        "words": [
+          { "text": "and", "start": 7.28, "end": 7.64 },
+          { "text": "that's", "start": 7.64, "end": 8.0 },
+          { "text": "where", "start": 8.0, "end": 8.24 },
+          { "text": "growth", "start": 8.24, "end": 8.48 },
+          { "text": "is", "start": 8.48, "end": 8.72 }
+        ]
+      },
+      {
+        "start": 8.72,
+        "end": 9.12,
+        "text": "born.",
+        "words": [{ "text": "born.", "start": 8.72, "end": 9.12 }]
+      },
+      {
+        "start": 9.6,
+        "end": 11.04,
+        "text": "The struggle you feel today",
+        "words": [
+          { "text": "The", "start": 9.6, "end": 9.88 },
+          { "text": "struggle", "start": 9.88, "end": 10.24 },
+          { "text": "you", "start": 10.24, "end": 10.44 },
+          { "text": "feel", "start": 10.44, "end": 10.68 },
+          { "text": "today", "start": 10.68, "end": 11.04 }
+        ]
+      },
+      {
+        "start": 11.12,
+        "end": 12.6,
+        "text": "is building the strength you'll",
+        "words": [
+          { "text": "is", "start": 11.12, "end": 11.44 },
+          { "text": "building", "start": 11.44, "end": 11.72 },
+          { "text": "the", "start": 11.72, "end": 11.96 },
+          { "text": "strength", "start": 11.96, "end": 12.32 },
+          { "text": "you'll", "start": 12.32, "end": 12.6 }
+        ]
+      },
+      {
+        "start": 12.6,
+        "end": 13.36,
+        "text": "need tomorrow.",
+        "words": [
+          { "text": "need", "start": 12.6, "end": 12.8 },
+          { "text": "tomorrow.", "start": 12.8, "end": 13.36 }
+        ]
+      },
+      {
+        "start": 13.68,
+        "end": 14.8,
+        "text": "Doubt will whisper,",
+        "words": [
+          { "text": "Doubt", "start": 13.68, "end": 14.12 },
+          { "text": "will", "start": 14.12, "end": 14.32 },
+          { "text": "whisper,", "start": 14.32, "end": 14.8 }
+        ]
+      },
+      {
+        "start": 14.96,
+        "end": 15.92,
+        "text": "fear will shout,",
+        "words": [
+          { "text": "fear", "start": 14.96, "end": 15.32 },
+          { "text": "will", "start": 15.32, "end": 15.52 },
+          { "text": "shout,", "start": 15.52, "end": 15.92 }
+        ]
+      },
+      {
+        "start": 16.16,
+        "end": 17.56,
+        "text": "but your dreams will call",
+        "words": [
+          { "text": "but", "start": 16.16, "end": 16.48 },
+          { "text": "your", "start": 16.48, "end": 16.72 },
+          { "text": "dreams", "start": 16.72, "end": 17.08 },
+          { "text": "will", "start": 17.08, "end": 17.28 },
+          { "text": "call", "start": 17.28, "end": 17.56 }
+        ]
+      },
+      {
+        "start": 17.56,
+        "end": 18.16,
+        "text": "louder.",
+        "words": [{ "text": "louder.", "start": 17.56, "end": 18.16 }]
+      },
+      {
+        "start": 18.48,
+        "end": 20.48,
+        "text": "Success isn't about being perfect.",
+        "words": [
+          { "text": "Success", "start": 18.48, "end": 18.88 },
+          { "text": "isn't", "start": 18.88, "end": 19.32 },
+          { "text": "about", "start": 19.32, "end": 19.56 },
+          { "text": "being", "start": 19.56, "end": 19.92 },
+          { "text": "perfect.", "start": 19.92, "end": 20.48 }
+        ]
+      },
+      {
+        "start": 20.64,
+        "end": 21.92,
+        "text": "It's about showing up",
+        "words": [
+          { "text": "It's", "start": 20.64, "end": 21.04 },
+          { "text": "about", "start": 21.04, "end": 21.24 },
+          { "text": "showing", "start": 21.24, "end": 21.64 },
+          { "text": "up", "start": 21.64, "end": 21.92 }
+        ]
+      },
+      {
+        "start": 22.08,
+        "end": 23.04,
+        "text": "again and again.",
+        "words": [
+          { "text": "again", "start": 22.08, "end": 22.44 },
+          { "text": "and", "start": 22.44, "end": 22.72 },
+          { "text": "again.", "start": 22.72, "end": 23.04 }
+        ]
+      },
+      {
+        "start": 24.0,
+        "end": 25.12,
+        "text": "One day you'll look back",
+        "words": [
+          { "text": "One", "start": 24.0, "end": 24.28 },
+          { "text": "day", "start": 24.28, "end": 24.48 },
+          { "text": "you'll", "start": 24.48, "end": 24.76 },
+          { "text": "look", "start": 24.76, "end": 24.92 },
+          { "text": "back", "start": 24.92, "end": 25.12 }
+        ]
+      },
+      {
+        "start": 25.12,
+        "end": 26.32,
+        "text": "and realize this was the",
+        "words": [
+          { "text": "and", "start": 25.12, "end": 25.36 },
+          { "text": "realize", "start": 25.36, "end": 25.76 },
+          { "text": "this", "start": 25.76, "end": 26.0 },
+          { "text": "was", "start": 26.0, "end": 26.2 },
+          { "text": "the", "start": 26.2, "end": 26.32 }
+        ]
+      },
+      {
+        "start": 26.32,
+        "end": 27.64,
+        "text": "moment you decided not to",
+        "words": [
+          { "text": "moment", "start": 26.32, "end": 26.6 },
+          { "text": "you", "start": 26.6, "end": 26.8 },
+          { "text": "decided", "start": 26.8, "end": 27.24 },
+          { "text": "not", "start": 27.24, "end": 27.48 },
+          { "text": "to", "start": 27.48, "end": 27.64 }
+        ]
+      },
+      {
+        "start": 27.64,
+        "end": 28.0,
+        "text": "quit.",
+        "words": [{ "text": "quit.", "start": 27.64, "end": 28.0 }]
+      }
+    ]
+  }
+}

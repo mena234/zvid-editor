@@ -1,0 +1,291 @@
+/* ─── Zvid Editor design tokens ─────────────────────────────────────── */
+:root {
+  --bg-0: #07090d;
+  --bg-1: #0c0f15;
+  --bg-2: #12161f;
+  --bg-3: #191e2a;
+  --bg-4: #212837;
+
+  --border-0: #1b2130;
+  --border-1: #262e42;
+  --border-2: #35405c;
+
+  --text-0: #eef1f8;
+  --text-1: #c3cadb;
+  --text-2: #8b93a9;
+  --text-3: #5d6579;
+
+  --accent: #5b8cff;
+  --accent-strong: #78a2ff;
+  --accent-soft: rgba(91, 140, 255, 0.16);
+  --accent-2: #9d6bff;
+  --green: #3ecf8e;
+  --yellow: #f5c944;
+  --red: #f4626e;
+  --orange: #ff9950;
+  --cyan: #41c7d4;
+
+  --clip-video: #3a5fd9;
+  --clip-image: #2f9e77;
+  --clip-gif: #c77e2e;
+  --clip-text: #8b5fd0;
+  --clip-svg: #3f9ec7;
+  --clip-audio: #2e8f9e;
+
+  --radius-s: 6px;
+  --radius-m: 9px;
+  --radius-l: 13px;
+
+  --font-ui: 'Inter', -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Cascadia Code', Consolas, monospace;
+
+  --shadow-1: 0 2px 10px rgba(0, 0, 0, 0.35);
+  --shadow-2: 0 12px 40px rgba(0, 0, 0, 0.5);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#__nuxt {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+body {
+  font-family: var(--font-ui);
+  font-size: 13px;
+  color: var(--text-0);
+  background: var(--bg-0);
+  -webkit-font-smoothing: antialiased;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--bg-4);
+  border-radius: 6px;
+  border: 2px solid var(--bg-1);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-2);
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* ─── shared form controls ──────────────────────────────────────────── */
+.ctl {
+  height: 26px;
+  padding: 0 8px;
+  background: var(--bg-1);
+  border: 1px solid var(--border-1);
+  border-radius: var(--radius-s);
+  color: var(--text-0);
+  font-size: 12px;
+  outline: none;
+  transition: border-color 0.12s;
+  min-width: 0;
+}
+.ctl:hover {
+  border-color: var(--border-2);
+}
+.ctl:focus {
+  border-color: var(--accent);
+}
+.ctl::placeholder {
+  color: var(--text-3);
+}
+select.ctl {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5'%3E%3Cpath d='M0 0l4 5 4-5z' fill='%238b93a9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  padding-right: 22px;
+}
+textarea.ctl {
+  height: auto;
+  padding: 6px 8px;
+  resize: vertical;
+  line-height: 1.5;
+}
+input[type='color'].ctl {
+  padding: 2px 3px;
+  width: 34px;
+  cursor: pointer;
+}
+input[type='range'] {
+  accent-color: var(--accent);
+}
+input[type='checkbox'] {
+  accent-color: var(--accent);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 12px;
+  border-radius: var(--radius-s);
+  border: 1px solid var(--border-1);
+  background: var(--bg-2);
+  color: var(--text-0);
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  transition:
+    background 0.12s,
+    border-color 0.12s;
+}
+.btn:hover {
+  background: var(--bg-3);
+  border-color: var(--border-2);
+}
+.btn:disabled {
+  opacity: 0.45;
+  cursor: default;
+  pointer-events: none;
+}
+.btn.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.btn.primary:hover {
+  background: var(--accent-strong);
+}
+.btn.ghost {
+  background: transparent;
+  border-color: transparent;
+  color: var(--text-1);
+}
+.btn.ghost:hover {
+  background: var(--bg-3);
+  color: var(--text-0);
+}
+.btn.danger:hover {
+  background: rgba(244, 98, 110, 0.15);
+  border-color: var(--red);
+  color: var(--red);
+}
+.btn.sm {
+  height: 24px;
+  padding: 0 8px;
+  font-size: 11px;
+}
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-s);
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-1);
+  transition:
+    background 0.12s,
+    color 0.12s;
+  flex: 0 0 auto;
+}
+.icon-btn:hover {
+  background: var(--bg-3);
+  color: var(--text-0);
+}
+.icon-btn.active {
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  border-color: rgba(91, 140, 255, 0.35);
+}
+.icon-btn:disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+.icon-btn svg {
+  width: 15px;
+  height: 15px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 18px;
+  padding: 0 6px;
+  font-size: 10px;
+  font-weight: 600;
+  border-radius: 4px;
+  background: var(--bg-4);
+  color: var(--text-1);
+  letter-spacing: 0.03em;
+}
+
+.hint {
+  font-size: 11px;
+  color: var(--text-2);
+  line-height: 1.5;
+}
+
+.mono {
+  font-family: var(--font-mono);
+}
+
+kbd {
+  display: inline-block;
+  padding: 1px 5px;
+  font-family: var(--font-ui);
+  font-size: 10.5px;
+  border: 1px solid var(--border-1);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  background: var(--bg-3);
+  color: var(--text-1);
+}
+
+/* checkerboard behind transparent stage */
+.checkerboard {
+  background-image:
+    linear-gradient(45deg, #191d27 25%, transparent 25%),
+    linear-gradient(-45deg, #191d27 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #191d27 75%),
+    linear-gradient(-45deg, transparent 75%, #191d27 75%);
+  background-size: 16px 16px;
+  background-position:
+    0 0,
+    0 8px,
+    8px -8px,
+    -8px 0;
+  background-color: #10131b;
+}
+
+/* generic fade */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.15s;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}

@@ -1,0 +1,26 @@
+{
+  "name": "zvid-editor",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Visual editor for @zvid-io/zvid — compose videos on a stage + timeline, export automation-ready JSON",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "test": "vitest run",
+    "ts-check": "nuxt typecheck"
+  },
+  "dependencies": {
+    "@pinia/nuxt": "^0.11.2",
+    "nuxt": "3.19.2",
+    "pinia": "^3.0.3",
+    "vue": "^3.5.18",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "vitest": "^3.2.4"
+  }
+}
