@@ -4,14 +4,22 @@ import { useProjectStore } from '~/stores/project'
 import { useEditorStore } from '~/stores/editor'
 import { canonicalVisualType } from '~/shared/schema/types'
 
-const props = defineProps<{ x: number; y: number; itemId: string }>()
+const props = withDefaults(
+  defineProps<{ x: number; y: number; itemId: string; kind?: 'visual' | 'audio' }>(),
+  { kind: 'visual' }
+)
 const emit = defineEmits<{ close: [] }>()
 
 const project = useProjectStore()
 const editor = useEditorStore()
 
-const item = computed(() => project.visualById(props.itemId))
-const type = computed(() => (item.value ? canonicalVisualType(item.value.type) : null))
+const isAudio = computed(() => props.kind === 'audio')
+const item = computed(() =>
+  isAudio.value ? project.audioById(props.itemId) : project.visualById(props.itemId)
+)
+const type = computed(() =>
+  !item.value || isAudio.value ? null : canonicalVisualType((item.value as any).type)
+)
 
 function onDocDown(e: MouseEvent) {
   if (!(e.target as HTMLElement).closest('.ctx-menu')) emit('close')
@@ -34,11 +42,17 @@ function run(action: () => void) {
 }
 
 function duplicate() {
-  const copy = project.duplicateVisual(props.itemId)
-  if (copy) editor.selectVisual(copy._id)
+  if (isAudio.value) {
+    const copy = project.duplicateAudio(props.itemId)
+    if (copy) editor.selectAudio(copy._id)
+  } else {
+    const copy = project.duplicateVisual(props.itemId)
+    if (copy) editor.selectVisual(copy._id)
+  }
 }
 function remove() {
-  project.removeVisual(props.itemId)
+  if (isAudio.value) project.removeAudio(props.itemId)
+  else project.removeVisual(props.itemId)
   editor.clearSelection()
 }
 async function copyJson() {
@@ -51,9 +65,17 @@ async function pasteJson() {
   try {
     const text = await navigator.clipboard.readText()
     const raw = JSON.parse(text)
-    if (!raw || typeof raw !== 'object' || !raw.type) throw new Error('not an element')
-    const added = project.addVisual(editor.context, raw)
-    editor.selectVisual(added._id)
+    if (!raw || typeof raw !== 'object') throw new Error('not an element')
+    if (raw.type) {
+      const added = project.addVisual(editor.context, raw)
+      editor.selectVisual(added._id)
+    } else if (raw.src) {
+      // audio items have no type field — a bare { src, … } is an audio
+      const added = project.addAudio(editor.context, raw)
+      editor.selectAudio(added._id)
+    } else {
+      throw new Error('not an element')
+    }
     editor.notify('Element pasted', 'success')
   } catch {
     editor.notify('Clipboard does not contain a valid element JSON', 'error')
@@ -84,12 +106,14 @@ const style = computed(() => ({
       <button @click="run(duplicate)">
         <UiIcon name="copy" :size="13" /> Duplicate <kbd>Ctrl+D</kbd>
       </button>
-      <button @click="run(() => project.bumpTrack(itemId, 1))">
-        <UiIcon name="chevron_up" :size="13" /> Bring forward (track +1)
-      </button>
-      <button @click="run(() => project.bumpTrack(itemId, -1))">
-        <UiIcon name="chevron_down" :size="13" /> Send backward (track −1)
-      </button>
+      <template v-if="!isAudio">
+        <button @click="run(() => project.bumpTrack(itemId, 1))">
+          <UiIcon name="chevron_up" :size="13" /> Bring forward (track +1)
+        </button>
+        <button @click="run(() => project.bumpTrack(itemId, -1))">
+          <UiIcon name="chevron_down" :size="13" /> Send backward (track −1)
+        </button>
+      </template>
       <div class="sep" />
       <template v-if="type === 'VIDEO' || type === 'IMAGE' || type === 'GIF'">
         <button @click="run(() => fit('cover'))">Fill frame (cover)</button>

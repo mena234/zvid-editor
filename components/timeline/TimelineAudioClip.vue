@@ -16,8 +16,17 @@ const props = defineProps<{
   snap: (t: number, excludeId?: string) => number
 }>()
 
+const emit = defineEmits<{ ctxmenu: [e: MouseEvent] }>()
+
 const project = useProjectStore()
 const editor = useEditorStore()
+
+function onContextMenu(e: MouseEvent) {
+  e.preventDefault()
+  e.stopPropagation()
+  if (!selected.value) editor.selectAudio(props.audio._id)
+  emit('ctxmenu', e)
+}
 const { probe } = useMediaProbe()
 const { waveformFor } = useWaveform()
 
@@ -184,6 +193,7 @@ function onUp() {
     :style="{ left: `${left}px`, width: `${width}px` }"
     :title="label"
     @pointerdown="beginGesture($event, 'move')"
+    @contextmenu="onContextMenu"
   >
     <canvas ref="canvasEl" class="wave" />
     <div class="aclip-inner">

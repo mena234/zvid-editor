@@ -69,6 +69,29 @@ function addAudioLane() {
   if (!editor.extraAudioTracks.includes(next)) editor.extraAudioTracks.push(next)
 }
 
+/* empty lanes only exist through the extra-track lists (or the lane-0
+   fallback) — deleting one is just forgetting the extra entry */
+function canRemoveVisualLane(track: number): boolean {
+  return !visualsInLane(track).length && editor.extraVisualTracks.includes(track)
+}
+function canRemoveAudioLane(track: number): boolean {
+  return !audiosInLane(track).length && editor.extraAudioTracks.includes(track)
+}
+function removeVisualLane(track: number) {
+  editor.extraVisualTracks = editor.extraVisualTracks.filter((t) => t !== track)
+}
+function removeAudioLane(track: number) {
+  editor.extraAudioTracks = editor.extraAudioTracks.filter((t) => t !== track)
+}
+
+/* ---------------- clip context menu (same menu as the stage) ---------------- */
+const ctxMenu = ref<null | { x: number; y: number; id: string; kind: 'visual' | 'audio' }>(
+  null
+)
+function openClipMenu(e: MouseEvent, id: string, kind: 'visual' | 'audio') {
+  ctxMenu.value = { x: e.clientX, y: e.clientY, id, kind }
+}
+
 /* ---------------- snapping targets ---------------- */
 function snapTargets(excludeId?: string): number[] {
   const pts = [0, contextDuration.value, editor.playhead]
@@ -288,6 +311,14 @@ const hasScenes = computed(() => !!project.doc.scenes?.length)
           <div class="tl-header">
             <span class="lane-badge video">V{{ track }}</span>
             <span class="lane-count">{{ visualsInLane(track).length }}</span>
+            <button
+              v-if="canRemoveVisualLane(track)"
+              class="icon-btn xs lane-remove"
+              title="Delete empty track"
+              @click="removeVisualLane(track)"
+            >
+              <UiIcon name="trash" :size="11" />
+            </button>
           </div>
           <div class="lane" :data-track="track">
             <div
@@ -303,6 +334,7 @@ const hasScenes = computed(() => !!project.doc.scenes?.length)
               :context-duration="contextDuration"
               :lanes="visualLanes"
               :snap="snapTime"
+              @ctxmenu="openClipMenu($event, item._id, 'visual')"
             />
           </div>
         </div>
@@ -320,6 +352,14 @@ const hasScenes = computed(() => !!project.doc.scenes?.length)
           <div class="tl-header">
             <span class="lane-badge audio">A{{ track }}</span>
             <span class="lane-count">{{ audiosInLane(track).length }}</span>
+            <button
+              v-if="canRemoveAudioLane(track)"
+              class="icon-btn xs lane-remove"
+              title="Delete empty track"
+              @click="removeAudioLane(track)"
+            >
+              <UiIcon name="trash" :size="11" />
+            </button>
           </div>
           <div class="lane audio-lane" :data-audio-track="track">
             <div
@@ -335,6 +375,7 @@ const hasScenes = computed(() => !!project.doc.scenes?.length)
               :context-duration="contextDuration"
               :lanes="audioLanes"
               :snap="snapTime"
+              @ctxmenu="openClipMenu($event, a._id, 'audio')"
             />
           </div>
         </div>
@@ -363,6 +404,15 @@ const hasScenes = computed(() => !!project.doc.scenes?.length)
         </div>
       </div>
     </div>
+
+    <StageContextMenu
+      v-if="ctxMenu"
+      :x="ctxMenu.x"
+      :y="ctxMenu.y"
+      :item-id="ctxMenu.id"
+      :kind="ctxMenu.kind"
+      @close="ctxMenu = null"
+    />
   </div>
 </template>
 
@@ -527,6 +577,15 @@ const hasScenes = computed(() => !!project.doc.scenes?.length)
 .lane-count {
   font-size: 10px;
   color: var(--text-3);
+}
+.lane-remove {
+  margin-left: auto;
+  width: 20px;
+  height: 20px;
+  color: var(--text-3);
+}
+.lane-remove:hover {
+  color: var(--red);
 }
 .duration-shade {
   position: absolute;

@@ -22,7 +22,7 @@ export const useEditorStore = defineStore('editor', {
     /* editing context: 'root' or scene _id */
     context: 'root' as string,
     /** scenes projects: preview the whole movie vs the active scene */
-    scenePreviewMode: 'scene' as 'scene' | 'full',
+    scenePreviewMode: 'full' as 'scene' | 'full',
 
     /* playback */
     playhead: 0,

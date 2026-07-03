@@ -2,11 +2,7 @@
 import { computed, ref } from 'vue'
 import { useProjectStore } from '~/stores/project'
 import { useEditorStore } from '~/stores/editor'
-import {
-  parseSrtVtt,
-  parseWhisperJson,
-  distributeWords,
-} from '~/utils/subtitleRuntime'
+import { parseSubtitleFile, distributeWords } from '~/utils/subtitleRuntime'
 import {
   SUBTITLE_MODES,
   SUBTITLE_POSITIONS,
@@ -114,17 +110,19 @@ async function onImportFile(e: Event) {
   if (!file) return
   const content = await file.text()
   try {
-    let imported
-    if (/\.(json)$/i.test(file.name)) {
-      imported = parseWhisperJson(JSON.parse(content))
-    } else {
-      imported = parseSrtVtt(content)
-    }
+    const { captions: imported, styles, format } = parseSubtitleFile(file.name, content)
     if (!imported.length) throw new Error('no captions found')
     const sub = project.ensureSubtitle()
     sub.captions = imported
+    if (styles && Object.keys(styles).length) {
+      sub.styles = { ...(sub.styles ?? {}), ...styles }
+    }
     project.commit()
-    editor.notify(`Imported ${imported.length} captions`, 'success')
+    editor.notify(
+      `Imported ${imported.length} captions from ${format.toUpperCase()}` +
+        (styles ? ' — styles applied' : ''),
+      'success'
+    )
   } catch (err: any) {
     editor.notify(`Import failed: ${err.message}`, 'error')
   }
@@ -144,13 +142,17 @@ function fmtT(v: number) {
   <div class="subs-panel">
     <UiSection title="Captions">
       <template #actions>
-        <button class="btn ghost sm" title="Import SRT / VTT / Whisper JSON" @click="fileInput?.click()">
+        <button
+          class="btn ghost sm"
+          title="Import SRT / VTT / ASS / Whisper JSON"
+          @click="fileInput?.click()"
+        >
           <UiIcon name="upload" :size="12" /> import
         </button>
         <input
           ref="fileInput"
           type="file"
-          accept=".srt,.vtt,.json"
+          accept=".srt,.vtt,.ass,.ssa,.json"
           hidden
           @change="onImportFile"
         />
@@ -158,8 +160,9 @@ function fmtT(v: number) {
 
       <p v-if="!captions.length" class="hint">
         Word-timed captions burned into the video (karaoke, one-word and
-        progressive modes). Import an SRT/VTT/Whisper JSON or add captions
-        manually.
+        progressive modes). Import an SRT, VTT, ASS or Whisper JSON file —
+        SRT/VTT formatting and ASS styles/karaoke timing are converted into
+        the caption model — or add captions manually.
       </p>
 
       <div class="cap-list">

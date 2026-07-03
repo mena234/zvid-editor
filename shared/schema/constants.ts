@@ -159,8 +159,14 @@ export const ANCHORS = [
 
 export type Anchor = (typeof ANCHORS)[number]
 
+/**
+ * The published SubtitleStyles type lists 7 positions, but the package's
+ * mapPositionToASS also resolves 'top-center' (alignment 8) at runtime —
+ * kept here so ASS imports round-trip.
+ */
 export const SUBTITLE_POSITIONS = [
   'top-left',
+  'top-center',
   'top-right',
   'bottom-left',
   'bottom-right',

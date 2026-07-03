@@ -54,7 +54,8 @@ function elementFor(doc: AudioDoc): HTMLAudioElement {
   if (!el) {
     el = new Audio()
     el.preload = 'auto'
-    el.crossOrigin = 'anonymous'
+    // no crossOrigin: CDNs without ACAO headers (e.g. pixabay) refuse
+    // CORS-mode loads entirely; plain playback needs no CORS clearance
     el.src = doc.src
     elements.set(doc._id, el)
   } else if (el.dataset.src !== doc.src) {

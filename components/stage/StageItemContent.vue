@@ -38,6 +38,14 @@ const probeEntry = computed(() => {
   return null
 })
 
+/* error overlay tracks the displayed element itself — the probe cache can
+   fail (CORS metadata, codecs) while the element still plays fine */
+const mediaFailed = ref(false)
+watch(
+  () => props.item.src,
+  () => (mediaFailed.value = false)
+)
+
 const cssFilter = computed(() =>
   filterToCss(props.item.filter, props.width, props.height)
 )
@@ -236,6 +244,8 @@ const iframeDoc = computed(() => {
     class="media-box"
     :style="{ filter: cssFilter || undefined, borderRadius: radiusStyle }"
   >
+    <!-- no crossorigin: CORS-mode loads fail on hosts/redirects without
+         ACAO headers (e.g. pexels /download/ 302s), plain loads play fine -->
     <video
       ref="videoEl"
       class="media"
@@ -243,11 +253,11 @@ const iframeDoc = computed(() => {
       :style="cropInnerStyle ?? undefined"
       preload="auto"
       playsinline
-      crossorigin="anonymous"
-      @loadedmetadata="syncVideo"
+      @loadedmetadata="mediaFailed = false; syncVideo()"
+      @error="mediaFailed = true"
     />
     <div v-if="tint" class="tint" :style="{ background: tint }" />
-    <div v-if="probeEntry?.status === 'error'" class="media-error">
+    <div v-if="mediaFailed" class="media-error">
       <UiIcon name="warning" :size="18" />
       <span>video failed to load</span>
     </div>
@@ -259,9 +269,16 @@ const iframeDoc = computed(() => {
     class="media-box"
     :style="{ filter: cssFilter || undefined, borderRadius: radiusStyle }"
   >
-    <img class="media" :src="item.src" :style="cropInnerStyle ?? undefined" draggable="false" />
+    <img
+      class="media"
+      :src="item.src"
+      :style="cropInnerStyle ?? undefined"
+      draggable="false"
+      @load="mediaFailed = false"
+      @error="mediaFailed = true"
+    />
     <div v-if="tint" class="tint" :style="{ background: tint }" />
-    <div v-if="probeEntry?.status === 'error'" class="media-error">
+    <div v-if="mediaFailed" class="media-error">
       <UiIcon name="warning" :size="18" />
       <span>image failed to load</span>
     </div>

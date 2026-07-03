@@ -43,9 +43,12 @@ function probeVideo(src: string, entry: ProbeResult) {
     entry.height = vid.videoHeight
     entry.duration = isFinite(vid.duration) ? vid.duration : undefined
     entry.status = 'ok'
+    // detach first: clearing src fires an error event on the element
+    vid.onerror = null
     vid.src = ''
   }
   vid.onerror = () => {
+    if (entry.status === 'ok') return
     entry.status = 'error'
     entry.error = 'Failed to load video metadata'
   }
@@ -58,9 +61,11 @@ function probeAudio(src: string, entry: ProbeResult) {
   audio.onloadedmetadata = () => {
     entry.duration = isFinite(audio.duration) ? audio.duration : undefined
     entry.status = 'ok'
+    audio.onerror = null
     audio.src = ''
   }
   audio.onerror = () => {
+    if (entry.status === 'ok') return
     entry.status = 'error'
     entry.error = 'Failed to load audio metadata'
   }

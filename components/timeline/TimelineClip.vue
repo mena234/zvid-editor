@@ -15,8 +15,17 @@ const props = defineProps<{
   snap: (t: number, excludeId?: string) => number
 }>()
 
+const emit = defineEmits<{ ctxmenu: [e: MouseEvent] }>()
+
 const project = useProjectStore()
 const editor = useEditorStore()
+
+function onContextMenu(e: MouseEvent) {
+  e.preventDefault()
+  e.stopPropagation()
+  if (!selected.value) editor.selectVisual(props.item._id)
+  emit('ctxmenu', e)
+}
 
 const type = computed(() => canonicalVisualType(props.item.type) ?? 'IMAGE')
 const timing = computed(() => resolveVisualTiming(props.item, props.contextDuration))
@@ -197,6 +206,7 @@ const showAnimHandles = computed(
     }"
     :title="label"
     @pointerdown="beginGesture($event, 'move')"
+    @contextmenu="onContextMenu"
   >
     <!-- animation window shading -->
     <div
