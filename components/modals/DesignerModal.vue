@@ -11,7 +11,11 @@ import {
   normalizeDesign,
 } from '~/utils/designer/types'
 import { compileDesign, designToItemPatch } from '~/utils/designer/compile'
-import { DESIGN_TEMPLATES } from '~/utils/designer/templates'
+import {
+  fetchLibraryContent,
+  fetchLibraryList,
+  libraryErrorMessage,
+} from '~/composables/useLibrary'
 import { loadGoogleFont } from '~/utils/fonts'
 import { round3 } from '~/utils/time'
 
@@ -128,19 +132,50 @@ function moveLayer(id: string, x: number, y: number) {
   patchLayer(id, { x, y })
 }
 
-/* ---------------- templates ---------------- */
+/* ---------------- templates (served by the orch content library) -------- */
 const templatesOpen = ref(false)
-const templateDocs = DESIGN_TEMPLATES.map((t) => ({
-  id: t.id,
-  label: t.label,
-  hint: t.hint,
-  doc: t.make(),
-}))
+const templatesPending = ref(false)
+const templatesError = ref('')
+const templateDocs = ref<
+  { id: string; label: string; hint: string; raw: any; doc: DesignDoc }[]
+>([])
+
+async function loadTemplates() {
+  templatesPending.value = true
+  templatesError.value = ''
+  try {
+    const items = await fetchLibraryList('design-templates')
+    templateDocs.value = await Promise.all(
+      items.map(async (it) => {
+        const raw = await fetchLibraryContent('design-templates', it.slug)
+        return {
+          id: it.slug,
+          label: it.title,
+          hint: it.description ?? '',
+          raw,
+          doc: normalizeDesign(raw),
+        }
+      })
+    )
+  } catch (e) {
+    templatesError.value = libraryErrorMessage(e)
+  } finally {
+    templatesPending.value = false
+  }
+}
+
+function toggleTemplates() {
+  templatesOpen.value = !templatesOpen.value
+  if (templatesOpen.value && !templateDocs.value.length && !templatesPending.value) {
+    loadTemplates()
+  }
+}
 
 function applyTemplate(id: string) {
-  const t = DESIGN_TEMPLATES.find((x) => x.id === id)
+  const t = templateDocs.value.find((x) => x.id === id)
   if (!t) return
-  const doc = t.make()
+  // stored content has no layer ids — normalizeDesign assigns fresh ones per apply
+  const doc = normalizeDesign(JSON.parse(JSON.stringify(t.raw)))
   design.layers.splice(0, design.layers.length, ...doc.layers)
   Object.assign(design, { ...doc, layers: design.layers })
   selectedId.value = null
@@ -196,11 +231,16 @@ function onKeydown(e: KeyboardEvent) {
       <!-- toolbar -->
       <div class="toolbar">
         <div class="tpl-wrap">
-          <button class="btn sm" @click="templatesOpen = !templatesOpen">
+          <button class="btn sm" @click="toggleTemplates()">
             <UiIcon name="magic" :size="13" /> Templates
             <UiIcon name="chevron_down" :size="12" />
           </button>
           <div v-if="templatesOpen" class="tpl-menu">
+            <p v-if="templatesPending" class="tpl-status hint">Loading templates…</p>
+            <template v-else-if="templatesError">
+              <p class="tpl-status hint">⚠ {{ templatesError }}</p>
+              <button class="btn sm" @click="loadTemplates()">Retry</button>
+            </template>
             <button
               v-for="t in templateDocs"
               :key="t.id"
@@ -314,6 +354,9 @@ function onKeydown(e: KeyboardEvent) {
 }
 .tpl-card:hover {
   border-color: var(--accent);
+}
+.tpl-status {
+  grid-column: 1 / -1;
 }
 .tpl-name {
   font-size: 11.5px;

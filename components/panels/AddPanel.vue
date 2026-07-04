@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useEditorContext } from '~/composables/useEditorContext'
+import {
+  fetchLibraryContent,
+  fetchLibraryList,
+  libraryErrorMessage,
+  type LibraryItem,
+} from '~/composables/useLibrary'
 import { round3 } from '~/utils/time'
 
 const { project, editor, contextDuration } = useEditorContext()
@@ -47,124 +53,45 @@ function addText() {
   editor.notify('Text added — edit it in the inspector', 'success')
 }
 
-const SVG_SHAPES: Record<string, { label: string; svg: string; w: number; h: number }> = {
-  rect: {
-    label: 'Rectangle',
-    w: 400,
-    h: 260,
-    svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 260"><rect x="8" y="8" width="384" height="244" rx="18" fill="#8b5cf6"/></svg>',
-  },
-  circle: {
-    label: 'Circle',
-    w: 300,
-    h: 300,
-    svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300"><circle cx="150" cy="150" r="140" fill="#9d6bff"/></svg>',
-  },
-  triangle: {
-    label: 'Triangle',
-    w: 300,
-    h: 300,
-    svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300"><path d="M150 22L282 272H18z" fill="#ff9950"/></svg>',
-  },
-  diamond: {
-    label: 'Diamond',
-    w: 300,
-    h: 300,
-    svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300"><path d="M150 15L285 150 150 285 15 150z" fill="#41c7d4"/></svg>',
-  },
-  pentagon: {
-    label: 'Pentagon',
-    w: 300,
-    h: 300,
-    svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300"><path d="M150 16l128 93-49 150H71L22 109z" fill="#3ecf8e"/></svg>',
-  },
-  hexagon: {
-    label: 'Hexagon',
-    w: 300,
-    h: 300,
-    svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300"><path d="M150 12l120 69v138l-120 69-120-69V81z" fill="#8b5cf6"/></svg>',
-  },
-  star: {
-    label: 'Star',
-    w: 300,
-    h: 300,
-    svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300"><path d="M150 15l41 84 93 13-67 66 16 92-83-44-83 44 16-92-67-66 93-13z" fill="#f5c944"/></svg>',
-  },
-  heart: {
-    label: 'Heart',
-    w: 300,
-    h: 280,
-    svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 280"><path d="M150 266C150 266 28 186 28 102 28 54 66 22 106 22c20 0 37 9 44 24 7-15 24-24 44-24 40 0 78 32 78 80 0 84-122 164-122 164z" fill="#f4626e"/></svg>',
-  },
-  ring: {
-    label: 'Ring',
-    w: 300,
-    h: 300,
-    svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300"><path d="M150 15a135 135 0 1 0 .1 0zm0 62a73 73 0 1 1-.1 0z" fill="#9d6bff" fill-rule="evenodd"/></svg>',
-  },
-  halfCircle: {
-    label: 'Half circle',
-    w: 300,
-    h: 160,
-    svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 160"><path d="M10 150A140 140 0 0 1 290 150z" fill="#41c7d4"/></svg>',
-  },
-  cross: {
-    label: 'Cross',
-    w: 300,
-    h: 300,
-    svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300"><path d="M108 18h84v90h90v84h-90v90h-84v-90H18v-84h90z" fill="#3ecf8e"/></svg>',
-  },
-  bolt: {
-    label: 'Lightning',
-    w: 240,
-    h: 300,
-    svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 300"><path d="M138 10L28 170h62l-24 120L212 120h-72z" fill="#f5c944"/></svg>',
-  },
-  check: {
-    label: 'Check',
-    w: 300,
-    h: 300,
-    svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300"><path d="M42 160l72 72 144-150" stroke="#3ecf8e" stroke-width="42" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-  },
-  bubble: {
-    label: 'Speech bubble',
-    w: 300,
-    h: 250,
-    svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 250"><path d="M48 26h204a26 26 0 0 1 26 26v112a26 26 0 0 1-26 26H136l-58 56 14-56H48a26 26 0 0 1-26-26V52a26 26 0 0 1 26-26z" fill="#8b5cf6"/></svg>',
-  },
-  burst: {
-    label: 'Burst',
-    w: 300,
-    h: 300,
-    svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300"><path d="M150 10l25 55 50-33-8 60 60-8-33 50 55 25-55 25 33 50-60-8 8 60-50-33-25 55-25-55-50 33 8-60-60 8 33-50-55-25 55-25-33-50 60 8-8-60 50 33z" fill="#ff9950"/></svg>',
-  },
-  line: {
-    label: 'Line',
-    w: 400,
-    h: 20,
-    svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 20"><line x1="10" y1="10" x2="390" y2="10" stroke="#ffffff" stroke-width="8" stroke-linecap="round"/></svg>',
-  },
-  arrow: {
-    label: 'Arrow',
-    w: 400,
-    h: 120,
-    svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 120"><path d="M10 60h300M310 60l-70-45M310 60l-70 45" stroke="#3ecf8e" stroke-width="16" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-  },
-  blob: {
-    label: 'Blob',
-    w: 300,
-    h: 300,
-    svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300"><path d="M62 84c26-45 92-64 138-40s62 82 40 130-84 74-132 52S36 129 62 84z" fill="#41c7d4"/></svg>',
-  },
+/* ---------------- SVG shapes ----------------
+   Served by the orch content library ("shapes" kind) — the SVG markup
+   comes from the CDN, so shapes can be added without an editor deploy. */
+const svgShapes = ref<
+  { slug: string; title: string; svg: string; width: number; height: number }[]
+>([])
+const shapesPending = ref(false)
+const shapesError = ref('')
+
+async function loadShapes() {
+  shapesPending.value = true
+  shapesError.value = ''
+  try {
+    const items = await fetchLibraryList('shapes')
+    svgShapes.value = await Promise.all(
+      items.map(async (it) => {
+        const content = await fetchLibraryContent('shapes', it.slug)
+        return {
+          slug: it.slug,
+          title: it.title,
+          svg: content.svg,
+          width: content.width,
+          height: content.height,
+        }
+      })
+    )
+  } catch (e) {
+    shapesError.value = libraryErrorMessage(e)
+  } finally {
+    shapesPending.value = false
+  }
 }
 
-function addSvg(shapeKey: string) {
-  const shape = SVG_SHAPES[shapeKey]
+function addSvg(shape: { svg: string; width: number; height: number }) {
   const added = project.addVisual(editor.context, {
     type: 'SVG',
     svg: shape.svg,
-    width: shape.w,
-    height: shape.h,
+    width: shape.width,
+    height: shape.height,
     position: 'center-center',
     ...defaultTiming(),
   })
@@ -173,239 +100,64 @@ function addSvg(shapeKey: string) {
 
 /* ---------------- HTML canvas presets ----------------
    Full-frame <canvas> overlays driven by customCode JS — the same
-   HTML+JS the package captures with Puppeteer at render time. */
+   HTML+JS the package captures with Puppeteer at render time.
+   Served by the orch content library ("canvas-presets" kind). */
 const showCanvases = ref(false)
+const canvasPresets = ref<LibraryItem[]>([])
+const canvasesPending = ref(false)
+const canvasesError = ref('')
+const addingCanvasSlug = ref('')
 
 function toggleShapes() {
   showShapes.value = !showShapes.value
-  if (showShapes.value) showCanvases.value = false
+  if (showShapes.value) {
+    showCanvases.value = false
+    if (!svgShapes.value.length && !shapesPending.value) loadShapes()
+  }
 }
 function toggleCanvases() {
   showCanvases.value = !showCanvases.value
-  if (showCanvases.value) showShapes.value = false
+  if (showCanvases.value) {
+    showShapes.value = false
+    if (!canvasPresets.value.length && !canvasesPending.value) loadCanvasPresets()
+  }
 }
 
-const CANVAS_PRESETS: Record<string, { label: string; hint: string; js: string }> = {
-  starfield: {
-    label: 'Starfield',
-    hint: 'stars flying toward the camera',
-    js: `var canvas = document.querySelector('canvas');
-var ctx = canvas.getContext('2d');
-var W = canvas.width, H = canvas.height;
-var stars = [];
-for (var i = 0; i < 220; i++) {
-  stars.push({ x: Math.random() * W - W / 2, y: Math.random() * H - H / 2, z: Math.random() * W });
-}
-function frame() {
-  ctx.fillStyle = 'rgba(4, 6, 14, 1)';
-  ctx.fillRect(0, 0, W, H);
-  ctx.fillStyle = '#ffffff';
-  for (var i = 0; i < stars.length; i++) {
-    var s = stars[i];
-    s.z -= 4;
-    if (s.z <= 1) { s.x = Math.random() * W - W / 2; s.y = Math.random() * H - H / 2; s.z = W; }
-    var k = 160 / s.z;
-    var px = s.x * k + W / 2;
-    var py = s.y * k + H / 2;
-    if (px >= 0 && px < W && py >= 0 && py < H) {
-      var size = (1 - s.z / W) * 3.2;
-      ctx.globalAlpha = 1 - s.z / W;
-      ctx.fillRect(px, py, size, size);
-    }
+async function loadCanvasPresets() {
+  canvasesPending.value = true
+  canvasesError.value = ''
+  try {
+    canvasPresets.value = await fetchLibraryList('canvas-presets')
+  } catch (e) {
+    canvasesError.value = libraryErrorMessage(e)
+  } finally {
+    canvasesPending.value = false
   }
-  ctx.globalAlpha = 1;
-  requestAnimationFrame(frame);
-}
-frame();`,
-  },
-  confetti: {
-    label: 'Confetti',
-    hint: 'falling party confetti',
-    js: `var canvas = document.querySelector('canvas');
-var ctx = canvas.getContext('2d');
-var W = canvas.width, H = canvas.height;
-var colors = ['#8b5cf6', '#9d6bff', '#41c7d4', '#3ecf8e', '#f5c944', '#f4626e', '#ff9950'];
-var bits = [];
-for (var i = 0; i < 160; i++) {
-  bits.push({
-    x: Math.random() * W, y: Math.random() * H - H,
-    w: 6 + Math.random() * 8, h: 10 + Math.random() * 8,
-    vy: 1.6 + Math.random() * 2.6, vx: -0.8 + Math.random() * 1.6,
-    rot: Math.random() * Math.PI, vr: -0.08 + Math.random() * 0.16,
-    color: colors[i % colors.length]
-  });
-}
-function frame() {
-  ctx.clearRect(0, 0, W, H);
-  for (var i = 0; i < bits.length; i++) {
-    var b = bits[i];
-    b.y += b.vy; b.x += b.vx; b.rot += b.vr;
-    if (b.y > H + 20) { b.y = -20; b.x = Math.random() * W; }
-    ctx.save();
-    ctx.translate(b.x, b.y);
-    ctx.rotate(b.rot);
-    ctx.fillStyle = b.color;
-    ctx.fillRect(-b.w / 2, -b.h / 2, b.w, Math.max(2, b.h * Math.abs(Math.sin(b.rot))));
-    ctx.restore();
-  }
-  requestAnimationFrame(frame);
-}
-frame();`,
-  },
-  particles: {
-    label: 'Particle net',
-    hint: 'drifting dots linked by lines',
-    js: `var canvas = document.querySelector('canvas');
-var ctx = canvas.getContext('2d');
-var W = canvas.width, H = canvas.height;
-var pts = [];
-for (var i = 0; i < 70; i++) {
-  pts.push({ x: Math.random() * W, y: Math.random() * H, vx: -0.6 + Math.random() * 1.2, vy: -0.6 + Math.random() * 1.2 });
-}
-var LINK = Math.min(W, H) / 5;
-function frame() {
-  ctx.clearRect(0, 0, W, H);
-  for (var i = 0; i < pts.length; i++) {
-    var p = pts[i];
-    p.x += p.vx; p.y += p.vy;
-    if (p.x < 0 || p.x > W) p.vx *= -1;
-    if (p.y < 0 || p.y > H) p.vy *= -1;
-  }
-  for (var i = 0; i < pts.length; i++) {
-    for (var j = i + 1; j < pts.length; j++) {
-      var dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y;
-      var d = Math.sqrt(dx * dx + dy * dy);
-      if (d < LINK) {
-        ctx.globalAlpha = 1 - d / LINK;
-        ctx.strokeStyle = '#8b5cf6';
-        ctx.lineWidth = 1.2;
-        ctx.beginPath();
-        ctx.moveTo(pts[i].x, pts[i].y);
-        ctx.lineTo(pts[j].x, pts[j].y);
-        ctx.stroke();
-      }
-    }
-  }
-  ctx.globalAlpha = 1;
-  ctx.fillStyle = '#9ec1ff';
-  for (var i = 0; i < pts.length; i++) {
-    ctx.beginPath();
-    ctx.arc(pts[i].x, pts[i].y, 2.4, 0, Math.PI * 2);
-    ctx.fill();
-  }
-  requestAnimationFrame(frame);
-}
-frame();`,
-  },
-  waves: {
-    label: 'Waves',
-    hint: 'layered animated sine waves',
-    js: `var canvas = document.querySelector('canvas');
-var ctx = canvas.getContext('2d');
-var W = canvas.width, H = canvas.height;
-var layers = [
-  { color: 'rgba(139, 92, 246, 0.55)', amp: H * 0.05, speed: 0.9, yoff: 0.72, wl: 1.6 },
-  { color: 'rgba(65, 199, 212, 0.5)', amp: H * 0.065, speed: 0.6, yoff: 0.78, wl: 1.1 },
-  { color: 'rgba(157, 107, 255, 0.45)', amp: H * 0.08, speed: 0.4, yoff: 0.85, wl: 0.8 }
-];
-function frame(t) {
-  ctx.clearRect(0, 0, W, H);
-  for (var l = 0; l < layers.length; l++) {
-    var L = layers[l];
-    ctx.beginPath();
-    ctx.moveTo(0, H);
-    for (var x = 0; x <= W; x += 6) {
-      var y = H * L.yoff + Math.sin((x / W) * Math.PI * 2 * L.wl + (t || 0) / 1000 * L.speed * Math.PI) * L.amp;
-      ctx.lineTo(x, y);
-    }
-    ctx.lineTo(W, H);
-    ctx.closePath();
-    ctx.fillStyle = L.color;
-    ctx.fill();
-  }
-  requestAnimationFrame(frame);
-}
-frame(0);`,
-  },
-  matrix: {
-    label: 'Matrix rain',
-    hint: 'green glyph rain',
-    js: `var canvas = document.querySelector('canvas');
-var ctx = canvas.getContext('2d');
-var W = canvas.width, H = canvas.height;
-var size = Math.max(14, Math.round(W / 60));
-var cols = Math.ceil(W / size);
-var drops = [];
-for (var i = 0; i < cols; i++) drops.push(Math.floor(Math.random() * H / size));
-ctx.fillStyle = '#000';
-ctx.fillRect(0, 0, W, H);
-function frame() {
-  ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
-  ctx.fillRect(0, 0, W, H);
-  ctx.font = size + 'px monospace';
-  for (var i = 0; i < cols; i++) {
-    var ch = String.fromCharCode(0x30a0 + Math.floor(Math.random() * 96));
-    ctx.fillStyle = '#3ecf8e';
-    ctx.fillText(ch, i * size, drops[i] * size);
-    if (drops[i] * size > H && Math.random() > 0.975) drops[i] = 0;
-    drops[i]++;
-  }
-  requestAnimationFrame(frame);
-}
-frame();`,
-  },
-  bokeh: {
-    label: 'Bokeh',
-    hint: 'soft floating light orbs',
-    js: `var canvas = document.querySelector('canvas');
-var ctx = canvas.getContext('2d');
-var W = canvas.width, H = canvas.height;
-var colors = ['91, 140, 255', '157, 107, 255', '65, 199, 212', '245, 201, 68'];
-var orbs = [];
-for (var i = 0; i < 26; i++) {
-  orbs.push({
-    x: Math.random() * W, y: Math.random() * H,
-    r: 20 + Math.random() * Math.min(W, H) * 0.08,
-    vx: -0.4 + Math.random() * 0.8, vy: -0.4 + Math.random() * 0.8,
-    c: colors[i % colors.length], a: 0.12 + Math.random() * 0.25
-  });
-}
-function frame() {
-  ctx.clearRect(0, 0, W, H);
-  for (var i = 0; i < orbs.length; i++) {
-    var o = orbs[i];
-    o.x += o.vx; o.y += o.vy;
-    if (o.x < -o.r) o.x = W + o.r; if (o.x > W + o.r) o.x = -o.r;
-    if (o.y < -o.r) o.y = H + o.r; if (o.y > H + o.r) o.y = -o.r;
-    var g = ctx.createRadialGradient(o.x, o.y, 0, o.x, o.y, o.r);
-    g.addColorStop(0, 'rgba(' + o.c + ', ' + o.a + ')');
-    g.addColorStop(1, 'rgba(' + o.c + ', 0)');
-    ctx.fillStyle = g;
-    ctx.beginPath();
-    ctx.arc(o.x, o.y, o.r, 0, Math.PI * 2);
-    ctx.fill();
-  }
-  requestAnimationFrame(frame);
-}
-frame();`,
-  },
 }
 
-function addCanvasPreset(key: string) {
-  const preset = CANVAS_PRESETS[key]
-  const w = project.defaults.width
-  const h = project.defaults.height
-  const added = project.addVisual(editor.context, {
-    type: 'TEXT',
-    html: `<canvas width="${w}" height="${h}" style="display:block;width:100%;height:100%"></canvas>`,
-    width: w,
-    height: h,
-    position: 'center-center',
-    customCode: { js: preset.js, animationDuration: 10 },
-    ...defaultTiming(),
-  })
-  editor.selectVisual(added._id)
-  editor.notify(`${preset.label} canvas added — tweak its JS under Custom code`, 'success')
+async function addCanvasPreset(item: LibraryItem) {
+  if (addingCanvasSlug.value) return
+  addingCanvasSlug.value = item.slug
+  try {
+    const content = await fetchLibraryContent('canvas-presets', item.slug)
+    const w = project.defaults.width
+    const h = project.defaults.height
+    const added = project.addVisual(editor.context, {
+      type: 'TEXT',
+      html: `<canvas width="${w}" height="${h}" style="display:block;width:100%;height:100%"></canvas>`,
+      width: w,
+      height: h,
+      position: 'center-center',
+      customCode: { js: content.js, animationDuration: content.animationDuration ?? 10 },
+      ...defaultTiming(),
+    })
+    editor.selectVisual(added._id)
+    editor.notify(`${item.title} canvas added — tweak its JS under Custom code`, 'success')
+  } catch (e) {
+    editor.notify(libraryErrorMessage(e), 'error')
+  } finally {
+    addingCanvasSlug.value = ''
+  }
 }
 
 function addMedia() {
@@ -519,15 +271,20 @@ const kindLabel = computed(
       </form>
 
       <div v-if="showShapes" class="shape-grid">
+        <p v-if="shapesPending" class="hint grid-span">Loading shapes…</p>
+        <template v-else-if="shapesError">
+          <p class="hint grid-span">⚠ {{ shapesError }}</p>
+          <button class="btn sm" @click="loadShapes()">Retry</button>
+        </template>
         <button
-          v-for="(s, key) in SVG_SHAPES"
-          :key="key"
+          v-for="s in svgShapes"
+          :key="s.slug"
           class="shape-card"
-          :title="s.label"
-          @click="addSvg(key as string)"
+          :title="s.title"
+          @click="addSvg(s)"
         >
           <span class="shape-preview" v-html="s.svg" />
-          <span>{{ s.label }}</span>
+          <span>{{ s.title }}</span>
         </button>
       </div>
 
@@ -536,16 +293,22 @@ const kindLabel = computed(
           Animated full-frame &lt;canvas&gt; overlays. The JS lives in the
           element's Custom code section — edit it freely after adding.
         </p>
+        <p v-if="canvasesPending" class="hint">Loading presets…</p>
+        <template v-else-if="canvasesError">
+          <p class="hint">⚠ {{ canvasesError }}</p>
+          <button class="btn sm" @click="loadCanvasPresets()">Retry</button>
+        </template>
         <button
-          v-for="(c, key) in CANVAS_PRESETS"
-          :key="key"
+          v-for="c in canvasPresets"
+          :key="c.slug"
           class="canvas-card"
-          :title="c.hint"
-          @click="addCanvasPreset(key as string)"
+          :class="{ busy: addingCanvasSlug === c.slug }"
+          :title="c.description ?? ''"
+          @click="addCanvasPreset(c)"
         >
           <UiIcon name="code" :size="14" />
-          <span class="canvas-name">{{ c.label }}</span>
-          <span class="canvas-hint">{{ c.hint }}</span>
+          <span class="canvas-name">{{ c.title }}</span>
+          <span class="canvas-hint">{{ c.description }}</span>
         </button>
       </div>
     </UiSection>
@@ -631,6 +394,9 @@ const kindLabel = computed(
   gap: 6px;
   margin-top: 10px;
 }
+.shape-grid .grid-span {
+  grid-column: 1 / -1;
+}
 .shape-card {
   display: flex;
   flex-direction: column;
@@ -679,6 +445,10 @@ const kindLabel = computed(
 .canvas-card:hover {
   border-color: var(--accent);
   color: var(--text-0);
+}
+.canvas-card.busy {
+  opacity: 0.6;
+  pointer-events: none;
 }
 .canvas-card .canvas-name {
   font-size: 11.5px;

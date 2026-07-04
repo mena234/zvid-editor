@@ -4,6 +4,14 @@ import { makeDesign, makeShapeLayer, makeTextLayer } from './types'
 /**
  * Starter designs for the Design Studio — each is a full DesignDoc factory
  * (fresh layer ids per call) that stays 100% editable after applying.
+ *
+ * NOT bundled at runtime anymore: DesignerModal loads these from the orch
+ * content library (`GET /api/library/design-templates` → CDN-hosted JSON,
+ * no local copies). This file remains as fixtures for tests/designer.test.ts
+ * and as the historical source of the published content. To change a
+ * published template, POST the new doc (layer ids stripped) to orch's
+ * `/api/admin/library`, or regenerate orch's data/library seeds from here
+ * and re-run `node scripts/publish-library.js`.
  */
 
 export interface DesignTemplate {
