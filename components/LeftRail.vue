@@ -8,6 +8,7 @@ const project = useProjectStore()
 
 const TABS = [
   { id: 'add', icon: 'plus', label: 'Add' },
+  { id: 'assets', icon: 'film', label: 'Stock' },
   { id: 'scenes', icon: 'scene', label: 'Scenes' },
   { id: 'subtitles', icon: 'subtitles', label: 'Subtitles' },
 ] as const
@@ -37,6 +38,7 @@ const sceneCount = computed(() => project.doc.scenes?.length ?? 0)
     </nav>
     <div class="rail-panel">
       <PanelsAddPanel v-if="editor.leftPanel === 'add'" />
+      <PanelsStockPanel v-else-if="editor.leftPanel === 'assets'" />
       <PanelsScenesPanel v-else-if="editor.leftPanel === 'scenes'" />
       <PanelsSubtitlesPanel v-else-if="editor.leftPanel === 'subtitles'" />
     </div>

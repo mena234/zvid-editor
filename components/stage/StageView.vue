@@ -5,6 +5,7 @@ import { effectiveLayout, isVisibleAt } from '~/utils/itemGeometry'
 import { clamp } from '~/utils/time'
 import type { VisualDoc } from '~/shared/schema/types'
 import { xfadeToCss } from '~/utils/xfadeCss'
+import { isStockDrag, parseStockDragData, buildStockVisual } from '~/utils/stockDrag'
 
 const {
   project,
@@ -271,6 +272,45 @@ const marqueeStyle = computed(() => {
   }
 })
 
+/* ---------------- stock media drag & drop ---------------- */
+const stockDropActive = ref(false)
+
+function onStockDragOver(e: DragEvent) {
+  if (!isStockDrag(e)) return
+  e.preventDefault()
+  if (e.dataTransfer) e.dataTransfer.dropEffect = 'copy'
+  stockDropActive.value = true
+}
+
+function onStockDragLeave(e: DragEvent) {
+  // only clear when the drag actually leaves the stage area (not a child)
+  const to = e.relatedTarget as Node | null
+  if (!to || !scrollEl.value?.contains(to)) stockDropActive.value = false
+}
+
+function onStockDrop(e: DragEvent) {
+  if (!isStockDrag(e)) return
+  e.preventDefault()
+  stockDropActive.value = false
+  const payload = parseStockDragData(e)
+  if (!payload || !frameEl.value) return
+  const rect = frameEl.value.getBoundingClientRect()
+  const at = {
+    x: clamp((e.clientX - rect.left) / scale.value, 0, projW.value),
+    y: clamp((e.clientY - rect.top) / scale.value, 0, projH.value),
+  }
+  const visual = buildStockVisual(payload, {
+    playhead: editor.playhead,
+    contextDuration: contextDuration.value,
+    projectWidth: projW.value,
+    projectHeight: projH.value,
+    at,
+  })
+  const added = project.addVisual(editor.context, visual)
+  editor.selectVisual(added._id)
+  editor.notify(`${payload.kind === 'GIF' ? 'GIF' : payload.kind.toLowerCase()} added at the playhead`, 'success')
+}
+
 /* ---------------- context menu ---------------- */
 const ctxMenu = ref<null | { x: number; y: number; id: string }>(null)
 function openContextMenu(e: MouseEvent, id: string) {
@@ -304,7 +344,15 @@ const contextLabel = computed(() => {
         edit</template
       >
     </div>
-    <div ref="scrollEl" class="stage-scroll checkerboard" @wheel="onWheel">
+    <div
+      ref="scrollEl"
+      class="stage-scroll checkerboard"
+      :class="{ 'stock-drop': stockDropActive }"
+      @wheel="onWheel"
+      @dragover="onStockDragOver"
+      @dragleave="onStockDragLeave"
+      @drop="onStockDrop"
+    >
       <div
         class="stage-outer"
         :style="{
@@ -492,6 +540,13 @@ const contextLabel = computed(() => {
   transform-origin: top left;
   overflow: hidden;
   box-shadow: 0 0 0 1px var(--border-1), var(--shadow-2);
+}
+.stage-scroll.stock-drop {
+  outline: 2px dashed var(--accent);
+  outline-offset: -2px;
+}
+.stage-scroll.stock-drop .stage-frame {
+  box-shadow: 0 0 0 2px var(--accent), var(--shadow-2);
 }
 .scene-group {
   position: absolute;
