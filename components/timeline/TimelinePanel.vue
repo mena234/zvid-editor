@@ -317,7 +317,7 @@ const hasScenes = computed(() => !!project.doc.scenes?.length)
               title="Delete empty track"
               @click="removeVisualLane(track)"
             >
-              <UiIcon name="trash" :size="11" />
+              <UiIcon name="trash" :size="13" />
             </button>
           </div>
           <div class="lane" :data-track="track">
@@ -358,7 +358,7 @@ const hasScenes = computed(() => !!project.doc.scenes?.length)
               title="Delete empty track"
               @click="removeAudioLane(track)"
             >
-              <UiIcon name="trash" :size="11" />
+              <UiIcon name="trash" :size="13" />
             </button>
           </div>
           <div class="lane audio-lane" :data-audio-track="track">
@@ -441,11 +441,12 @@ const hasScenes = computed(() => !!project.doc.scenes?.length)
   gap: 6px;
 }
 .play-btn {
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   background: var(--accent);
   color: #fff;
   border-radius: 50%;
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--accent) 40%, transparent);
 }
 .play-btn:hover {
   background: var(--accent-strong);
@@ -467,14 +468,14 @@ const hasScenes = computed(() => !!project.doc.scenes?.length)
   padding: 2px 8px;
   font-size: 11px;
   color: var(--yellow);
-  background: rgba(245, 201, 68, 0.1);
-  border: 1px solid rgba(245, 201, 68, 0.35);
+  background: color-mix(in srgb, var(--yellow) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--yellow) 35%, transparent);
   border-radius: 999px;
 }
 .link {
   background: none;
   border: none;
-  color: var(--accent-strong);
+  color: var(--accent);
   font-size: 11px;
   text-decoration: underline;
   padding: 0;
@@ -495,7 +496,8 @@ const hasScenes = computed(() => !!project.doc.scenes?.length)
 }
 .seg button.on {
   background: var(--accent-soft);
-  color: var(--accent-strong);
+  color: var(--accent);
+  font-weight: 600;
 }
 .dim {
   color: var(--text-3);
@@ -554,7 +556,7 @@ const hasScenes = computed(() => !!project.doc.scenes?.length)
   cursor: col-resize;
 }
 .audio-lane {
-  background: rgba(46, 143, 158, 0.04);
+  background: var(--audio-lane-tint);
 }
 .empty-lane {
   opacity: 0.4;
@@ -567,12 +569,12 @@ const hasScenes = computed(() => !!project.doc.scenes?.length)
   letter-spacing: 0.04em;
 }
 .lane-badge.video {
-  background: rgba(91, 140, 255, 0.18);
-  color: var(--accent-strong);
+  background: color-mix(in srgb, var(--clip-video) 15%, transparent);
+  color: color-mix(in srgb, var(--clip-video) 75%, var(--text-0));
 }
 .lane-badge.audio {
-  background: rgba(65, 199, 212, 0.15);
-  color: var(--cyan);
+  background: color-mix(in srgb, var(--clip-audio) 14%, transparent);
+  color: color-mix(in srgb, var(--clip-audio) 75%, var(--text-0));
 }
 .lane-count {
   font-size: 10px;
@@ -580,9 +582,7 @@ const hasScenes = computed(() => !!project.doc.scenes?.length)
 }
 .lane-remove {
   margin-left: auto;
-  width: 20px;
-  height: 20px;
-  color: var(--text-3);
+  color: var(--text-2);
 }
 .lane-remove:hover {
   color: var(--red);
@@ -594,12 +594,12 @@ const hasScenes = computed(() => !!project.doc.scenes?.length)
   right: 0;
   background: repeating-linear-gradient(
     -45deg,
-    rgba(244, 98, 110, 0.06),
-    rgba(244, 98, 110, 0.06) 6px,
+    color-mix(in srgb, var(--red) 6%, transparent),
+    color-mix(in srgb, var(--red) 6%, transparent) 6px,
     transparent 6px,
     transparent 12px
   );
-  border-left: 1px dashed rgba(244, 98, 110, 0.5);
+  border-left: 1px dashed color-mix(in srgb, var(--red) 50%, transparent);
   pointer-events: none;
 }
 .playhead {
@@ -607,18 +607,19 @@ const hasScenes = computed(() => !!project.doc.scenes?.length)
   top: 0;
   bottom: 0;
   width: 0;
-  border-left: 1.5px solid var(--red);
+  border-left: 1.5px solid var(--playhead);
   z-index: 25;
   pointer-events: none;
 }
 .playhead-grip {
   position: sticky;
-  top: 2px;
-  margin-left: -6px;
-  width: 12px;
-  height: 14px;
-  background: var(--red);
-  clip-path: polygon(0 0, 100% 0, 100% 55%, 50% 100%, 0 55%);
+  top: 3px;
+  margin-left: -5.5px;
+  width: 11px;
+  height: 15px;
+  background: var(--playhead);
+  border-radius: 4px 4px 5px 5px;
+  clip-path: polygon(0 0, 100% 0, 100% 62%, 50% 100%, 0 62%);
   pointer-events: auto;
   cursor: col-resize;
 }

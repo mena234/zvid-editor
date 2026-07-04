@@ -165,8 +165,8 @@ onBeforeUnmount(() => clearInterval(pollTimer))
   font-size: 12px;
 }
 .err-block {
-  background: rgba(244, 98, 110, 0.08);
-  border: 1px solid rgba(244, 98, 110, 0.3);
+  background: color-mix(in srgb, var(--red) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--red) 30%, transparent);
 }
 .err-block pre {
   white-space: pre-wrap;

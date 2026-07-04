@@ -463,7 +463,7 @@ function fmtT(v: number) {
 }
 .cap-row.active {
   border-color: var(--orange);
-  background: rgba(255, 153, 80, 0.08);
+  background: color-mix(in srgb, var(--orange) 8%, transparent);
 }
 .cap-time {
   font-size: 9.5px;
@@ -476,10 +476,6 @@ function fmtT(v: number) {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-.icon-btn.xs {
-  width: 20px;
-  height: 20px;
 }
 .grid-2 {
   display: grid;

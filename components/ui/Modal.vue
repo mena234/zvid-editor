@@ -28,7 +28,7 @@ const emit = defineEmits<{ close: [] }>()
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(2, 4, 8, 0.72);
+  background: var(--scrim);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -40,7 +40,7 @@ const emit = defineEmits<{ close: [] }>()
   max-height: calc(100vh - 64px);
   display: flex;
   flex-direction: column;
-  background: var(--bg-2);
+  background: var(--bg-1);
   border: 1px solid var(--border-1);
   border-radius: var(--radius-l);
   box-shadow: var(--shadow-2);
@@ -69,7 +69,7 @@ const emit = defineEmits<{ close: [] }>()
   gap: 8px;
   padding: 12px 18px;
   border-top: 1px solid var(--border-0);
-  background: var(--bg-1);
+  background: var(--bg-2);
   flex: 0 0 auto;
 }
 </style>

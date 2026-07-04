@@ -128,11 +128,11 @@ const stats = computed(() => {
   align-items: flex-start;
 }
 .issue.error {
-  background: rgba(244, 98, 110, 0.08);
+  background: color-mix(in srgb, var(--red) 8%, transparent);
   color: var(--red);
 }
 .issue.warning {
-  background: rgba(245, 201, 68, 0.07);
+  background: color-mix(in srgb, var(--yellow) 7%, transparent);
   color: var(--yellow);
 }
 .issue-path {

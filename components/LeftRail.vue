@@ -48,8 +48,8 @@ const sceneCount = computed(() => project.doc.scenes?.length ?? 0)
 <style scoped>
 .left-rail {
   display: flex;
-  width: 318px;
-  flex: 0 0 318px;
+  width: 326px;
+  flex: 0 0 326px;
   border-right: 1px solid var(--border-0);
   background: var(--bg-1);
   min-height: 0;
@@ -57,18 +57,18 @@ const sceneCount = computed(() => project.doc.scenes?.length ?? 0)
 .rail-tabs {
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  padding: 8px 6px;
+  gap: 4px;
+  padding: 10px 7px;
   border-right: 1px solid var(--border-0);
-  background: var(--bg-0);
+  background: var(--bg-1);
 }
 .rail-tab {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3px;
-  width: 56px;
-  padding: 9px 2px;
+  gap: 4px;
+  width: 58px;
+  padding: 10px 2px 8px;
   border: none;
   border-radius: var(--radius-m);
   background: none;
@@ -76,14 +76,17 @@ const sceneCount = computed(() => project.doc.scenes?.length ?? 0)
   font-size: 9.5px;
   font-weight: 600;
   position: relative;
+  transition:
+    background 0.12s,
+    color 0.12s;
 }
 .rail-tab:hover {
-  background: var(--bg-2);
+  background: var(--bg-3);
   color: var(--text-0);
 }
 .rail-tab.active {
   background: var(--accent-soft);
-  color: var(--accent-strong);
+  color: var(--accent);
 }
 .count {
   position: absolute;
@@ -96,13 +99,15 @@ const sceneCount = computed(() => project.doc.scenes?.length ?? 0)
   background: var(--accent);
   color: #fff;
   font-size: 9px;
+  font-weight: 700;
   line-height: 14px;
 }
 .rail-panel {
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 12px;
+  padding: 13px;
   min-width: 0;
+  background: var(--bg-1);
 }
 </style>

@@ -34,101 +34,111 @@ const renderEnabled = useRuntimeConfig().public.renderEnabled
 <template>
   <header class="topbar">
     <div class="brand" title="Zvid Editor">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-        <rect x="2" y="4" width="20" height="16" rx="4" fill="var(--accent)" />
-        <path d="M8 9h8l-5.2 6H16v0" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
-      </svg>
-      <span>zvid<b>editor</b></span>
+      <span class="brand-mark">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+          <path
+            d="M6 8h12l-8 8h8"
+            stroke="#fff"
+            stroke-width="3"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            fill="none"
+          />
+        </svg>
+      </span>
+      <span class="brand-name">zvid<b>editor</b></span>
     </div>
 
-    <div class="divider" />
-
     <input
-      class="ctl name-input"
+      class="name-input"
       :value="project.doc.name ?? ''"
-      placeholder="project-name"
+      placeholder="Untitled project"
       spellcheck="false"
       title="Project name (output file name)"
       @change="project.patchProject({ name: ($event.target as HTMLInputElement).value || undefined })"
     />
 
-    <select
-      class="ctl"
-      :value="project.doc.resolution ?? 'custom'"
-      title="Resolution preset"
-      @change="setResolution"
-    >
-      <option v-for="r in RESOLUTION_PRESET_NAMES" :key="r" :value="r">
-        {{ resolutionLabel(r) }}
-      </option>
-    </select>
-
-    <template v-if="(project.doc.resolution ?? 'custom') === 'custom'">
-      <UiNumberInput
-        class="w-64"
-        :model-value="project.doc.width"
-        :min="16"
-        :step="2"
-        placeholder="width"
-        title="Width (px)"
-        @update:model-value="project.patchProject({ width: $event })"
-      />
-      <span class="x">×</span>
-      <UiNumberInput
-        class="w-64"
-        :model-value="project.doc.height"
-        :min="16"
-        :step="2"
-        placeholder="height"
-        title="Height (px)"
-        @update:model-value="project.patchProject({ height: $event })"
-      />
-    </template>
-    <span v-else class="dim-badge mono">{{ dims.width }}×{{ dims.height }}</span>
-
-    <label class="mini-field" title="Timeline duration (seconds)">
-      <UiIcon name="clock" :size="13" />
-      <UiNumberInput
-        class="w-56"
-        :model-value="project.doc.duration"
-        :min="0.1"
-        :step="0.5"
-        placeholder="10"
-        @update:model-value="project.patchProject({ duration: $event })"
-      />
-      <span class="suffix">s</span>
-    </label>
-
-    <label class="mini-field" title="Frame rate">
-      <UiIcon name="film" :size="13" />
-      <UiNumberInput
-        class="w-48"
-        :model-value="project.doc.frameRate"
-        :min="1"
-        :max="120"
-        placeholder="30"
-        @update:model-value="project.patchProject({ frameRate: $event })"
-      />
-      <span class="suffix">fps</span>
-    </label>
-
-    <label class="mini-field" title="Background color">
-      <input
+    <div class="settings">
+      <select
         class="ctl"
-        type="color"
-        :value="dims.backgroundColor.slice(0, 7)"
-        @input="project.patchProject({ backgroundColor: ($event.target as HTMLInputElement).value })"
-      />
-    </label>
+        :value="project.doc.resolution ?? 'custom'"
+        title="Resolution preset"
+        @change="setResolution"
+      >
+        <option v-for="r in RESOLUTION_PRESET_NAMES" :key="r" :value="r">
+          {{ resolutionLabel(r) }}
+        </option>
+      </select>
 
-    <select
-      class="ctl"
-      :value="project.doc.outputFormat ?? 'mp4'"
-      title="Output format"
-      @change="project.patchProject({ outputFormat: ($event.target as HTMLSelectElement).value })"
-    >
-      <option v-for="f in SUPPORTED_FORMATS" :key="f" :value="f">{{ f }}</option>
-    </select>
+      <template v-if="(project.doc.resolution ?? 'custom') === 'custom'">
+        <UiNumberInput
+          class="w-64"
+          :model-value="project.doc.width"
+          :min="16"
+          :step="2"
+          placeholder="width"
+          title="Width (px)"
+          @update:model-value="project.patchProject({ width: $event })"
+        />
+        <span class="x">×</span>
+        <UiNumberInput
+          class="w-64"
+          :model-value="project.doc.height"
+          :min="16"
+          :step="2"
+          placeholder="height"
+          title="Height (px)"
+          @update:model-value="project.patchProject({ height: $event })"
+        />
+      </template>
+      <span v-else class="dim-badge mono">{{ dims.width }}×{{ dims.height }}</span>
+
+      <span class="sep" />
+
+      <label class="mini-field" title="Timeline duration (seconds)">
+        <UiIcon name="clock" :size="13" />
+        <UiNumberInput
+          class="w-56"
+          :model-value="project.doc.duration"
+          :min="0.1"
+          :step="0.5"
+          placeholder="10"
+          @update:model-value="project.patchProject({ duration: $event })"
+        />
+        <span class="suffix">s</span>
+      </label>
+
+      <label class="mini-field" title="Frame rate">
+        <UiIcon name="film" :size="13" />
+        <UiNumberInput
+          class="w-48"
+          :model-value="project.doc.frameRate"
+          :min="1"
+          :max="120"
+          placeholder="30"
+          @update:model-value="project.patchProject({ frameRate: $event })"
+        />
+        <span class="suffix">fps</span>
+      </label>
+
+      <label class="mini-field" title="Background color">
+        <input
+          class="ctl"
+          type="color"
+          :value="dims.backgroundColor.slice(0, 7)"
+          @input="project.patchProject({ backgroundColor: ($event.target as HTMLInputElement).value })"
+        />
+      </label>
+
+      <select
+        class="ctl"
+        :value="project.doc.outputFormat ?? 'mp4'"
+        title="Output format"
+        @change="project.patchProject({ outputFormat: ($event.target as HTMLSelectElement).value })"
+      >
+        <option v-for="f in SUPPORTED_FORMATS" :key="f" :value="f">{{ f }}</option>
+      </select>
+    </div>
 
     <div class="spacer" />
 
@@ -149,6 +159,18 @@ const renderEnabled = useRuntimeConfig().public.renderEnabled
       <UiIcon name="redo" />
     </button>
 
+    <button
+      class="icon-btn"
+      :title="editor.theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
+      @click="editor.toggleTheme()"
+    >
+      <UiIcon :name="editor.theme === 'dark' ? 'sun' : 'moon'" />
+    </button>
+
+    <button class="icon-btn" title="Keyboard shortcuts (?)" @click="editor.openModal('shortcuts')">
+      <UiIcon name="keyboard" />
+    </button>
+
     <div class="divider" />
 
     <button class="btn ghost" title="Load an example project" @click="editor.openModal('examples')">
@@ -160,9 +182,6 @@ const renderEnabled = useRuntimeConfig().public.renderEnabled
     <button class="btn" @click="editor.openModal('import')">
       <UiIcon name="upload" :size="14" /> Import
     </button>
-    <button class="btn primary" title="Export the zvid JSON" @click="editor.openModal('export')">
-      <UiIcon name="export" :size="14" /> Export JSON
-    </button>
     <button
       v-if="renderEnabled"
       class="btn"
@@ -171,8 +190,8 @@ const renderEnabled = useRuntimeConfig().public.renderEnabled
     >
       <UiIcon name="render" :size="14" /> Render
     </button>
-    <button class="icon-btn" title="Keyboard shortcuts (?)" @click="editor.openModal('shortcuts')">
-      <UiIcon name="keyboard" />
+    <button class="btn primary" title="Export the zvid JSON" @click="editor.openModal('export')">
+      <UiIcon name="export" :size="14" /> Export
     </button>
   </header>
 </template>
@@ -182,8 +201,8 @@ const renderEnabled = useRuntimeConfig().public.renderEnabled
   display: flex;
   align-items: center;
   gap: 8px;
-  height: 46px;
-  padding: 0 12px;
+  height: 52px;
+  padding: 0 14px;
   background: var(--bg-1);
   border-bottom: 1px solid var(--border-0);
   flex: 0 0 auto;
@@ -192,24 +211,82 @@ const renderEnabled = useRuntimeConfig().public.renderEnabled
 .brand {
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 8px;
+  user-select: none;
+  margin-right: 2px;
+}
+.brand-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 9px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  box-shadow: 0 2px 6px color-mix(in srgb, var(--accent) 35%, transparent);
+}
+.brand-name {
   font-size: 14px;
   color: var(--text-1);
-  user-select: none;
+  letter-spacing: -0.01em;
 }
-.brand b {
+.brand-name b {
   color: var(--text-0);
   font-weight: 700;
 }
+.name-input {
+  width: 170px;
+  height: 30px;
+  padding: 0 9px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-0);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-s);
+  outline: none;
+  transition:
+    border-color 0.12s,
+    background 0.12s,
+    box-shadow 0.12s;
+}
+.name-input:hover {
+  background: var(--bg-2);
+  border-color: var(--border-1);
+}
+.name-input:focus {
+  background: var(--bg-1);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-ring);
+}
+.name-input::placeholder {
+  color: var(--text-3);
+  font-weight: 500;
+}
+.settings {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 10px;
+  height: 38px;
+  border: 1px solid var(--border-0);
+  border-radius: var(--radius-m);
+  background: var(--bg-2);
+}
+.sep {
+  width: 1px;
+  height: 18px;
+  background: var(--border-1);
+}
+.settings .ctl,
+.settings :deep(input.ctl) {
+  background: var(--bg-1);
+}
 .divider {
   width: 1px;
-  height: 22px;
+  height: 24px;
   background: var(--border-1);
   margin: 0 2px;
-}
-.name-input {
-  width: 150px;
-  font-weight: 600;
 }
 .x {
   color: var(--text-3);
@@ -226,7 +303,7 @@ const renderEnabled = useRuntimeConfig().public.renderEnabled
 .dim-badge {
   font-size: 11px;
   color: var(--text-2);
-  background: var(--bg-2);
+  background: var(--bg-1);
   border: 1px solid var(--border-0);
   padding: 4px 7px;
   border-radius: var(--radius-s);
@@ -243,5 +320,11 @@ const renderEnabled = useRuntimeConfig().public.renderEnabled
 }
 .spacer {
   flex: 1;
+}
+
+@media (max-width: 1360px) {
+  .brand-name {
+    display: none;
+  }
 }
 </style>

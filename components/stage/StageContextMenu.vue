@@ -146,7 +146,7 @@ const style = computed(() => ({
   z-index: 300;
   min-width: 210px;
   padding: 5px;
-  background: var(--bg-3);
+  background: var(--bg-1);
   border: 1px solid var(--border-1);
   border-radius: var(--radius-m);
   box-shadow: var(--shadow-2);
@@ -166,10 +166,10 @@ const style = computed(() => ({
   text-align: left;
 }
 .ctx-menu button:hover {
-  background: var(--bg-4);
+  background: var(--bg-3);
 }
 .ctx-menu button.danger:hover {
-  background: rgba(244, 98, 110, 0.15);
+  background: color-mix(in srgb, var(--red) 12%, transparent);
   color: var(--red);
 }
 .ctx-menu kbd {

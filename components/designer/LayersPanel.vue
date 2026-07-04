@@ -39,13 +39,13 @@ function label(l: DesignLayer): string {
   <div class="layers">
     <div class="add-row">
       <button class="btn ghost sm" title="Add a text layer" @click="emit('add', 'text')">
-        <UiIcon name="text" :size="12" /> Text
+        <UiIcon name="text" :size="13" /> Text
       </button>
       <button class="btn ghost sm" title="Add a shape / icon layer" @click="emit('add', 'shape')">
-        <UiIcon name="svg" :size="12" /> Shape
+        <UiIcon name="svg" :size="13" /> Shape
       </button>
       <button class="btn ghost sm" title="Add an image layer" @click="emit('add', 'image')">
-        <UiIcon name="image" :size="12" /> Image
+        <UiIcon name="image" :size="13" /> Image
       </button>
     </div>
 
@@ -61,24 +61,24 @@ function label(l: DesignLayer): string {
         :class="{ active: l.id === selectedId, hidden: l.hidden }"
         @click="emit('update:selectedId', l.id)"
       >
-        <UiIcon :name="KIND_ICON[l.kind]" :size="12" />
+        <UiIcon :name="KIND_ICON[l.kind]" :size="14" class="kind-icon" />
         <span class="row-label" :title="label(l)">{{ label(l) }}</span>
         <span v-if="l.anim" class="anim-dot" title="Animated" />
         <span class="row-actions" @click.stop>
           <button class="icon-btn xs" title="Move up (toward front)" @click="emit('reorder', l.id, 1)">
-            <UiIcon name="chevron_up" :size="10" />
+            <UiIcon name="chevron_up" :size="13" />
           </button>
           <button class="icon-btn xs" title="Move down (toward back)" @click="emit('reorder', l.id, -1)">
-            <UiIcon name="chevron_down" :size="10" />
+            <UiIcon name="chevron_down" :size="13" />
           </button>
           <button class="icon-btn xs" :title="l.hidden ? 'Show' : 'Hide'" @click="emit('toggleHidden', l.id)">
-            <UiIcon :name="l.hidden ? 'eye-off' : 'eye'" :size="10" />
+            <UiIcon :name="l.hidden ? 'eye-off' : 'eye'" :size="13" />
           </button>
           <button class="icon-btn xs" title="Duplicate" @click="emit('duplicate', l.id)">
-            <UiIcon name="copy" :size="10" />
+            <UiIcon name="copy" :size="13" />
           </button>
           <button class="icon-btn xs danger" title="Delete layer" @click="emit('remove', l.id)">
-            <UiIcon name="trash" :size="10" />
+            <UiIcon name="trash" :size="13" />
           </button>
         </span>
       </div>
@@ -149,17 +149,20 @@ function label(l: DesignLayer): string {
   background: var(--accent);
   flex: 0 0 auto;
 }
+.kind-icon {
+  flex: 0 0 auto;
+  color: var(--text-2);
+}
+.row.active .kind-icon {
+  color: var(--accent);
+}
 .row-actions {
   display: none;
-  gap: 1px;
+  gap: 2px;
 }
 .row:hover .row-actions,
 .row.active .row-actions {
   display: flex;
-}
-.icon-btn.xs {
-  width: 18px;
-  height: 18px;
 }
 .icon-btn.danger:hover {
   color: var(--red);

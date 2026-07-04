@@ -78,7 +78,8 @@ watch(compiled, () => build())
   position: relative;
   overflow: hidden;
   border-radius: var(--radius-s);
-  background: repeating-conic-gradient(#1d212b 0 25%, #14171f 0 50%) 0 0 / 12px 12px;
+  background: repeating-conic-gradient(var(--checker-a) 0 25%, var(--checker-b) 0 50%) 0 0 /
+    12px 12px;
   pointer-events: none;
 }
 .mini-host {

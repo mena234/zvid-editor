@@ -83,7 +83,7 @@ function openScene(id: string) {
   font-size: 9.5px;
   font-weight: 700;
   letter-spacing: 0.07em;
-  color: var(--accent-2);
+  color: var(--accent);
 }
 .sm-btn {
   width: 20px;
@@ -121,15 +121,14 @@ function openScene(id: string) {
 }
 .scene-name {
   font-weight: 600;
+  color: var(--text-0);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
 }
 .scene-dur {
   font-size: 9px;
   color: var(--text-1);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
 }
 .scene-transition {
   position: absolute;
@@ -139,15 +138,15 @@ function openScene(id: string) {
   min-width: 12px;
   background: repeating-linear-gradient(
     -45deg,
-    rgba(157, 107, 255, 0.5),
-    rgba(157, 107, 255, 0.5) 3px,
+    color-mix(in srgb, var(--accent) 50%, transparent),
+    color-mix(in srgb, var(--accent) 50%, transparent) 3px,
     transparent 3px,
     transparent 6px
   );
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
+  color: var(--text-0);
 }
 .scene-local-note {
   display: flex;

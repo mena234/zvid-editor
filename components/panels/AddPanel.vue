@@ -52,7 +52,7 @@ const SVG_SHAPES: Record<string, { label: string; svg: string; w: number; h: num
     label: 'Rectangle',
     w: 400,
     h: 260,
-    svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 260"><rect x="8" y="8" width="384" height="244" rx="18" fill="#5b8cff"/></svg>',
+    svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 260"><rect x="8" y="8" width="384" height="244" rx="18" fill="#8b5cf6"/></svg>',
   },
   circle: {
     label: 'Circle',
@@ -82,7 +82,7 @@ const SVG_SHAPES: Record<string, { label: string; svg: string; w: number; h: num
     label: 'Hexagon',
     w: 300,
     h: 300,
-    svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300"><path d="M150 12l120 69v138l-120 69-120-69V81z" fill="#5b8cff"/></svg>',
+    svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300"><path d="M150 12l120 69v138l-120 69-120-69V81z" fill="#8b5cf6"/></svg>',
   },
   star: {
     label: 'Star',
@@ -130,7 +130,7 @@ const SVG_SHAPES: Record<string, { label: string; svg: string; w: number; h: num
     label: 'Speech bubble',
     w: 300,
     h: 250,
-    svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 250"><path d="M48 26h204a26 26 0 0 1 26 26v112a26 26 0 0 1-26 26H136l-58 56 14-56H48a26 26 0 0 1-26-26V52a26 26 0 0 1 26-26z" fill="#5b8cff"/></svg>',
+    svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 250"><path d="M48 26h204a26 26 0 0 1 26 26v112a26 26 0 0 1-26 26H136l-58 56 14-56H48a26 26 0 0 1-26-26V52a26 26 0 0 1 26-26z" fill="#8b5cf6"/></svg>',
   },
   burst: {
     label: 'Burst',
@@ -224,7 +224,7 @@ frame();`,
     js: `var canvas = document.querySelector('canvas');
 var ctx = canvas.getContext('2d');
 var W = canvas.width, H = canvas.height;
-var colors = ['#5b8cff', '#9d6bff', '#41c7d4', '#3ecf8e', '#f5c944', '#f4626e', '#ff9950'];
+var colors = ['#8b5cf6', '#9d6bff', '#41c7d4', '#3ecf8e', '#f5c944', '#f4626e', '#ff9950'];
 var bits = [];
 for (var i = 0; i < 160; i++) {
   bits.push({
@@ -277,7 +277,7 @@ function frame() {
       var d = Math.sqrt(dx * dx + dy * dy);
       if (d < LINK) {
         ctx.globalAlpha = 1 - d / LINK;
-        ctx.strokeStyle = '#5b8cff';
+        ctx.strokeStyle = '#8b5cf6';
         ctx.lineWidth = 1.2;
         ctx.beginPath();
         ctx.moveTo(pts[i].x, pts[i].y);
@@ -304,7 +304,7 @@ frame();`,
 var ctx = canvas.getContext('2d');
 var W = canvas.width, H = canvas.height;
 var layers = [
-  { color: 'rgba(91, 140, 255, 0.55)', amp: H * 0.05, speed: 0.9, yoff: 0.72, wl: 1.6 },
+  { color: 'rgba(139, 92, 246, 0.55)', amp: H * 0.05, speed: 0.9, yoff: 0.72, wl: 1.6 },
   { color: 'rgba(65, 199, 212, 0.5)', amp: H * 0.065, speed: 0.6, yoff: 0.78, wl: 1.1 },
   { color: 'rgba(157, 107, 255, 0.45)', amp: H * 0.08, speed: 0.4, yoff: 0.85, wl: 0.8 }
 ];
@@ -603,13 +603,13 @@ const kindLabel = computed(
   background: var(--bg-3);
 }
 .type-card.design {
-  border-color: rgba(157, 107, 255, 0.45);
-  color: #cbaaff;
+  border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  color: var(--accent);
 }
 .type-card.design:hover {
-  border-color: #9d6bff;
-  background: rgba(157, 107, 255, 0.12);
-  color: #e2d2ff;
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent-strong);
 }
 .url-form {
   display: flex;

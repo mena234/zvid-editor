@@ -182,28 +182,28 @@ const activeTab = computed({
   color: var(--text-1);
 }
 .type-chip[data-type='VIDEO'] {
-  background: rgba(58, 95, 217, 0.3);
-  color: #9db4ff;
+  background: color-mix(in srgb, var(--clip-video) 16%, transparent);
+  color: color-mix(in srgb, var(--clip-video) 75%, var(--text-0));
 }
 .type-chip[data-type='IMAGE'] {
-  background: rgba(47, 158, 119, 0.25);
-  color: #7fe3bb;
+  background: color-mix(in srgb, var(--clip-image) 15%, transparent);
+  color: color-mix(in srgb, var(--clip-image) 75%, var(--text-0));
 }
 .type-chip[data-type='GIF'] {
-  background: rgba(199, 126, 46, 0.25);
-  color: #ffc57e;
+  background: color-mix(in srgb, var(--clip-gif) 15%, transparent);
+  color: color-mix(in srgb, var(--clip-gif) 75%, var(--text-0));
 }
 .type-chip[data-type='TEXT'] {
-  background: rgba(139, 95, 208, 0.28);
-  color: #cbaaff;
+  background: color-mix(in srgb, var(--clip-text) 15%, transparent);
+  color: color-mix(in srgb, var(--clip-text) 75%, var(--text-0));
 }
 .type-chip[data-type='SVG'] {
-  background: rgba(63, 158, 199, 0.25);
-  color: #8fd8f5;
+  background: color-mix(in srgb, var(--clip-svg) 15%, transparent);
+  color: color-mix(in srgb, var(--clip-svg) 75%, var(--text-0));
 }
 .type-chip[data-type='AUDIO'] {
-  background: rgba(46, 143, 158, 0.25);
-  color: #7adfec;
+  background: color-mix(in srgb, var(--clip-audio) 15%, transparent);
+  color: color-mix(in srgb, var(--clip-audio) 75%, var(--text-0));
 }
 .insp-title {
   flex: 1;

@@ -272,8 +272,8 @@ const showAnimHandles = computed(
   border-color: var(--clip-color);
 }
 .clip.selected {
-  border-color: #fff;
-  box-shadow: 0 0 0 1px var(--clip-color);
+  border-color: var(--bg-1);
+  box-shadow: 0 0 0 2px var(--accent);
   z-index: 5;
 }
 .clip-inner {
@@ -287,8 +287,7 @@ const showAnimHandles = computed(
   pointer-events: none;
 }
 .clip-icon {
-  color: var(--clip-color);
-  filter: brightness(1.6);
+  color: color-mix(in srgb, var(--clip-color) 72%, var(--text-0));
   flex: 0 0 auto;
 }
 .clip-label {
@@ -304,7 +303,7 @@ const showAnimHandles = computed(
   font-weight: 700;
   padding: 1px 4px;
   border-radius: 3px;
-  background: rgba(0, 0, 0, 0.35);
+  background: color-mix(in srgb, var(--bg-1) 60%, transparent);
   color: var(--text-1);
 }
 .badge.anim {
@@ -322,11 +321,19 @@ const showAnimHandles = computed(
 }
 .anim-shade.in {
   left: 0;
-  background: linear-gradient(90deg, rgba(245, 201, 68, 0.35), transparent);
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--yellow) 35%, transparent),
+    transparent
+  );
 }
 .anim-shade.out {
   right: 0;
-  background: linear-gradient(-90deg, rgba(245, 201, 68, 0.35), transparent);
+  background: linear-gradient(
+    -90deg,
+    color-mix(in srgb, var(--yellow) 35%, transparent),
+    transparent
+  );
 }
 .trim {
   position: absolute;
@@ -345,7 +352,7 @@ const showAnimHandles = computed(
   border-radius: 0 5px 5px 0;
 }
 .clip.selected .trim {
-  background: rgba(255, 255, 255, 0.25);
+  background: color-mix(in srgb, var(--text-0) 22%, transparent);
 }
 .anim-handle {
   position: absolute;

@@ -80,7 +80,12 @@ watchEffect(() => {
   const ctx = canvas.getContext('2d')
   if (!ctx) return
   ctx.clearRect(0, 0, w, h)
-  ctx.fillStyle = 'rgba(65, 199, 212, 0.75)'
+  // repaint when the theme flips — the wave color comes from the CSS tokens
+  void editor.theme
+  const waveColor =
+    getComputedStyle(canvas).getPropertyValue('--clip-audio').trim() || '#14b3b3'
+  ctx.fillStyle = waveColor
+  ctx.globalAlpha = 0.75
 
   const t = timing.value
   const sourceDur = wf?.duration ?? t.audioEnd
@@ -99,7 +104,7 @@ watchEffect(() => {
     }
   } else {
     // fallback flat pattern
-    ctx.fillStyle = 'rgba(65, 199, 212, 0.35)'
+    ctx.globalAlpha = 0.35
     for (let x = 0; x < w; x += 3) {
       const p = 0.25 + 0.2 * Math.sin(x / 6)
       const bar = p * (h - 8)
@@ -232,8 +237,8 @@ function onUp() {
   border-color: var(--clip-audio);
 }
 .aclip.selected {
-  border-color: #fff;
-  box-shadow: 0 0 0 1px var(--clip-audio);
+  border-color: var(--bg-1);
+  box-shadow: 0 0 0 2px var(--accent);
   z-index: 5;
 }
 .wave {
@@ -253,14 +258,14 @@ function onUp() {
   pointer-events: none;
 }
 .a-icon {
-  color: var(--cyan);
+  color: color-mix(in srgb, var(--clip-audio) 72%, var(--text-0));
 }
 .a-label {
   font-size: 10.5px;
+  color: var(--text-0);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
 }
 .badge {
   flex: 0 0 auto;
@@ -268,7 +273,7 @@ function onUp() {
   font-weight: 700;
   padding: 1px 4px;
   border-radius: 3px;
-  background: rgba(0, 0, 0, 0.4);
+  background: color-mix(in srgb, var(--bg-1) 60%, transparent);
   color: var(--text-1);
 }
 .loop-mark {
@@ -276,7 +281,7 @@ function onUp() {
   top: 0;
   bottom: 0;
   width: 0;
-  border-left: 1px dashed rgba(255, 255, 255, 0.55);
+  border-left: 1px dashed color-mix(in srgb, var(--text-0) 45%, transparent);
   z-index: 2;
   pointer-events: none;
 }
@@ -295,6 +300,6 @@ function onUp() {
   right: 0;
 }
 .aclip.selected .trim {
-  background: rgba(255, 255, 255, 0.25);
+  background: color-mix(in srgb, var(--text-0) 22%, transparent);
 }
 </style>

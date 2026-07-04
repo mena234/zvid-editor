@@ -438,10 +438,10 @@ const skeletons = 8
   align-items: flex-start;
   gap: 6px;
   padding: 6px 9px;
-  border: 1px solid rgba(245, 201, 68, 0.4);
+  border: 1px solid color-mix(in srgb, var(--yellow) 40%, transparent);
   border-radius: var(--radius-m);
-  background: rgba(245, 201, 68, 0.08);
-  color: #e8c25a;
+  background: color-mix(in srgb, var(--yellow) 8%, transparent);
+  color: var(--yellow);
   font-size: 10.5px;
   line-height: 1.45;
 }
@@ -461,8 +461,8 @@ const skeletons = 8
   display: flex;
   flex-direction: column;
   gap: 7px;
-  border-color: rgba(244, 98, 110, 0.5);
-  color: #f4a2aa;
+  border-color: color-mix(in srgb, var(--red) 50%, transparent);
+  color: var(--red);
 }
 .state-box.error p {
   margin: 0;

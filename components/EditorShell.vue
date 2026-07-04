@@ -8,6 +8,7 @@ const { project, editor, contextDuration } = useEditorContext()
 usePlayback(() => contextDuration.value)
 
 onMounted(() => {
+  editor.initTheme()
   if (!project.loadAutosave()) {
     project.newProject()
   }

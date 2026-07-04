@@ -96,7 +96,7 @@ async function fromClipboard() {
   font-size: 11px;
   white-space: pre-wrap;
   font-family: var(--font-mono);
-  background: rgba(244, 98, 110, 0.07);
+  background: color-mix(in srgb, var(--red) 7%, transparent);
   padding: 8px 10px;
   border-radius: var(--radius-s);
   max-height: 140px;

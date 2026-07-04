@@ -115,16 +115,16 @@ const sizeKb = computed(() => Math.round((json.value.length / 1024) * 10) / 10)
   cursor: default;
 }
 .pill.ok {
-  background: rgba(62, 207, 142, 0.12);
+  background: color-mix(in srgb, var(--green) 12%, transparent);
   color: var(--green);
 }
 .pill.err {
-  background: rgba(244, 98, 110, 0.12);
+  background: color-mix(in srgb, var(--red) 12%, transparent);
   color: var(--red);
   cursor: pointer;
 }
 .pill.warn {
-  background: rgba(245, 201, 68, 0.12);
+  background: color-mix(in srgb, var(--yellow) 12%, transparent);
   color: var(--yellow);
   cursor: pointer;
 }
@@ -163,7 +163,7 @@ const sizeKb = computed(() => Math.round((json.value.length / 1024) * 10) / 10)
   padding: 12px 14px;
   font-size: 11px;
   line-height: 1.55;
-  color: #c9d4ea;
+  color: var(--text-1);
 }
 .issues {
   max-height: 46vh;
@@ -188,10 +188,10 @@ const sizeKb = computed(() => Math.round((json.value.length / 1024) * 10) / 10)
   align-items: baseline;
 }
 .issue.error {
-  background: rgba(244, 98, 110, 0.08);
+  background: color-mix(in srgb, var(--red) 8%, transparent);
 }
 .issue.warning {
-  background: rgba(245, 201, 68, 0.06);
+  background: color-mix(in srgb, var(--yellow) 7%, transparent);
 }
 .issue-level {
   font-size: 9.5px;

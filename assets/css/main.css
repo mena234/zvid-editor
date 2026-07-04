@@ -1,46 +1,113 @@
-/* ─── Zvid Editor design tokens ─────────────────────────────────────── */
-:root {
-  --bg-0: #07090d;
-  --bg-1: #0c0f15;
-  --bg-2: #12161f;
-  --bg-3: #191e2a;
-  --bg-4: #212837;
+/* ─── Zvid Editor design tokens ─────────────────────────────────────────
+   Two themes driven by <html data-theme="light|dark">.
+   Light is the default; an inline head script sets the attribute before
+   first paint (localStorage 'zvid-theme', falling back to the OS scheme).
+   ──────────────────────────────────────────────────────────────────── */
+:root,
+:root[data-theme='light'] {
+  color-scheme: light;
 
-  --border-0: #1b2130;
-  --border-1: #262e42;
-  --border-2: #35405c;
+  /* surfaces — bg-0 is the app backdrop / canvas well, bg-1 the chrome */
+  --bg-0: #eef0f6;
+  --bg-1: #ffffff;
+  --bg-2: #f5f6fa;
+  --bg-3: #edeef6;
+  --bg-4: #e1e3ee;
 
-  --text-0: #eef1f8;
-  --text-1: #c3cadb;
-  --text-2: #8b93a9;
-  --text-3: #5d6579;
+  --border-0: #e8eaf1;
+  --border-1: #dcdfe9;
+  --border-2: #c6cadb;
 
-  --accent: #5b8cff;
-  --accent-strong: #78a2ff;
-  --accent-soft: rgba(91, 140, 255, 0.16);
-  --accent-2: #9d6bff;
+  --text-0: #17181f;
+  --text-1: #42465a;
+  --text-2: #70758c;
+  --text-3: #a3a8bc;
+
+  /* purple brand */
+  --accent: #7c3aed;
+  --accent-strong: #6528d0;
+  --accent-soft: rgba(124, 58, 237, 0.1);
+  --accent-ring: rgba(124, 58, 237, 0.22);
+  --accent-2: #d946ef;
+
+  --green: #0f9d63;
+  --yellow: #a16207;
+  --red: #dc3d50;
+  --orange: #d9730d;
+  --cyan: #0d94a8;
+
+  /* timeline clip fills — mid-tone in both themes, white label text */
+  --clip-video: #4c5fe8;
+  --clip-image: #12a374;
+  --clip-gif: #dd8514;
+  --clip-text: #9333ea;
+  --clip-svg: #0e9cc9;
+  --clip-audio: #10a5a5;
+
+  --radius-s: 8px;
+  --radius-m: 11px;
+  --radius-l: 15px;
+
+  --font-ui: 'Inter', -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Cascadia Code', Consolas, monospace;
+
+  --shadow-1: 0 1px 3px rgba(26, 20, 60, 0.08), 0 3px 14px rgba(26, 20, 60, 0.07);
+  --shadow-2: 0 8px 20px rgba(26, 20, 60, 0.12), 0 24px 60px rgba(26, 20, 60, 0.2);
+
+  --scrim: rgba(24, 18, 48, 0.44);
+  --checker-a: #ffffff;
+  --checker-b: #e5e7f0;
+  --checker-bg: #f0f1f7;
+  --playhead: #1d1e28;
+  --audio-lane-tint: rgba(16, 165, 165, 0.05);
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --bg-0: #0e0d14;
+  --bg-1: #15141d;
+  --bg-2: #1c1b26;
+  --bg-3: #242231;
+  --bg-4: #2e2b3e;
+
+  --border-0: #24222f;
+  --border-1: #2f2c3e;
+  --border-2: #423e58;
+
+  --text-0: #f1f0f7;
+  --text-1: #c7c4d8;
+  --text-2: #918da6;
+  --text-3: #605c75;
+
+  --accent: #8b5cf6;
+  --accent-strong: #a78bfa;
+  --accent-soft: rgba(139, 92, 246, 0.16);
+  --accent-ring: rgba(139, 92, 246, 0.32);
+  --accent-2: #e879f9;
+
   --green: #3ecf8e;
   --yellow: #f5c944;
   --red: #f4626e;
   --orange: #ff9950;
   --cyan: #41c7d4;
 
-  --clip-video: #3a5fd9;
-  --clip-image: #2f9e77;
-  --clip-gif: #c77e2e;
-  --clip-text: #8b5fd0;
-  --clip-svg: #3f9ec7;
-  --clip-audio: #2e8f9e;
+  --clip-video: #5b6cf0;
+  --clip-image: #16b382;
+  --clip-gif: #e08c1a;
+  --clip-text: #9d5cf0;
+  --clip-svg: #18a8d8;
+  --clip-audio: #14b3b3;
 
-  --radius-s: 6px;
-  --radius-m: 9px;
-  --radius-l: 13px;
+  --shadow-1: 0 2px 10px rgba(0, 0, 0, 0.4);
+  --shadow-2: 0 12px 44px rgba(0, 0, 0, 0.55);
 
-  --font-ui: 'Inter', -apple-system, 'Segoe UI', sans-serif;
-  --font-mono: 'JetBrains Mono', 'Cascadia Code', Consolas, monospace;
-
-  --shadow-1: 0 2px 10px rgba(0, 0, 0, 0.35);
-  --shadow-2: 0 12px 40px rgba(0, 0, 0, 0.5);
+  --scrim: rgba(6, 4, 14, 0.7);
+  --checker-a: #211f2c;
+  --checker-b: #17161f;
+  --checker-bg: #131218;
+  --playhead: #efedfa;
+  --audio-lane-tint: rgba(20, 179, 179, 0.05);
 }
 
 * {
@@ -84,10 +151,12 @@ textarea {
 ::-webkit-scrollbar-thumb {
   background: var(--bg-4);
   border-radius: 6px;
-  border: 2px solid var(--bg-1);
+  border: 2px solid transparent;
+  background-clip: padding-box;
 }
 ::-webkit-scrollbar-thumb:hover {
   background: var(--border-2);
+  background-clip: padding-box;
 }
 ::-webkit-scrollbar-corner {
   background: transparent;
@@ -95,15 +164,18 @@ textarea {
 
 /* ─── shared form controls ──────────────────────────────────────────── */
 .ctl {
-  height: 26px;
-  padding: 0 8px;
-  background: var(--bg-1);
+  height: 28px;
+  padding: 0 9px;
+  background: var(--bg-2);
   border: 1px solid var(--border-1);
   border-radius: var(--radius-s);
   color: var(--text-0);
   font-size: 12px;
   outline: none;
-  transition: border-color 0.12s;
+  transition:
+    border-color 0.12s,
+    box-shadow 0.12s,
+    background 0.12s;
   min-width: 0;
 }
 .ctl:hover {
@@ -111,20 +183,23 @@ textarea {
 }
 .ctl:focus {
   border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-ring);
+  background: var(--bg-1);
 }
 .ctl::placeholder {
   color: var(--text-3);
 }
 select.ctl {
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5'%3E%3Cpath d='M0 0l4 5 4-5z' fill='%238b93a9'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5'%3E%3Cpath d='M0 0l4 5 4-5z' fill='%23888da4'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 8px center;
   padding-right: 22px;
+  cursor: pointer;
 }
 textarea.ctl {
   height: auto;
-  padding: 6px 8px;
+  padding: 6px 9px;
   resize: vertical;
   line-height: 1.5;
 }
@@ -145,22 +220,28 @@ input[type='checkbox'] {
   align-items: center;
   justify-content: center;
   gap: 6px;
-  height: 28px;
-  padding: 0 12px;
+  height: 30px;
+  padding: 0 13px;
   border-radius: var(--radius-s);
   border: 1px solid var(--border-1);
-  background: var(--bg-2);
+  background: var(--bg-1);
   color: var(--text-0);
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 600;
   white-space: nowrap;
   transition:
     background 0.12s,
-    border-color 0.12s;
+    border-color 0.12s,
+    color 0.12s,
+    box-shadow 0.12s;
 }
 .btn:hover {
   background: var(--bg-3);
   border-color: var(--border-2);
+}
+.btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--accent-ring);
 }
 .btn:disabled {
   opacity: 0.45;
@@ -171,9 +252,11 @@ input[type='checkbox'] {
   background: var(--accent);
   border-color: var(--accent);
   color: #fff;
+  box-shadow: 0 1px 2.5px color-mix(in srgb, var(--accent) 45%, transparent);
 }
 .btn.primary:hover {
   background: var(--accent-strong);
+  border-color: var(--accent-strong);
 }
 .btn.ghost {
   background: transparent;
@@ -185,13 +268,13 @@ input[type='checkbox'] {
   color: var(--text-0);
 }
 .btn.danger:hover {
-  background: rgba(244, 98, 110, 0.15);
+  background: color-mix(in srgb, var(--red) 12%, transparent);
   border-color: var(--red);
   color: var(--red);
 }
 .btn.sm {
-  height: 24px;
-  padding: 0 8px;
+  height: 25px;
+  padding: 0 9px;
   font-size: 11px;
 }
 
@@ -216,8 +299,8 @@ input[type='checkbox'] {
 }
 .icon-btn.active {
   background: var(--accent-soft);
-  color: var(--accent-strong);
-  border-color: rgba(91, 140, 255, 0.35);
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 30%, transparent);
 }
 .icon-btn:disabled {
   opacity: 0.4;
@@ -226,6 +309,17 @@ input[type='checkbox'] {
 .icon-btn svg {
   width: 15px;
   height: 15px;
+  flex: 0 0 auto; /* icons must never get flex-squeezed */
+}
+/* compact icon button for row actions — one consistent size everywhere */
+.icon-btn.xs {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+}
+.icon-btn.xs svg {
+  width: 13px;
+  height: 13px;
 }
 
 .chip {
@@ -236,7 +330,7 @@ input[type='checkbox'] {
   padding: 0 6px;
   font-size: 10px;
   font-weight: 600;
-  border-radius: 4px;
+  border-radius: 5px;
   background: var(--bg-4);
   color: var(--text-1);
   letter-spacing: 0.03em;
@@ -260,24 +354,24 @@ kbd {
   border: 1px solid var(--border-1);
   border-bottom-width: 2px;
   border-radius: 4px;
-  background: var(--bg-3);
+  background: var(--bg-2);
   color: var(--text-1);
 }
 
 /* checkerboard behind transparent stage */
 .checkerboard {
   background-image:
-    linear-gradient(45deg, #191d27 25%, transparent 25%),
-    linear-gradient(-45deg, #191d27 25%, transparent 25%),
-    linear-gradient(45deg, transparent 75%, #191d27 75%),
-    linear-gradient(-45deg, transparent 75%, #191d27 75%);
+    linear-gradient(45deg, var(--checker-b) 25%, transparent 25%),
+    linear-gradient(-45deg, var(--checker-b) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--checker-b) 75%),
+    linear-gradient(-45deg, transparent 75%, var(--checker-b) 75%);
   background-size: 16px 16px;
   background-position:
     0 0,
     0 8px,
     8px -8px,
     -8px 0;
-  background-color: #10131b;
+  background-color: var(--checker-bg);
 }
 
 /* generic fade */

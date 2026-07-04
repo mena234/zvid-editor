@@ -72,6 +72,6 @@ const ticks = computed(() => {
   top: 0;
   bottom: 0;
   width: 2px;
-  background: rgba(244, 98, 110, 0.7);
+  background: color-mix(in srgb, var(--red) 70%, transparent);
 }
 </style>

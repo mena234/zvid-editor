@@ -11,13 +11,13 @@ function setKind(kind: 'solid' | 'gradient') {
   if (kind === 'solid') {
     emit('update:modelValue', {
       kind: 'solid',
-      color: p.kind === 'gradient' ? p.from : '#5b8cff',
+      color: p.kind === 'gradient' ? p.from : '#8b5cf6',
     })
   } else {
     emit('update:modelValue', {
       kind: 'gradient',
-      from: p.kind === 'solid' ? p.color : '#5b8cff',
-      to: '#9d6bff',
+      from: p.kind === 'solid' ? p.color : '#8b5cf6',
+      to: '#d946ef',
       angle: 120,
     })
   }
@@ -46,11 +46,11 @@ function patch(part: Record<string, any>) {
       <div class="g-row">
         <UiColorInput
           :model-value="modelValue.from"
-          @update:model-value="patch({ from: $event ?? '#5b8cff' })"
+          @update:model-value="patch({ from: $event ?? '#8b5cf6' })"
         />
         <UiColorInput
           :model-value="modelValue.to"
-          @update:model-value="patch({ to: $event ?? '#9d6bff' })"
+          @update:model-value="patch({ to: $event ?? '#d946ef' })"
         />
       </div>
       <UiField label="Angle">

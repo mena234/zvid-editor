@@ -150,8 +150,8 @@ function onUp() {
   top: 4px;
   height: 21px;
   border-radius: 4px;
-  background: rgba(255, 153, 80, 0.2);
-  border: 1px solid rgba(255, 153, 80, 0.5);
+  background: color-mix(in srgb, var(--orange) 16%, transparent);
+  border: 1px solid color-mix(in srgb, var(--orange) 50%, transparent);
   display: flex;
   align-items: center;
   padding: 0 6px;
@@ -163,8 +163,8 @@ function onUp() {
   border-color: var(--orange);
 }
 .caption-block.selected {
-  border-color: #fff;
-  box-shadow: 0 0 0 1px var(--orange);
+  border-color: var(--bg-1);
+  box-shadow: 0 0 0 2px var(--accent);
   z-index: 3;
 }
 .caption-text {

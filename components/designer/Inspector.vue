@@ -75,7 +75,7 @@ function toggleShadow(on: boolean) {
   patchL({ shadow: on ? { x: 0, y: 6, blur: 18, color: 'rgba(0,0,0,0.45)' } : undefined })
 }
 function togglePill(on: boolean) {
-  patchL({ pill: on ? { color: '#5b8cff', padX: 22, padY: 8, radius: 12 } : undefined })
+  patchL({ pill: on ? { color: '#8b5cf6', padX: 22, padY: 8, radius: 12 } : undefined })
 }
 
 const FONT_WEIGHTS = ['300', '400', '500', '600', '700', '800', '900']
@@ -374,7 +374,7 @@ function patchBg(part: Record<string, any>) {
             <UiField label="Color">
               <UiColorInput
                 :model-value="textLayer.pill.color"
-                @update:model-value="patchL({ pill: { ...textLayer!.pill!, color: $event ?? '#5b8cff' } })"
+                @update:model-value="patchL({ pill: { ...textLayer!.pill!, color: $event ?? '#8b5cf6' } })"
               />
             </UiField>
             <div class="grid-3">
@@ -685,7 +685,7 @@ function patchBg(part: Record<string, any>) {
         <div class="font-picker">
           <button class="ctl font-btn" @click="fontOpen = !fontOpen">
             <span :style="{ fontFamily: `'${design.fontFamily}'` }">{{ design.fontFamily }}</span>
-            <UiIcon name="chevron_down" :size="11" />
+            <UiIcon name="chevron_down" :size="12" />
           </button>
           <div v-if="fontOpen" class="font-menu">
             <input v-model="fontQuery" class="ctl" placeholder="Search fonts…" autofocus />

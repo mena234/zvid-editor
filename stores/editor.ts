@@ -44,6 +44,9 @@ export const useEditorStore = defineStore('editor', {
     showSafeArea: false,
     showGrid: false,
 
+    /* appearance */
+    theme: 'light' as 'light' | 'dark',
+
     /* panels */
     leftPanel: 'add' as LeftPanel,
     modal: null as ModalKind,
@@ -71,6 +74,22 @@ export const useEditorStore = defineStore('editor', {
   },
 
   actions: {
+    /** Sync from the data-theme attribute the head script applied pre-mount. */
+    initTheme() {
+      const t = document.documentElement.getAttribute('data-theme')
+      this.theme = t === 'dark' ? 'dark' : 'light'
+    },
+    setTheme(theme: 'light' | 'dark') {
+      this.theme = theme
+      document.documentElement.setAttribute('data-theme', theme)
+      try {
+        localStorage.setItem('zvid-theme', theme)
+      } catch {}
+    },
+    toggleTheme() {
+      this.setTheme(this.theme === 'dark' ? 'light' : 'dark')
+    },
+
     selectVisual(id: string, additive = false) {
       this.selectionKind = 'visual'
       if (additive && this.selectedId) {

@@ -334,7 +334,8 @@ watch(() => props.selectedId, () => requestAnimationFrame(measureBoxes))
   overflow: hidden;
 }
 .frame[data-backdrop='checker'] {
-  background: repeating-conic-gradient(#20242f 0 25%, #171a22 0 50%) 0 0 / 18px 18px;
+  background: repeating-conic-gradient(var(--checker-a) 0 25%, var(--checker-b) 0 50%) 0 0 /
+    18px 18px;
 }
 .frame[data-backdrop='dark'] {
   background: #0b0d12;
@@ -362,11 +363,11 @@ watch(() => props.selectedId, () => requestAnimationFrame(measureBoxes))
   border-radius: 2px;
 }
 .sel-box:hover {
-  border-color: rgba(91, 140, 255, 0.65);
+  border-color: color-mix(in srgb, var(--accent) 65%, transparent);
 }
 .sel-box.active {
   border: 1.5px solid var(--accent);
-  box-shadow: 0 0 0 1px rgba(91, 140, 255, 0.25);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 25%, transparent);
 }
 .sel-box:active {
   cursor: grabbing;
@@ -400,7 +401,8 @@ watch(() => props.selectedId, () => requestAnimationFrame(measureBoxes))
   padding: 0;
 }
 .bg-dot.checker {
-  background: repeating-conic-gradient(#3a3f4d 0 25%, #20242f 0 50%) 0 0 / 8px 8px;
+  background: repeating-conic-gradient(var(--checker-a) 0 25%, var(--checker-b) 0 50%) 0 0 /
+    8px 8px;
 }
 .bg-dot.dark {
   background: #0b0d12;

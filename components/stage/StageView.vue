@@ -552,17 +552,22 @@ const contextLabel = computed(() => {
   position: absolute;
   inset: 0;
 }
+/* guides sit over arbitrary video content — pair light dashes with a dark
+   halo so they read on any footage, in either app theme */
 .safe-area {
   position: absolute;
   inset: 5%;
-  border: 1px dashed rgba(255, 255, 255, 0.35);
+  border: 1px dashed rgba(255, 255, 255, 0.55);
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.22),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.22);
   pointer-events: none;
 }
 .safe-area::after {
   content: '';
   position: absolute;
   inset: 5%;
-  border: 1px dashed rgba(255, 255, 255, 0.18);
+  border: 1px dashed rgba(255, 255, 255, 0.3);
 }
 .guide {
   position: absolute;
@@ -583,7 +588,7 @@ const contextLabel = computed(() => {
 .marquee {
   position: absolute;
   border: 1px solid var(--accent);
-  background: rgba(91, 140, 255, 0.12);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
   pointer-events: none;
   z-index: 999;
 }

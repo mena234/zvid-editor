@@ -382,7 +382,7 @@ const iframeDoc = computed(() => {
   align-items: center;
   justify-content: center;
   gap: 6px;
-  background: rgba(20, 24, 33, 0.85);
+  background: color-mix(in srgb, var(--bg-1) 88%, transparent);
   color: var(--red);
   font-size: 12px;
   border: 1px dashed var(--red);
@@ -431,7 +431,7 @@ const iframeDoc = computed(() => {
   gap: 6px;
   width: 100%;
   height: 100%;
-  background: rgba(244, 98, 110, 0.15);
+  background: color-mix(in srgb, var(--red) 14%, transparent);
   border: 1px dashed var(--red);
   color: var(--red);
   font-size: 11px;

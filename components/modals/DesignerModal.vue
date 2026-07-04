@@ -47,7 +47,7 @@ function seedDesign(): DesignDoc {
       makeTextLayer({
         text: 'Your text here',
         fontSize: 72,
-        fill: { kind: 'gradient', from: '#8fb0ff', to: '#c9a5ff', angle: 100 },
+        fill: { kind: 'gradient', from: '#a78bfa', to: '#e879f9', angle: 100 },
         anim: { preset: 'letter-pop', duration: 0.45, delay: 0.1, stagger: 0.055, easing: 'overshoot', dir: 'up' },
       }),
     ],
@@ -198,7 +198,7 @@ function onKeydown(e: KeyboardEvent) {
         <div class="tpl-wrap">
           <button class="btn sm" @click="templatesOpen = !templatesOpen">
             <UiIcon name="magic" :size="13" /> Templates
-            <UiIcon name="chevron_down" :size="10" />
+            <UiIcon name="chevron_down" :size="12" />
           </button>
           <div v-if="templatesOpen" class="tpl-menu">
             <button

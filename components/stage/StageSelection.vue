@@ -197,7 +197,8 @@ function onRotateUp() {
   height: var(--hs);
   background: #fff;
   border: var(--bw) solid var(--accent);
-  border-radius: 2px;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(10, 6, 30, 0.3);
   pointer-events: auto;
 }
 .rotate-stick {

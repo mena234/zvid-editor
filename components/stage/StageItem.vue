@@ -241,7 +241,7 @@ const isSelected = computed(
   content: '';
   position: absolute;
   inset: 0;
-  outline: 1.5px solid rgba(91, 140, 255, 0.55);
+  outline: 1.5px solid color-mix(in srgb, var(--accent) 60%, transparent);
   pointer-events: none;
 }
 .anim-wrap,

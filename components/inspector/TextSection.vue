@@ -287,13 +287,13 @@ function addExtra() {
 .design-btn {
   width: 100%;
   justify-content: center;
-  border-color: rgba(157, 107, 255, 0.5);
-  color: #cbaaff;
+  border-color: color-mix(in srgb, var(--accent) 50%, transparent);
+  color: var(--accent);
 }
 .design-btn:hover {
-  border-color: #9d6bff;
-  background: rgba(157, 107, 255, 0.12);
-  color: #e2d2ff;
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent-strong);
 }
 .seg {
   display: flex;
@@ -380,9 +380,5 @@ function addExtra() {
   color: var(--text-1);
   overflow: hidden;
   text-overflow: ellipsis;
-}
-.icon-btn.xs {
-  width: 22px;
-  height: 22px;
 }
 </style>

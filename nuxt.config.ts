@@ -8,6 +8,13 @@ export default defineNuxtConfig({
     head: {
       title: 'Zvid Editor',
       htmlAttrs: { lang: 'en' },
+      script: [
+        {
+          // set the theme before first paint to avoid a flash of the wrong mode
+          innerHTML:
+            "(function(){try{var t=localStorage.getItem('zvid-theme');if(t!=='light'&&t!=='dark'){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}document.documentElement.setAttribute('data-theme',t)}catch(e){document.documentElement.setAttribute('data-theme','light')}})()",
+        },
+      ],
       meta: [
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         {

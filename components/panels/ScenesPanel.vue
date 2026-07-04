@@ -191,11 +191,7 @@ function flatten() {
 }
 .scene-actions {
   display: flex;
-  gap: 1px;
-}
-.icon-btn.xs {
-  width: 20px;
-  height: 20px;
+  gap: 2px;
 }
 .icon-btn.danger:hover {
   color: var(--red);
