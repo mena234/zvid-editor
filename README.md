@@ -34,6 +34,17 @@ npm test           # schema round-trip tests over the package examples
 - **Export** — minimal, validated JSON (defaults omitted, like the shipped
   examples) with a validation report and ready-made Node / CLI / HTTP snippets.
   Import accepts anything `zvid render` accepts.
+- **Account (optional)** — the editor is fully usable logged out; signing in
+  (same httpOnly `auth_token` cookie as the dashboard, proxied via the
+  editor's own server routes to orch) unlocks **Save** (cloud projects,
+  `/api/projects` drafts — not plan-validated) and **Save as template**
+  (orch `/api/templates`, plan-validated at save time). The cloud-project
+  link survives reloads via `zvid-cloud-project` in localStorage and is
+  cleared by New/Import/Examples. `NUXT_PUBLIC_DASH_URL` points the
+  register/dashboard links (default `http://localhost:3002`). Dashboard deep
+  links open saved work directly: `/?project=prj_…` (cloud project, linked
+  for in-place saving) and `/?template=tpl_…` (template JSON, unlinked); the
+  query is stripped after loading.
 - **Render** (optional) — `POST /api/render` wraps the local package build to
   produce the ground-truth MP4 with live progress. Requires FFmpeg on PATH and
   `package/` built + installed (`yarn install && yarn build`). Disable with

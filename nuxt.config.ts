@@ -45,6 +45,8 @@ export default defineNuxtConfig({
     renderEnabled: process.env.NUXT_RENDER_ENABLED !== 'false',
     public: {
       renderEnabled: process.env.NUXT_RENDER_ENABLED !== 'false',
+      // Dashboard app URL (register / forgot-password / template management links).
+      dashUrl: process.env.NUXT_PUBLIC_DASH_URL || 'http://localhost:3002',
     },
   },
   vite: {

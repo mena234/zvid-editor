@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { useProjectStore } from '~/stores/project'
 import { useEditorStore } from '~/stores/editor'
+import { useCloud } from '~/composables/useCloud'
 import {
   RESOLUTION_PRESET_NAMES,
   RESOLUTION_PRESETS,
@@ -10,6 +11,7 @@ import {
 
 const project = useProjectStore()
 const editor = useEditorStore()
+const cloud = useCloud()
 
 const dims = computed(() => project.defaults)
 
@@ -183,6 +185,17 @@ const renderEnabled = useRuntimeConfig().public.renderEnabled
       <UiIcon name="upload" :size="14" /> Import
     </button>
     <button
+      class="btn"
+      :title="
+        editor.cloudProject
+          ? `Save to “${editor.cloudProject.name}” in your account`
+          : 'Save this project to your Zvid account'
+      "
+      @click="cloud.saveToCloud()"
+    >
+      <UiIcon name="save" :size="14" /> Save
+    </button>
+    <button
       v-if="renderEnabled"
       class="btn"
       title="Render an MP4 with the real zvid package (requires FFmpeg on the server)"
@@ -193,6 +206,9 @@ const renderEnabled = useRuntimeConfig().public.renderEnabled
     <button class="btn primary" title="Export the zvid JSON" @click="editor.openModal('export')">
       <UiIcon name="export" :size="14" /> Export
     </button>
+
+    <div class="divider" />
+    <AccountMenu />
   </header>
 </template>
 

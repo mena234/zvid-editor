@@ -11,6 +11,9 @@ export type ModalKind =
   | 'render'
   | 'projects'
   | 'designer'
+  | 'auth'
+  | 'saveProject'
+  | 'saveTemplate'
 
 export const useEditorStore = defineStore('editor', {
   state: () => ({
@@ -50,6 +53,10 @@ export const useEditorStore = defineStore('editor', {
     /* panels */
     leftPanel: 'add' as LeftPanel,
     modal: null as ModalKind,
+    /** modal to reopen after a successful sign-in (save gating) */
+    postAuthModal: null as ModalKind,
+    /** cloud project the current document is linked to (null = unsaved) */
+    cloudProject: null as null | { id: string; name: string },
     /** visual _id being edited in the Design Studio (null = create new) */
     designerTargetId: null as string | null,
     inspectorTab: 'design',
@@ -163,6 +170,10 @@ export const useEditorStore = defineStore('editor', {
     openDesigner(targetId: string | null = null) {
       this.designerTargetId = targetId
       this.modal = 'designer'
+    },
+
+    setCloudProject(link: null | { id: string; name: string }) {
+      this.cloudProject = link
     },
   },
 })

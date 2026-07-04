@@ -2,8 +2,10 @@
 import { onMounted, computed } from 'vue'
 import { useEditorContext } from '~/composables/useEditorContext'
 import { usePlayback } from '~/composables/usePlayback'
+import { useCloud } from '~/composables/useCloud'
 
 const { project, editor, contextDuration } = useEditorContext()
+const cloud = useCloud()
 
 usePlayback(() => contextDuration.value)
 
@@ -12,6 +14,8 @@ onMounted(() => {
   if (!project.loadAutosave()) {
     project.newProject()
   }
+  // Dashboard deep links (?project= / ?template=) override the restored doc.
+  cloud.openFromQuery()
   window.addEventListener('keydown', onKeyDown)
   window.addEventListener('beforeunload', () => project.autosaveNow())
 })
@@ -187,6 +191,10 @@ const toastIcon = computed(() =>
     <ModalsShortcutsModal v-if="editor.modal === 'shortcuts'" />
     <ModalsRenderModal v-if="editor.modal === 'render'" />
     <ModalsDesignerModal v-if="editor.modal === 'designer'" />
+    <ModalsAuthModal v-if="editor.modal === 'auth'" />
+    <ModalsSaveProjectModal v-if="editor.modal === 'saveProject'" />
+    <ModalsProjectsModal v-if="editor.modal === 'projects'" />
+    <ModalsSaveTemplateModal v-if="editor.modal === 'saveTemplate'" />
 
     <Transition name="fade">
       <div v-if="editor.toast" class="toast" :class="editor.toast.kind">
