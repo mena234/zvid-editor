@@ -4,6 +4,7 @@ import type { VisualDoc } from '~/shared/schema/types'
 import { visualItemSchema } from '~/shared/schema/types'
 import { useProjectStore } from '~/stores/project'
 import { useEditorStore } from '~/stores/editor'
+import { parseTemplateJson } from '~/shared/template/engine'
 
 const props = defineProps<{ item: VisualDoc }>()
 const project = useProjectStore()
@@ -28,15 +29,16 @@ watch(
 
 const canApply = computed(() => dirty.value)
 
-function onInput(e: Event) {
-  text.value = (e.target as HTMLTextAreaElement).value
+function onInput(value: string) {
+  text.value = value
   dirty.value = true
   error.value = ''
 }
 
 function apply() {
   try {
-    const parsed = JSON.parse(text.value)
+    // forgiving parse: bare {{placeholders}} in value position are quoted
+    const parsed = parseTemplateJson(text.value)
     const res = visualItemSchema.safeParse(parsed)
     if (!res.success) {
       error.value = res.error.issues
@@ -67,13 +69,7 @@ function revert() {
       The exact object exported for this element — every package field is
       editable here, including ones without dedicated UI.
     </p>
-    <textarea
-      class="ctl mono code"
-      rows="18"
-      :value="text"
-      spellcheck="false"
-      @input="onInput"
-    />
+    <UiCodeEditor :model-value="text" :rows="18" @update:model-value="onInput" />
     <pre v-if="error" class="err">{{ error }}</pre>
     <div class="row">
       <button class="btn primary sm" :disabled="!canApply" @click="apply">Apply</button>

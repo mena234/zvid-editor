@@ -15,9 +15,17 @@ import {
  * round-trip untouched (the package itself ignores unknown fields).
  */
 
-const num = z.number()
-const numOpt = z.number().optional()
-const boolOpt = z.boolean().optional()
+/**
+ * Numeric fields also accept "{{placeholder}}" strings — orch's template
+ * engine resolves them to numbers before validation, so the editor's
+ * importer must not reject them (e.g. duration: "{{sceneLength}}").
+ */
+const varStr = z.string().refine((s) => s.includes('{{'), {
+  message: 'expected a number or a {{placeholder}} string',
+})
+const num = z.union([z.number(), varStr])
+const numOpt = z.union([z.number(), varStr]).optional()
+const boolOpt = z.union([z.boolean(), varStr]).optional()
 const strOpt = z.string().optional()
 
 export const xfadeEffectSchema = z.enum(XFADE_EFFECTS)

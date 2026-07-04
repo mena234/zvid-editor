@@ -9,8 +9,14 @@ import {
   type LibraryItem,
 } from '~/composables/useLibrary'
 import { round3 } from '~/utils/time'
+import { useTemplateVars } from '~/composables/useTemplateVars'
 
-const { project, editor, contextDuration } = useEditorContext()
+const { project, editor, contextDuration, activeScene } = useEditorContext()
+const tvars = useTemplateVars()
+
+const varOptions = computed(() =>
+  tvars.placeholderOptions(activeScene.value, 'string')
+)
 
 const mediaUrl = ref('')
 const mediaKind = ref<null | 'VIDEO' | 'IMAGE' | 'GIF' | 'AUDIO'>(null)
@@ -219,6 +225,14 @@ function addMedia() {
   const src = mediaUrl.value.trim()
   const kind = mediaKind.value
   if (!src || !kind) return
+  if (src.includes('{{')) {
+    // Strict: unknown/mistyped placeholders never enter the document.
+    const check = tvars.validateTemplateValue(src, 'string', activeScene.value)
+    if (!check.ok) {
+      editor.notify(check.message, 'error')
+      return
+    }
+  }
   pushRecent(kind, src)
   if (kind === 'AUDIO') {
     const added = project.addAudio(editor.context, { src })
@@ -305,14 +319,21 @@ const kindLabel = computed(
 
       <form v-if="mediaKind" class="url-form" @submit.prevent="addMedia">
         <label class="hint">{{ kindLabel }} URL (or server-local path)</label>
-        <input
-          v-model="mediaUrl"
-          class="ctl"
-          type="text"
-          :placeholder="`https://… .${mediaKind === 'AUDIO' ? 'mp3' : mediaKind === 'VIDEO' ? 'mp4' : 'png'}`"
-          spellcheck="false"
-          autofocus
-        />
+        <div class="url-row">
+          <input
+            v-model="mediaUrl"
+            class="ctl"
+            type="text"
+            :placeholder="`https://… .${mediaKind === 'AUDIO' ? 'mp3' : mediaKind === 'VIDEO' ? 'mp4' : 'png'}`"
+            spellcheck="false"
+            autofocus
+          />
+          <UiVarMenu
+            :options="varOptions"
+            title="Use a variable for the URL"
+            @insert="mediaUrl = $event"
+          />
+        </div>
         <div class="row">
           <button type="submit" class="btn primary sm" :disabled="!mediaUrl.trim()">
             Add {{ kindLabel }}
@@ -469,6 +490,15 @@ const kindLabel = computed(
   border: 1px solid var(--border-1);
   border-radius: var(--radius-m);
   background: var(--bg-2);
+}
+.url-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.url-row .ctl {
+  flex: 1;
+  min-width: 0;
 }
 .row {
   display: flex;

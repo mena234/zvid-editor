@@ -3,11 +3,44 @@ import { computed, ref } from 'vue'
 import type { VisualDoc } from '~/shared/schema/types'
 import { useProjectStore } from '~/stores/project'
 import { useEditorStore } from '~/stores/editor'
+import { useEditorContext } from '~/composables/useEditorContext'
+import { useTemplateVars } from '~/composables/useTemplateVars'
 import { POPULAR_GOOGLE_FONTS, loadGoogleFont } from '~/utils/fonts'
 
 const props = defineProps<{ item: VisualDoc }>()
 const project = useProjectStore()
 const editor = useEditorStore()
+const { activeScene } = useEditorContext()
+const tvars = useTemplateVars()
+
+const textEl = ref<HTMLTextAreaElement>()
+const htmlEl = ref<HTMLTextAreaElement>()
+
+/** Insert a {{placeholder}} at the caret of the content textarea. */
+function insertPlaceholder(placeholder: string) {
+  const el = mode.value === 'text' ? textEl.value : htmlEl.value
+  const field = mode.value
+  const current = (field === 'text' ? props.item.text : props.item.html) ?? ''
+  const pos = el ? (el.selectionStart ?? current.length) : current.length
+  const next = current.slice(0, pos) + placeholder + current.slice(pos)
+  patch({ [field]: next })
+}
+
+/** Strict content commit: unresolvable placeholders are rejected untouched
+ *  (orch errors on them at render, so they can't be saved silently). */
+function commitContent(field: 'text' | 'html', e: Event) {
+  const el = e.target as HTMLTextAreaElement
+  const v = el.value
+  if (v.includes('{{')) {
+    const check = tvars.validateTemplateValue(v, 'any', activeScene.value)
+    if (!check.ok) {
+      editor.notify(check.message, 'error')
+      el.value = (field === 'text' ? props.item.text : props.item.html) ?? ''
+      return
+    }
+  }
+  patch({ [field]: v })
+}
 
 const mode = computed<'text' | 'html'>(() =>
   props.item.html && !props.item.text ? 'html' : props.item.text !== undefined ? 'text' : 'html'
@@ -105,26 +138,35 @@ function addExtra() {
     </UiSection>
 
     <UiSection title="Content">
-      <div class="seg">
-        <button :class="{ on: mode === 'text' }" @click="setMode('text')">Plain text</button>
-        <button :class="{ on: mode === 'html' }" @click="setMode('html')">HTML</button>
+      <div class="seg-row">
+        <div class="seg">
+          <button :class="{ on: mode === 'text' }" @click="setMode('text')">Plain text</button>
+          <button :class="{ on: mode === 'html' }" @click="setMode('html')">HTML</button>
+        </div>
+        <UiVarMenu
+          :options="tvars.placeholderOptions(activeScene)"
+          title="Insert a variable at the cursor"
+          @insert="insertPlaceholder"
+        />
       </div>
       <textarea
         v-if="mode === 'text'"
+        ref="textEl"
         class="ctl"
         rows="3"
         :value="item.text ?? ''"
         placeholder="Your text…"
-        @change="patch({ text: ($event.target as HTMLTextAreaElement).value })"
+        @change="commitContent('text', $event)"
       />
       <textarea
         v-else
+        ref="htmlEl"
         class="ctl mono code"
         rows="7"
         :value="item.html ?? ''"
         placeholder="<div>styled markup…</div>"
         spellcheck="false"
-        @change="patch({ html: ($event.target as HTMLTextAreaElement).value })"
+        @change="commitContent('html', $event)"
       />
       <p v-if="mode === 'html'" class="hint">
         Arbitrary HTML+inline CSS — rendered by a headless browser at render
@@ -295,12 +337,22 @@ function addExtra() {
   background: var(--accent-soft);
   color: var(--accent-strong);
 }
+.seg-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  margin-bottom: 8px;
+}
 .seg {
   display: flex;
   border: 1px solid var(--border-1);
   border-radius: var(--radius-s);
   overflow: hidden;
-  margin-bottom: 8px;
+}
+.seg-row .seg {
+  margin-bottom: 0;
+  flex: 1;
 }
 .seg button {
   flex: 1;

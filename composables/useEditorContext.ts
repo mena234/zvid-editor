@@ -2,6 +2,7 @@ import { computed } from 'vue'
 import { useProjectStore } from '~/stores/project'
 import { useEditorStore } from '~/stores/editor'
 import { useMediaProbe } from '~/composables/useMediaProbe'
+import { resolveProjectDefaults } from '~/shared/schema/defaults'
 import { buildScenePlan, projectTotalDuration } from '~/shared/schema/scenePlan'
 import type { VisualDoc, AudioDoc, SceneDoc } from '~/shared/schema/types'
 
@@ -21,6 +22,9 @@ export function useEditorContext() {
    * Editing state (activeScene, contextVisuals, …) always stays raw.
    */
   const displayDoc = computed(() => project.resolvedPreviewDoc)
+
+  /** Project defaults with template variables resolved (stage size, fps, …). */
+  const displayDefaults = computed(() => resolveProjectDefaults(displayDoc.value))
 
   const scenePlan = computed(() =>
     displayDoc.value.scenes?.length ? buildScenePlan(displayDoc.value, probeDuration) : null
@@ -47,7 +51,7 @@ export function useEditorContext() {
     if (project.doc.scenes?.length && editor.scenePreviewMode === 'full') {
       return projectTotalDuration(displayDoc.value, probeDuration)
     }
-    return project.defaults.duration
+    return displayDefaults.value.duration
   })
 
   /** total duration of the final movie (for export/global overlays) */
@@ -84,5 +88,6 @@ export function useEditorContext() {
     contextVisuals,
     contextAudios,
     contextBackgroundColor,
+    displayDefaults,
   }
 }

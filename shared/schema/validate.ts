@@ -16,6 +16,10 @@ export interface ValidationIssue {
 const isRemote = (src: string) =>
   /^https?:\/\//i.test(src) || /^data:/i.test(src)
 
+/** "{{placeholder}}" values are resolved by orch before rendering. */
+const hasVar = (v: unknown): boolean =>
+  typeof v === 'string' && /\{\{[\s\S]*?\}\}/.test(v)
+
 function checkVisual(
   v: VisualDoc,
   path: string,
@@ -45,7 +49,7 @@ function checkVisual(
       message: 'TEXT item has neither "text" nor "html" — it will render empty.',
     })
   }
-  if (v.src && !isRemote(v.src)) {
+  if (v.src && !isRemote(v.src) && !hasVar(v.src)) {
     issues.push({
       level: 'warning',
       path: `${path}.src`,
@@ -190,7 +194,15 @@ function checkScene(
 ) {
   const path = `scenes[${index}]`
   const duration = scene.duration ?? -1
-  if (duration !== -1 && duration <= 0) {
+  if (typeof duration === 'string') {
+    if (!hasVar(duration)) {
+      issues.push({
+        level: 'error',
+        path,
+        message: `Scene duration must be a number, -1 for auto, or a {{placeholder}} (got "${duration}").`,
+      })
+    }
+  } else if (duration !== -1 && duration <= 0) {
     issues.push({
       level: 'error',
       path,

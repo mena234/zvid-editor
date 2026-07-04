@@ -1,4 +1,4 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import type { Paint } from '~/utils/designer/types'
 
 /** Solid-or-gradient paint editor shared by fills and backgrounds. */
@@ -54,12 +54,12 @@ function patch(part: Record<string, any>) {
         />
       </div>
       <UiField label="Angle">
-        <UiNumberInput
+        <UiNumberInput :allow-var="false"
           :model-value="modelValue.angle"
           :min="0"
           :max="360"
           :step="5"
-          unit="°"
+          unit="Â°"
           @update:model-value="patch({ angle: $event ?? 120 })"
         />
       </UiField>

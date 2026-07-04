@@ -6,6 +6,7 @@ import {
   collectPlaceholders,
   collectIterateRoots,
   isValidVarName,
+  parseTemplateJson,
   variableTypeOf,
   type VariableType,
 } from '~/shared/template/engine'
@@ -99,15 +100,36 @@ function jsonDraftFor(name: string): string {
   return jsonDrafts.value[name] ?? JSON.stringify(variables.value[name], null, 2)
 }
 
+function jsonValid(name: string): boolean {
+  const draft = jsonDrafts.value[name]
+  if (draft === undefined) return true
+  try {
+    parseTemplateJson(draft)
+    return true
+  } catch {
+    return false
+  }
+}
+
 function commitJson(name: string) {
   const draft = jsonDrafts.value[name]
   if (draft === undefined) return
   try {
-    project.setVariable(name, JSON.parse(draft))
+    project.setVariable(name, parseTemplateJson(draft))
     delete jsonDrafts.value[name]
     delete jsonErrors.value[name]
   } catch (e: any) {
     jsonErrors.value[name] = e.message
+  }
+}
+
+function formatJson(name: string) {
+  try {
+    const src = jsonDrafts.value[name] ?? JSON.stringify(variables.value[name])
+    jsonDrafts.value[name] = JSON.stringify(parseTemplateJson(src), null, 2)
+    commitJson(name)
+  } catch {
+    /* invalid — the chip already says so */
   }
 }
 
@@ -235,12 +257,23 @@ async function copyPlaceholder(name: string) {
               {{ variables[name] ? 'true' : 'false' }}
             </label>
             <template v-else>
-              <textarea
-                class="ctl mono json"
-                rows="4"
-                spellcheck="false"
-                :value="jsonDraftFor(name)"
-                @input="jsonDrafts[name] = ($event.target as HTMLTextAreaElement).value"
+              <div class="json-bar">
+                <span class="chip" :class="jsonValid(name) ? 'used' : 'bad'">
+                  {{ jsonValid(name) ? 'valid JSON' : 'invalid JSON' }}
+                </span>
+                <button
+                  class="btn ghost xs"
+                  type="button"
+                  title="Pretty-print and apply"
+                  @click="formatJson(name)"
+                >
+                  format
+                </button>
+              </div>
+              <UiCodeEditor
+                :model-value="jsonDraftFor(name)"
+                :rows="6"
+                @update:model-value="jsonDrafts[name] = $event"
                 @change="commitJson(name)"
               />
               <p v-if="jsonErrors[name]" class="err">{{ jsonErrors[name] }}</p>
@@ -388,6 +421,21 @@ async function copyPlaceholder(name: string) {
 .chip.unused {
   background: var(--bg-3);
   color: var(--text-3);
+}
+.chip.bad {
+  background: color-mix(in srgb, var(--red) 12%, transparent);
+  color: var(--red);
+}
+.json-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+.btn.xs {
+  padding: 2px 8px;
+  font-size: 10.5px;
 }
 .spacer {
   flex: 1;

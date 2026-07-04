@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { useProjectStore } from '~/stores/project'
 import { useEditorStore } from '~/stores/editor'
+import { useEditorContext } from '~/composables/useEditorContext'
 import { useTemplateVars } from '~/composables/useTemplateVars'
 import { collectPlaceholders } from '~/shared/template/engine'
 import type { VisualDoc } from '~/shared/schema/types'
@@ -10,6 +11,7 @@ const props = defineProps<{ item: VisualDoc }>()
 
 const project = useProjectStore()
 const editor = useEditorStore()
+const { activeScene } = useEditorContext()
 const tvars = useTemplateVars()
 
 const conditionState = computed(() => {
@@ -27,6 +29,21 @@ const placeholderCount = computed(() => {
 function patchCondition(value: string) {
   project.patchVisual(props.item._id, { condition: value || undefined })
 }
+
+/** Strict: reject conditions referencing unknown variables. */
+function commitCondition(e: Event) {
+  const el = e.target as HTMLInputElement
+  const v = el.value
+  if (v.includes('{{')) {
+    const check = tvars.validateTemplateValue(v, 'any', activeScene.value)
+    if (!check.ok) {
+      editor.notify(check.message, 'error')
+      el.value = ((props.item as any).condition as string) ?? ''
+      return
+    }
+  }
+  patchCondition(v)
+}
 </script>
 
 <template>
@@ -41,7 +58,7 @@ function patchCondition(value: string) {
           :value="(item as any).condition ?? ''"
           :placeholder="'{{showLogo}}'"
           spellcheck="false"
-          @change="patchCondition(($event.target as HTMLInputElement).value)"
+          @change="commitCondition"
         />
         <span
           v-if="conditionState"
@@ -57,6 +74,11 @@ function patchCondition(value: string) {
         >
           {{ !conditionState.resolved ? '?' : conditionState.shown ? 'on' : 'off' }}
         </span>
+        <UiVarMenu
+          :options="tvars.placeholderOptions(activeScene)"
+          title="Use a variable as the condition"
+          @insert="patchCondition($event)"
+        />
       </div>
     </UiField>
 

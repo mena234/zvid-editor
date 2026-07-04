@@ -1,4 +1,4 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { computed, ref } from 'vue'
 import type {
   DesignDoc,
@@ -13,7 +13,7 @@ import { POPULAR_GOOGLE_FONTS, loadGoogleFont } from '~/utils/fonts'
 const props = defineProps<{
   design: DesignDoc
   layer: DesignLayer | null
-  /** compiled loop duration — shown next to the “auto” toggle */
+  /** compiled loop duration â€” shown next to the â€œautoâ€ toggle */
   resolvedDuration: number
 }>()
 
@@ -143,7 +143,7 @@ function patchBg(part: Record<string, any>) {
         </UiField>
         <div class="grid-2">
           <UiField label="X">
-            <UiNumberInput
+            <UiNumberInput :allow-var="false"
               :model-value="layer.x"
               :step="1"
               unit="%"
@@ -151,7 +151,7 @@ function patchBg(part: Record<string, any>) {
             />
           </UiField>
           <UiField label="Y">
-            <UiNumberInput
+            <UiNumberInput :allow-var="false"
               :model-value="layer.y"
               :step="1"
               unit="%"
@@ -161,15 +161,15 @@ function patchBg(part: Record<string, any>) {
         </div>
         <div class="grid-3">
           <UiField label="Rotate">
-            <UiNumberInput
+            <UiNumberInput :allow-var="false"
               :model-value="layer.rotate"
               :step="1"
-              unit="°"
+              unit="Â°"
               @update:model-value="patchL({ rotate: $event ?? 0 })"
             />
           </UiField>
           <UiField label="Scale">
-            <UiNumberInput
+            <UiNumberInput :allow-var="false"
               :model-value="layer.scale"
               :min="0.05"
               :max="10"
@@ -178,7 +178,7 @@ function patchBg(part: Record<string, any>) {
             />
           </UiField>
           <UiField label="Opacity">
-            <UiNumberInput
+            <UiNumberInput :allow-var="false"
               :model-value="layer.opacity"
               :min="0"
               :max="1"
@@ -200,7 +200,7 @@ function patchBg(part: Record<string, any>) {
           />
           <div class="grid-2">
             <UiField label="Size">
-              <UiNumberInput
+              <UiNumberInput :allow-var="false"
                 :model-value="textLayer.fontSize"
                 :min="6"
                 :max="500"
@@ -220,7 +220,7 @@ function patchBg(part: Record<string, any>) {
           </div>
           <div class="grid-2">
             <UiField label="Spacing">
-              <UiNumberInput
+              <UiNumberInput :allow-var="false"
                 :model-value="textLayer.letterSpacing"
                 :min="-0.2"
                 :max="2"
@@ -230,7 +230,7 @@ function patchBg(part: Record<string, any>) {
               />
             </UiField>
             <UiField label="Line height">
-              <UiNumberInput
+              <UiNumberInput :allow-var="false"
                 :model-value="textLayer.lineHeight"
                 :min="0.6"
                 :max="3"
@@ -265,7 +265,7 @@ function patchBg(part: Record<string, any>) {
             </UiField>
           </div>
           <UiField label="Wrap width" hint="empty = hug content">
-            <UiNumberInput
+            <UiNumberInput :allow-var="false"
               :model-value="textLayer.width"
               :min="20"
               :max="4000"
@@ -296,7 +296,7 @@ function patchBg(part: Record<string, any>) {
           <template v-if="textLayer.stroke">
             <div class="grid-2">
               <UiField label="Width">
-                <UiNumberInput
+                <UiNumberInput :allow-var="false"
                   :model-value="textLayer.stroke.width"
                   :min="0.5"
                   :max="30"
@@ -327,7 +327,7 @@ function patchBg(part: Record<string, any>) {
           <template v-if="textLayer.shadow">
             <div class="grid-3">
               <UiField label="X">
-                <UiNumberInput
+                <UiNumberInput :allow-var="false"
                   :model-value="textLayer.shadow.x"
                   :step="1"
                   unit="px"
@@ -335,7 +335,7 @@ function patchBg(part: Record<string, any>) {
                 />
               </UiField>
               <UiField label="Y">
-                <UiNumberInput
+                <UiNumberInput :allow-var="false"
                   :model-value="textLayer.shadow.y"
                   :step="1"
                   unit="px"
@@ -343,7 +343,7 @@ function patchBg(part: Record<string, any>) {
                 />
               </UiField>
               <UiField label="Blur">
-                <UiNumberInput
+                <UiNumberInput :allow-var="false"
                   :model-value="textLayer.shadow.blur"
                   :min="0"
                   :step="1"
@@ -379,7 +379,7 @@ function patchBg(part: Record<string, any>) {
             </UiField>
             <div class="grid-3">
               <UiField label="Pad X">
-                <UiNumberInput
+                <UiNumberInput :allow-var="false"
                   :model-value="textLayer.pill.padX"
                   :min="0"
                   unit="px"
@@ -387,7 +387,7 @@ function patchBg(part: Record<string, any>) {
                 />
               </UiField>
               <UiField label="Pad Y">
-                <UiNumberInput
+                <UiNumberInput :allow-var="false"
                   :model-value="textLayer.pill.padY"
                   :min="0"
                   unit="px"
@@ -395,7 +395,7 @@ function patchBg(part: Record<string, any>) {
                 />
               </UiField>
               <UiField label="Radius">
-                <UiNumberInput
+                <UiNumberInput :allow-var="false"
                   :model-value="textLayer.pill.radius"
                   :min="0"
                   unit="px"
@@ -427,7 +427,7 @@ function patchBg(part: Record<string, any>) {
           </div>
           <div class="grid-2">
             <UiField label="Width">
-              <UiNumberInput
+              <UiNumberInput :allow-var="false"
                 :model-value="layer.width"
                 :min="2"
                 :max="4000"
@@ -436,7 +436,7 @@ function patchBg(part: Record<string, any>) {
               />
             </UiField>
             <UiField label="Height">
-              <UiNumberInput
+              <UiNumberInput :allow-var="false"
                 :model-value="layer.height"
                 :min="2"
                 :max="4000"
@@ -446,7 +446,7 @@ function patchBg(part: Record<string, any>) {
             </UiField>
           </div>
           <UiField v-if="shapeUsesStroke" label="Stroke width">
-            <UiNumberInput
+            <UiNumberInput :allow-var="false"
               :model-value="layer.strokeWidth"
               :min="1"
               :max="80"
@@ -455,7 +455,7 @@ function patchBg(part: Record<string, any>) {
             />
           </UiField>
           <UiField v-if="shapeUsesRadius" label="Corner radius">
-            <UiNumberInput
+            <UiNumberInput :allow-var="false"
               :model-value="layer.radius"
               :min="0"
               :max="500"
@@ -483,14 +483,14 @@ function patchBg(part: Record<string, any>) {
             <input
               class="ctl mono"
               :value="layer.src"
-              placeholder="https://…/photo.png"
+              placeholder="https://â€¦/photo.png"
               spellcheck="false"
               @change="patchL({ src: ($event.target as HTMLInputElement).value.trim() })"
             />
           </UiField>
           <div class="grid-2">
             <UiField label="Width">
-              <UiNumberInput
+              <UiNumberInput :allow-var="false"
                 :model-value="layer.width"
                 :min="2"
                 :max="4000"
@@ -499,7 +499,7 @@ function patchBg(part: Record<string, any>) {
               />
             </UiField>
             <UiField label="Height">
-              <UiNumberInput
+              <UiNumberInput :allow-var="false"
                 :model-value="layer.height"
                 :min="2"
                 :max="4000"
@@ -510,7 +510,7 @@ function patchBg(part: Record<string, any>) {
           </div>
           <div class="grid-2">
             <UiField label="Radius">
-              <UiNumberInput
+              <UiNumberInput :allow-var="false"
                 :model-value="layer.radius"
                 :min="0"
                 :max="1000"
@@ -550,7 +550,7 @@ function patchBg(part: Record<string, any>) {
         <template v-if="layer.anim && currentPreset">
           <div class="grid-2">
             <UiField :label="currentPreset.infinite ? 'Period' : 'Duration'">
-              <UiNumberInput
+              <UiNumberInput :allow-var="false"
                 :model-value="layer.anim.duration"
                 :min="0.05"
                 :max="15"
@@ -560,7 +560,7 @@ function patchBg(part: Record<string, any>) {
               />
             </UiField>
             <UiField v-if="!currentPreset.infinite" label="Delay">
-              <UiNumberInput
+              <UiNumberInput :allow-var="false"
                 :model-value="layer.anim.delay"
                 :min="0"
                 :max="14"
@@ -572,7 +572,7 @@ function patchBg(part: Record<string, any>) {
           </div>
           <div class="grid-2">
             <UiField v-if="currentPreset.split" label="Stagger" hint="delay between letters/words">
-              <UiNumberInput
+              <UiNumberInput :allow-var="false"
                 :model-value="layer.anim.stagger"
                 :min="0"
                 :max="1"
@@ -612,7 +612,7 @@ function patchBg(part: Record<string, any>) {
       <UiSection title="Canvas">
         <div class="grid-2">
           <UiField label="Width">
-            <UiNumberInput
+            <UiNumberInput :allow-var="false"
               :model-value="design.width"
               :min="40"
               :max="4000"
@@ -621,7 +621,7 @@ function patchBg(part: Record<string, any>) {
             />
           </UiField>
           <UiField label="Height">
-            <UiNumberInput
+            <UiNumberInput :allow-var="false"
               :model-value="design.height"
               :min="40"
               :max="4000"
@@ -660,18 +660,18 @@ function patchBg(part: Record<string, any>) {
             />
           </div>
           <UiField label="Angle">
-            <UiNumberInput
+            <UiNumberInput :allow-var="false"
               :model-value="design.background.angle"
               :min="0"
               :max="360"
               :step="5"
-              unit="°"
+              unit="Â°"
               @update:model-value="patchBg({ angle: $event ?? 135 })"
             />
           </UiField>
         </template>
         <UiField v-if="design.background.kind !== 'none'" label="Corner radius">
-          <UiNumberInput
+          <UiNumberInput :allow-var="false"
             :model-value="design.background.radius"
             :min="0"
             :max="400"
@@ -688,7 +688,7 @@ function patchBg(part: Record<string, any>) {
             <UiIcon name="chevron_down" :size="12" />
           </button>
           <div v-if="fontOpen" class="font-menu">
-            <input v-model="fontQuery" class="ctl" placeholder="Search fonts…" autofocus />
+            <input v-model="fontQuery" class="ctl" placeholder="Search fontsâ€¦" autofocus />
             <div class="font-list">
               <button v-for="f in fontMatches" :key="f" class="font-item" @click="pickFont(f)">
                 {{ f }}
@@ -698,12 +698,12 @@ function patchBg(part: Record<string, any>) {
                 class="font-item custom"
                 @click="pickFont(fontQuery)"
               >
-                Use “{{ fontQuery }}” (any Google Font name works)
+                Use â€œ{{ fontQuery }}â€ (any Google Font name works)
               </button>
             </div>
           </div>
         </div>
-        <p class="hint">One Google Font per design — the render loads it automatically.</p>
+        <p class="hint">One Google Font per design â€” the render loads it automatically.</p>
       </UiSection>
 
       <UiSection title="Loop">
@@ -720,7 +720,7 @@ function patchBg(part: Record<string, any>) {
           Auto duration ({{ resolvedDuration.toFixed(2) }}s)
         </label>
         <UiField v-if="design.duration !== 'auto'" label="Loop duration" hint="max 15s">
-          <UiNumberInput
+          <UiNumberInput :allow-var="false"
             :model-value="typeof design.duration === 'number' ? design.duration : undefined"
             :min="0.1"
             :max="15"

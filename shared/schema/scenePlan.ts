@@ -85,7 +85,11 @@ export function buildScenePlan(
       tid === undefined || tid === null || tid === 'none' || (next && tid === next.id)
     if (transition && !pointsToNext) transition = null
 
-    const explicit = scene.duration ?? -1
+    // Non-numeric durations ("{{sceneLength}}" awaiting resolution) plan as
+    // auto so the timeline stays finite; the variables preview resolves them
+    // to real numbers before this runs.
+    const explicit =
+      typeof scene.duration === 'number' ? scene.duration : -1
     const duration =
       explicit === -1 || explicit <= 0
         ? computeSceneAutoDuration(scene, probeDuration)

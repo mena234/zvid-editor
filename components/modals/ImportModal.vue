@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { useProjectStore } from '~/stores/project'
 import { useEditorStore } from '~/stores/editor'
+import { parseTemplateJson } from '~/shared/template/engine'
 
 const project = useProjectStore()
 const editor = useEditorStore()
@@ -13,7 +14,8 @@ const fileInput = ref<HTMLInputElement>()
 function doImport(raw: string) {
   error.value = ''
   try {
-    const parsed = JSON.parse(raw)
+    // forgiving parse: bare {{placeholders}} in value position are quoted
+    const parsed = parseTemplateJson(raw)
     project.loadRaw(parsed)
     editor.setContext('root')
     editor.clearSelection()
@@ -59,11 +61,9 @@ async function fromClipboard() {
       <button class="btn ghost" @click="fromClipboard">Paste from clipboard</button>
       <input ref="fileInput" type="file" accept=".json" hidden @change="onFile" />
     </div>
-    <textarea
+    <UiCodeEditor
       v-model="text"
-      class="ctl mono code"
-      rows="14"
-      spellcheck="false"
+      :rows="14"
       placeholder='{ "name": "my-video", "visuals": [ … ] }'
     />
     <pre v-if="error" class="err">{{ error }}</pre>

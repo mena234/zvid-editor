@@ -16,6 +16,7 @@ const {
   contextBackgroundColor,
   scenePlan,
   activeScene,
+  displayDefaults,
 } = useEditorContext()
 
 /* ---------------- scale / fit ---------------- */
@@ -41,8 +42,8 @@ onBeforeUnmount(() => {
   window.removeEventListener('pointerup', onWindowPointerUp)
 })
 
-const projW = computed(() => project.defaults.width)
-const projH = computed(() => project.defaults.height)
+const projW = computed(() => displayDefaults.value.width)
+const projH = computed(() => displayDefaults.value.height)
 
 const fitScale = computed(() => {
   const pad = 48

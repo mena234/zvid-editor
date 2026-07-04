@@ -522,6 +522,61 @@ export function collectIterateRoots(project: {
   return roots
 }
 
+/**
+ * JSON authors naturally write `"exitEnd": {{item.duration}},` — bare
+ * placeholders are not valid JSON, so wrap every {{…}} that appears OUTSIDE
+ * a string literal in quotes. String-aware scan; escapes handled.
+ */
+export function quoteBarePlaceholders(text: string): string {
+  let out = ''
+  let inString = false
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i]
+    if (inString) {
+      out += ch
+      if (ch === '\\') {
+        out += text[i + 1] ?? ''
+        i++
+      } else if (ch === '"') {
+        inString = false
+      }
+      continue
+    }
+    if (ch === '"') {
+      inString = true
+      out += ch
+      continue
+    }
+    if (ch === '{' && text[i + 1] === '{') {
+      const end = text.indexOf('}}', i + 2)
+      if (end !== -1) {
+        out += JSON.stringify(text.slice(i, end + 2))
+        i = end + 1
+        continue
+      }
+    }
+    out += ch
+  }
+  return out
+}
+
+/** JSON.parse that forgives bare {{placeholders}} in value position. */
+export function parseTemplateJson(text: string): unknown {
+  try {
+    return JSON.parse(text)
+  } catch (err) {
+    const fixed = quoteBarePlaceholders(text)
+    if (fixed !== text) {
+      try {
+        return JSON.parse(fixed)
+      } catch {
+        throw err
+      }
+    }
+    throw err
+  }
+}
+
 export type VariableType = 'string' | 'number' | 'boolean' | 'array' | 'object' | 'null'
 
 export function variableTypeOf(value: unknown): VariableType {

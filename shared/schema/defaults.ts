@@ -31,17 +31,23 @@ export function resolveProjectDimensions(p: {
       : null
   if (preset) return { width: preset.width, height: preset.height }
   return {
-    width: p.width ?? 1920,
-    height: p.height ?? 1080,
+    width: asNum(p.width, 1920),
+    height: asNum(p.height, 1080),
   }
+}
+
+/** Numeric-or-fallback: "{{placeholder}}" strings fall back to the default
+ *  (the variables preview substitutes real numbers before layout math). */
+function asNum(v: unknown, fallback: number): number {
+  return typeof v === 'number' && !Number.isNaN(v) ? v : fallback
 }
 
 export function resolveProjectDefaults(p: ProjectDoc) {
   const dims = resolveProjectDimensions(p)
   return {
     name: p.name ?? PROJECT_DEFAULTS.name,
-    duration: p.duration ?? PROJECT_DEFAULTS.duration,
-    frameRate: p.frameRate ?? PROJECT_DEFAULTS.frameRate,
+    duration: asNum(p.duration, PROJECT_DEFAULTS.duration),
+    frameRate: asNum(p.frameRate, PROJECT_DEFAULTS.frameRate),
     backgroundColor: p.backgroundColor ?? PROJECT_DEFAULTS.backgroundColor,
     outputFormat: p.outputFormat ?? PROJECT_DEFAULTS.outputFormat,
     width: dims.width,
@@ -67,10 +73,12 @@ export function resolveVisualTiming(
   item: VisualDoc,
   contextDuration: number
 ): ResolvedTiming {
-  const enterBegin = item.enterBegin ?? 0
-  const enterEnd = Math.max(item.enterEnd ?? 0, enterBegin)
-  const exitEnd = item.exitEnd ?? contextDuration
-  const exitBegin = Math.min(item.exitBegin ?? contextDuration, exitEnd)
+  // asNum: "{{placeholder}}" timing falls back to the default here (raw
+  // views); the variables preview substitutes real numbers before this runs.
+  const enterBegin = asNum(item.enterBegin, 0)
+  const enterEnd = Math.max(asNum(item.enterEnd, 0), enterBegin)
+  const exitEnd = asNum(item.exitEnd, contextDuration)
+  const exitBegin = Math.min(asNum(item.exitBegin, contextDuration), exitEnd)
   return { enterBegin, enterEnd, exitBegin, exitEnd }
 }
 
@@ -93,27 +101,29 @@ export function resolveAudioTiming(
   contextDuration: number,
   sourceDuration?: number
 ): ResolvedAudioTiming {
-  const audioBegin = audio.audioBegin ?? 0
-  const audioEnd =
-    audio.audioEnd ??
-    (sourceDuration !== undefined
+  const audioBegin = asNum(audio.audioBegin, 0)
+  const audioEnd = asNum(
+    audio.audioEnd,
+    sourceDuration !== undefined
       ? Math.min(sourceDuration, contextDuration + audioBegin)
-      : contextDuration)
-  const speed = audio.speed ?? 1
-  const enter = audio.enter ?? 0
+      : contextDuration
+  )
+  const speed = asNum(audio.speed, 1)
+  const enter = asNum(audio.enter, 0)
   const trimmed = Math.max(0, audioEnd - audioBegin)
+  const rawExit = asNum(audio.exit, NaN)
   const exit =
-    audio.exit !== undefined && audio.exit > enter
-      ? audio.exit
+    !Number.isNaN(rawExit) && rawExit > enter
+      ? rawExit
       : Math.min(enter + trimmed / speed, contextDuration)
   return {
     enter,
     exit,
     audioBegin,
     audioEnd,
-    volume: audio.volume ?? 1,
+    volume: asNum(audio.volume, 1),
     speed,
-    track: audio.track ?? 0,
+    track: asNum(audio.track, 0),
   }
 }
 
@@ -212,8 +222,10 @@ export function resolveVisualLayout(
   projectHeight: number,
   intrinsic?: { width: number; height: number } | null
 ): ResolvedLayout {
-  let width = item.width
-  let height = item.height
+  // "{{placeholder}}" geometry falls back to defaults in raw views; the
+  // variables preview resolves real numbers before layout runs.
+  let width = typeof item.width === 'number' ? item.width : undefined
+  let height = typeof item.height === 'number' ? item.height : undefined
 
   const type = canonicalVisualType(item.type)
   const mediaLike = type === 'VIDEO' || type === 'IMAGE' || type === 'GIF' || type === 'SVG'
@@ -243,8 +255,8 @@ export function resolveVisualLayout(
     height = projectHeight
   }
 
-  let x = item.x ?? 0
-  let y = item.y ?? 0
+  let x = asNum(item.x, 0)
+  let y = asNum(item.y, 0)
   if (item.position && item.position !== 'custom') {
     const p = positionPresetToXY(
       item.position as PositionPreset,

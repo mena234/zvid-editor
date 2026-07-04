@@ -205,9 +205,13 @@ function onUp() {
       <UiIcon name="audio" :size="11" class="a-icon" />
       <span class="a-label">{{ label }}</span>
       <span v-if="(audio.volume ?? 1) !== 1" class="badge">{{
-        Math.round((audio.volume ?? 1) * 100)
-      }}%</span>
-      <span v-if="(audio.speed ?? 1) !== 1" class="badge">{{ audio.speed }}×</span>
+        typeof audio.volume === 'number'
+          ? `${Math.round(audio.volume * 100)}%`
+          : audio.volume
+      }}</span>
+      <span v-if="(audio.speed ?? 1) !== 1" class="badge">{{
+        typeof audio.speed === 'number' ? `${audio.speed}×` : audio.speed
+      }}</span>
     </div>
     <div
       v-for="(m, i) in loopMarkers"

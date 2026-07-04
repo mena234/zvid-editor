@@ -2,12 +2,33 @@
 import { computed } from 'vue'
 import type { VisualDoc } from '~/shared/schema/types'
 import { useProjectStore } from '~/stores/project'
+import { useEditorStore } from '~/stores/editor'
+import { useEditorContext } from '~/composables/useEditorContext'
+import { useTemplateVars } from '~/composables/useTemplateVars'
 
 const props = defineProps<{ item: VisualDoc }>()
 const project = useProjectStore()
+const editor = useEditorStore()
+const { activeScene } = useEditorContext()
+const tvars = useTemplateVars()
 
 function patch(p: Record<string, any>) {
   project.patchVisual(props.item._id, p)
+}
+
+/** Strict markup commit: unresolvable placeholders are rejected untouched. */
+function commitSvg(e: Event) {
+  const el = e.target as HTMLTextAreaElement
+  const v = el.value
+  if (v.includes('{{')) {
+    const check = tvars.validateTemplateValue(v, 'any', activeScene.value)
+    if (!check.ok) {
+      editor.notify(check.message, 'error')
+      el.value = props.item.svg ?? ''
+      return
+    }
+  }
+  patch({ svg: v })
 }
 
 const svgValid = computed(() => {
@@ -31,7 +52,7 @@ const svgValid = computed(() => {
       :value="item.svg ?? ''"
       spellcheck="false"
       placeholder='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">…</svg>'
-      @change="patch({ svg: ($event.target as HTMLTextAreaElement).value })"
+      @change="commitSvg"
     />
     <p class="hint" :class="{ err: !svgValid }">
       <template v-if="svgValid">✓ valid SVG — rendered live on the stage</template>

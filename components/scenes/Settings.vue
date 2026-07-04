@@ -68,6 +68,21 @@ function patchIterate(path: string) {
     patch({ iterate: path })
   }
 }
+
+/** Strict: reject conditions referencing unknown variables. */
+function commitCondition(e: Event) {
+  const el = e.target as HTMLInputElement
+  const v = el.value
+  if (v.includes('{{') && scene.value) {
+    const check = tvars.validateTemplateValue(v, 'any', scene.value)
+    if (!check.ok) {
+      editor.notify(check.message, 'error')
+      el.value = ((scene.value as any).condition as string) ?? ''
+      return
+    }
+  }
+  patch({ condition: v || undefined })
+}
 </script>
 
 <template>
@@ -81,7 +96,10 @@ function patchIterate(path: string) {
       />
     </UiField>
 
-    <UiField label="Duration" hint="-1 / auto derives the duration from the scene's content">
+    <UiField
+      label="Duration"
+      :hint="'-1 / auto derives the duration from the scene\'s content; a {{placeholder}} resolves at render'"
+    >
       <div class="dur-row">
         <label class="check">
           <input
@@ -105,7 +123,7 @@ function patchIterate(path: string) {
           unit="s"
           @update:model-value="patch({ duration: $event ?? -1 })"
         />
-        <span v-else class="hint">computed: {{ entry?.duration ?? '…' }}s</span>
+        <span v-if="isAuto" class="hint">computed: {{ entry?.duration ?? '…' }}s</span>
       </div>
     </UiField>
 
@@ -168,11 +186,7 @@ function patchIterate(path: string) {
           :value="(scene as any).condition ?? ''"
           :placeholder="'{{showIntro}}'"
           spellcheck="false"
-          @change="
-            patch({
-              condition: ($event.target as HTMLInputElement).value || undefined,
-            })
-          "
+          @change="commitCondition"
         />
         <span
           v-if="conditionState"
@@ -188,6 +202,11 @@ function patchIterate(path: string) {
         >
           {{ !conditionState.resolved ? '?' : conditionState.shown ? 'on' : 'off' }}
         </span>
+        <UiVarMenu
+          :options="tvars.placeholderOptions(scene)"
+          title="Use a variable as the condition"
+          @insert="patch({ condition: $event })"
+        />
       </div>
     </UiField>
 

@@ -3,27 +3,62 @@ import { computed } from 'vue'
 import type { VisualDoc } from '~/shared/schema/types'
 import { canonicalVisualType } from '~/shared/schema/types'
 import { useProjectStore } from '~/stores/project'
+import { useEditorStore } from '~/stores/editor'
 import { useMediaProbe } from '~/composables/useMediaProbe'
+import { useEditorContext } from '~/composables/useEditorContext'
+import { useTemplateVars } from '~/composables/useTemplateVars'
+import { hasPlaceholder } from '~/shared/template/engine'
 
 const props = defineProps<{ item: VisualDoc }>()
 const project = useProjectStore()
+const editorStore = useEditorStore()
 const { probe, intrinsicOf } = useMediaProbe()
+const { activeScene } = useEditorContext()
+const tvars = useTemplateVars()
 
 const type = computed(() => canonicalVisualType(props.item.type))
 
-const probed = computed(() => {
-  if (!props.item.src) return null
-  return probe(type.value === 'VIDEO' ? 'video' : 'image', props.item.src)
+/** Placeholder srcs ({{item.url}}) are probed AFTER resolution so the
+ *  status reflects the real media, not the literal braces. */
+const srcIsVar = computed(() => hasPlaceholder(props.item.src))
+const resolvedSrc = computed(() => {
+  if (!props.item.src) return ''
+  const scope = activeScene.value
+    ? tvars.scenePreviewScope(activeScene.value)
+    : tvars.projectScope.value
+  const r = tvars.displayString(props.item.src, scope)
+  return typeof r === 'string' ? r : String(r ?? '')
 })
 
-const intrinsic = computed(() =>
-  props.item.src
-    ? intrinsicOf(type.value === 'VIDEO' ? 'video' : 'image', props.item.src)
-    : null
-)
+const probed = computed(() => {
+  const src = resolvedSrc.value
+  if (!src || hasPlaceholder(src)) return null
+  return probe(type.value === 'VIDEO' ? 'video' : 'image', src)
+})
+
+const intrinsic = computed(() => {
+  const src = resolvedSrc.value
+  if (!src || hasPlaceholder(src)) return null
+  return intrinsicOf(type.value === 'VIDEO' ? 'video' : 'image', src)
+})
 
 function patch(p: Record<string, any>) {
   project.patchVisual(props.item._id, p)
+}
+
+/** Strict src commit: unknown/mistyped placeholders are rejected untouched. */
+function commitSrc(e: Event) {
+  const el = e.target as HTMLInputElement
+  const v = el.value
+  if (v.includes('{{')) {
+    const check = tvars.validateTemplateValue(v, 'string', activeScene.value)
+    if (!check.ok) {
+      editorStore.notify(check.message, 'error')
+      el.value = props.item.src ?? ''
+      return
+    }
+  }
+  patch({ src: v })
 }
 
 const zoomEnabled = computed(() => !!props.item.zoom)
@@ -55,14 +90,29 @@ const chromaEnabled = computed(() => !!props.item.chromaKey)
   <div>
     <UiSection title="Source">
       <UiField label="URL / path">
-        <input
-          class="ctl mono src-input"
-          :value="item.src ?? ''"
-          spellcheck="false"
-          placeholder="https://…"
-          @change="patch({ src: ($event.target as HTMLInputElement).value })"
-        />
+        <div class="src-row">
+          <input
+            class="ctl mono src-input"
+            :value="item.src ?? ''"
+            spellcheck="false"
+            placeholder="https://…"
+            @change="commitSrc"
+          />
+          <UiVarMenu
+            :options="tvars.placeholderOptions(activeScene, 'string')"
+            title="Use a variable for the source URL"
+            @insert="patch({ src: $event })"
+          />
+        </div>
       </UiField>
+      <p v-if="srcIsVar" class="hint var-note">
+        <UiIcon name="json" :size="11" />
+        template value
+        <template v-if="resolvedSrc && !resolvedSrc.includes('{{')">
+          → previewing <span class="mono trunc">{{ resolvedSrc }}</span>
+        </template>
+        <template v-else> — no preview value with the current defaults</template>
+      </p>
       <p class="hint">
         <template v-if="probed?.status === 'ok'">
           <span class="ok">✓ loaded</span>
@@ -291,6 +341,30 @@ const chromaEnabled = computed(() => !!props.item.chromaKey)
 }
 .src-input {
   font-size: 11px;
+}
+.src-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.src-row .src-input {
+  flex: 1;
+  min-width: 0;
+}
+.var-note {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+  color: var(--accent-strong);
+}
+.trunc {
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
+  vertical-align: bottom;
 }
 .ok {
   color: var(--green);
