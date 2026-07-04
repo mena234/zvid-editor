@@ -14,8 +14,16 @@ export function useEditorContext() {
   const editor = useEditorStore()
   const { probeDuration } = useMediaProbe()
 
+  /**
+   * The document the preview/timeline is planned from: with variables
+   * preview on, iterate scenes are expanded and condition-falsy content is
+   * pruned (matching what orch renders); otherwise the raw document.
+   * Editing state (activeScene, contextVisuals, …) always stays raw.
+   */
+  const displayDoc = computed(() => project.resolvedPreviewDoc)
+
   const scenePlan = computed(() =>
-    project.doc.scenes?.length ? buildScenePlan(project.doc, probeDuration) : null
+    displayDoc.value.scenes?.length ? buildScenePlan(displayDoc.value, probeDuration) : null
   )
 
   const activeScene = computed<SceneDoc | null>(() =>
@@ -37,14 +45,14 @@ export function useEditorContext() {
       return activeScenePlanEntry.value?.duration ?? 10
     }
     if (project.doc.scenes?.length && editor.scenePreviewMode === 'full') {
-      return projectTotalDuration(project.doc, probeDuration)
+      return projectTotalDuration(displayDoc.value, probeDuration)
     }
     return project.defaults.duration
   })
 
   /** total duration of the final movie (for export/global overlays) */
   const totalDuration = computed<number>(() =>
-    projectTotalDuration(project.doc, probeDuration)
+    projectTotalDuration(displayDoc.value, probeDuration)
   )
 
   const contextVisuals = computed<VisualDoc[]>(() =>

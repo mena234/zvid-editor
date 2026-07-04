@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onBeforeUnmount, provide, reactive } from 'vue'
 import { useEditorContext } from '~/composables/useEditorContext'
+import { useTemplateVars } from '~/composables/useTemplateVars'
 import { effectiveLayout, isVisibleAt } from '~/utils/itemGeometry'
 import { clamp } from '~/utils/time'
 import type { VisualDoc } from '~/shared/schema/types'
@@ -109,6 +110,36 @@ function sortByTrack(items: VisualDoc[]) {
   )
 }
 const sortedVisuals = computed(() => sortByTrack(contextVisuals.value))
+
+/* ---------------- template variables preview (display only) ---------------- */
+const tvars = useTemplateVars()
+
+const contextScope = computed(() =>
+  activeScene.value
+    ? tvars.scenePreviewScope(activeScene.value)
+    : tvars.projectScope.value
+)
+
+/** what the editing stage renders — resolved copies (condition-falsy items
+ *  dimmed, still selectable); the doc keeps raw {{…}} */
+const displayedVisuals = computed(() =>
+  tvars.displayVisuals(sortedVisuals.value, contextScope.value, {
+    dimConditionOff: true,
+  })
+)
+
+/** global overlays in the full-movie preview: resolved AND pruned — the
+ *  full preview shows exactly what renders (scene groups come pre-resolved
+ *  from the preview scene plan) */
+const overlayVisuals = computed(() =>
+  tvars.previewOn.value
+    ? sortByTrack(project.resolvedPreviewDoc.visuals)
+    : sortedVisuals.value
+)
+
+const displayContextBg = computed(
+  () => tvars.displayString(contextBackgroundColor.value, contextScope.value) ?? '#ffffff'
+)
 
 /* ---------------- selection / gestures ---------------- */
 interface GuideLine {
@@ -367,7 +398,7 @@ const contextLabel = computed(() => {
             width: `${projW}px`,
             height: `${projH}px`,
             transform: `scale(${scale})`,
-            background: isFullPreview ? 'transparent' : contextBackgroundColor,
+            background: isFullPreview ? 'transparent' : displayContextBg,
           }"
           @pointerdown="onFramePointerDown"
         >
@@ -395,7 +426,7 @@ const contextLabel = computed(() => {
               />
             </div>
             <StageItem
-              v-for="item in sortedVisuals"
+              v-for="item in overlayVisuals"
               :key="item._id"
               :item="item"
               :time="editor.playhead"
@@ -407,7 +438,7 @@ const contextLabel = computed(() => {
           <!-- normal editing context -->
           <template v-else>
             <StageItem
-              v-for="item in sortedVisuals"
+              v-for="item in displayedVisuals"
               :key="item._id"
               :item="item"
               :time="editor.playhead"

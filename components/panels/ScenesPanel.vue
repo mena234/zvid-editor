@@ -1,8 +1,32 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useEditorContext } from '~/composables/useEditorContext'
+import { useTemplateVars } from '~/composables/useTemplateVars'
+import type { SceneDoc } from '~/shared/schema/types'
 
 const { project, editor, scenePlan } = useEditorContext()
+const tvars = useTemplateVars()
+
+function templateBadges(s: SceneDoc) {
+  const badges: { text: string; kind: 'iterate' | 'cond-on' | 'cond-off' | 'warn' }[] = []
+  const it = tvars.iterateInfoFor(s)
+  if (it.active) {
+    badges.push(
+      it.error
+        ? { text: '×?', kind: 'warn' }
+        : { text: `×${it.items?.length ?? 0}`, kind: 'iterate' }
+    )
+  }
+  if ((s as any).condition !== undefined) {
+    const c = tvars.conditionStateFor(s as any, tvars.scenePreviewScope(s))
+    badges.push(
+      !c.resolved
+        ? { text: 'if ?', kind: 'warn' }
+        : { text: c.shown ? 'if ✓' : 'if ✗', kind: c.shown ? 'cond-on' : 'cond-off' }
+    )
+  }
+  return badges
+}
 
 function deleteScene(editorId: string) {
   project.removeScene(editorId)
@@ -76,7 +100,24 @@ function flatten() {
             :style="{ background: s.backgroundColor ?? project.doc.backgroundColor ?? '#fff' }"
           />
           <div class="scene-meta">
-            <b>{{ s.id }}</b>
+            <b>
+              {{ s.id }}
+              <span
+                v-for="(b, bi) in templateBadges(s)"
+                :key="bi"
+                class="tpl-badge"
+                :class="b.kind"
+                :title="
+                  b.kind === 'iterate'
+                    ? 'Repeats per array item at render (stage previews the first)'
+                    : b.kind === 'warn'
+                      ? 'Template problem — check the scene settings'
+                      : 'Conditional scene (state with current defaults)'
+                "
+              >
+                {{ b.text }}
+              </span>
+            </b>
             <span class="hint">
               {{
                 (s.duration ?? -1) === -1
@@ -182,6 +223,31 @@ function flatten() {
 }
 .scene-meta b {
   font-size: 12px;
+}
+.tpl-badge {
+  display: inline-block;
+  margin-left: 4px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  font-size: 9px;
+  font-weight: 800;
+  vertical-align: 1px;
+}
+.tpl-badge.iterate {
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  color: var(--accent-strong);
+}
+.tpl-badge.cond-on {
+  background: color-mix(in srgb, var(--green) 12%, transparent);
+  color: var(--green);
+}
+.tpl-badge.cond-off {
+  background: color-mix(in srgb, var(--red) 12%, transparent);
+  color: var(--red);
+}
+.tpl-badge.warn {
+  background: color-mix(in srgb, var(--yellow) 14%, transparent);
+  color: var(--yellow);
 }
 .scene-meta .hint {
   font-size: 10px;

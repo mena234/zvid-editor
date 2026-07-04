@@ -15,6 +15,8 @@ import {
   makeId,
 } from '~/shared/schema/normalize'
 import { resolveProjectDefaults, resolveVisualTiming } from '~/shared/schema/defaults'
+import { resolveDocPreview, hasTemplateMarkers } from '~/shared/template/engine'
+import { useEditorStore } from '~/stores/editor'
 
 const STORAGE_KEY = 'zvid-editor:autosave'
 const HISTORY_LIMIT = 100
@@ -76,6 +78,28 @@ export const useProjectStore = defineStore('project', {
     sceneByEditorId(state) {
       return (id: string): SceneDoc | undefined =>
         state.doc.scenes?.find((s) => s._id === id)
+    },
+    /** Template variable defaults (live in the export-passthrough `extra`). */
+    variables(state): Record<string, unknown> {
+      const v = state.doc.extra?.variables
+      return v && typeof v === 'object' && !Array.isArray(v)
+        ? (v as Record<string, unknown>)
+        : {}
+    },
+    /**
+     * WYSIWYG preview document: iterate expanded, condition-falsy content
+     * pruned, placeholders substituted — what orch renders with the current
+     * defaults. Identical to `doc` when the preview toggle is off or the
+     * project uses no template features. Display-only; never persisted.
+     */
+    resolvedPreviewDoc(state): ProjectDoc {
+      const editor = useEditorStore()
+      if (!editor.variablesPreview) return state.doc
+      const vars = this.variables
+      if (!Object.keys(vars).length && !hasTemplateMarkers(state.doc)) {
+        return state.doc
+      }
+      return resolveDocPreview(state.doc, vars)
     },
   },
 
@@ -161,6 +185,38 @@ export const useProjectStore = defineStore('project', {
     /* ---------------- project settings ---------------- */
     patchProject(patch: Partial<ProjectDoc>) {
       Object.assign(this.doc, patch)
+      this.commit()
+    },
+
+    /* ---------------- template variables ---------------- */
+    setVariable(name: string, value: unknown) {
+      const extra = (this.doc.extra ??= {})
+      const vars =
+        extra.variables &&
+        typeof extra.variables === 'object' &&
+        !Array.isArray(extra.variables)
+          ? (extra.variables as Record<string, unknown>)
+          : (extra.variables = {})
+      vars[name] = value
+      this.commit()
+    },
+    renameVariable(oldName: string, newName: string) {
+      const vars = this.doc.extra?.variables as Record<string, unknown> | undefined
+      if (!vars || !(oldName in vars) || oldName === newName || newName in vars) return
+      // rebuild to keep declaration order (orch declares variables in order)
+      const next: Record<string, unknown> = {}
+      for (const [k, v] of Object.entries(vars)) next[k === oldName ? newName : k] = v
+      this.doc.extra!.variables = next
+      this.commit()
+    },
+    removeVariable(name: string) {
+      const vars = this.doc.extra?.variables as Record<string, unknown> | undefined
+      if (!vars || !(name in vars)) return
+      delete vars[name]
+      if (!Object.keys(vars).length) {
+        delete this.doc.extra!.variables
+        if (!Object.keys(this.doc.extra!).length) delete this.doc.extra
+      }
       this.commit()
     },
 

@@ -79,6 +79,7 @@ const activeTab = computed({
         </template>
         <template v-else-if="activeTab === 'timing'">
           <InspectorTimingSection :item="visual" />
+          <InspectorTemplateSection :item="visual" />
         </template>
         <template v-else-if="activeTab === 'effects'">
           <InspectorAnimationSection :item="visual" />

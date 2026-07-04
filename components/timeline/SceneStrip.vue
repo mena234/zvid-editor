@@ -10,8 +10,13 @@ const entries = computed(() => scenePlan.value?.entries ?? [])
 
 const isRoot = computed(() => editor.context === 'root')
 
-function openScene(id: string) {
-  editor.setContext(id)
+/** Iterate clones map back to their source scene for editing/selection. */
+function sourceIdOf(scene: Record<string, any>): string {
+  return (scene._sourceId as string) ?? scene._id
+}
+
+function openScene(scene: Record<string, any>) {
+  editor.setContext(sourceIdOf(scene))
 }
 </script>
 
@@ -36,8 +41,8 @@ function openScene(id: string) {
             background: `color-mix(in srgb, ${e.backgroundColor} 45%, var(--bg-3))`,
           }"
           :title="`${e.scene.id} · ${e.duration}s — double-click to edit`"
-          @dblclick="openScene(e.scene._id)"
-          @click="editor.selectScene(e.scene._id)"
+          @dblclick="openScene(e.scene)"
+          @click="editor.selectScene(sourceIdOf(e.scene))"
         >
           <span class="scene-name">{{ e.scene.id }}</span>
           <span class="scene-dur mono">{{ e.duration }}s</span>

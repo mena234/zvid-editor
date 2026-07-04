@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, watch, onBeforeUnmount } from 'vue'
 import { useEditorContext } from '~/composables/useEditorContext'
+import { useTemplateVars } from '~/composables/useTemplateVars'
 import { resolveAudioTiming } from '~/shared/schema/defaults'
 import { useMediaProbe } from '~/composables/useMediaProbe'
 import { clamp } from '~/utils/time'
@@ -11,9 +12,10 @@ import type { AudioDoc } from '~/shared/schema/types'
  * honoring enter/exit windows, source trim, volume, speed and auto-loop.
  * Video items' own audio plays through their stage <video> elements.
  */
-const { project, editor, contextAudios, contextDuration, scenePlan } =
+const { project, editor, contextAudios, contextDuration, scenePlan, activeScene } =
   useEditorContext()
 const { probe } = useMediaProbe()
+const tvars = useTemplateVars()
 
 interface ActiveAudio {
   doc: AudioDoc
@@ -29,18 +31,29 @@ const isFullPreview = computed(
     editor.scenePreviewMode === 'full'
 )
 
+/** display copies with {{placeholders}} resolved so previewed srcs play */
+function displayAudios(items: AudioDoc[], scene?: Record<string, any>): AudioDoc[] {
+  const scope = scene ? tvars.scenePreviewScope(scene) : tvars.projectScope.value
+  return tvars.displayVisuals(items as any, scope) as unknown as AudioDoc[]
+}
+
 const audioSet = computed<ActiveAudio[]>(() => {
   if (isFullPreview.value && scenePlan.value) {
+    // The preview scene plan is already resolved/expanded/pruned when the
+    // variables preview is on — its audios are used verbatim.
     const out: ActiveAudio[] = []
     for (const entry of scenePlan.value.entries) {
       for (const a of entry.scene.audios)
         out.push({ doc: a, offset: entry.start, contextDuration: entry.duration })
     }
-    for (const a of project.doc.audios)
+    const rootAudios = tvars.previewOn.value
+      ? project.resolvedPreviewDoc.audios
+      : project.doc.audios
+    for (const a of rootAudios)
       out.push({ doc: a, offset: 0, contextDuration: contextDuration.value })
     return out
   }
-  return contextAudios.value.map((a) => ({
+  return displayAudios(contextAudios.value, activeScene.value ?? undefined).map((a) => ({
     doc: a,
     offset: 0,
     contextDuration: contextDuration.value,

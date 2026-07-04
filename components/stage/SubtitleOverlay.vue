@@ -12,7 +12,9 @@ import { loadGoogleFont } from '~/utils/fonts'
 const props = defineProps<{ time: number }>()
 const project = useProjectStore()
 
-const subtitle = computed(() => project.doc.subtitle)
+// resolvedPreviewDoc substitutes {{placeholders}} in caption text/styles
+// (identical to project.doc when the variables preview is off)
+const subtitle = computed(() => project.resolvedPreviewDoc.subtitle)
 const styles = computed(() => subtitle.value?.styles ?? {})
 const mode = computed(() => styles.value.mode ?? 'normal')
 

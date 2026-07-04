@@ -31,6 +31,18 @@ npm test           # schema round-trip tests over the package examples
 - **Scenes** — scene cards + timeline strip, per-scene backgrounds/durations
   (`-1` auto), xfade transitions with overlap, scene-local editing, full-movie
   preview, flat ⇄ scenes conversion.
+- **Templates** — a Variables panel (add/edit/rename/delete typed variables,
+  usage counts, undeclared-placeholder problems) plus live `{{placeholder}}`
+  substitution everywhere (stage, audio, subtitles; toggleable; the document
+  always keeps the raw placeholders). The **full-movie preview and timeline
+  are fully resolved**: `iterate` scenes expand into one scene per array
+  item, condition-falsy scenes/elements are dropped, and the total duration
+  matches the render; editing contexts instead dim condition-falsy elements
+  so they stay selectable. Scene settings expose `condition` (live on/off
+  chip) and `iterate`/`iterateAs`; visuals get a `condition` field in the
+  Timing tab; scene cards show ×N / if ✓ badges. Preview semantics are a TS
+  port of orch's templateEngine (`shared/template/engine.ts`, incl. the
+  order-independent chained-variable declaration) — keep the two in sync.
 - **Export** — minimal, validated JSON (defaults omitted, like the shipped
   examples) with a validation report and ready-made Node / CLI / HTTP snippets.
   Import accepts anything `zvid render` accepts.

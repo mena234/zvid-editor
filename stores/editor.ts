@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 
 export type SelectionKind = 'visual' | 'audio' | 'caption' | 'scene' | null
-export type LeftPanel = 'add' | 'assets' | 'subtitles' | 'scenes'
+export type LeftPanel = 'add' | 'assets' | 'subtitles' | 'scenes' | 'variables'
 export type ModalKind =
   | null
   | 'export'
@@ -46,6 +46,8 @@ export const useEditorStore = defineStore('editor', {
     stageZoom: 0 as number, // 0 = fit
     showSafeArea: false,
     showGrid: false,
+    /** substitute {{placeholders}} with variable defaults on the stage */
+    variablesPreview: true,
 
     /* appearance */
     theme: 'light' as 'light' | 'dark',

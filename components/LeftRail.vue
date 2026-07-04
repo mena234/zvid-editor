@@ -11,10 +11,12 @@ const TABS = [
   { id: 'assets', icon: 'film', label: 'Stock' },
   { id: 'scenes', icon: 'scene', label: 'Scenes' },
   { id: 'subtitles', icon: 'subtitles', label: 'Subtitles' },
+  { id: 'variables', icon: 'json', label: 'Variables' },
 ] as const
 
 const captionCount = computed(() => project.doc.subtitle?.captions?.length ?? 0)
 const sceneCount = computed(() => project.doc.scenes?.length ?? 0)
+const variableCount = computed(() => Object.keys(project.variables).length)
 </script>
 
 <template>
@@ -34,6 +36,9 @@ const sceneCount = computed(() => project.doc.scenes?.length ?? 0)
         <span v-if="tab.id === 'subtitles' && captionCount" class="count">{{
           captionCount
         }}</span>
+        <span v-if="tab.id === 'variables' && variableCount" class="count">{{
+          variableCount
+        }}</span>
       </button>
     </nav>
     <div class="rail-panel">
@@ -41,6 +46,7 @@ const sceneCount = computed(() => project.doc.scenes?.length ?? 0)
       <PanelsStockPanel v-else-if="editor.leftPanel === 'assets'" />
       <PanelsScenesPanel v-else-if="editor.leftPanel === 'scenes'" />
       <PanelsSubtitlesPanel v-else-if="editor.leftPanel === 'subtitles'" />
+      <PanelsVariablesPanel v-else-if="editor.leftPanel === 'variables'" />
     </div>
   </aside>
 </template>
