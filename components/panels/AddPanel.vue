@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, watch, onBeforeUnmount } from 'vue'
 import { useEditorContext } from '~/composables/useEditorContext'
 import {
   fetchLibraryContent,
   fetchLibraryList,
+  fetchLibraryPage,
   libraryErrorMessage,
   type LibraryItem,
 } from '~/composables/useLibrary'
@@ -101,12 +102,21 @@ function addSvg(shape: { svg: string; width: number; height: number }) {
 /* ---------------- HTML canvas presets ----------------
    Full-frame <canvas> overlays driven by customCode JS — the same
    HTML+JS the package captures with Puppeteer at render time.
-   Served by the orch content library ("canvas-presets" kind). */
+   Served by the orch content library ("canvas-presets" kind) with scroll
+   pagination; each tile shows the CDN thumbnail (meta.thumbnail) and plays
+   the CDN preview video (meta.preview) while hovered. */
+const CANVAS_PAGE_SIZE = 12
 const showCanvases = ref(false)
 const canvasPresets = ref<LibraryItem[]>([])
+const canvasTotal = ref(0)
+const canvasHasMore = ref(false)
 const canvasesPending = ref(false)
+const canvasMorePending = ref(false)
 const canvasesError = ref('')
 const addingCanvasSlug = ref('')
+const hoverCanvasSlug = ref('')
+const canvasSentinel = ref<HTMLElement | null>(null)
+let canvasObserver: IntersectionObserver | null = null
 
 function toggleShapes() {
   showShapes.value = !showShapes.value
@@ -127,12 +137,57 @@ async function loadCanvasPresets() {
   canvasesPending.value = true
   canvasesError.value = ''
   try {
-    canvasPresets.value = await fetchLibraryList('canvas-presets')
+    const page = await fetchLibraryPage('canvas-presets', CANVAS_PAGE_SIZE, 0)
+    canvasPresets.value = page.items
+    canvasTotal.value = page.total
+    canvasHasMore.value = page.hasMore
   } catch (e) {
     canvasesError.value = libraryErrorMessage(e)
   } finally {
     canvasesPending.value = false
   }
+}
+
+async function loadMoreCanvases() {
+  if (canvasMorePending.value || canvasesPending.value || !canvasHasMore.value) return
+  canvasMorePending.value = true
+  try {
+    const page = await fetchLibraryPage(
+      'canvas-presets',
+      CANVAS_PAGE_SIZE,
+      canvasPresets.value.length
+    )
+    canvasPresets.value = [...canvasPresets.value, ...page.items]
+    canvasTotal.value = page.total
+    canvasHasMore.value = page.hasMore
+  } catch (e) {
+    canvasesError.value = libraryErrorMessage(e)
+  } finally {
+    canvasMorePending.value = false
+  }
+}
+
+// Infinite scroll: fetch the next page whenever the sentinel below the grid
+// scrolls near the viewport. The sentinel only exists while the grid is open.
+watch(canvasSentinel, (el) => {
+  canvasObserver?.disconnect()
+  canvasObserver = null
+  if (!el) return
+  canvasObserver = new IntersectionObserver(
+    (entries) => {
+      if (entries.some((entry) => entry.isIntersecting)) loadMoreCanvases()
+    },
+    { rootMargin: '160px' }
+  )
+  canvasObserver.observe(el)
+})
+onBeforeUnmount(() => canvasObserver?.disconnect())
+
+function onCanvasEnter(slug: string) {
+  hoverCanvasSlug.value = slug
+}
+function onCanvasLeave(slug: string) {
+  if (hoverCanvasSlug.value === slug) hoverCanvasSlug.value = ''
 }
 
 async function addCanvasPreset(item: LibraryItem) {
@@ -290,26 +345,57 @@ const kindLabel = computed(
 
       <div v-if="showCanvases" class="canvas-list">
         <p class="hint">
-          Animated full-frame &lt;canvas&gt; overlays. The JS lives in the
-          element's Custom code section — edit it freely after adding.
+          Animated full-frame &lt;canvas&gt; overlays. Hover a tile to preview
+          it in motion; the JS lives in the element's Custom code section —
+          edit it freely after adding.
         </p>
         <p v-if="canvasesPending" class="hint">Loading presets…</p>
-        <template v-else-if="canvasesError">
+        <template v-else-if="canvasesError && !canvasPresets.length">
           <p class="hint">⚠ {{ canvasesError }}</p>
           <button class="btn sm" @click="loadCanvasPresets()">Retry</button>
         </template>
-        <button
-          v-for="c in canvasPresets"
-          :key="c.slug"
-          class="canvas-card"
-          :class="{ busy: addingCanvasSlug === c.slug }"
-          :title="c.description ?? ''"
-          @click="addCanvasPreset(c)"
-        >
-          <UiIcon name="code" :size="14" />
-          <span class="canvas-name">{{ c.title }}</span>
-          <span class="canvas-hint">{{ c.description }}</span>
-        </button>
+        <template v-else>
+          <div class="canvas-grid">
+            <button
+              v-for="c in canvasPresets"
+              :key="c.slug"
+              class="canvas-tile"
+              :class="{ busy: addingCanvasSlug === c.slug }"
+              :title="c.description ?? ''"
+              @click="addCanvasPreset(c)"
+              @mouseenter="onCanvasEnter(c.slug)"
+              @mouseleave="onCanvasLeave(c.slug)"
+              @focus="onCanvasEnter(c.slug)"
+              @blur="onCanvasLeave(c.slug)"
+            >
+              <img
+                v-if="c.meta?.thumbnail"
+                class="canvas-thumb"
+                :src="c.meta.thumbnail"
+                :alt="c.title"
+              />
+              <span v-else class="canvas-thumb canvas-thumb-fallback">
+                <UiIcon name="code" :size="16" />
+              </span>
+              <video
+                v-if="hoverCanvasSlug === c.slug && c.meta?.preview"
+                class="canvas-video"
+                :src="c.meta.preview"
+                autoplay
+                muted
+                loop
+                playsinline
+              />
+              <span class="canvas-title">{{ c.title }}</span>
+            </button>
+          </div>
+          <div ref="canvasSentinel" class="canvas-sentinel" aria-hidden="true" />
+          <p v-if="canvasMorePending" class="hint canvas-status">Loading more…</p>
+          <p v-else-if="canvasesError" class="hint canvas-status">⚠ {{ canvasesError }}</p>
+          <p v-else-if="!canvasHasMore && canvasPresets.length" class="hint canvas-status">
+            All {{ canvasTotal }} presets loaded
+          </p>
+        </template>
       </div>
     </UiSection>
 
@@ -429,38 +515,72 @@ const kindLabel = computed(
   gap: 5px;
   margin-top: 10px;
 }
-.canvas-card {
+.canvas-grid {
   display: grid;
-  grid-template-columns: 20px 1fr;
-  grid-template-rows: auto auto;
-  column-gap: 7px;
-  align-items: center;
-  text-align: left;
-  padding: 7px 9px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+}
+.canvas-tile {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  padding: 0;
+  overflow: hidden;
   border: 1px solid var(--border-1);
   border-radius: var(--radius-m);
   background: var(--bg-2);
   color: var(--text-1);
+  cursor: pointer;
 }
-.canvas-card:hover {
+.canvas-tile:hover {
   border-color: var(--accent);
-  color: var(--text-0);
 }
-.canvas-card.busy {
+.canvas-tile.busy {
   opacity: 0.6;
   pointer-events: none;
 }
-.canvas-card .canvas-name {
-  font-size: 11.5px;
-  font-weight: 600;
+.canvas-thumb {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
-.canvas-card .canvas-hint {
-  grid-column: 2;
-  font-size: 10px;
+.canvas-thumb-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: var(--text-3);
 }
-.canvas-card :deep(svg) {
-  grid-row: span 2;
+.canvas-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.canvas-title {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 8px 6px 4px;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.72));
+  color: #fff;
+  font-size: 10px;
+  font-weight: 600;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  pointer-events: none;
+}
+.canvas-sentinel {
+  height: 1px;
+}
+.canvas-status {
+  margin-top: 4px;
+  text-align: center;
 }
 .recent-row {
   display: flex;

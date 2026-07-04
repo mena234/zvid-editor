@@ -19,7 +19,17 @@ export interface LibraryItem {
   contentUrl: string
 }
 
+export interface LibraryPage {
+  kind: string
+  items: LibraryItem[]
+  total: number
+  limit: number
+  offset: number
+  hasMore: boolean
+}
+
 const listCache = new Map<string, LibraryItem[]>()
+const pageCache = new Map<string, LibraryPage>()
 const contentCache = new Map<string, any>()
 
 export async function fetchLibraryList(kind: string): Promise<LibraryItem[]> {
@@ -28,6 +38,22 @@ export async function fetchLibraryList(kind: string): Promise<LibraryItem[]> {
   const res = await $fetch<{ items: LibraryItem[] }>(`/api/library/${kind}`)
   listCache.set(kind, res.items)
   return res.items
+}
+
+/** One page of a kind's items (?limit=&offset=) for scroll pagination. */
+export async function fetchLibraryPage(
+  kind: string,
+  limit: number,
+  offset: number
+): Promise<LibraryPage> {
+  const key = `${kind}:${limit}:${offset}`
+  const hit = pageCache.get(key)
+  if (hit) return hit
+  const res = await $fetch<LibraryPage>(`/api/library/${kind}`, {
+    query: { limit, offset },
+  })
+  pageCache.set(key, res)
+  return res
 }
 
 export async function fetchLibraryContent(
