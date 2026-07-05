@@ -81,14 +81,19 @@ function togglePill(on: boolean) {
 const FONT_WEIGHTS = ['300', '400', '500', '600', '700', '800', '900']
 
 /* ---------------- shape picker ---------------- */
-const shapeGroups = computed(() =>
-  SHAPE_GROUPS.map((g) => ({
+const shapeQuery = ref('')
+const shapeGroups = computed(() => {
+  const q = shapeQuery.value.trim().toLowerCase()
+  return SHAPE_GROUPS.map((g) => ({
     group: g,
     shapes: Object.entries(SHAPES)
-      .filter(([, d]) => d.group === g)
+      .filter(
+        ([key, d]) =>
+          d.group === g && (!q || d.label.toLowerCase().includes(q) || key.includes(q))
+      )
       .map(([key, d]) => ({ key, label: d.label, svg: shapePreviewSvg(key) })),
-  }))
-)
+  })).filter((g) => g.shapes.length > 0)
+})
 
 function pickShape(key: string) {
   if (props.layer?.kind !== 'shape') return
@@ -410,6 +415,12 @@ function patchBg(part: Record<string, any>) {
       <!-- ---------- shape ---------- -->
       <template v-else-if="layer.kind === 'shape'">
         <UiSection title="Shape">
+          <input
+            v-model="shapeQuery"
+            class="ctl shape-search"
+            placeholder="Search shapes…"
+            spellcheck="false"
+          />
           <div v-for="g in shapeGroups" :key="g.group" class="shape-group">
             <span class="shape-group-label">{{ g.group }}</span>
             <div class="shape-grid">
@@ -753,6 +764,9 @@ function patchBg(part: Record<string, any>) {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 6px;
+}
+.shape-search {
+  margin-bottom: 7px;
 }
 .shape-group {
   margin-bottom: 6px;

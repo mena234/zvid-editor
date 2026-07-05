@@ -1,5 +1,6 @@
 import type { ShapeLayer } from './types'
 import { paintAccent, paintCss } from './types'
+import { EXTRA_SHAPES } from './shapes-extra'
 
 /**
  * Shape & icon registry for the Design Studio.
@@ -8,7 +9,23 @@ import { paintAccent, paintCss } from './types'
  *  - css: a plain <div class="dz-s"> styled with background/border/radius
  *  - svg: inline <svg> markup (fill or stroke driven) — no external
  *    resources, so it passes the package's customCode sanitizer untouched.
+ *
+ * The bulk of the library (200+ shapes) lives in `shapes-extra.ts`; this
+ * module owns the registry, the picker groups and the compile helpers.
  */
+
+export type ShapeGroup =
+  | 'Basic'
+  | 'Geometry'
+  | 'Stars & Bursts'
+  | 'Arrows'
+  | 'Callouts'
+  | 'Badges & Banners'
+  | 'Nature'
+  | 'Symbols'
+  | 'Icons'
+  | 'Frames'
+  | 'Lines & Decor'
 
 export interface ShapePaintCtx {
   /** svg fill attribute value (color or url(#gradient-id)) */
@@ -20,7 +37,7 @@ export interface ShapePaintCtx {
 
 export interface ShapeDef {
   label: string
-  group: 'Basic' | 'Shapes' | 'Icons' | 'Decor'
+  group: ShapeGroup
   kind: 'css' | 'svg'
   /** natural aspect ratio (w/h) used when inserting */
   ratio?: number
@@ -80,10 +97,10 @@ export const SHAPES: Record<string, ShapeDef> = {
     css: (l) => `border-radius: ${l.radius}px;`,
   },
 
-  /* ---------------- Shapes (svg fill) ---------------- */
+  /* ---------------- classic svg shapes ---------------- */
   triangle: {
     label: 'Triangle',
-    group: 'Shapes',
+    group: 'Geometry',
     kind: 'svg',
     viewBox: [300, 300],
     ratio: 1,
@@ -91,7 +108,7 @@ export const SHAPES: Record<string, ShapeDef> = {
   },
   diamond: {
     label: 'Diamond',
-    group: 'Shapes',
+    group: 'Geometry',
     kind: 'svg',
     viewBox: [300, 300],
     ratio: 1,
@@ -99,7 +116,7 @@ export const SHAPES: Record<string, ShapeDef> = {
   },
   star: {
     label: 'Star',
-    group: 'Shapes',
+    group: 'Stars & Bursts',
     kind: 'svg',
     viewBox: [300, 300],
     ratio: 1,
@@ -107,7 +124,7 @@ export const SHAPES: Record<string, ShapeDef> = {
   },
   burst: {
     label: 'Burst',
-    group: 'Shapes',
+    group: 'Stars & Bursts',
     kind: 'svg',
     viewBox: [300, 300],
     ratio: 1,
@@ -117,7 +134,7 @@ export const SHAPES: Record<string, ShapeDef> = {
   },
   heart: {
     label: 'Heart',
-    group: 'Shapes',
+    group: 'Symbols',
     kind: 'svg',
     viewBox: [300, 280],
     ratio: 300 / 280,
@@ -127,7 +144,7 @@ export const SHAPES: Record<string, ShapeDef> = {
   },
   blob: {
     label: 'Blob',
-    group: 'Shapes',
+    group: 'Geometry',
     kind: 'svg',
     viewBox: [300, 300],
     ratio: 1,
@@ -137,7 +154,7 @@ export const SHAPES: Record<string, ShapeDef> = {
   },
   bolt: {
     label: 'Lightning',
-    group: 'Shapes',
+    group: 'Nature',
     kind: 'svg',
     viewBox: [240, 300],
     ratio: 240 / 300,
@@ -145,7 +162,7 @@ export const SHAPES: Record<string, ShapeDef> = {
   },
   hexagon: {
     label: 'Hexagon',
-    group: 'Shapes',
+    group: 'Geometry',
     kind: 'svg',
     viewBox: [300, 300],
     ratio: 1,
@@ -153,7 +170,7 @@ export const SHAPES: Record<string, ShapeDef> = {
   },
   bubble: {
     label: 'Speech bubble',
-    group: 'Shapes',
+    group: 'Callouts',
     kind: 'svg',
     viewBox: [300, 250],
     ratio: 300 / 250,
@@ -163,7 +180,7 @@ export const SHAPES: Record<string, ShapeDef> = {
   },
   badge: {
     label: 'Badge',
-    group: 'Shapes',
+    group: 'Badges & Banners',
     kind: 'svg',
     viewBox: [300, 300],
     ratio: 1,
@@ -180,7 +197,7 @@ export const SHAPES: Record<string, ShapeDef> = {
     },
   },
 
-  /* ---------------- Icons (svg fill, 24 viewBox) ---------------- */
+  /* ---------------- classic icons (svg fill, 24 viewBox) ---------------- */
   sparkle: {
     label: 'Sparkle',
     group: 'Icons',
@@ -201,7 +218,7 @@ export const SHAPES: Record<string, ShapeDef> = {
   },
   crown: {
     label: 'Crown',
-    group: 'Icons',
+    group: 'Badges & Banners',
     kind: 'svg',
     viewBox: [24, 24],
     ratio: 1,
@@ -209,7 +226,7 @@ export const SHAPES: Record<string, ShapeDef> = {
   },
   moon: {
     label: 'Moon',
-    group: 'Icons',
+    group: 'Nature',
     kind: 'svg',
     viewBox: [24, 24],
     ratio: 1,
@@ -242,10 +259,10 @@ export const SHAPES: Record<string, ShapeDef> = {
     ),
   },
 
-  /* ---------------- Decor (svg, mostly stroke/procedural) ---------------- */
+  /* ---------------- classic decor ---------------- */
   check: {
     label: 'Check',
-    group: 'Icons',
+    group: 'Symbols',
     kind: 'svg',
     viewBox: [300, 300],
     ratio: 1,
@@ -254,7 +271,7 @@ export const SHAPES: Record<string, ShapeDef> = {
   },
   arrow: {
     label: 'Arrow',
-    group: 'Decor',
+    group: 'Arrows',
     kind: 'svg',
     viewBox: [400, 120],
     ratio: 400 / 120,
@@ -263,7 +280,7 @@ export const SHAPES: Record<string, ShapeDef> = {
   },
   squiggle: {
     label: 'Squiggle',
-    group: 'Decor',
+    group: 'Lines & Decor',
     kind: 'svg',
     viewBox: [300, 60],
     ratio: 5,
@@ -272,7 +289,7 @@ export const SHAPES: Record<string, ShapeDef> = {
   },
   'dashed-ring': {
     label: 'Dashed ring',
-    group: 'Decor',
+    group: 'Frames',
     kind: 'svg',
     viewBox: [300, 300],
     ratio: 1,
@@ -282,7 +299,7 @@ export const SHAPES: Record<string, ShapeDef> = {
   },
   sunburst: {
     label: 'Sunburst',
-    group: 'Decor',
+    group: 'Stars & Bursts',
     kind: 'svg',
     viewBox: [300, 300],
     ratio: 1,
@@ -300,7 +317,7 @@ export const SHAPES: Record<string, ShapeDef> = {
   },
   dots: {
     label: 'Dot grid',
-    group: 'Decor',
+    group: 'Lines & Decor',
     kind: 'svg',
     viewBox: [300, 180],
     ratio: 300 / 180,
@@ -314,7 +331,7 @@ export const SHAPES: Record<string, ShapeDef> = {
   },
   confetti: {
     label: 'Confetti',
-    group: 'Decor',
+    group: 'Lines & Decor',
     kind: 'svg',
     viewBox: [300, 300],
     ratio: 1,
@@ -335,9 +352,23 @@ export const SHAPES: Record<string, ShapeDef> = {
       return parts.join('')
     },
   },
+
+  ...EXTRA_SHAPES,
 }
 
-export const SHAPE_GROUPS = ['Basic', 'Shapes', 'Icons', 'Decor'] as const
+export const SHAPE_GROUPS: readonly ShapeGroup[] = [
+  'Basic',
+  'Geometry',
+  'Stars & Bursts',
+  'Arrows',
+  'Callouts',
+  'Badges & Banners',
+  'Nature',
+  'Symbols',
+  'Icons',
+  'Frames',
+  'Lines & Decor',
+] as const
 
 export function shapeDef(key: string): ShapeDef {
   return SHAPES[key] ?? SHAPES.rect

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, reactive, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, reactive, ref, watch } from 'vue'
 import { useEditorContext } from '~/composables/useEditorContext'
 import type { DesignDoc, DesignLayer } from '~/utils/designer/types'
 import {
@@ -13,8 +13,9 @@ import {
 import { compileDesign, designToItemPatch } from '~/utils/designer/compile'
 import {
   fetchLibraryContent,
-  fetchLibraryList,
+  fetchLibraryPage,
   libraryErrorMessage,
+  type LibraryItem,
 } from '~/composables/useLibrary'
 import { loadGoogleFont } from '~/utils/fonts'
 import { round3 } from '~/utils/time'
@@ -132,31 +133,32 @@ function moveLayer(id: string, x: number, y: number) {
   patchLayer(id, { x, y })
 }
 
-/* ---------------- templates (served by the orch content library) -------- */
+/* ---------------- templates (served by the orch content library) --------
+   1000+ items: paginated thumbnail grid (meta.thumbnail from the CDN), each
+   tile plays its preview video (meta.preview) while hovered; the content
+   JSON is only fetched when a template is applied. */
+const TPL_PAGE_SIZE = 12
 const templatesOpen = ref(false)
 const templatesPending = ref(false)
+const templatesMorePending = ref(false)
 const templatesError = ref('')
-const templateDocs = ref<
-  { id: string; label: string; hint: string; raw: any; doc: DesignDoc }[]
->([])
+const templates = ref<LibraryItem[]>([])
+const templatesTotal = ref(0)
+const templatesHasMore = ref(false)
+const applyingSlug = ref('')
+const hoverSlug = ref('')
+const tplMenuEl = ref<HTMLElement | null>(null)
+const tplSentinel = ref<HTMLElement | null>(null)
+let tplObserver: IntersectionObserver | null = null
 
 async function loadTemplates() {
   templatesPending.value = true
   templatesError.value = ''
   try {
-    const items = await fetchLibraryList('design-templates')
-    templateDocs.value = await Promise.all(
-      items.map(async (it) => {
-        const raw = await fetchLibraryContent('design-templates', it.slug)
-        return {
-          id: it.slug,
-          label: it.title,
-          hint: it.description ?? '',
-          raw,
-          doc: normalizeDesign(raw),
-        }
-      })
-    )
+    const page = await fetchLibraryPage('design-templates', TPL_PAGE_SIZE, 0)
+    templates.value = page.items
+    templatesTotal.value = page.total
+    templatesHasMore.value = page.hasMore
   } catch (e) {
     templatesError.value = libraryErrorMessage(e)
   } finally {
@@ -164,22 +166,71 @@ async function loadTemplates() {
   }
 }
 
+async function loadMoreTemplates() {
+  if (templatesMorePending.value || templatesPending.value || !templatesHasMore.value) return
+  templatesMorePending.value = true
+  try {
+    const page = await fetchLibraryPage(
+      'design-templates',
+      TPL_PAGE_SIZE,
+      templates.value.length
+    )
+    templates.value = [...templates.value, ...page.items]
+    templatesTotal.value = page.total
+    templatesHasMore.value = page.hasMore
+  } catch (e) {
+    templatesError.value = libraryErrorMessage(e)
+  } finally {
+    templatesMorePending.value = false
+  }
+}
+
+// Infinite scroll inside the dropdown: the sentinel below the grid triggers
+// the next page. Root = the menu itself (it's the scroll container).
+watch(tplSentinel, (el) => {
+  tplObserver?.disconnect()
+  tplObserver = null
+  if (!el) return
+  tplObserver = new IntersectionObserver(
+    (entries) => {
+      if (entries.some((entry) => entry.isIntersecting)) loadMoreTemplates()
+    },
+    { root: tplMenuEl.value, rootMargin: '200px' }
+  )
+  tplObserver.observe(el)
+})
+onBeforeUnmount(() => tplObserver?.disconnect())
+
 function toggleTemplates() {
   templatesOpen.value = !templatesOpen.value
-  if (templatesOpen.value && !templateDocs.value.length && !templatesPending.value) {
+  if (templatesOpen.value && !templates.value.length && !templatesPending.value) {
     loadTemplates()
   }
 }
 
-function applyTemplate(id: string) {
-  const t = templateDocs.value.find((x) => x.id === id)
-  if (!t) return
-  // stored content has no layer ids — normalizeDesign assigns fresh ones per apply
-  const doc = normalizeDesign(JSON.parse(JSON.stringify(t.raw)))
-  design.layers.splice(0, design.layers.length, ...doc.layers)
-  Object.assign(design, { ...doc, layers: design.layers })
-  selectedId.value = null
-  templatesOpen.value = false
+function onTplEnter(slug: string) {
+  hoverSlug.value = slug
+}
+function onTplLeave(slug: string) {
+  if (hoverSlug.value === slug) hoverSlug.value = ''
+}
+
+async function applyTemplate(item: LibraryItem) {
+  if (applyingSlug.value) return
+  applyingSlug.value = item.slug
+  try {
+    const raw = await fetchLibraryContent('design-templates', item.slug)
+    // stored content has no layer ids — normalizeDesign assigns fresh ones per apply
+    const doc = normalizeDesign(raw)
+    design.layers.splice(0, design.layers.length, ...doc.layers)
+    Object.assign(design, { ...doc, layers: design.layers })
+    selectedId.value = null
+    templatesOpen.value = false
+  } catch (e) {
+    editor.notify(libraryErrorMessage(e), 'error')
+  } finally {
+    applyingSlug.value = ''
+  }
 }
 
 /* ---------------- insert / update ---------------- */
@@ -235,23 +286,54 @@ function onKeydown(e: KeyboardEvent) {
             <UiIcon name="magic" :size="13" /> Templates
             <UiIcon name="chevron_down" :size="12" />
           </button>
-          <div v-if="templatesOpen" class="tpl-menu">
+          <div v-if="templatesOpen" ref="tplMenuEl" class="tpl-menu">
             <p v-if="templatesPending" class="tpl-status hint">Loading templates…</p>
-            <template v-else-if="templatesError">
+            <template v-else-if="templatesError && !templates.length">
               <p class="tpl-status hint">⚠ {{ templatesError }}</p>
               <button class="btn sm" @click="loadTemplates()">Retry</button>
             </template>
-            <button
-              v-for="t in templateDocs"
-              :key="t.id"
-              class="tpl-card"
-              :title="t.hint"
-              @click="applyTemplate(t.id)"
-            >
-              <DesignerMiniPreview :design="t.doc" />
-              <span class="tpl-name">{{ t.label }}</span>
-              <span class="tpl-hint">{{ t.hint }}</span>
-            </button>
+            <template v-else>
+              <button
+                v-for="t in templates"
+                :key="t.slug"
+                class="tpl-card"
+                :class="{ busy: applyingSlug === t.slug }"
+                :title="t.description ?? ''"
+                @click="applyTemplate(t)"
+                @mouseenter="onTplEnter(t.slug)"
+                @mouseleave="onTplLeave(t.slug)"
+                @focus="onTplEnter(t.slug)"
+                @blur="onTplLeave(t.slug)"
+              >
+                <span class="tpl-shot">
+                  <img
+                    v-if="t.meta?.thumbnail"
+                    class="tpl-thumb"
+                    :src="t.meta.thumbnail"
+                    :alt="t.title"
+                  />
+                  <span v-else class="tpl-thumb tpl-thumb-fallback">
+                    <UiIcon name="magic" :size="16" />
+                  </span>
+                  <video
+                    v-if="hoverSlug === t.slug && t.meta?.preview"
+                    class="tpl-video"
+                    :src="t.meta.preview"
+                    autoplay
+                    muted
+                    loop
+                    playsinline
+                  />
+                </span>
+                <span class="tpl-name">{{ t.title }}</span>
+              </button>
+              <div ref="tplSentinel" class="tpl-sentinel" aria-hidden="true" />
+              <p v-if="templatesMorePending" class="tpl-status hint">Loading more…</p>
+              <p v-else-if="templatesError" class="tpl-status hint">⚠ {{ templatesError }}</p>
+              <p v-else-if="!templatesHasMore && templates.length" class="tpl-status hint">
+                All {{ templatesTotal }} templates loaded
+              </p>
+            </template>
           </div>
         </div>
         <span class="meta mono">{{ design.width }}×{{ design.height }}px</span>
@@ -345,7 +427,7 @@ function onKeydown(e: KeyboardEvent) {
   flex-direction: column;
   min-width: 0;
   gap: 4px;
-  padding: 6px;
+  padding: 5px;
   border: 1px solid var(--border-1);
   border-radius: var(--radius-m);
   background: var(--bg-1);
@@ -355,17 +437,51 @@ function onKeydown(e: KeyboardEvent) {
 .tpl-card:hover {
   border-color: var(--accent);
 }
+.tpl-card.busy {
+  opacity: 0.6;
+  pointer-events: none;
+}
+.tpl-shot {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-s);
+  overflow: hidden;
+  background: var(--bg-4);
+}
+.tpl-thumb {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.tpl-thumb-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-3);
+}
+.tpl-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.tpl-sentinel {
+  grid-column: 1 / -1;
+  height: 2px;
+}
 .tpl-status {
   grid-column: 1 / -1;
 }
 .tpl-name {
-  font-size: 11.5px;
+  font-size: 10.5px;
   font-weight: 600;
-}
-.tpl-hint {
-  font-size: 9.5px;
-  color: var(--text-3);
-  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .meta {
   font-size: 10.5px;

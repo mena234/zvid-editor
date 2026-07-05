@@ -12,8 +12,8 @@ import {
   splitTextHtml,
   autoDuration,
 } from '../utils/designer/compile'
-import { ANIM_PRESETS } from '../utils/designer/animations'
-import { SHAPES } from '../utils/designer/shapes'
+import { ANIM_PRESETS, ANIM_GROUPS } from '../utils/designer/animations'
+import { SHAPES, SHAPE_GROUPS, shapePreviewSvg } from '../utils/designer/shapes'
 import { DESIGN_TEMPLATES } from '../utils/designer/templates'
 
 /** The package's customCode CSS sanitizer rules (sanitizeCustomCode.ts). */
@@ -206,6 +206,30 @@ describe('every shape', () => {
       }
     })
   }
+})
+
+describe('registry integrity', () => {
+  it('every shape belongs to a picker group and renders a preview', () => {
+    for (const [key, def] of Object.entries(SHAPES)) {
+      expect(SHAPE_GROUPS, `shape "${key}" group "${def.group}"`).toContain(def.group)
+      expect(shapePreviewSvg(key)).toMatch(/<svg|<span/)
+    }
+  })
+
+  it('every animation preset belongs to a picker group and has a unique id', () => {
+    const ids = new Set<string>()
+    for (const [key, p] of Object.entries(ANIM_PRESETS)) {
+      expect(ANIM_GROUPS, `preset "${key}" group "${p.group}"`).toContain(p.group)
+      expect(p.id).toBe(key)
+      expect(ids.has(p.id)).toBe(false)
+      ids.add(p.id)
+    }
+  })
+
+  it('meets the library size goals (200+ new shapes, expanded animations)', () => {
+    expect(Object.keys(SHAPES).length).toBeGreaterThanOrEqual(229)
+    expect(Object.keys(ANIM_PRESETS).length).toBeGreaterThanOrEqual(70)
+  })
 })
 
 describe('templates', () => {
