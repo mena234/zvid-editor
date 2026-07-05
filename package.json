@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Visual editor for @zvid-io/zvid — compose videos on a stage + timeline, export automation-ready JSON",
+  "description": "Zvid visual editor — compose videos on a stage + timeline, export automation-ready JSON, render in the Zvid cloud",
   "scripts": {
     "dev": "nuxt dev",
     "build": "nuxt build",
@@ -17,6 +17,7 @@
     "@pinia/nuxt": "^0.11.2",
     "nuxt": "3.19.2",
     "pinia": "^3.0.3",
+    "socket.io-client": "^4.8.3",
     "vue": "^3.5.18",
     "zod": "^3.25.76"
   },

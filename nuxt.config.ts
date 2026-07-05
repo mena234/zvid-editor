@@ -38,13 +38,11 @@ export default defineNuxtConfig({
     },
   },
   runtimeConfig: {
-    // Absolute or relative (to the editor cwd) path of the built zvid package entry.
-    zvidPackagePath: process.env.ZVID_PACKAGE_PATH || '../package/dist/index.cjs',
-    // Base URL of the orch API service (stock media search proxy lives there).
+    // Base URL of the orch API service (server-side proxies: stock, projects…).
     orchUrl: process.env.ORCH_URL || 'http://localhost:4000',
-    renderEnabled: process.env.NUXT_RENDER_ENABLED !== 'false',
     public: {
-      renderEnabled: process.env.NUXT_RENDER_ENABLED !== 'false',
+      // orch base URL the browser connects to directly (render websocket).
+      orchUrl: process.env.NUXT_PUBLIC_ORCH_URL || 'http://localhost:4000',
       // Dashboard app URL (register / forgot-password / template management links).
       dashUrl: process.env.NUXT_PUBLIC_DASH_URL || 'http://localhost:3002',
     },

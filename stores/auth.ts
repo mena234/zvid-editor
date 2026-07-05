@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { disconnectRenderSocket } from '~/utils/renderSocket'
 
 export interface SessionUser {
   id?: number
@@ -71,12 +72,14 @@ export const useAuthStore = defineStore('auth', {
       }
       this.user = null
       this.credits = null
+      disconnectRenderSocket()
     },
 
     /** Called when an API round-trip reveals the session expired. */
     sessionExpired() {
       this.user = null
       this.credits = null
+      disconnectRenderSocket()
     },
   },
 })

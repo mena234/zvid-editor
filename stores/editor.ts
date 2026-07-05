@@ -66,14 +66,6 @@ export const useEditorStore = defineStore('editor', {
     /* transient UI */
     toast: null as { message: string; kind: 'info' | 'error' | 'success' } | null,
     dragState: null as null | { type: string },
-    renderJob: null as null | {
-      id: string
-      status: 'running' | 'done' | 'error'
-      progress: number
-      error?: string
-      fileUrl?: string
-      fileName?: string
-    },
   }),
 
   getters: {

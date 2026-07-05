@@ -51,7 +51,7 @@ async function load(item: LibraryItem) {
 <template>
   <UiModal title="Example projects" width="680px" @close="editor.closeModal()">
     <p class="hint">
-      The zvid package's shipped examples — load one to explore how features map
+      Curated example projects — load one to explore how features map
     to JSON. Loading replaces the current project.
     </p>
     <p v-if="pending" class="hint">Loading examples…</p>

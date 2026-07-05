@@ -141,7 +141,7 @@ function linkTransition(targetEditorId: string) {
           />
         </UiField>
         <p v-if="item.transition && item.transitionId" class="hint warn">
-          ⚠ This clip has a transition — the package suppresses the exit
+          ⚠ This clip has a transition — the renderer suppresses the exit
           animation when a transition is set.
         </p>
       </template>

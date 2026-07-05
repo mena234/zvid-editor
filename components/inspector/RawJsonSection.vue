@@ -66,7 +66,7 @@ function revert() {
 <template>
   <UiSection title="Raw element JSON">
     <p class="hint">
-      The exact object exported for this element — every package field is
+      The exact object exported for this element — every renderer field is
       editable here, including ones without dedicated UI.
     </p>
     <UiCodeEditor :model-value="text" :rows="18" @update:model-value="onInput" />

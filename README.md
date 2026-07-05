@@ -1,13 +1,13 @@
 # Zvid Editor
 
-A visual editor for [`@zvid-io/zvid`](../package): compose a video on a canvas +
-multi-track timeline, then **export the exact JSON** the package renders — so
-anything you design by hand can be automated through the API/CLI afterwards.
+The Zvid visual editor: compose a video on a canvas + multi-track timeline,
+then **export the exact JSON** the Zvid renderer accepts — so anything you
+design by hand can be automated through the API afterwards.
 
 ```bash
 npm install
 npm run dev        # → http://localhost:3000
-npm test           # schema round-trip tests over the package examples
+npm test           # schema round-trip tests over the bundled examples
 ```
 
 ## What it does
@@ -24,7 +24,7 @@ npm test           # schema round-trip tests over the package examples
   shape library) — plus `customCode` CSS/JS animations previewed live
   (CSS-only code runs in an isolated shadow DOM; JS runs in a sandboxed iframe).
 - **Audio** — background tracks with waveform, trim, volume, speed and the
-  package's auto-loop behavior visualized.
+  renderer's auto-loop behavior visualized.
 - **Subtitles** — caption list, word-level timing grid, SRT/VTT/Whisper-JSON
   import, all four modes (`normal`, `one-word`, `karaoke`, `progressive`)
   previewed on the stage.
@@ -57,16 +57,19 @@ npm test           # schema round-trip tests over the package examples
   links open saved work directly: `/?project=prj_…` (cloud project, linked
   for in-place saving) and `/?template=tpl_…` (template JSON, unlinked); the
   query is stripped after loading.
-- **Render** (optional) — `POST /api/render` wraps the local package build to
-  produce the ground-truth MP4 with live progress. Requires FFmpeg on PATH and
-  `package/` built + installed (`yarn install && yarn build`). Disable with
-  `NUXT_RENDER_ENABLED=false`; point elsewhere with `ZVID_PACKAGE_PATH`.
+- **Render** — submits the project to orch over its Socket.IO `/frontend`
+  namespace (`submitTask` → `taskProgress`/`taskComplete`), so editor renders
+  go through the same validation, plan limits, credits and queue as API
+  renders; the finished video lands on the CDN and in the dashboard. Requires
+  signing in. The browser connects to orch directly — set
+  `NUXT_PUBLIC_ORCH_URL` (default `http://localhost:4000`) and make sure the
+  editor origin is allowed by orch's `CORS_ORIGINS`.
   `GET /api/probe?src=…` provides an ffprobe fallback for CORS-blocked media.
 
 ## Fidelity notes
 
 The stage is a DOM approximation of the FFmpeg output. Text/HTML/SVG are
-near-exact (the package renders them with a headless browser from the same
+near-exact (the renderer draws them with a headless browser from the same
 markup + Google Fonts). Enter/exit xfade effects use CSS approximations —
 effects marked `≈` in the picker differ visually from FFmpeg; chroma key shows
 a badge instead of keying. Use the Render button for the exact result.

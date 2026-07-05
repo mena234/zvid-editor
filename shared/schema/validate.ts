@@ -122,7 +122,7 @@ function checkVisual(
       level: 'warning',
       path,
       message:
-        'This video has both an exitAnimation and a transition — the package suppresses the exit animation when a transition is set.',
+        'This video has both an exitAnimation and a transition — the renderer suppresses the exit animation when a transition is set.',
     })
   }
   if (v.transition && !XFADE_EFFECTS.includes(v.transition as any)) {
@@ -154,7 +154,7 @@ function checkVisual(
       level: 'warning',
       path: `${path}.customCode.js`,
       message:
-        'customCode.js appears to use network/storage/navigation APIs — the package rejects those at render time.',
+        'customCode.js appears to use network/storage/navigation APIs — the renderer rejects those at render time.',
     })
   }
 
@@ -223,7 +223,7 @@ function checkScene(
       issues.push({
         level: 'warning',
         path,
-        message: 'Last scene defines a transition — the package ignores it.',
+        message: 'Last scene defines a transition — the renderer ignores it.',
       })
     } else if (
       scene.transitionId != null &&
@@ -233,7 +233,7 @@ function checkScene(
       issues.push({
         level: 'warning',
         path: `${path}.transitionId`,
-        message: `transitionId "${scene.transitionId}" doesn't match the next scene's id "${next.id}" — the package falls back to a hard cut.`,
+        message: `transitionId "${scene.transitionId}" doesn't match the next scene's id "${next.id}" — the renderer falls back to a hard cut.`,
       })
     }
     if (scene.transitionDuration !== undefined && scene.transitionDuration <= 0) {
@@ -281,7 +281,7 @@ export function validateProjectDoc(doc: ProjectDoc): ValidationIssue[] {
       level: 'warning',
       path: 'resolution',
       message:
-        'Custom resolution without explicit width/height — the package will fall back to defaults.',
+        'Custom resolution without explicit width/height — the renderer will fall back to defaults.',
     })
   }
   if (doc.backgroundColor && !/^#([0-9a-f]{3}|[0-9a-f]{6}|[0-9a-f]{8})$/i.test(doc.backgroundColor)) {

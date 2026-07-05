@@ -29,8 +29,6 @@ function setResolution(e: Event) {
   }
   project.patchProject(patch)
 }
-
-const renderEnabled = useRuntimeConfig().public.renderEnabled
 </script>
 
 <template>
@@ -196,9 +194,8 @@ const renderEnabled = useRuntimeConfig().public.renderEnabled
       <UiIcon name="save" :size="14" /> Save
     </button>
     <button
-      v-if="renderEnabled"
       class="btn"
-      title="Render an MP4 with the real zvid package (requires FFmpeg on the server)"
+      title="Render this project to a video in the Zvid cloud"
       @click="editor.openModal('render')"
     >
       <UiIcon name="render" :size="14" /> Render

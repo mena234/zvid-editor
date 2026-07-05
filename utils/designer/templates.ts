@@ -218,7 +218,7 @@ export const DESIGN_TEMPLATES: DesignTemplate[] = [
           makeShapeLayer({ name: 'Dot green', shape: 'circle', x: 12.8, y: 11, width: 15, height: 15, fill: { kind: 'solid', color: '#3ecf8e' } }),
           makeTextLayer({
             name: 'Command',
-            text: '$ npm install @zvid-io/zvid\n… rendering 1080p video ✔',
+            text: '$ zvid render project.json\n… rendering 1080p video ✔',
             x: 50,
             y: 56,
             width: 620,

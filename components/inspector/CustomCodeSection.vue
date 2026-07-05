@@ -29,7 +29,7 @@ const jsWarning = computed(() => {
       js
     )
   ) {
-    return 'Network/storage/navigation APIs are rejected by the package at render time.'
+    return 'Network/storage/navigation APIs are rejected by the renderer at render time.'
   }
   return null
 })
@@ -80,7 +80,7 @@ const jsWarning = computed(() => {
     </UiField>
     <p class="hint">
       The stage preview runs this code in a sandboxed frame — the same document
-      the package captures with its headless browser.
+      the renderer captures with its headless browser.
     </p>
   </UiSection>
 </template>
