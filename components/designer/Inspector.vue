@@ -9,6 +9,8 @@ import type {
 import { ANIM_GROUPS, ANIM_PRESETS, EASINGS, animPreset } from '~/utils/designer/animations'
 import { SHAPES, SHAPE_GROUPS, shapeDef, shapePreviewSvg } from '~/utils/designer/shapes'
 import { POPULAR_GOOGLE_FONTS, loadGoogleFont } from '~/utils/fonts'
+import { useEditorContext } from '~/composables/useEditorContext'
+import { useTemplateVars } from '~/composables/useTemplateVars'
 
 const props = defineProps<{
   design: DesignDoc
@@ -29,6 +31,29 @@ function patchL(patch: Record<string, any>) {
 const textLayer = computed(() =>
   props.layer?.kind === 'text' ? (props.layer as TextLayer) : null
 )
+
+/* ---------------- template variables ---------------- */
+const { activeScene } = useEditorContext()
+const tvars = useTemplateVars()
+
+const textEl = ref<HTMLTextAreaElement>()
+const srcEl = ref<HTMLInputElement>()
+
+/** Insert a {{placeholder}} at the caret of the text content textarea. */
+function insertTextPlaceholder(placeholder: string) {
+  if (!textLayer.value) return
+  const current = textLayer.value.text ?? ''
+  const pos = textEl.value?.selectionStart ?? current.length
+  patchL({ text: current.slice(0, pos) + placeholder + current.slice(pos) })
+}
+
+/** Insert a {{placeholder}} at the caret of the image URL input. */
+function insertSrcPlaceholder(placeholder: string) {
+  if (props.layer?.kind !== 'image') return
+  const current = props.layer.src ?? ''
+  const pos = srcEl.value?.selectionStart ?? current.length
+  patchL({ src: current.slice(0, pos) + placeholder + current.slice(pos) })
+}
 
 /* ---------------- animation ---------------- */
 const presetGroups = computed(() => {
@@ -197,7 +222,15 @@ function patchBg(part: Record<string, any>) {
       <!-- ---------- text ---------- -->
       <template v-if="textLayer">
         <UiSection title="Text">
+          <template #actions>
+            <UiVarMenu
+              :options="tvars.placeholderOptions(activeScene)"
+              title="Insert a variable at the cursor"
+              @insert="insertTextPlaceholder"
+            />
+          </template>
           <textarea
+            ref="textEl"
             class="ctl"
             rows="3"
             :value="textLayer.text"
@@ -491,13 +524,21 @@ function patchBg(part: Record<string, any>) {
       <template v-else-if="layer.kind === 'image'">
         <UiSection title="Image">
           <UiField label="URL" hint="must stay reachable by the render machine">
-            <input
-              class="ctl mono"
-              :value="layer.src"
-              placeholder="https://â€¦/photo.png"
-              spellcheck="false"
-              @change="patchL({ src: ($event.target as HTMLInputElement).value.trim() })"
-            />
+            <div class="src-row">
+              <input
+                ref="srcEl"
+                class="ctl mono"
+                :value="layer.src"
+                placeholder="https://â€¦/photo.png"
+                spellcheck="false"
+                @change="patchL({ src: ($event.target as HTMLInputElement).value.trim() })"
+              />
+              <UiVarMenu
+                :options="tvars.placeholderOptions(activeScene, 'string')"
+                title="Insert a variable at the cursor"
+                @insert="insertSrcPlaceholder"
+              />
+            </div>
           </UiField>
           <div class="grid-2">
             <UiField label="Width">
@@ -764,6 +805,15 @@ function patchBg(part: Record<string, any>) {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 6px;
+}
+.src-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.src-row .ctl {
+  flex: 1;
+  min-width: 0;
 }
 .shape-search {
   margin-bottom: 7px;

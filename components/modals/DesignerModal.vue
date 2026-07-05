@@ -19,8 +19,10 @@ import {
 } from '~/composables/useLibrary'
 import { loadGoogleFont } from '~/utils/fonts'
 import { round3 } from '~/utils/time'
+import { useTemplateVars } from '~/composables/useTemplateVars'
 
-const { project, editor, contextDuration } = useEditorContext()
+const { project, editor, contextDuration, activeScene } = useEditorContext()
+const tvars = useTemplateVars()
 
 /* ---------------- source design ---------------- */
 const targetId = editor.designerTargetId
@@ -242,7 +244,34 @@ function defaultTiming() {
   }
 }
 
+/** True when any layer references a {{variable}} (drives the toolbar toggle). */
+const usesVars = computed(() =>
+  design.layers.some(
+    (l) =>
+      (l.kind === 'text' && l.text.includes('{{')) ||
+      (l.kind === 'image' && l.src.includes('{{'))
+  )
+)
+
+/** Strict placeholder check (same rule as plain TEXT elements): every
+ *  {{placeholder}} must resolve with the current defaults — orch errors on
+ *  unresolvable ones at render, so they can't be saved silently. */
+function invalidVarMessage(): string | null {
+  for (const l of design.layers) {
+    const raw = l.kind === 'text' ? l.text : l.kind === 'image' ? l.src : ''
+    if (!raw.includes('{{')) continue
+    const check = tvars.validateTemplateValue(raw, 'any', activeScene.value)
+    if (!check.ok) return `Layer "${l.name}": ${check.message}`
+  }
+  return null
+}
+
 function apply() {
+  const invalid = invalidVarMessage()
+  if (invalid) {
+    editor.notify(invalid, 'error')
+    return
+  }
   const patch = designToItemPatch(design)
   if (targetId && targetItem) {
     project.patchVisual(targetId, patch)
@@ -340,6 +369,14 @@ function onKeydown(e: KeyboardEvent) {
         <span class="meta">
           loop {{ compiled.duration.toFixed(2) }}s{{ design.duration === 'auto' ? ' (auto)' : '' }}
         </span>
+        <label
+          v-if="usesVars"
+          class="vars-toggle"
+          :title="'Preview {{variable}} placeholders with their default values'"
+        >
+          <input v-model="editor.variablesPreview" type="checkbox" />
+          variable values
+        </label>
         <span class="spacer" />
         <span class="meta subtle">click empty canvas = canvas settings · drag layers to move</span>
       </div>
@@ -486,6 +523,15 @@ function onKeydown(e: KeyboardEvent) {
 .meta {
   font-size: 10.5px;
   color: var(--text-2);
+}
+.vars-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10.5px;
+  color: var(--accent-strong);
+  cursor: pointer;
+  white-space: nowrap;
 }
 .meta.subtle {
   color: var(--text-3);

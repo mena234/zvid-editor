@@ -35,6 +35,10 @@ function isTypingTarget(e: KeyboardEvent): boolean {
 function onKeyDown(e: KeyboardEvent) {
   const mod = e.ctrlKey || e.metaKey
 
+  // while typing in a field, Ctrl+Z/Y must stay the field's own history —
+  // the browser handles it natively, so no global shortcut may run here
+  if (isTypingTarget(e)) return
+
   if (mod && e.key.toLowerCase() === 'z') {
     e.preventDefault()
     if (e.shiftKey) project.redo()
@@ -46,8 +50,6 @@ function onKeyDown(e: KeyboardEvent) {
     project.redo()
     return
   }
-
-  if (isTypingTarget(e)) return
   if (editor.modal) {
     if (e.key === 'Escape') editor.closeModal()
     return

@@ -57,6 +57,31 @@ describe('splitTextHtml', () => {
     expect(split.html).not.toContain('<x>')
     expect(split.html).toContain('&lt;')
   })
+
+  it('keeps {{placeholders}} contiguous through letter splitting', () => {
+    const { html, count } = splitTextHtml('Hi {{name}}!', 'letter')
+    // H, i, {{name}}, ! → 4 stagger units; the placeholder is ONE span
+    expect(count).toBe(4)
+    expect(html).toContain('>{{name}}</span>')
+    expect(html.match(/dz-c/g)?.length).toBe(4)
+  })
+
+  it('keeps {{placeholders}} contiguous through word splitting', () => {
+    const { html, count } = splitTextHtml('by {{item.author}}', 'word')
+    expect(count).toBe(2)
+    expect(html).toContain('>{{item.author}}</span>')
+  })
+
+  it('normalizes inner whitespace so spaced placeholders survive word mode', () => {
+    const { html } = splitTextHtml('hello {{ name }}', 'word')
+    expect(html).toContain('>{{name}}</span>')
+    expect(html).not.toContain('>{{<')
+  })
+
+  it('leaves placeholders raw in none mode', () => {
+    const { html } = splitTextHtml('Hi {{name}}', 'none')
+    expect(html).toBe('Hi {{name}}')
+  })
 })
 
 describe('autoDuration', () => {

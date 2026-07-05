@@ -2,6 +2,8 @@
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import type { DesignDoc } from '~/utils/designer/types'
 import { compileDesign } from '~/utils/designer/compile'
+import { useEditorContext } from '~/composables/useEditorContext'
+import { useTemplateVars } from '~/composables/useTemplateVars'
 
 /**
  * Live preview for the Design Studio.
@@ -26,6 +28,21 @@ const emit = defineEmits<{
 
 const compiled = computed(() => compileDesign(props.design))
 const visibleLayers = computed(() => props.design.layers.filter((l) => !l.hidden))
+
+/* {{placeholders}} are resolved on the COMPILED html string — the exact
+ * substitution orch performs at render time — so what this preview shows is
+ * what the capture machine gets. Follows the global "variable values"
+ * preview toggle; off (or unresolvable) leaves the raw placeholder text. */
+const { activeScene } = useEditorContext()
+const tvars = useTemplateVars()
+const displayHtml = computed(() => {
+  const html = compiled.value.html
+  if (!html.includes('{{')) return html
+  const scope = activeScene.value
+    ? tvars.scenePreviewScope(activeScene.value)
+    : tvars.projectScope.value
+  return tvars.displayString(html, scope) ?? html
+})
 
 /* ---------------- stage fit ---------------- */
 const frameEl = ref<HTMLElement>()
@@ -54,7 +71,7 @@ function build() {
   const host = hostEl.value
   if (!host) return
   const shadow = host.shadowRoot ?? host.attachShadow({ mode: 'open' })
-  shadow.innerHTML = `<style>${compiled.value.css}</style>${compiled.value.html}`
+  shadow.innerHTML = `<style>${compiled.value.css}</style>${displayHtml.value}`
   grabAnimations()
   requestAnimationFrame(() => {
     measureBoxes()
@@ -230,7 +247,7 @@ onBeforeUnmount(() => {
 })
 
 watch(
-  () => [compiled.value.css, compiled.value.html],
+  () => [compiled.value.css, displayHtml.value],
   () => {
     if (t.value > duration.value) t.value = 0
     build()

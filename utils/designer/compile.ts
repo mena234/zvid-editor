@@ -54,22 +54,49 @@ interface SplitResult {
   count: number
 }
 
+/** {{placeholder}} runs — must survive splitting intact so the render can
+ *  still find and resolve them in the compiled html string. */
+const VAR_TOKEN_RE = /\{\{[^{}]*\}\}/g
+
+/** Trim inside {{ }} so a placeholder never contains spaces (word splitting
+ *  would otherwise cut it apart and break render-time resolution). */
+function normalizeVars(text: string): string {
+  return text.replace(VAR_TOKEN_RE, (m) => `{{${m.slice(2, -2).trim()}}}`)
+}
+
+/** Split a word into stagger units: plain characters, with each whole
+ *  {{placeholder}} kept as a single atomic unit. */
+function charUnits(word: string): string[] {
+  const units: string[] = []
+  let last = 0
+  VAR_TOKEN_RE.lastIndex = 0
+  for (const m of word.matchAll(VAR_TOKEN_RE)) {
+    units.push(...word.slice(last, m.index))
+    units.push(m[0])
+    last = m.index! + m[0].length
+  }
+  units.push(...word.slice(last))
+  return units
+}
+
 /**
  * Wraps letters/words in indexed spans (`--i`) for staggered animation.
  * Letters stay grouped inside word spans so lines still wrap at spaces.
+ * {{placeholders}} count as one unit and stay contiguous in the output —
+ * the render resolves them inside their span at capture time.
  */
 export function splitTextHtml(text: string, mode: 'letter' | 'word' | 'none'): SplitResult {
   if (mode === 'none') {
     return { html: escapeHtml(text).replace(/\n/g, '<br>'), count: 1 }
   }
   let i = 0
-  const lines = text.split('\n').map((line) => {
+  const lines = normalizeVars(text).split('\n').map((line) => {
     const words = line.split(' ').filter((w) => w.length > 0)
     const parts = words.map((word) => {
       if (mode === 'word') {
         return `<span class="dz-c" style="--i:${i++}">${escapeHtml(word)}</span>`
       }
-      const chars = [...word]
+      const chars = charUnits(word)
         .map((ch) => `<span class="dz-c" style="--i:${i++}">${escapeHtml(ch)}</span>`)
         .join('')
       return `<span class="dz-w">${chars}</span>`
