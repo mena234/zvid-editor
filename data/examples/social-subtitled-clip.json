@@ -1,0 +1,125 @@
+{
+  "name": "social-subtitled-clip",
+  "resolution": "tiktok",
+  "frameRate": 30,
+  "backgroundColor": "#000000",
+  "outputFormat": "mp4",
+  "variables": {
+    "showName": "THE BUILD LOG",
+    "episodeTag": "Ep. 42 — pricing mistakes",
+    "caption1": "The biggest pricing mistake I see founders make…",
+    "caption2": "…is charging for effort instead of outcome.",
+    "caption3": "Your invoice should describe their win, not your hours.",
+    "ctaText": "Full episode → link in bio",
+    "clipVideo": "https://videos.pexels.com/video-files/7100952/7100952-hd_1080_1920_30fps.mp4",
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/04/21/audio_ed6f0ed574.mp3"
+  },
+  "scenes": [
+    {
+      "id": "clip",
+      "duration": 11.5,
+      "backgroundColor": "#000000",
+      "visuals": [
+        {
+          "type": "VIDEO",
+          "src": "{{clipVideo}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "volume": 0,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 11.5
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 11.5,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='sscShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#000000' stop-opacity='0.4'/><stop offset='0.3' stop-color='#000000' stop-opacity='0'/><stop offset='0.7' stop-color='#000000' stop-opacity='0'/><stop offset='1' stop-color='#000000' stop-opacity='0.65'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#sscShade)'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 170,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.55,
+          "enterAnimation": "smoothdown",
+          "exitEnd": 11.5,
+          "style": { "fontFamily": "Poppins" },
+          "html": "<div style='display:inline-block; background:rgba(0,0,0,0.6); border:1px solid rgba(255,255,255,0.35); color:#FFFFFF; border-radius:999px; padding:12px 32px; font-size:25px; font-weight:700; letter-spacing:2px;'>🎙 {{showName}} · {{episodeTag}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1310,
+          "width": 920,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.5,
+          "enterEnd": 0.75,
+          "enterAnimation": "fade",
+          "exitBegin": 3.9,
+          "exitEnd": 4.1,
+          "exitAnimation": "fade",
+          "style": { "fontFamily": "Poppins" },
+          "html": "<div style='text-align:center;'><span style='display:inline; background:rgba(0,0,0,0.78); color:#FFFFFF; font-size:52px; line-height:1.5; font-weight:800; padding:8px 20px; border-radius:12px; box-decoration-break:clone;'>{{caption1}}</span></div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1310,
+          "width": 920,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 4.2,
+          "enterEnd": 4.45,
+          "enterAnimation": "fade",
+          "exitBegin": 7.4,
+          "exitEnd": 7.6,
+          "exitAnimation": "fade",
+          "style": { "fontFamily": "Poppins" },
+          "html": "<div style='text-align:center;'><span style='display:inline; background:rgba(0,0,0,0.78); color:#FFE24A; font-size:52px; line-height:1.5; font-weight:800; padding:8px 20px; border-radius:12px; box-decoration-break:clone;'>{{caption2}}</span></div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1310,
+          "width": 920,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 7.7,
+          "enterEnd": 7.95,
+          "enterAnimation": "fade",
+          "exitEnd": 11.5,
+          "style": { "fontFamily": "Poppins" },
+          "html": "<div style='text-align:center;'><span style='display:inline; background:rgba(0,0,0,0.78); color:#FFFFFF; font-size:52px; line-height:1.5; font-weight:800; padding:8px 20px; border-radius:12px; box-decoration-break:clone;'>{{caption3}}</span></div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1750,
+          "anchor": "center-center",
+          "track": 10,
+          "enterBegin": 8.4,
+          "enterEnd": 8.8,
+          "enterAnimation": "smoothup",
+          "exitEnd": 11.5,
+          "style": { "fontFamily": "Poppins" },
+          "html": "<div style='display:inline-block; background:#FFFFFF; color:#000000; border-radius:999px; padding:16px 44px; font-size:28px; font-weight:800;'>{{ctaText}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.12
+    }
+  ]
+}

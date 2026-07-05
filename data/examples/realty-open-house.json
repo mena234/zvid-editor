@@ -1,0 +1,168 @@
+{
+  "name": "realty-open-house",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#14110B",
+  "outputFormat": "mp4",
+  "variables": {
+    "agencyName": "Grove & Key Realty",
+    "address": "22 Lantern Hill Road",
+    "eventDate": "Saturday, July 12",
+    "eventTime": "11:00 — 15:00",
+    "price": "$1,180,000",
+    "teaserLine": "Wine, walkthroughs and west-light at golden hour.",
+    "rsvpText": "RSVP (555) 210-8890",
+    "showRsvp": true,
+    "houseImage": "https://images.pexels.com/photos/18214902/pexels-photo-18214902.jpeg?auto=compress&cs=tinysrgb&w=1620",
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/04/21/audio_ed6f0ed574.mp3"
+  },
+  "scenes": [
+    {
+      "id": "invite",
+      "duration": 5.4,
+      "backgroundColor": "#14110B",
+      "transition": "fade",
+      "transitionId": "details",
+      "transitionDuration": 0.7,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{houseImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 5.4
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 5.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='rohShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#14110B' stop-opacity='0.55'/><stop offset='0.45' stop-color='#14110B' stop-opacity='0.1'/><stop offset='1' stop-color='#14110B' stop-opacity='0.88'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#rohShade)'/><rect x='64' y='64' width='952' height='1792' fill='none' stroke='rgba(226,192,120,0.55)' stroke-width='2'/><rect x='82' y='82' width='916' height='1756' fill='none' stroke='rgba(226,192,120,0.22)' stroke-width='1'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 210,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.3,
+          "enterEnd": 0.9,
+          "enterAnimation": "fade",
+          "exitEnd": 5.4,
+          "style": {
+            "fontFamily": "Great Vibes"
+          },
+          "html": "<div style='text-align:center; color:#E2C078; font-size:84px;'>You're invited</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1330,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.7,
+          "enterEnd": 1.2,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5.4,
+          "style": {
+            "fontFamily": "Playfair Display"
+          },
+          "html": "<div style='text-align:center; color:#F6F0E2;'><div style='font-size:36px; letter-spacing:8px;'>OPEN HOUSE</div><div style='margin-top:16px; font-size:62px; line-height:1.1; font-weight:700;'>{{address}}</div><div style='margin-top:16px; font-size:30px; color:#D9CBAC; font-style:italic;'>{{teaserLine}}</div></div>"
+        }
+      ]
+    },
+    {
+      "id": "details",
+      "duration": 5.6,
+      "backgroundColor": "#14110B",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 5.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='rohEnd' cx='0.5' cy='0.35' r='0.9'><stop offset='0' stop-color='#241D10'/><stop offset='1' stop-color='#14110B'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#rohEnd)'/><rect x='110' y='430' width='860' height='1060' rx='10' fill='rgba(246,240,226,0.03)' stroke='rgba(226,192,120,0.5)' stroke-width='1.5'/><path d='M110 640 H970' stroke='rgba(226,192,120,0.35)' stroke-width='1'/><path d='M110 1290 H970' stroke='rgba(226,192,120,0.35)' stroke-width='1'/><path d='M500 355 H580 M540 315 V395' stroke='#E2C078' stroke-width='2'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 500,
+          "width": 800,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.7,
+          "enterAnimation": "fade",
+          "exitEnd": 5.6,
+          "style": {
+            "fontFamily": "Playfair Display"
+          },
+          "html": "<div style='text-align:center; color:#E2C078; font-size:34px; letter-spacing:7px;'>SAVE THE DATE</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 730,
+          "width": 800,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.55,
+          "enterEnd": 1.05,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5.6,
+          "style": {
+            "fontFamily": "Playfair Display"
+          },
+          "html": "<div style='text-align:center; color:#F6F0E2;'><div style='font-size:72px; font-weight:700; line-height:1.1;'>{{eventDate}}</div><div style='margin-top:18px; font-size:44px; color:#D9CBAC;'>{{eventTime}}</div><div style='margin-top:34px; font-size:30px; color:#B8A987;'>{{address}} · offered at {{price}}</div></div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showRsvp}}",
+          "x": 540,
+          "y": 1340,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 1.2,
+          "enterEnd": 1.65,
+          "enterAnimation": "circleopen",
+          "exitEnd": 5.6,
+          "style": {
+            "fontFamily": "Manrope"
+          },
+          "html": "<div style='display:inline-block; background:#E2C078; color:#14110B; border-radius:999px; padding:24px 60px; font-size:34px; font-weight:800;'>{{rsvpText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1560,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 1.6,
+          "enterEnd": 2,
+          "enterAnimation": "fade",
+          "exitEnd": 5.6,
+          "style": {
+            "fontFamily": "Manrope"
+          },
+          "html": "<div style='text-align:center; color:#8D8064; font-size:23px; font-weight:600; letter-spacing:5px;'>{{agencyName}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.14
+    }
+  ]
+}

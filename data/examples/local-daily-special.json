@@ -1,0 +1,172 @@
+{
+  "name": "local-daily-special",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#1C1A16",
+  "outputFormat": "mp4",
+  "variables": {
+    "restaurantName": "Trattoria Lume",
+    "dayLabel": "TODAY ONLY · SATURDAY",
+    "specialName": "Truffle Linguine Night",
+    "specialDescription": "House-made linguine, black truffle cream, 24-month parmigiano — while the batch lasts.",
+    "price": "$19",
+    "normallyPrice": "usually $27",
+    "showComparePrice": true,
+    "availabilityNote": "Only 40 plates made per evening",
+    "ctaText": "Reserve a table",
+    "phone": "(555) 890-2211",
+    "dishImage": "https://images.pexels.com/photos/17302499/pexels-photo-17302499.jpeg?auto=compress&cs=tinysrgb&w=1620",
+    "interiorImage": "https://images.pexels.com/photos/14590688/pexels-photo-14590688.jpeg?auto=compress&cs=tinysrgb&w=1620",
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/04/21/audio_ed6f0ed574.mp3"
+  },
+  "scenes": [
+    {
+      "id": "special",
+      "duration": 6.2,
+      "backgroundColor": "#1C1A16",
+      "transition": "smoothup",
+      "transitionId": "reserve",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{dishImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 6.2
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 6.2,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='ldsShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#1C1A16' stop-opacity='0.5'/><stop offset='0.42' stop-color='#1C1A16' stop-opacity='0.06'/><stop offset='1' stop-color='#1C1A16' stop-opacity='0.9'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#ldsShade)'/><rect x='64' y='64' width='952' height='1792' fill='none' stroke='rgba(230,193,128,0.4)' stroke-width='1.5'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 150,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.6,
+          "enterAnimation": "smoothdown",
+          "exitEnd": 6.2,
+          "style": { "fontFamily": "Playfair Display" },
+          "html": "<div style='text-align:center;'><span style='display:inline-block; background:rgba(28,26,22,0.85); border:1.5px solid rgba(230,193,128,0.6); color:#E6C180; border-radius:999px; padding:14px 40px; font-size:25px; letter-spacing:5px;'>{{dayLabel}}</span></div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 80,
+          "y": 1280,
+          "width": 920,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.5,
+          "enterEnd": 1,
+          "enterAnimation": "smoothup",
+          "exitEnd": 6.2,
+          "style": { "fontFamily": "Playfair Display" },
+          "html": "<div style='color:#E6C180; font-size:26px; letter-spacing:4px; font-family:Manrope, sans-serif; font-weight:700;'>TONIGHT'S SPECIAL</div><div style='margin-top:12px; color:#F7F0E3; font-size:80px; line-height:1.05; font-weight:700;'>{{specialName}}</div><div style='margin-top:18px; font-family:Manrope, sans-serif; color:#D6C6A8; font-size:28px; line-height:1.45; font-weight:500;'>{{specialDescription}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 80,
+          "y": 1710,
+          "anchor": "top-left",
+          "track": 11,
+          "enterBegin": 1.2,
+          "enterEnd": 1.6,
+          "enterAnimation": "circleopen",
+          "exitEnd": 6.2,
+          "style": { "fontFamily": "Manrope" },
+          "html": "<div style='color:#F7F0E3;'><span style='display:inline-block; background:#E6C180; color:#1C1A16; border-radius:16px; padding:12px 34px; font-size:44px; font-weight:800;'>{{price}}</span><span style='color:#B7A88B; font-size:27px; font-weight:600;'>&nbsp;&nbsp;{{normallyPrice}}</span></div>"
+        }
+      ]
+    },
+    {
+      "id": "reserve",
+      "duration": 5,
+      "backgroundColor": "#1C1A16",
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{interiorImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "opacity": 0.45,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 5
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 5,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='ldrShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#1C1A16' stop-opacity='0.65'/><stop offset='1' stop-color='#1C1A16' stop-opacity='0.92'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#ldrShade)'/><path d='M420 620 H660' stroke='rgba(230,193,128,0.6)' stroke-width='1.5'/><path d='M470 560 C500 530 580 530 610 560' stroke='rgba(230,193,128,0.7)' stroke-width='3' fill='none'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showComparePrice}}",
+          "x": 540,
+          "y": 700,
+          "width": 880,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.7,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5,
+          "style": { "fontFamily": "Manrope" },
+          "html": "<div style='text-align:center;'><span style='display:inline-block; background:rgba(230,193,128,0.14); border:1.5px dashed rgba(230,193,128,0.6); color:#E6C180; border-radius:16px; padding:16px 36px; font-size:28px; font-weight:700;'>⏳ {{availabilityNote}}</span></div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 900,
+          "width": 880,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.6,
+          "enterEnd": 1.05,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5,
+          "style": { "fontFamily": "Playfair Display" },
+          "html": "<div style='text-align:center; color:#F7F0E3; font-size:64px; line-height:1.15; font-weight:700;'>Tables go fast<br>on truffle night.</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1230,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 1.1,
+          "enterEnd": 1.5,
+          "enterAnimation": "circleopen",
+          "exitEnd": 5,
+          "style": { "fontFamily": "Manrope" },
+          "html": "<div style='display:inline-block; background:#E6C180; color:#1C1A16; border-radius:999px; padding:26px 62px; font-size:36px; font-weight:800;'>{{ctaText}} · {{phone}}</div><div style='margin-top:16px; text-align:center; color:#9A8C70; font-size:24px; letter-spacing:4px;'>{{restaurantName}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.14
+    }
+  ]
+}

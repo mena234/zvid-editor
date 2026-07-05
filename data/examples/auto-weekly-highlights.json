@@ -1,0 +1,209 @@
+{
+  "name": "auto-weekly-highlights",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#101318",
+  "outputFormat": "mp4",
+  "variables": {
+    "dealerName": "Cityline Auto",
+    "weekLabel": "This week's picks",
+    "introLine": "4 cars. 4 owners about to get lucky.",
+    "ctaText": "Full inventory online",
+    "ctaUrl": "citylineauto.example/stock",
+    "dealerPhone": "(555) 013-2040",
+    "cars": [
+      {
+        "title": "2021 Gran Coupé",
+        "meta": "31K mi · Petrol · Automatic",
+        "price": "$27,400",
+        "image": "https://images.pexels.com/photos/9016328/pexels-photo-9016328.jpeg?auto=compress&cs=tinysrgb&w=1620"
+      },
+      {
+        "title": "2019 Roadster GT",
+        "meta": "44K mi · Petrol · Manual",
+        "price": "$23,900",
+        "image": "https://images.pexels.com/photos/36597203/pexels-photo-36597203.jpeg?auto=compress&cs=tinysrgb&w=1620"
+      },
+      {
+        "title": "2022 Sport Sedan",
+        "meta": "18K mi · Hybrid · Automatic",
+        "price": "$31,200",
+        "image": "https://images.pexels.com/photos/17081564/pexels-photo-17081564.jpeg?auto=compress&cs=tinysrgb&w=1620"
+      },
+      {
+        "title": "2020 Executive Line",
+        "meta": "52K mi · Diesel · Automatic",
+        "price": "$25,700",
+        "image": "https://images.pexels.com/photos/18407743/pexels-photo-18407743.jpeg?auto=compress&cs=tinysrgb&w=1620"
+      }
+    ],
+    "musicUrl": "https://cdn.pixabay.com/audio/2026/02/24/audio_3f375fdf97.mp3"
+  },
+  "scenes": [
+    {
+      "id": "cover",
+      "duration": 3.2,
+      "backgroundColor": "#101318",
+      "transition": "smoothleft",
+      "transitionId": "car",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.2,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='awhBg' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#171C24'/><stop offset='1' stop-color='#101318'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#awhBg)'/><path d='M-60 1490 C240 1390 420 1470 600 1520 C800 1576 960 1550 1140 1470 L1140 1920 L-60 1920 Z' fill='rgba(255,255,255,0.03)'/><rect x='80' y='770' width='170' height='8' rx='4' fill='#F2B234'/><path d='M820 170 L1000 170 M910 80 L910 260' stroke='rgba(242,178,52,0.35)' stroke-width='2'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 80,
+          "y": 830,
+          "width": 920,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.65,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.2,
+          "style": {
+            "fontFamily": "Sora"
+          },
+          "html": "<div style='color:#F2B234; font-size:28px; font-weight:800; letter-spacing:6px;'>{{dealerName}}</div><div style='margin-top:16px; color:#F4F5F7; font-size:96px; line-height:1; font-weight:800; letter-spacing:-2px;'>{{weekLabel}}</div><div style='margin-top:22px; color:#9CA4B0; font-size:32px; font-weight:500;'>{{introLine}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "car",
+      "iterate": "cars",
+      "iterateAs": "car",
+      "duration": 3,
+      "backgroundColor": "#101318",
+      "transition": "slideleft",
+      "transitionId": "outro",
+      "transitionDuration": 0.45,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{car.image}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 3,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='awcShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#101318' stop-opacity='0.3'/><stop offset='0.55' stop-color='#101318' stop-opacity='0.02'/><stop offset='1' stop-color='#101318' stop-opacity='0.88'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#awcShade)'/><rect x='80' y='1420' width='920' height='330' rx='36' fill='rgba(16,19,24,0.82)' stroke='rgba(242,178,52,0.35)' stroke-width='1.5'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 130,
+          "y": 1470,
+          "width": 820,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.65,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3,
+          "style": {
+            "fontFamily": "Sora"
+          },
+          "html": "<div style='color:#F4F5F7; font-size:52px; font-weight:800; letter-spacing:-1px;'>{{car.title}}</div><div style='margin-top:10px; color:#9CA4B0; font-size:26px; font-weight:600;'>{{car.meta}}</div><div style='margin-top:16px; color:#F2B234; font-size:56px; font-weight:800;'>{{car.price}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 96,
+          "anchor": "center-center",
+          "track": 10,
+          "enterBegin": 0,
+          "exitEnd": 3,
+          "style": {
+            "fontFamily": "Sora"
+          },
+          "html": "<div style='color:rgba(244,245,247,0.72); font-size:23px; font-weight:700; letter-spacing:5px;'>{{dealerName}} · WEEKLY PICKS</div>"
+        }
+      ]
+    },
+    {
+      "id": "outro",
+      "duration": 4,
+      "backgroundColor": "#101318",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='awoGlow' cx='0.5' cy='0.4' r='0.85'><stop offset='0' stop-color='#1B2130'/><stop offset='1' stop-color='#101318'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#awoGlow)'/><rect x='110' y='1120' width='860' height='120' rx='30' fill='#F2B234'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 760,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.7,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4,
+          "style": {
+            "fontFamily": "Sora"
+          },
+          "html": "<div style='text-align:center; color:#F4F5F7; font-size:68px; line-height:1.06; font-weight:800;'>Missed one?<br>There's more inside.</div><div style='margin-top:20px; text-align:center; color:#9CA4B0; font-size:29px; font-weight:600;'>{{ctaText}} · new stock every week</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1180,
+          "anchor": "center-center",
+          "track": 11,
+          "enterBegin": 0.8,
+          "enterEnd": 1.2,
+          "enterAnimation": "fade",
+          "exitEnd": 4,
+          "style": {
+            "fontFamily": "Sora"
+          },
+          "html": "<div style='text-align:center; color:#101318; font-size:36px; font-weight:800;'>{{ctaUrl}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1330,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 1.1,
+          "enterEnd": 1.5,
+          "enterAnimation": "fade",
+          "exitEnd": 4,
+          "style": {
+            "fontFamily": "Sora"
+          },
+          "html": "<div style='text-align:center; color:#9CA4B0; font-size:27px; font-weight:700;'>📞 {{dealerPhone}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.18
+    }
+  ]
+}

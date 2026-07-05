@@ -1,0 +1,188 @@
+{
+  "name": "agency-monthly-recap",
+  "resolution": "full-hd",
+  "frameRate": 30,
+  "backgroundColor": "#0B1220",
+  "outputFormat": "mp4",
+  "variables": {
+    "agencyName": "Northbeam Digital",
+    "clientName": "Nordic Nest",
+    "period": "June 2026",
+    "summaryLine": "Best month since launch — here's what moved the needle.",
+    "nextSteps": "July focus: scale the 3 winning creatives and launch the retargeting pool.",
+    "introVideo": "https://videos.pexels.com/video-files/3205674/3205674-hd_1920_1080_25fps.mp4",
+    "metrics": [
+      {
+        "label": "Ad spend",
+        "value": "$42,300",
+        "delta": "▲ 12% vs May",
+        "note": "Scaled winners, cut the bottom 20%"
+      },
+      {
+        "label": "Revenue attributed",
+        "value": "$187,900",
+        "delta": "▲ 31% vs May",
+        "note": "New creative pack drove the lift"
+      },
+      {
+        "label": "Blended ROAS",
+        "value": "4.4×",
+        "delta": "▲ from 3.8×",
+        "note": "Highest since the account opened"
+      }
+    ],
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/04/21/audio_ed6f0ed574.mp3"
+  },
+  "scenes": [
+    {
+      "id": "title",
+      "duration": 4.4,
+      "backgroundColor": "#0B1220",
+      "transition": "smoothleft",
+      "transitionId": "metric",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "VIDEO",
+          "src": "{{introVideo}}",
+          "width": 1920,
+          "height": 1080,
+          "position": "center-center",
+          "resize": "cover",
+          "volume": 0,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.4
+        },
+        {
+          "type": "SVG",
+          "width": 1920,
+          "height": 1080,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 4.4,
+          "svg": "<svg width='1920' height='1080' viewBox='0 0 1920 1080' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='amrShade' x1='0' y1='0' x2='1' y2='0'><stop offset='0' stop-color='#0B1220' stop-opacity='0.94'/><stop offset='0.55' stop-color='#0B1220' stop-opacity='0.62'/><stop offset='1' stop-color='#0B1220' stop-opacity='0.25'/></linearGradient></defs><rect width='1920' height='1080' fill='url(#amrShade)'/><path d='M120 700 H420' stroke='#B8F04A' stroke-width='5'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 120,
+          "y": 300,
+          "width": 1100,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.75,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.4,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='color:#B8F04A; font-size:26px; font-weight:700; letter-spacing:6px;'>{{agencyName}} · MONTHLY REPORT</div><div style='margin-top:22px; color:#FFFFFF; font-size:88px; line-height:1; font-weight:700; letter-spacing:-2px;'>{{clientName}}<br>{{period}}</div><div style='margin-top:64px; color:#9FB0C8; font-size:30px; font-weight:500;'>{{summaryLine}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "metric",
+      "iterate": "metrics",
+      "iterateAs": "metric",
+      "duration": 3.6,
+      "backgroundColor": "#0B1220",
+      "transition": "smoothup",
+      "transitionId": "next",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1920,
+          "height": 1080,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.6,
+          "svg": "<svg width='1920' height='1080' viewBox='0 0 1920 1080' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='amrGlow' cx='0.28' cy='0.4' r='0.9'><stop offset='0' stop-color='#15203A'/><stop offset='1' stop-color='#0B1220'/></radialGradient></defs><rect width='1920' height='1080' fill='url(#amrGlow)'/><rect x='120' y='200' width='1010' height='680' rx='40' fill='rgba(255,255,255,0.03)' stroke='rgba(184,240,74,0.35)' stroke-width='1.5'/><path d='M1260 810 L1380 690 L1490 740 L1620 560 L1750 600 L1830 430' fill='none' stroke='#B8F04A' stroke-width='7' stroke-linecap='round' stroke-linejoin='round'/><circle cx='1830' cy='430' r='13' fill='#B8F04A'/><path d='M1260 880 H1830' stroke='rgba(255,255,255,0.18)' stroke-width='1.5'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 200,
+          "y": 290,
+          "width": 860,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.7,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.6,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='color:#9FB0C8; font-size:30px; font-weight:700; letter-spacing:4px;'>{{metric.label}}</div><div style='margin-top:18px; color:#FFFFFF; font-size:150px; line-height:1; font-weight:700; letter-spacing:-4px;'>{{metric.value}}</div><div style='margin-top:26px;'><span style='display:inline-block; background:rgba(184,240,74,0.14); border:1.5px solid rgba(184,240,74,0.5); color:#B8F04A; border-radius:999px; padding:12px 30px; font-size:30px; font-weight:700;'>{{metric.delta}}</span></div><div style='margin-top:26px; color:#7C8CA6; font-size:27px; font-weight:500;'>{{metric.note}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 1830,
+          "y": 90,
+          "anchor": "center-right",
+          "track": 10,
+          "enterBegin": 0,
+          "exitEnd": 3.6,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='color:rgba(159,176,200,0.7); font-size:22px; font-weight:700; letter-spacing:4px;'>{{clientName}} · {{period}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "next",
+      "duration": 5,
+      "backgroundColor": "#0B1220",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1920,
+          "height": 1080,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 5,
+          "svg": "<svg width='1920' height='1080' viewBox='0 0 1920 1080' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='amrEnd' cx='0.5' cy='0.4' r='0.9'><stop offset='0' stop-color='#141F38'/><stop offset='1' stop-color='#0B1220'/></radialGradient></defs><rect width='1920' height='1080' fill='url(#amrEnd)'/><circle cx='960' cy='300' r='90' fill='none' stroke='rgba(184,240,74,0.6)' stroke-width='2.5'/><path d='M960 250 V350 M910 300 H1010' stroke='#B8F04A' stroke-width='6' stroke-linecap='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 960,
+          "y": 470,
+          "width": 1300,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.3,
+          "enterEnd": 0.8,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='text-align:center; color:#9FB0C8; font-size:26px; font-weight:700; letter-spacing:6px;'>WHAT'S NEXT</div><div style='margin-top:20px; text-align:center; color:#FFFFFF; font-size:52px; line-height:1.25; font-weight:700;'>{{nextSteps}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 960,
+          "y": 890,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 1,
+          "enterEnd": 1.4,
+          "enterAnimation": "fade",
+          "exitEnd": 5,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='text-align:center; color:#5E6C84; font-size:24px; font-weight:700; letter-spacing:4px;'>{{agencyName}} — SEE YOU NEXT MONTH</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.15
+    }
+  ]
+}

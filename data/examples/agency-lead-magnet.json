@@ -1,0 +1,229 @@
+{
+  "name": "agency-lead-magnet",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#12101F",
+  "outputFormat": "mp4",
+  "variables": {
+    "brandName": "Northbeam Digital",
+    "assetType": "FREE PLAYBOOK",
+    "assetTitle": "The 2026 Creative Testing Playbook",
+    "assetPromise": "The exact system we use to find winning ads in 14 days.",
+    "downloadUrl": "northbeam.example/playbook",
+    "ctaText": "Download free",
+    "urgencyNote": "Free until the end of the month",
+    "showUrgency": true,
+    "bgImage": "https://images.pexels.com/photos/8511891/pexels-photo-8511891.jpeg?auto=compress&cs=tinysrgb&w=1620",
+    "benefits": [
+      {
+        "point": "37-point creative audit checklist"
+      },
+      {
+        "point": "The hook matrix: 5 angles × 3 formats"
+      },
+      {
+        "point": "Kill/scale decision tree with real budgets"
+      }
+    ],
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/03/19/audio_56ae1dae5f.mp3"
+  },
+  "scenes": [
+    {
+      "id": "promise",
+      "duration": 4.4,
+      "backgroundColor": "#12101F",
+      "transition": "smoothleft",
+      "transitionId": "inside",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{bgImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "opacity": 0.35,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.4
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 4.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='almShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#12101F' stop-opacity='0.65'/><stop offset='0.5' stop-color='#12101F' stop-opacity='0.4'/><stop offset='1' stop-color='#12101F' stop-opacity='0.92'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#almShade)'/><rect x='250' y='430' width='580' height='120' rx='60' fill='rgba(154,108,255,0.16)' stroke='rgba(154,108,255,0.6)' stroke-width='2'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 490,
+          "anchor": "center-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.6,
+          "enterAnimation": "circleopen",
+          "exitEnd": 4.4,
+          "style": {
+            "fontFamily": "Manrope"
+          },
+          "html": "<div style='text-align:center; color:#B9A0FF; font-size:34px; font-weight:800; letter-spacing:6px;'>📕 {{assetType}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 660,
+          "width": 940,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.5,
+          "enterEnd": 1,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.4,
+          "style": {
+            "fontFamily": "Manrope"
+          },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:74px; line-height:1.08; font-weight:800; letter-spacing:-1px;'>{{assetTitle}}</div><div style='margin-top:26px; text-align:center; color:#B9B3CE; font-size:31px; line-height:1.45; font-weight:500;'>{{assetPromise}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "inside",
+      "iterate": "benefits",
+      "iterateAs": "benefit",
+      "duration": 2.6,
+      "backgroundColor": "#12101F",
+      "transition": "smoothup",
+      "transitionId": "download",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 2.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='almIn' cx='0.5' cy='0.4' r='0.9'><stop offset='0' stop-color='#1D1833'/><stop offset='1' stop-color='#12101F'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#almIn)'/><circle cx='540' cy='640' r='96' fill='rgba(154,108,255,0.15)' stroke='rgba(154,108,255,0.6)' stroke-width='2.5'/><path d='M496 640 L528 674 L590 604' stroke='#B9A0FF' stroke-width='12' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 820,
+          "width": 880,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.6,
+          "enterAnimation": "smoothup",
+          "exitEnd": 2.6,
+          "style": {
+            "fontFamily": "Manrope"
+          },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:52px; line-height:1.2; font-weight:800;'>{{benefit.point}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 96,
+          "anchor": "center-center",
+          "track": 10,
+          "enterBegin": 0,
+          "exitEnd": 2.6,
+          "style": {
+            "fontFamily": "Manrope"
+          },
+          "html": "<div style='color:rgba(185,160,255,0.75); font-size:22px; font-weight:800; letter-spacing:5px;'>INSIDE THE PLAYBOOK</div>"
+        }
+      ]
+    },
+    {
+      "id": "download",
+      "duration": 4.6,
+      "backgroundColor": "#12101F",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='almEnd' cx='0.5' cy='0.35' r='0.9'><stop offset='0' stop-color='#241B45'/><stop offset='1' stop-color='#12101F'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#almEnd)'/><rect x='140' y='1100' width='800' height='108' rx='54' fill='rgba(255,255,255,0.06)' stroke='rgba(185,160,255,0.45)' stroke-width='1.5'/><circle cx='205' cy='1154' r='9' fill='#B9A0FF'/><path d='M540 480 V680 M470 610 L540 685 L610 610' stroke='#B9A0FF' stroke-width='14' fill='none' stroke-linecap='round' stroke-linejoin='round'/><path d='M420 740 H660' stroke='#B9A0FF' stroke-width='14' stroke-linecap='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 850,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.7,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.6,
+          "style": {
+            "fontFamily": "Manrope"
+          },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:66px; line-height:1.08; font-weight:800;'>Steal the system.<br><span style='color:#B9A0FF;'>Keep the results.</span></div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1154,
+          "anchor": "center-center",
+          "track": 11,
+          "enterBegin": 0.8,
+          "enterEnd": 1.2,
+          "enterAnimation": "fade",
+          "exitEnd": 4.6,
+          "style": {
+            "fontFamily": "JetBrains Mono"
+          },
+          "html": "<div style='text-align:center; color:#D8CFF5; font-size:30px; letter-spacing:1px;'>{{downloadUrl}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1300,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 1.2,
+          "enterEnd": 1.6,
+          "enterAnimation": "circleopen",
+          "exitEnd": 4.6,
+          "style": {
+            "fontFamily": "Manrope"
+          },
+          "html": "<div style='display:inline-block; background:#B9A0FF; color:#12101F; border-radius:999px; padding:28px 72px; font-size:40px; font-weight:800;'>{{ctaText}} ↓</div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showUrgency}}",
+          "x": 540,
+          "y": 1490,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 1.6,
+          "enterEnd": 2,
+          "enterAnimation": "fade",
+          "exitEnd": 4.6,
+          "style": {
+            "fontFamily": "Manrope"
+          },
+          "html": "<div style='text-align:center; color:#8F86AC; font-size:25px; font-weight:700;'>⏳ {{urgencyNote}} · {{brandName}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.18
+    }
+  ]
+}

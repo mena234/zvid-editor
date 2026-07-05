@@ -1,0 +1,246 @@
+{
+  "name": "edu-step-by-step",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#25190F",
+  "outputFormat": "mp4",
+  "variables": {
+    "channelName": "BREW SCHOOL",
+    "tutorialTitle": "Perfect pour-over in 4 steps",
+    "skillLevel": "Beginner friendly · 5 minutes",
+    "ctaText": "Full technique video on our channel",
+    "heroVideo": "https://videos.pexels.com/video-files/13736548/13736548-hd_1080_1920_24fps.mp4",
+    "stepImage": "https://images.pexels.com/photos/14633306/pexels-photo-14633306.jpeg?auto=compress&cs=tinysrgb&w=1620",
+    "steps": [
+      {
+        "num": "1",
+        "title": "Grind medium-fine",
+        "detail": "Think table salt. 20g of beans for a 320ml cup."
+      },
+      {
+        "num": "2",
+        "title": "Bloom 30 seconds",
+        "detail": "Pour 60ml of water, wait — the bubbles are flavor escaping."
+      },
+      {
+        "num": "3",
+        "title": "Pour in slow circles",
+        "detail": "Spiral outward, keep the water level steady, take 2½ minutes."
+      },
+      {
+        "num": "4",
+        "title": "Swirl and serve",
+        "detail": "One gentle swirl flattens the bed — that's the barista secret."
+      }
+    ],
+    "musicUrl": "https://cdn.pixabay.com/audio/2026/02/24/audio_3f375fdf97.mp3"
+  },
+  "scenes": [
+    {
+      "id": "title",
+      "duration": 3.8,
+      "backgroundColor": "#25190F",
+      "transition": "smoothleft",
+      "transitionId": "step",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "VIDEO",
+          "src": "{{heroVideo}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "volume": 0,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.8
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 3.8,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='esbShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#25190F' stop-opacity='0.55'/><stop offset='0.45' stop-color='#25190F' stop-opacity='0.15'/><stop offset='1' stop-color='#25190F' stop-opacity='0.9'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#esbShade)'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 165,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.6,
+          "enterAnimation": "fade",
+          "exitEnd": 3.8,
+          "style": { "fontFamily": "Outfit" },
+          "html": "<div style='display:inline-block; background:rgba(37,25,15,0.8); border:1.5px solid rgba(232,175,106,0.6); color:#E8AF6A; border-radius:999px; padding:14px 38px; font-size:26px; font-weight:800; letter-spacing:4px;'>☕ {{channelName}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 80,
+          "y": 1440,
+          "width": 920,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.5,
+          "enterEnd": 1,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.8,
+          "style": { "fontFamily": "Outfit" },
+          "html": "<div style='color:#FFF6EA; font-size:80px; line-height:1.05; font-weight:800; letter-spacing:-1px;'>{{tutorialTitle}}</div><div style='margin-top:16px; color:#C9A57E; font-size:28px; font-weight:600;'>{{skillLevel}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "step",
+      "iterate": "steps",
+      "iterateAs": "step",
+      "duration": 3.6,
+      "backgroundColor": "#25190F",
+      "transition": "smoothleft",
+      "transitionId": "outro",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{stepImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "opacity": 0.32,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.6
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 3.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><rect width='1080' height='1920' fill='rgba(37,25,15,0.6)'/><rect x='90' y='620' width='900' height='620' rx='40' fill='rgba(37,25,15,0.88)' stroke='rgba(232,175,106,0.4)' stroke-width='1.5'/><circle cx='270' cy='790' r='90' fill='rgba(232,175,106,0.14)' stroke='#E8AF6A' stroke-width='3'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 270,
+          "y": 790,
+          "anchor": "center-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.55,
+          "enterAnimation": "circleopen",
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "Outfit" },
+          "html": "<div style='color:#E8AF6A; font-size:84px; font-weight:800;'>{{step.num}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 410,
+          "y": 700,
+          "width": 530,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.35,
+          "enterEnd": 0.8,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "Outfit" },
+          "html": "<div style='color:#FFF6EA; font-size:48px; line-height:1.08; font-weight:800;'>{{step.title}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 160,
+          "y": 960,
+          "width": 760,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.6,
+          "enterEnd": 1.05,
+          "enterAnimation": "fade",
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "Outfit" },
+          "html": "<div style='color:#DCC3A4; font-size:31px; line-height:1.5; font-weight:500;'>{{step.detail}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 96,
+          "anchor": "center-center",
+          "track": 10,
+          "enterBegin": 0,
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "Outfit" },
+          "html": "<div style='color:rgba(255,246,234,0.7); font-size:22px; font-weight:700; letter-spacing:5px;'>{{channelName}} · {{tutorialTitle}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "outro",
+      "duration": 3.6,
+      "backgroundColor": "#25190F",
+      "visuals": [
+        {
+          "type": "VIDEO",
+          "src": "{{heroVideo}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "volume": 0,
+          "opacity": 0.45,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.6
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 3.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='esbEnd' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#25190F' stop-opacity='0.7'/><stop offset='1' stop-color='#25190F' stop-opacity='0.95'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#esbEnd)'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 880,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.7,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "Outfit" },
+          "html": "<div style='text-align:center; color:#FFF6EA; font-size:62px; line-height:1.1; font-weight:800;'>Now go make<br>a better cup. ☕</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1200,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.8,
+          "enterEnd": 1.2,
+          "enterAnimation": "circleopen",
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "Outfit" },
+          "html": "<div style='display:inline-block; background:#E8AF6A; color:#25190F; border-radius:999px; padding:24px 58px; font-size:32px; font-weight:800;'>{{ctaText}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.16
+    }
+  ]
+}

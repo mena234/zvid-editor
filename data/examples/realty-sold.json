@@ -1,0 +1,184 @@
+{
+  "name": "realty-sold",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#161311",
+  "outputFormat": "mp4",
+  "variables": {
+    "agencyName": "Grove & Key Realty",
+    "agentName": "Dana Whitfield",
+    "address": "31 Fernway Close",
+    "resultLine": "Sold in 9 days — 6% over asking.",
+    "overAsking": "+6% over asking",
+    "daysOnMarket": "9 days on market",
+    "showResultStats": true,
+    "thanksLine": "To the sellers: thank you for trusting us with your home.",
+    "ctaText": "Want this result? Let's talk.",
+    "agentPhone": "(555) 210-8890",
+    "soldImage": "https://images.pexels.com/photos/7578906/pexels-photo-7578906.jpeg?auto=compress&cs=tinysrgb&w=1620",
+    "keysImage": "https://images.pexels.com/photos/8482876/pexels-photo-8482876.jpeg?auto=compress&cs=tinysrgb&w=1620",
+    "musicUrl": "https://cdn.pixabay.com/audio/2026/02/24/audio_3f375fdf97.mp3"
+  },
+  "scenes": [
+    {
+      "id": "stamp",
+      "duration": 4.8,
+      "backgroundColor": "#161311",
+      "transition": "smoothleft",
+      "transitionId": "handover",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{soldImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.8
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 4.8,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='rsShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#161311' stop-opacity='0.42'/><stop offset='0.45' stop-color='#161311' stop-opacity='0.06'/><stop offset='1' stop-color='#161311' stop-opacity='0.88'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#rsShade)'/></svg>"
+        },
+        {
+          "type": "GIF",
+          "src": "https://media.giphy.com/media/TgoPuXFbihKJ54unZH/giphy.gif",
+          "x": 540,
+          "y": 480,
+          "width": 780,
+          "height": 780,
+          "anchor": "center-center",
+          "track": 3,
+          "enterBegin": 0.6,
+          "enterEnd": 0.9,
+          "enterAnimation": "fade",
+          "exitBegin": 3.4,
+          "exitEnd": 4,
+          "exitAnimation": "fade"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 420,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.3,
+          "enterEnd": 0.7,
+          "enterAnimation": "circleopen",
+          "exitEnd": 4.8,
+          "style": {
+            "fontFamily": "Archivo Black"
+          },
+          "html": "<div style='text-align:center;'><span style='display:inline-block; background:#B3261E; color:#FFF7ED; border-radius:20px; padding:26px 84px; font-size:140px; line-height:1; letter-spacing:10px; box-shadow:0 30px 90px rgba(22,19,17,0.6);'>SOLD</span></div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 1560,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.8,
+          "enterEnd": 1.3,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.8,
+          "style": {
+            "fontFamily": "Libre Baskerville"
+          },
+          "html": "<div style='color:#FFF7ED; font-size:52px; line-height:1.15;'>{{address}}</div><div style='margin-top:14px; color:#E9C46A; font-size:34px; font-weight:700; font-family:Manrope, sans-serif;'>{{resultLine}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "handover",
+      "duration": 4.6,
+      "backgroundColor": "#161311",
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{keysImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.6
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 4.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='rsEnd' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#161311' stop-opacity='0.6'/><stop offset='0.5' stop-color='#161311' stop-opacity='0.3'/><stop offset='1' stop-color='#161311' stop-opacity='0.94'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#rsEnd)'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showResultStats}}",
+          "x": 540,
+          "y": 170,
+          "width": 940,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.7,
+          "enterAnimation": "smoothdown",
+          "exitEnd": 4.6,
+          "style": {
+            "fontFamily": "Manrope"
+          },
+          "html": "<div style='text-align:center;'><span style='display:inline-block; background:rgba(233,196,106,0.16); border:1.5px solid rgba(233,196,106,0.6); color:#E9C46A; border-radius:999px; padding:14px 32px; font-size:27px; font-weight:800; margin-right:16px;'>{{overAsking}}</span><span style='display:inline-block; background:rgba(255,247,237,0.1); border:1.5px solid rgba(255,247,237,0.3); color:#FFF7ED; border-radius:999px; padding:14px 32px; font-size:27px; font-weight:800;'>{{daysOnMarket}}</span></div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1120,
+          "width": 880,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.6,
+          "enterEnd": 1.1,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.6,
+          "style": {
+            "fontFamily": "Libre Baskerville"
+          },
+          "html": "<div style='text-align:center; color:#FFF7ED; font-size:40px; line-height:1.35; font-style:italic;'>{{thanksLine}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1440,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 1.15,
+          "enterEnd": 1.55,
+          "enterAnimation": "circleopen",
+          "exitEnd": 4.6,
+          "style": {
+            "fontFamily": "Manrope"
+          },
+          "html": "<div style='display:inline-block; background:#E9C46A; color:#161311; border-radius:999px; padding:26px 60px; font-size:36px; font-weight:800;'>{{ctaText}}</div><div style='margin-top:16px; text-align:center; color:#CBB9A2; font-size:27px; font-weight:700;'>{{agentName}} · {{agentPhone}}</div><div style='margin-top:10px; text-align:center; color:#877B6B; font-size:22px; font-weight:600; letter-spacing:4px;'>{{agencyName}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.16
+    }
+  ]
+}

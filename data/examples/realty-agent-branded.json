@@ -1,0 +1,237 @@
+{
+  "name": "realty-agent-branded",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#0D2B26",
+  "outputFormat": "mp4",
+  "variables": {
+    "agentName": "Dana Whitfield",
+    "agentTitle": "Senior Partner · Grove & Key Realty",
+    "personalLine": "I don't sell houses. I negotiate the next chapter of your life.",
+    "statSold": "140+",
+    "statYears": "12",
+    "statRating": "4.9★",
+    "showStats": true,
+    "agentPhone": "(555) 210-8890",
+    "agentInstagram": "@dana.sells.maplewood",
+    "ctaText": "Free home valuation this month",
+    "agentImage": "https://images.pexels.com/photos/30781748/pexels-photo-30781748.jpeg?auto=compress&cs=tinysrgb&w=1620",
+    "musicUrl": "https://cdn.pixabay.com/audio/2026/02/24/audio_3f375fdf97.mp3"
+  },
+  "scenes": [
+    {
+      "id": "portrait",
+      "duration": 5,
+      "backgroundColor": "#0D2B26",
+      "transition": "smoothleft",
+      "transitionId": "stats",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{agentImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 5
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 5,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='rabShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#0D2B26' stop-opacity='0.4'/><stop offset='0.5' stop-color='#0D2B26' stop-opacity='0.05'/><stop offset='1' stop-color='#0D2B26' stop-opacity='0.9'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#rabShade)'/><path d='M80 1420 H360' stroke='#EFB65C' stroke-width='4'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 80,
+          "y": 1460,
+          "width": 920,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.4,
+          "enterEnd": 0.9,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5,
+          "style": {
+            "fontFamily": "Fraunces"
+          },
+          "html": "<div style='color:#F7F3EA; font-size:82px; line-height:1; font-weight:700; letter-spacing:-1px;'>{{agentName}}</div><div style='margin-top:14px; font-family:Manrope, sans-serif; color:#BFD3C5; font-size:27px; font-weight:600; letter-spacing:1px;'>{{agentTitle}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 80,
+          "y": 1690,
+          "width": 920,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.9,
+          "enterEnd": 1.4,
+          "enterAnimation": "fade",
+          "exitEnd": 5,
+          "style": {
+            "fontFamily": "Fraunces"
+          },
+          "html": "<div style='color:#EFB65C; font-size:32px; line-height:1.35; font-style:italic;'>{{personalLine}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "stats",
+      "condition": "{{showStats}}",
+      "duration": 4.4,
+      "backgroundColor": "#0D2B26",
+      "transition": "smoothup",
+      "transitionId": "reach-out",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='rabGlow' cx='0.5' cy='0.35' r='0.9'><stop offset='0' stop-color='#164137'/><stop offset='1' stop-color='#0D2B26'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#rabGlow)'/><rect x='90' y='560' width='900' height='800' rx='44' fill='rgba(247,243,234,0.04)' stroke='rgba(239,182,92,0.4)' stroke-width='1.5'/><path d='M90 830 H990' stroke='rgba(247,243,234,0.12)' stroke-width='1'/><path d='M90 1100 H990' stroke='rgba(247,243,234,0.12)' stroke-width='1'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 400,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.6,
+          "enterAnimation": "smoothdown",
+          "exitEnd": 4.4,
+          "style": {
+            "fontFamily": "Fraunces"
+          },
+          "html": "<div style='text-align:center; color:#F7F3EA; font-size:52px; font-weight:700;'>The track record</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 655,
+          "width": 800,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.5,
+          "enterEnd": 0.95,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.4,
+          "style": {
+            "fontFamily": "Manrope"
+          },
+          "html": "<div style='color:#F7F3EA;'><span style='color:#EFB65C; font-size:66px; font-weight:800;'>{{statSold}}</span><span style='font-size:34px; font-weight:600;'>&nbsp; homes sold in Maplewood</span></div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 925,
+          "width": 800,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.75,
+          "enterEnd": 1.2,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.4,
+          "style": {
+            "fontFamily": "Manrope"
+          },
+          "html": "<div style='color:#F7F3EA;'><span style='color:#EFB65C; font-size:66px; font-weight:800;'>{{statYears}}</span><span style='font-size:34px; font-weight:600;'>&nbsp; years in this exact market</span></div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1195,
+          "width": 800,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 1,
+          "enterEnd": 1.45,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.4,
+          "style": {
+            "fontFamily": "Manrope"
+          },
+          "html": "<div style='color:#F7F3EA;'><span style='color:#EFB65C; font-size:66px; font-weight:800;'>{{statRating}}</span><span style='font-size:34px; font-weight:600;'>&nbsp; average client rating</span></div>"
+        }
+      ]
+    },
+    {
+      "id": "reach-out",
+      "duration": 4.6,
+      "backgroundColor": "#0D2B26",
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{agentImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "opacity": 0.28,
+          "filter": {
+            "saturate": 0.8
+          },
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.6
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 4.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><rect width='1080' height='1920' fill='rgba(13,43,38,0.6)'/><circle cx='540' cy='600' r='120' fill='none' stroke='rgba(239,182,92,0.7)' stroke-width='2'/><path d='M493 600 C493 574 514 553 540 553 C566 553 587 574 587 600 C587 626 566 647 540 647 C514 647 493 626 493 600 Z M493 640 C480 660 472 686 472 712 H608 C608 686 600 660 587 640' fill='none' stroke='#EFB65C' stroke-width='0'/><path d='M540 550 C567 550 589 572 589 599 C589 626 567 648 540 648 C513 648 491 626 491 599 C491 572 513 550 540 550 Z' fill='none' stroke='#EFB65C' stroke-width='4'/><path d='M462 720 C470 682 502 656 540 656 C578 656 610 682 618 720' fill='none' stroke='#EFB65C' stroke-width='4' stroke-linecap='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 830,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.3,
+          "enterEnd": 0.8,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.6,
+          "style": {
+            "fontFamily": "Fraunces"
+          },
+          "html": "<div style='text-align:center; color:#F7F3EA; font-size:60px; line-height:1.15; font-weight:700;'>Thinking of selling<br>this year?</div><div style='margin-top:18px; text-align:center; color:#BFD3C5; font-size:29px; font-family:Manrope, sans-serif; font-weight:600;'>{{ctaText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1220,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.95,
+          "enterEnd": 1.35,
+          "enterAnimation": "circleopen",
+          "exitEnd": 4.6,
+          "style": {
+            "fontFamily": "Manrope"
+          },
+          "html": "<div style='display:inline-block; background:#EFB65C; color:#0D2B26; border-radius:999px; padding:28px 64px; font-size:38px; font-weight:800;'>📞 {{agentPhone}}</div><div style='margin-top:18px; text-align:center; color:#BFD3C5; font-size:28px; font-weight:700;'>{{agentInstagram}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.16
+    }
+  ]
+}

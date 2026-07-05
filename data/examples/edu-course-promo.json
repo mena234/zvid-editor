@@ -1,0 +1,247 @@
+{
+  "name": "edu-course-promo",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#101B2E",
+  "outputFormat": "mp4",
+  "variables": {
+    "academyName": "BRIGHTPATH ACADEMY",
+    "courseName": "Data Storytelling for Non-Analysts",
+    "promiseLine": "Turn boring numbers into presentations people remember.",
+    "lessonsCount": "24 lessons",
+    "courseLength": "6 hours",
+    "certNote": "Certificate included",
+    "rating": "4.8★ (2,150 students)",
+    "price": "$79",
+    "oldPrice": "$129",
+    "showDiscount": true,
+    "deadline": "Early-bird ends Sunday",
+    "ctaText": "Enroll now",
+    "studyVideo": "https://videos.pexels.com/video-files/5962955/5962955-hd_1080_1920_24fps.mp4",
+    "studentImage": "https://images.pexels.com/photos/9158999/pexels-photo-9158999.jpeg?auto=compress&cs=tinysrgb&w=1620",
+    "musicUrl": "https://cdn.pixabay.com/audio/2026/02/24/audio_3f375fdf97.mp3"
+  },
+  "scenes": [
+    {
+      "id": "hook",
+      "duration": 4.2,
+      "backgroundColor": "#101B2E",
+      "transition": "smoothleft",
+      "transitionId": "value",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "VIDEO",
+          "src": "{{studyVideo}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "volume": 0,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.2
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 4.2,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='ecpShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#101B2E' stop-opacity='0.6'/><stop offset='0.45' stop-color='#101B2E' stop-opacity='0.25'/><stop offset='1' stop-color='#101B2E' stop-opacity='0.92'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#ecpShade)'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 165,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.6,
+          "enterAnimation": "fade",
+          "exitEnd": 4.2,
+          "style": { "fontFamily": "Manrope" },
+          "html": "<div style='text-align:center; color:#7FB8FF; font-size:24px; font-weight:800; letter-spacing:6px;'>{{academyName}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 80,
+          "y": 1320,
+          "width": 920,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.5,
+          "enterEnd": 1,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.2,
+          "style": { "fontFamily": "Fraunces" },
+          "html": "<div style='color:#F3F6FB; font-size:74px; line-height:1.1; font-weight:700;'>{{courseName}}</div><div style='margin-top:18px; font-family:Manrope, sans-serif; color:#AFC4E4; font-size:30px; line-height:1.4; font-weight:500;'>{{promiseLine}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "value",
+      "duration": 5.4,
+      "backgroundColor": "#101B2E",
+      "transition": "smoothup",
+      "transitionId": "enroll",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{studentImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "opacity": 0.3,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 5.4
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 5.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><rect width='1080' height='1920' fill='rgba(16,27,46,0.62)'/><rect x='90' y='520' width='900' height='880' rx='44' fill='rgba(16,27,46,0.88)' stroke='rgba(127,184,255,0.4)' stroke-width='1.5'/><path d='M90 760 H990 M90 980 H990 M90 1200 H990' stroke='rgba(255,255,255,0.1)' stroke-width='1'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 380,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.6,
+          "enterAnimation": "smoothdown",
+          "exitEnd": 5.4,
+          "style": { "fontFamily": "Manrope" },
+          "html": "<div style='text-align:center; color:#F3F6FB; font-size:48px; font-weight:800;'>What's inside</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 170,
+          "y": 620,
+          "width": 760,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.5,
+          "enterEnd": 0.95,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 5.4,
+          "style": { "fontFamily": "Manrope" },
+          "html": "<div style='color:#F3F6FB; font-size:34px; font-weight:700;'>🎬&nbsp; {{lessonsCount}} · {{courseLength}} total</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 170,
+          "y": 840,
+          "width": 760,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.9,
+          "enterEnd": 1.35,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 5.4,
+          "style": { "fontFamily": "Manrope" },
+          "html": "<div style='color:#F3F6FB; font-size:34px; font-weight:700;'>📜&nbsp; {{certNote}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 170,
+          "y": 1060,
+          "width": 760,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 1.3,
+          "enterEnd": 1.75,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 5.4,
+          "style": { "fontFamily": "Manrope" },
+          "html": "<div style='color:#F3F6FB; font-size:34px; font-weight:700;'>⭐&nbsp; Rated {{rating}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 170,
+          "y": 1270,
+          "width": 760,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 1.7,
+          "enterEnd": 2.15,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 5.4,
+          "style": { "fontFamily": "Manrope" },
+          "html": "<div style='color:#F3F6FB; font-size:34px; font-weight:700;'>♾️&nbsp; Lifetime access, learn at your pace</div>"
+        }
+      ]
+    },
+    {
+      "id": "enroll",
+      "duration": 4.8,
+      "backgroundColor": "#101B2E",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.8,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='ecpEnd' cx='0.5' cy='0.4' r='0.9'><stop offset='0' stop-color='#1A2C4C'/><stop offset='1' stop-color='#101B2E'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#ecpEnd)'/><path d='M420 560 L540 500 L660 560 L540 620 Z' fill='none' stroke='#7FB8FF' stroke-width='7' stroke-linejoin='round'/><path d='M480 600 V680 C480 710 600 710 600 680 V600' fill='none' stroke='#7FB8FF' stroke-width='7'/><path d='M660 560 V680' stroke='#7FB8FF' stroke-width='7' stroke-linecap='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 820,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.7,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.8,
+          "style": { "fontFamily": "Fraunces" },
+          "html": "<div style='text-align:center; color:#F3F6FB; font-size:58px; line-height:1.15; font-weight:700;'>Your next skill<br>starts this weekend.</div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showDiscount}}",
+          "x": 540,
+          "y": 1130,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.85,
+          "enterEnd": 1.25,
+          "enterAnimation": "circleopen",
+          "exitEnd": 4.8,
+          "style": { "fontFamily": "Manrope" },
+          "html": "<div style='text-align:center; color:#F3F6FB;'><s style='color:#5F7397; font-size:42px;'>{{oldPrice}}</s>&nbsp;&nbsp;<span style='color:#7FB8FF; font-size:88px; font-weight:800;'>{{price}}</span></div><div style='margin-top:10px; text-align:center; color:#AFC4E4; font-size:26px; font-weight:700;'>⏳ {{deadline}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1440,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 1.4,
+          "enterEnd": 1.8,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.8,
+          "style": { "fontFamily": "Manrope" },
+          "html": "<div style='display:inline-block; background:#7FB8FF; color:#101B2E; border-radius:999px; padding:26px 66px; font-size:36px; font-weight:800;'>{{ctaText}} →</div><div style='margin-top:16px; text-align:center; color:#5F7397; font-size:23px; font-weight:700; letter-spacing:4px;'>{{academyName}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.16
+    }
+  ]
+}

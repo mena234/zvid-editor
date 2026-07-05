@@ -1,0 +1,170 @@
+{
+  "name": "local-review",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#171310",
+  "outputFormat": "mp4",
+  "variables": {
+    "restaurantName": "Ember & Oak",
+    "reviewText": "Came for a quick bite, stayed three hours. The brisket falls apart if you look at it too hard. Best table in town.",
+    "reviewerName": "Marta G.",
+    "reviewMeta": "Google review · 2 days ago",
+    "rating": "4.9",
+    "reviewCount": "630+ reviews",
+    "platformNote": "Rated on Google & TripAdvisor",
+    "showPlatform": true,
+    "ctaText": "Book your table",
+    "phone": "(555) 442-0980",
+    "diningImage": "https://images.pexels.com/photos/3951668/pexels-photo-3951668.jpeg?auto=compress&cs=tinysrgb&w=1620",
+    "musicUrl": "https://cdn.pixabay.com/audio/2026/02/24/audio_3f375fdf97.mp3"
+  },
+  "scenes": [
+    {
+      "id": "review",
+      "duration": 7,
+      "backgroundColor": "#171310",
+      "transition": "smoothup",
+      "transitionId": "book",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{diningImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "opacity": 0.35,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 7
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 7,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><rect width='1080' height='1920' fill='rgba(23,19,16,0.6)'/><rect x='84' y='500' width='912' height='860' rx='44' fill='rgba(23,19,16,0.9)' stroke='rgba(240,180,81,0.4)' stroke-width='1.5'/><text x='150' y='700' font-family='Georgia' font-size='200' fill='rgba(240,180,81,0.85)'>&#8220;</text></svg>"
+        },
+        {
+          "type": "SVG",
+          "x": 540,
+          "y": 420,
+          "width": 340,
+          "height": 56,
+          "anchor": "center-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.6,
+          "enterAnimation": "fade",
+          "exitEnd": 7,
+          "svg": "<svg width='340' height='56' viewBox='0 0 340 56' xmlns='http://www.w3.org/2000/svg'><path d='M28 4 L35 21 L54 23 L40 35 L44 53 L28 43 L12 53 L16 35 L2 23 L21 21 Z' fill='#F0B451'/><path d='M96 4 L103 21 L122 23 L108 35 L112 53 L96 43 L80 53 L84 35 L70 23 L89 21 Z' fill='#F0B451'/><path d='M164 4 L171 21 L190 23 L176 35 L180 53 L164 43 L148 53 L152 35 L138 23 L157 21 Z' fill='#F0B451'/><path d='M232 4 L239 21 L258 23 L244 35 L248 53 L232 43 L216 53 L220 35 L206 23 L225 21 Z' fill='#F0B451'/><path d='M300 4 L307 21 L326 23 L312 35 L316 53 L300 43 L284 53 L288 35 L274 23 L293 21 Z' fill='#F0B451'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 160,
+          "y": 740,
+          "width": 760,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.5,
+          "enterEnd": 1,
+          "enterAnimation": "smoothup",
+          "exitEnd": 7,
+          "style": { "fontFamily": "Lora" },
+          "html": "<div style='color:#F6EFE4; font-size:46px; line-height:1.4; font-style:italic;'>{{reviewText}}</div><div style='margin-top:34px; font-family:DM Sans, sans-serif; font-style:normal;'><span style='color:#F0B451; font-size:28px; font-weight:800;'>{{reviewerName}}</span><span style='color:#9C8B76; font-size:24px; font-weight:600;'>&nbsp; · {{reviewMeta}}</span></div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1460,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 1.3,
+          "enterEnd": 1.7,
+          "enterAnimation": "fade",
+          "exitEnd": 7,
+          "style": { "fontFamily": "DM Sans" },
+          "html": "<div style='text-align:center; color:#D8C8B2; font-size:29px; font-weight:700;'><span style='color:#F0B451; font-size:44px; font-weight:800;'>{{rating}}★</span>&nbsp; from {{reviewCount}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "book",
+      "duration": 4.4,
+      "backgroundColor": "#171310",
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{diningImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.4
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 4.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='lrvShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#171310' stop-opacity='0.55'/><stop offset='0.5' stop-color='#171310' stop-opacity='0.35'/><stop offset='1' stop-color='#171310' stop-opacity='0.92'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#lrvShade)'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1050,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.7,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.4,
+          "style": { "fontFamily": "Lora" },
+          "html": "<div style='text-align:center; color:#F6EFE4; font-size:62px; line-height:1.15; font-weight:700;'>Come find out why<br>nobody leaves early.</div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showPlatform}}",
+          "x": 540,
+          "y": 1320,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.8,
+          "enterEnd": 1.2,
+          "enterAnimation": "fade",
+          "exitEnd": 4.4,
+          "style": { "fontFamily": "DM Sans" },
+          "html": "<div style='text-align:center; color:#B7A78F; font-size:25px; font-weight:600;'>{{platformNote}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1430,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 1.2,
+          "enterEnd": 1.6,
+          "enterAnimation": "circleopen",
+          "exitEnd": 4.4,
+          "style": { "fontFamily": "DM Sans" },
+          "html": "<div style='display:inline-block; background:#F0B451; color:#171310; border-radius:999px; padding:26px 62px; font-size:34px; font-weight:800;'>{{ctaText}} · {{phone}}</div><div style='margin-top:16px; text-align:center; color:#9C8B76; font-size:24px; letter-spacing:4px;'>{{restaurantName}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.15
+    }
+  ]
+}

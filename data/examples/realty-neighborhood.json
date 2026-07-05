@@ -1,0 +1,225 @@
+{
+  "name": "realty-neighborhood",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#0F141C",
+  "outputFormat": "mp4",
+  "variables": {
+    "agencyName": "Grove & Key Realty",
+    "neighborhoodName": "Maplewood Heights",
+    "hookLine": "Why everyone suddenly wants this zip code",
+    "closingLine": "Homes here sell in 11 days on average.",
+    "ctaText": "See every listing in the area",
+    "aerialVideo": "https://videos.pexels.com/video-files/15813181/15813181-hd_1080_1920_30fps.mp4",
+    "skylineImage": "https://images.pexels.com/photos/17743494/pexels-photo-17743494.jpeg?auto=compress&cs=tinysrgb&w=1620",
+    "highlights": [
+      {
+        "icon": "🎓",
+        "title": "Top-rated schools",
+        "detail": "Three of the county's best within a 10-minute walk"
+      },
+      {
+        "icon": "🚈",
+        "title": "22 min downtown",
+        "detail": "Express line every quarter hour from Maple Station"
+      },
+      {
+        "icon": "☕",
+        "title": "Cafés and green space",
+        "detail": "Farmers market Saturdays, 40 acres of parkland"
+      }
+    ],
+    "musicUrl": "https://cdn.pixabay.com/audio/2026/02/24/audio_3f375fdf97.mp3"
+  },
+  "scenes": [
+    {
+      "id": "flyover",
+      "duration": 4.2,
+      "backgroundColor": "#0F141C",
+      "transition": "fade",
+      "transitionId": "perk",
+      "transitionDuration": 0.6,
+      "visuals": [
+        {
+          "type": "VIDEO",
+          "src": "{{aerialVideo}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "volume": 0,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.2
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 4.2,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='rnShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#0F141C' stop-opacity='0.5'/><stop offset='0.45' stop-color='#0F141C' stop-opacity='0.06'/><stop offset='1' stop-color='#0F141C' stop-opacity='0.88'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#rnShade)'/><circle cx='540' cy='250' r='7' fill='#F4A259'/><path d='M540 257 C505 300 505 340 540 380 C575 340 575 300 540 257 Z' fill='none' stroke='#F4A259' stroke-width='0'/><path d='M540 190 C495 190 460 225 460 268 C460 330 540 400 540 400 C540 400 620 330 620 268 C620 225 585 190 540 190 Z' fill='none' stroke='#F4A259' stroke-width='4'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1440,
+          "width": 940,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.45,
+          "enterEnd": 0.95,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.2,
+          "style": {
+            "fontFamily": "Outfit"
+          },
+          "html": "<div style='text-align:center; color:#F4A259; font-size:26px; font-weight:800; letter-spacing:6px;'>NEIGHBORHOOD SPOTLIGHT</div><div style='margin-top:12px; text-align:center; color:#FFFFFF; font-size:80px; line-height:1; font-weight:800; letter-spacing:-1px;'>{{neighborhoodName}}</div><div style='margin-top:16px; text-align:center; color:#AEB8C6; font-size:29px; font-weight:600;'>{{hookLine}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "perk",
+      "iterate": "highlights",
+      "iterateAs": "perk",
+      "duration": 3.2,
+      "backgroundColor": "#0F141C",
+      "transition": "smoothup",
+      "transitionId": "closing",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{skylineImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "opacity": 0.26,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.2
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 3.2,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><rect width='1080' height='1920' fill='rgba(15,20,28,0.55)'/><rect x='90' y='700' width='900' height='520' rx='40' fill='rgba(15,20,28,0.85)' stroke='rgba(244,162,89,0.4)' stroke-width='1.5'/><circle cx='250' cy='860' r='84' fill='rgba(244,162,89,0.14)' stroke='rgba(244,162,89,0.5)' stroke-width='2'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 250,
+          "y": 860,
+          "anchor": "center-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.55,
+          "enterAnimation": "circleopen",
+          "exitEnd": 3.2,
+          "style": {
+            "fontFamily": "Outfit"
+          },
+          "html": "<div style='font-size:76px;'>{{perk.icon}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 390,
+          "y": 780,
+          "width": 560,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.35,
+          "enterEnd": 0.8,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.2,
+          "style": {
+            "fontFamily": "Outfit"
+          },
+          "html": "<div style='color:#FFFFFF; font-size:46px; line-height:1.1; font-weight:800;'>{{perk.title}}</div><div style='margin-top:14px; color:#AEB8C6; font-size:27px; line-height:1.4; font-weight:500;'>{{perk.detail}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 96,
+          "anchor": "center-center",
+          "track": 10,
+          "enterBegin": 0,
+          "exitEnd": 3.2,
+          "style": {
+            "fontFamily": "Outfit"
+          },
+          "html": "<div style='color:rgba(255,255,255,0.7); font-size:22px; font-weight:700; letter-spacing:5px;'>{{neighborhoodName}} · SPOTLIGHT</div>"
+        }
+      ]
+    },
+    {
+      "id": "closing",
+      "duration": 4.4,
+      "backgroundColor": "#0F141C",
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{skylineImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.4
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 4.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='rnEnd' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#0F141C' stop-opacity='0.6'/><stop offset='0.5' stop-color='#0F141C' stop-opacity='0.4'/><stop offset='1' stop-color='#0F141C' stop-opacity='0.92'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#rnEnd)'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1050,
+          "width": 920,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.75,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.4,
+          "style": {
+            "fontFamily": "Outfit"
+          },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:58px; line-height:1.12; font-weight:800;'>{{closingLine}}</div><div style='margin-top:16px; text-align:center; color:#AEB8C6; font-size:28px; font-weight:600;'>Thinking of buying in? Move fast.</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1400,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.85,
+          "enterEnd": 1.25,
+          "enterAnimation": "circleopen",
+          "exitEnd": 4.4,
+          "style": {
+            "fontFamily": "Outfit"
+          },
+          "html": "<div style='display:inline-block; background:#F4A259; color:#0F141C; border-radius:999px; padding:26px 62px; font-size:36px; font-weight:800;'>{{ctaText}}</div><div style='margin-top:16px; text-align:center; color:#7E8894; font-size:24px; font-weight:600; letter-spacing:4px;'>{{agencyName}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.17
+    }
+  ]
+}

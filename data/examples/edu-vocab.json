@@ -1,0 +1,177 @@
+{
+  "name": "edu-vocab",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#F4EFE6",
+  "outputFormat": "mp4",
+  "variables": {
+    "channelName": "PALABRA · daily Spanish",
+    "introLine": "3 words that make you sound local",
+    "ctaText": "Save this — quiz tomorrow",
+    "words": [
+      {
+        "word": "Sobremesa",
+        "phonetic": "/so·bre·ME·sa/",
+        "meaning": "The time spent lingering at the table talking after a meal",
+        "example": "\"La sobremesa duró más que la cena.\""
+      },
+      {
+        "word": "Madrugar",
+        "phonetic": "/ma·dru·GAR/",
+        "meaning": "To wake up very early, before sunrise",
+        "example": "\"Mañana tengo que madrugar.\""
+      },
+      {
+        "word": "Estrenar",
+        "phonetic": "/es·tre·NAR/",
+        "meaning": "To use or wear something for the very first time",
+        "example": "\"Hoy estreno zapatos nuevos.\""
+      }
+    ],
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/04/21/audio_ed6f0ed574.mp3"
+  },
+  "scenes": [
+    {
+      "id": "intro",
+      "duration": 3,
+      "backgroundColor": "#F4EFE6",
+      "transition": "smoothleft",
+      "transitionId": "word",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><rect width='1080' height='1920' fill='#F4EFE6'/><circle cx='540' cy='620' r='180' fill='rgba(216,88,64,0.12)'/><text x='540' y='680' text-anchor='middle' font-family='Georgia' font-size='160' fill='#D85840'>ñ</text><path d='M380 900 H700' stroke='rgba(216,88,64,0.4)' stroke-width='3'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 990,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.7,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3,
+          "style": { "fontFamily": "Lora" },
+          "html": "<div style='text-align:center; color:#2B2118; font-size:70px; line-height:1.15; font-weight:700;'>{{introLine}}</div><div style='margin-top:20px; text-align:center; color:#95897A; font-size:26px; letter-spacing:4px; font-family:Inter, sans-serif;'>{{channelName}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "word",
+      "iterate": "words",
+      "iterateAs": "w",
+      "duration": 4.6,
+      "backgroundColor": "#F4EFE6",
+      "transition": "smoothleft",
+      "transitionId": "outro",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><rect width='1080' height='1920' fill='#F4EFE6'/><rect x='80' y='420' width='920' height='1000' rx='40' fill='#FFFFFF' stroke='rgba(43,33,24,0.15)' stroke-width='1.5'/><rect x='80' y='420' width='920' height='12' rx='6' fill='#D85840'/><path d='M160 900 H920' stroke='rgba(43,33,24,0.12)' stroke-width='1.5'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 540,
+          "width": 800,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.7,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.6,
+          "style": { "fontFamily": "Lora" },
+          "html": "<div style='text-align:center; color:#2B2118; font-size:96px; line-height:1; font-weight:700;'>{{w.word}}</div><div style='margin-top:18px; text-align:center; color:#D85840; font-size:32px; font-family:Inter, sans-serif;'>{{w.phonetic}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 970,
+          "width": 760,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.8,
+          "enterEnd": 1.25,
+          "enterAnimation": "fade",
+          "exitEnd": 4.6,
+          "style": { "fontFamily": "Inter" },
+          "html": "<div style='text-align:center; color:#5C5040; font-size:34px; line-height:1.5; font-weight:500;'>{{w.meaning}}</div><div style='margin-top:40px; text-align:center; color:#2B2118; font-size:32px; font-style:italic; font-family:Lora, serif;'>{{w.example}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 96,
+          "anchor": "center-center",
+          "track": 10,
+          "enterBegin": 0,
+          "exitEnd": 4.6,
+          "style": { "fontFamily": "Inter" },
+          "html": "<div style='color:#95897A; font-size:22px; font-weight:600; letter-spacing:5px;'>{{channelName}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "outro",
+      "duration": 3.2,
+      "backgroundColor": "#2B2118",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.2,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><rect width='1080' height='1920' fill='#2B2118'/><path d='M440 620 H640 M440 680 H600 M440 740 H620' stroke='rgba(244,239,230,0.35)' stroke-width='9' stroke-linecap='round'/><rect x='390' y='550' width='300 ' height='260' rx='18' fill='none' stroke='#D85840' stroke-width='4'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 940,
+          "width": 880,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.7,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.2,
+          "style": { "fontFamily": "Lora" },
+          "html": "<div style='text-align:center; color:#F4EFE6; font-size:58px; line-height:1.2; font-weight:700;'>Use one of them<br>today. Out loud.</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1250,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.8,
+          "enterEnd": 1.2,
+          "enterAnimation": "circleopen",
+          "exitEnd": 3.2,
+          "style": { "fontFamily": "Inter" },
+          "html": "<div style='display:inline-block; background:#D85840; color:#F4EFE6; border-radius:999px; padding:24px 58px; font-size:32px; font-weight:800;'>{{ctaText}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.14
+    }
+  ]
+}

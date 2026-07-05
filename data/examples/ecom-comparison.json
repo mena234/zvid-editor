@@ -1,0 +1,322 @@
+{
+  "name": "ecom-comparison",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#111013",
+  "outputFormat": "mp4",
+  "variables": {
+    "brandName": "MAISON SCENT",
+    "titleLine": "Which one is you?",
+    "nameA": "Noir Intense",
+    "moodA": "Evening · Bold · Smoky",
+    "priceA": "$89",
+    "imageA": "https://images.pexels.com/photos/7850600/pexels-photo-7850600.jpeg?auto=compress&cs=tinysrgb&w=1620",
+    "nameB": "Lumen Fresh",
+    "moodB": "Daytime · Crisp · Citrus",
+    "priceB": "$74",
+    "imageB": "https://images.pexels.com/photos/13875783/pexels-photo-13875783.jpeg?auto=compress&cs=tinysrgb&w=1620",
+    "rowLabel1": "Lasts",
+    "valueA1": "10+ hours",
+    "valueB1": "6–8 hours",
+    "rowLabel2": "Best for",
+    "valueA2": "Nights out",
+    "valueB2": "Every day",
+    "rowLabel3": "Character",
+    "valueA3": "Magnetic",
+    "valueB3": "Effortless",
+    "verdict": "Two icons. One shelf. Zero wrong answers.",
+    "ctaText": "Find your signature",
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/04/21/audio_ed6f0ed574.mp3"
+  },
+  "scenes": [
+    {
+      "id": "versus",
+      "duration": 3.6,
+      "backgroundColor": "#111013",
+      "transition": "smoothleft",
+      "transitionId": "contender-a",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{imageA}}",
+          "x": 270,
+          "y": 960,
+          "width": 540,
+          "height": 1920,
+          "anchor": "center-center",
+          "resize": "cover",
+          "track": 1,
+          "enterBegin": 0,
+          "enterEnd": 0.5,
+          "enterAnimation": "slideright",
+          "exitEnd": 3.6
+        },
+        {
+          "type": "IMAGE",
+          "src": "{{imageB}}",
+          "x": 810,
+          "y": 960,
+          "width": 540,
+          "height": 1920,
+          "anchor": "center-center",
+          "resize": "cover",
+          "track": 1,
+          "enterBegin": 0,
+          "enterEnd": 0.5,
+          "enterAnimation": "slideleft",
+          "exitEnd": 3.6
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 3,
+          "enterBegin": 0,
+          "exitEnd": 3.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='cmpShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#111013' stop-opacity='0.45'/><stop offset='0.5' stop-color='#111013' stop-opacity='0.1'/><stop offset='1' stop-color='#111013' stop-opacity='0.7'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#cmpShade)'/><path d='M540 0 V1920' stroke='#FFFFFF' stroke-width='3' opacity='0.85'/><circle cx='540' cy='960' r='110' fill='#111013' stroke='#FFFFFF' stroke-width='3'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 960,
+          "anchor": "center-center",
+          "track": 10,
+          "enterBegin": 0.55,
+          "enterEnd": 0.9,
+          "enterAnimation": "circleopen",
+          "exitEnd": 3.6,
+          "style": {
+            "fontFamily": "Anton"
+          },
+          "html": "<div style='color:#FFFFFF; font-size:92px; letter-spacing:2px;'>VS</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 190,
+          "width": 960,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.8,
+          "enterEnd": 1.2,
+          "enterAnimation": "smoothdown",
+          "exitEnd": 3.6,
+          "style": {
+            "fontFamily": "Montserrat"
+          },
+          "html": "<div style='text-align:center;'><span style='display:inline-block; background:rgba(17,16,19,0.85); border:1px solid rgba(255,255,255,0.35); color:#FFFFFF; border-radius:999px; padding:18px 46px; font-size:40px; font-weight:800;'>{{titleLine}}</span></div>"
+        }
+      ]
+    },
+    {
+      "id": "contender-a",
+      "duration": 3.8,
+      "backgroundColor": "#111013",
+      "transition": "slideleft",
+      "transitionId": "contender-b",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{imageA}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.8
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 3.8,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='caShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#111013' stop-opacity='0.3'/><stop offset='0.55' stop-color='#111013' stop-opacity='0.05'/><stop offset='1' stop-color='#111013' stop-opacity='0.88'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#caShade)'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 150,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.15,
+          "enterEnd": 0.5,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 3.8,
+          "style": {
+            "fontFamily": "Montserrat"
+          },
+          "html": "<div style='display:inline-block; background:#FFFFFF; color:#111013; border-radius:8px; padding:14px 30px; font-size:28px; font-weight:800; letter-spacing:3px;'>CONTENDER A</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 1480,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.45,
+          "enterEnd": 0.9,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.8,
+          "style": {
+            "fontFamily": "Montserrat"
+          },
+          "html": "<div style='color:#FFFFFF; font-size:76px; line-height:1; font-weight:800; letter-spacing:-1px;'>{{nameA}}</div><div style='margin-top:16px; color:#C9C4CC; font-size:30px; font-weight:600; letter-spacing:2px;'>{{moodA}} · <b style='color:#FFFFFF;'>{{priceA}}</b></div>"
+        }
+      ]
+    },
+    {
+      "id": "contender-b",
+      "duration": 3.8,
+      "backgroundColor": "#EFEAE2",
+      "transition": "smoothup",
+      "transitionId": "scoreboard",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{imageB}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.8
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 3.8,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='cbShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#2A2620' stop-opacity='0.32'/><stop offset='0.55' stop-color='#2A2620' stop-opacity='0.04'/><stop offset='1' stop-color='#2A2620' stop-opacity='0.82'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#cbShade)'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 150,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.15,
+          "enterEnd": 0.5,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 3.8,
+          "style": {
+            "fontFamily": "Montserrat"
+          },
+          "html": "<div style='display:inline-block; background:#111013; color:#FFFFFF; border-radius:8px; padding:14px 30px; font-size:28px; font-weight:800; letter-spacing:3px;'>CONTENDER B</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 1480,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.45,
+          "enterEnd": 0.9,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.8,
+          "style": {
+            "fontFamily": "Montserrat"
+          },
+          "html": "<div style='color:#FFFFFF; font-size:76px; line-height:1; font-weight:800; letter-spacing:-1px;'>{{nameB}}</div><div style='margin-top:16px; color:#EDE8E0; font-size:30px; font-weight:600; letter-spacing:2px;'>{{moodB}} · <b style='color:#FFFFFF;'>{{priceB}}</b></div>"
+        }
+      ]
+    },
+    {
+      "id": "scoreboard",
+      "duration": 5.6,
+      "backgroundColor": "#111013",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 5.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='sbGlow' cx='0.5' cy='0.3' r='0.9'><stop offset='0' stop-color='#221F26'/><stop offset='1' stop-color='#111013'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#sbGlow)'/><path d='M540 470 V1310' stroke='rgba(255,255,255,0.2)' stroke-width='1.5'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 260,
+          "width": 940,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.6,
+          "enterAnimation": "smoothdown",
+          "exitEnd": 5.6,
+          "style": {
+            "fontFamily": "Montserrat"
+          },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:56px; font-weight:800;'>Head to head</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 470,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.55,
+          "enterEnd": 1.05,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5.6,
+          "style": {
+            "fontFamily": "Montserrat"
+          },
+          "html": "<div style='color:#FFFFFF;'><div style='display:flex;'><div style='width:50%; text-align:center; font-size:34px; font-weight:800; padding:16px 0; color:#E8C3A0;'>{{nameA}}</div><div style='width:50%; text-align:center; font-size:34px; font-weight:800; padding:16px 0; color:#9FD8CB;'>{{nameB}}</div></div><div style='margin-top:26px; text-align:center; color:#8B8791; font-size:24px; font-weight:700; letter-spacing:4px;'>{{rowLabel1}}</div><div style='display:flex;'><div style='width:50%; text-align:center; font-size:36px; font-weight:700; padding:10px 0;'>{{valueA1}}</div><div style='width:50%; text-align:center; font-size:36px; font-weight:700; padding:10px 0;'>{{valueB1}}</div></div><div style='margin-top:24px; text-align:center; color:#8B8791; font-size:24px; font-weight:700; letter-spacing:4px;'>{{rowLabel2}}</div><div style='display:flex;'><div style='width:50%; text-align:center; font-size:36px; font-weight:700; padding:10px 0;'>{{valueA2}}</div><div style='width:50%; text-align:center; font-size:36px; font-weight:700; padding:10px 0;'>{{valueB2}}</div></div><div style='margin-top:24px; text-align:center; color:#8B8791; font-size:24px; font-weight:700; letter-spacing:4px;'>{{rowLabel3}}</div><div style='display:flex;'><div style='width:50%; text-align:center; font-size:36px; font-weight:700; padding:10px 0;'>{{valueA3}}</div><div style='width:50%; text-align:center; font-size:36px; font-weight:700; padding:10px 0;'>{{valueB3}}</div></div><div style='margin-top:30px; text-align:center;'><span style='display:inline-block; width:44%; text-align:center; background:rgba(232,195,160,0.15); border:1px solid rgba(232,195,160,0.5); border-radius:14px; padding:14px 0; font-size:40px; font-weight:800; color:#E8C3A0;'>{{priceA}}</span><span style='display:inline-block; width:5%;'></span><span style='display:inline-block; width:44%; text-align:center; background:rgba(159,216,203,0.12); border:1px solid rgba(159,216,203,0.5); border-radius:14px; padding:14px 0; font-size:40px; font-weight:800; color:#9FD8CB;'>{{priceB}}</span></div></div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1480,
+          "width": 880,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 1.4,
+          "enterEnd": 1.85,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5.6,
+          "style": {
+            "fontFamily": "Playfair Display"
+          },
+          "html": "<div style='text-align:center; color:#D9D4CC; font-size:36px; line-height:1.35; font-style:italic;'>{{verdict}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1680,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 1.9,
+          "enterEnd": 2.3,
+          "enterAnimation": "circleopen",
+          "exitEnd": 5.6,
+          "style": {
+            "fontFamily": "Montserrat"
+          },
+          "html": "<div style='display:inline-block; background:#FFFFFF; color:#111013; border-radius:999px; padding:24px 60px; font-size:34px; font-weight:800;'>{{ctaText}}</div><div style='margin-top:14px; text-align:center; color:#6E6A74; font-size:22px; letter-spacing:5px;'>{{brandName}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.16
+    }
+  ]
+}

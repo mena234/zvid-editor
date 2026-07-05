@@ -1,0 +1,215 @@
+{
+  "name": "ecom-back-in-stock",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#F2EDE4",
+  "outputFormat": "mp4",
+  "variables": {
+    "brandName": "SOLE SOCIETY",
+    "productName": "Retro Court '84",
+    "teaser": "You asked. Every single day.",
+    "stockNote": "Only 200 pairs this restock",
+    "showStockNote": true,
+    "ctaText": "Get yours before round 3",
+    "ctaUrl": "solesociety.example/restock",
+    "unboxVideo": "https://videos.pexels.com/video-files/36599068/15517316_1080_1920_30fps.mp4",
+    "productImage": "https://images.pexels.com/photos/18681225/pexels-photo-18681225.jpeg?auto=compress&cs=tinysrgb&w=1620",
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/03/19/audio_56ae1dae5f.mp3"
+  },
+  "scenes": [
+    {
+      "id": "teaser",
+      "duration": 3,
+      "backgroundColor": "#1C1A17",
+      "transition": "fadewhite",
+      "transitionId": "reveal",
+      "transitionDuration": 0.45,
+      "visuals": [
+        {
+          "type": "VIDEO",
+          "src": "{{unboxVideo}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "volume": 0,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 3,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='bisTease' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#1C1A17' stop-opacity='0.5'/><stop offset='0.5' stop-color='#1C1A17' stop-opacity='0.15'/><stop offset='1' stop-color='#1C1A17' stop-opacity='0.78'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#bisTease)'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1380,
+          "width": 920,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.7,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3,
+          "style": {
+            "fontFamily": "DM Sans"
+          },
+          "html": "<div style='text-align:center; color:#F2EDE4; font-size:58px; line-height:1.15; font-weight:800;'>{{teaser}}</div><div style='margin-top:16px; text-align:center; color:#C9C2B4; font-size:30px; font-weight:600;'>So we did something about it…</div>"
+        }
+      ]
+    },
+    {
+      "id": "reveal",
+      "duration": 5,
+      "backgroundColor": "#F2EDE4",
+      "transition": "smoothup",
+      "transitionId": "claim",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{productImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 5
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 5,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='bisShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#1C1A17' stop-opacity='0.28'/><stop offset='0.45' stop-color='#1C1A17' stop-opacity='0'/><stop offset='1' stop-color='#1C1A17' stop-opacity='0.72'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#bisShade)'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 620,
+          "width": 1020,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.55,
+          "enterAnimation": "circleopen",
+          "exitEnd": 5,
+          "style": {
+            "fontFamily": "Bebas Neue"
+          },
+          "html": "<div style='text-align:center;'><span style='display:inline-block; background:#D7263D; color:#FFFFFF; padding:26px 70px; font-size:130px; line-height:1; letter-spacing:4px; border-radius:18px; box-shadow:0 30px 80px rgba(28,26,23,0.45);'>IT'S BACK</span></div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1560,
+          "width": 940,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.7,
+          "enterEnd": 1.15,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5,
+          "style": {
+            "fontFamily": "DM Sans"
+          },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:64px; line-height:1.05; font-weight:800;'>{{productName}}</div><div style='margin-top:14px; text-align:center; color:#E4DDCE; font-size:28px; font-weight:600; letter-spacing:4px;'>{{brandName}} · RESTOCKED</div>"
+        }
+      ]
+    },
+    {
+      "id": "claim",
+      "duration": 4.8,
+      "backgroundColor": "#1C1A17",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.8,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><rect width='1080' height='1920' fill='#1C1A17'/><path d='M-100 200 L1180 60 L1180 78 L-100 218 Z' fill='#D7263D'/><path d='M-100 1830 L1180 1690 L1180 1708 L-100 1848 Z' fill='#D7263D'/><rect x='90' y='560' width='900' height='820' rx='40' fill='rgba(242,237,228,0.045)' stroke='rgba(242,237,228,0.16)' stroke-width='1.5'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 380,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.15,
+          "enterEnd": 0.55,
+          "enterAnimation": "smoothdown",
+          "exitEnd": 4.8,
+          "style": {
+            "fontFamily": "Bebas Neue"
+          },
+          "html": "<div style='text-align:center; color:#F2EDE4; font-size:74px; letter-spacing:3px;'>LAST TWO RESTOCKS SOLD OUT</div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showStockNote}}",
+          "x": 540,
+          "y": 700,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.6,
+          "enterEnd": 1,
+          "enterAnimation": "circleopen",
+          "exitEnd": 4.8,
+          "style": {
+            "fontFamily": "DM Sans"
+          },
+          "html": "<div style='text-align:center; color:#F2EDE4;'><span style='display:inline-block; width:22px; height:22px; border-radius:999px; background:#D7263D; margin-right:16px;'></span><span style='font-size:40px; font-weight:800;'>{{stockNote}}</span></div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 880,
+          "width": 800,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 1,
+          "enterEnd": 1.45,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.8,
+          "style": {
+            "fontFamily": "DM Sans"
+          },
+          "html": "<div style='text-align:center; color:#B9B2A4; font-size:32px; line-height:1.5; font-weight:500;'>Same icon. Same price.<br>New chance to stop refreshing the page.</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1130,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 1.5,
+          "enterEnd": 1.9,
+          "enterAnimation": "circleopen",
+          "exitEnd": 4.8,
+          "style": {
+            "fontFamily": "DM Sans"
+          },
+          "html": "<div style='display:inline-block; background:#D7263D; color:#FFFFFF; border-radius:999px; padding:30px 68px; font-size:40px; font-weight:800;'>{{ctaText}} →</div><div style='margin-top:18px; text-align:center; color:#8A8375; font-size:25px; font-weight:600; letter-spacing:2px;'>{{ctaUrl}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.2
+    }
+  ]
+}

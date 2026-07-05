@@ -1,0 +1,189 @@
+{
+  "name": "local-delivery",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#101408",
+  "outputFormat": "mp4",
+  "variables": {
+    "restaurantName": "EMBER & OAK",
+    "hookLine": "Craving it? Don't move a muscle.",
+    "deliveryPromise": "Hot at your door in 30 minutes — or the fries are on us.",
+    "zoneNote": "Delivering across Riverside & Downtown",
+    "appsLine": "Order on UberEats · DoorDash · our website",
+    "discount": "Code FIRSTBITE = 20% off your first order",
+    "showDiscount": true,
+    "ctaText": "Order now",
+    "orderUrl": "emberandoak.example/delivery",
+    "chefVideo": "https://videos.pexels.com/video-files/29520217/12707119_1080_1920_30fps.mp4",
+    "courierImage": "https://images.pexels.com/photos/4393245/pexels-photo-4393245.jpeg?auto=compress&cs=tinysrgb&w=1620",
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/03/19/audio_56ae1dae5f.mp3"
+  },
+  "scenes": [
+    {
+      "id": "kitchen",
+      "duration": 3.6,
+      "backgroundColor": "#101408",
+      "transition": "slideleft",
+      "transitionId": "courier",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "VIDEO",
+          "src": "{{chefVideo}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "volume": 0,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.6
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 3.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='ldvShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#101408' stop-opacity='0.45'/><stop offset='0.5' stop-color='#101408' stop-opacity='0.15'/><stop offset='1' stop-color='#101408' stop-opacity='0.85'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#ldvShade)'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1440,
+          "width": 940,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.35,
+          "enterEnd": 0.75,
+          "enterAnimation": "circleopen",
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "DM Sans" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:74px; line-height:1.08; font-weight:800; text-shadow:0 6px 34px rgba(16,20,8,0.9);'>{{hookLine}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "courier",
+      "duration": 5.8,
+      "backgroundColor": "#101408",
+      "transition": "smoothup",
+      "transitionId": "order",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{courierImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 5.8
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 5.8,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='ldcShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#101408' stop-opacity='0.4'/><stop offset='0.45' stop-color='#101408' stop-opacity='0.06'/><stop offset='1' stop-color='#101408' stop-opacity='0.9'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#ldcShade)'/><rect x='80' y='140' width='430' height='96' rx='48' fill='rgba(16,20,8,0.8)' stroke='rgba(163,230,53,0.6)' stroke-width='2'/><circle cx='140' cy='188' r='26' fill='none' stroke='#A3E635' stroke-width='4'/><path d='M140 172 V188 L152 200' stroke='#A3E635' stroke-width='4' fill='none' stroke-linecap='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 190,
+          "y": 188,
+          "anchor": "center-left",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.6,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 5.8,
+          "style": { "fontFamily": "DM Sans" },
+          "html": "<div style='color:#FFFFFF; font-size:30px; font-weight:800;'>30-min promise</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 80,
+          "y": 1370,
+          "width": 920,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.5,
+          "enterEnd": 1,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5.8,
+          "style": { "fontFamily": "DM Sans" },
+          "html": "<div style='color:#FFFFFF; font-size:56px; line-height:1.15; font-weight:800;'>{{deliveryPromise}}</div><div style='margin-top:18px; color:#C6D9A8; font-size:28px; font-weight:600;'>🛵 {{zoneNote}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "order",
+      "duration": 5.2,
+      "backgroundColor": "#101408",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 5.2,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='ldoEnd' cx='0.5' cy='0.4' r='0.9'><stop offset='0' stop-color='#1D2410'/><stop offset='1' stop-color='#101408'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#ldoEnd)'/><rect x='420' y='500' width='240' height='420' rx='40' fill='none' stroke='#A3E635' stroke-width='7'/><path d='M500 540 H580' stroke='#A3E635' stroke-width='7' stroke-linecap='round'/><circle cx='540' cy='860' r='16' fill='#A3E635'/><path d='M470 690 L525 745 L620 630' stroke='#A3E635' stroke-width='11' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1010,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.7,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5.2,
+          "style": { "fontFamily": "DM Sans" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:56px; line-height:1.12; font-weight:800;'>Dinner is three<br>taps away.</div><div style='margin-top:16px; text-align:center; color:#C6D9A8; font-size:27px; font-weight:600;'>{{appsLine}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showDiscount}}",
+          "x": 540,
+          "y": 1330,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.85,
+          "enterEnd": 1.25,
+          "enterAnimation": "circleopen",
+          "exitEnd": 5.2,
+          "style": { "fontFamily": "DM Sans" },
+          "html": "<div style='display:inline-block; background:rgba(163,230,53,0.14); border:1.5px dashed rgba(163,230,53,0.6); color:#DCF2B8; border-radius:16px; padding:16px 38px; font-size:28px; font-weight:700;'>🏷 {{discount}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1500,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 1.35,
+          "enterEnd": 1.75,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5.2,
+          "style": { "fontFamily": "DM Sans" },
+          "html": "<div style='display:inline-block; background:#A3E635; color:#101408; border-radius:999px; padding:26px 66px; font-size:38px; font-weight:800;'>{{ctaText}} →</div><div style='margin-top:16px; text-align:center; color:#7E8C62; font-size:24px; font-weight:600;'>{{orderUrl}} · {{restaurantName}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.18
+    }
+  ]
+}

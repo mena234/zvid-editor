@@ -1,0 +1,170 @@
+{
+  "name": "edu-certificate",
+  "resolution": "instagram-post",
+  "frameRate": 30,
+  "backgroundColor": "#10131C",
+  "outputFormat": "mp4",
+  "variables": {
+    "academyName": "BRIGHTPATH ACADEMY",
+    "studentName": "Sarah Okafor",
+    "courseName": "Data Storytelling for Non-Analysts",
+    "completionDate": "July 5, 2026",
+    "gradeNote": "Completed with distinction — top 10% of the cohort",
+    "showGrade": true,
+    "shareCta": "Share your achievement",
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/04/21/audio_ed6f0ed574.mp3"
+  },
+  "scenes": [
+    {
+      "id": "certificate",
+      "duration": 9.5,
+      "backgroundColor": "#10131C",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1080,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 9.5,
+          "svg": "<svg width='1080' height='1080' viewBox='0 0 1080 1080' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='ectBg' cx='0.5' cy='0.4' r='0.95'><stop offset='0' stop-color='#1A2030'/><stop offset='1' stop-color='#10131C'/></radialGradient></defs><rect width='1080' height='1080' fill='url(#ectBg)'/><rect x='70' y='70' width='940' height='940' rx='16' fill='rgba(255,255,255,0.025)' stroke='#CBA35C' stroke-width='3'/><rect x='92' y='92' width='896' height='896' rx='10' fill='none' stroke='rgba(203,163,92,0.35)' stroke-width='1.5'/><path d='M340 250 H740' stroke='rgba(203,163,92,0.5)' stroke-width='1.5'/><circle cx='540' cy='860' r='58' fill='none' stroke='#CBA35C' stroke-width='3'/><path d='M540 826 L550 848 L574 850 L556 866 L562 890 L540 877 L518 890 L524 866 L506 850 L530 848 Z' fill='#CBA35C'/><path d='M508 906 L522 950 L540 928 L558 950 L572 906' fill='none' stroke='#CBA35C' stroke-width='3' stroke-linejoin='round'/></svg>"
+        },
+        {
+          "type": "GIF",
+          "src": "https://media.giphy.com/media/TgoPuXFbihKJ54unZH/giphy.gif",
+          "x": 540,
+          "y": 400,
+          "width": 760,
+          "height": 760,
+          "anchor": "center-center",
+          "track": 3,
+          "enterBegin": 1.9,
+          "enterEnd": 2.2,
+          "enterAnimation": "fade",
+          "exitBegin": 4.6,
+          "exitEnd": 5.2,
+          "exitAnimation": "fade"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 150,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.3,
+          "enterEnd": 0.9,
+          "enterAnimation": "fade",
+          "exitEnd": 9.5,
+          "style": { "fontFamily": "Cinzel" },
+          "html": "<div style='text-align:center; color:#CBA35C; font-size:26px; letter-spacing:9px;'>{{academyName}}</div><div style='margin-top:16px; text-align:center; color:#8B90A0; font-size:20px; letter-spacing:6px;'>CERTIFICATE OF COMPLETION</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 330,
+          "width": 860,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.9,
+          "enterEnd": 1.5,
+          "enterAnimation": "fade",
+          "exitEnd": 9.5,
+          "style": { "fontFamily": "Cormorant Garamond" },
+          "html": "<div style='text-align:center; color:#B9BECB; font-size:26px; font-style:italic;'>This certifies that</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 400,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 1.5,
+          "enterEnd": 2.1,
+          "enterAnimation": "circleopen",
+          "exitEnd": 9.5,
+          "style": { "fontFamily": "Great Vibes" },
+          "html": "<div style='text-align:center; color:#F2EBDD; font-size:110px;'>{{studentName}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 590,
+          "width": 820,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 2.4,
+          "enterEnd": 3,
+          "enterAnimation": "fade",
+          "exitEnd": 9.5,
+          "style": { "fontFamily": "Cormorant Garamond" },
+          "html": "<div style='text-align:center; color:#B9BECB; font-size:27px; font-style:italic;'>has successfully completed</div><div style='margin-top:14px; text-align:center; color:#F2EBDD; font-size:42px; font-weight:700;'>{{courseName}}</div><div style='margin-top:16px; text-align:center; color:#8B90A0; font-size:24px;'>{{completionDate}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showGrade}}",
+          "x": 540,
+          "y": 985,
+          "width": 860,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 3.4,
+          "enterEnd": 3.9,
+          "enterAnimation": "smoothup",
+          "exitEnd": 9.5,
+          "style": { "fontFamily": "Cormorant Garamond" },
+          "html": "<div style='text-align:center; color:#CBA35C; font-size:24px; font-style:italic;'>{{gradeNote}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "share",
+      "duration": 3.6,
+      "backgroundColor": "#10131C",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1080,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.6,
+          "svg": "<svg width='1080' height='1080' viewBox='0 0 1080 1080' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='ectEnd' cx='0.5' cy='0.4' r='0.9'><stop offset='0' stop-color='#1A2030'/><stop offset='1' stop-color='#10131C'/></radialGradient></defs><rect width='1080' height='1080' fill='url(#ectEnd)'/><circle cx='540' cy='340' r='96' fill='rgba(203,163,92,0.12)' stroke='#CBA35C' stroke-width='3'/><path d='M540 296 V384 M500 336 L540 296 L580 336' stroke='#CBA35C' stroke-width='9' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 520,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.7,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "Cormorant Garamond" },
+          "html": "<div style='text-align:center; color:#F2EBDD; font-size:52px; line-height:1.2; font-weight:700;'>You earned it, {{studentName}}.<br>Now let the world know.</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 780,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.8,
+          "enterEnd": 1.2,
+          "enterAnimation": "circleopen",
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "Manrope" },
+          "html": "<div style='display:inline-block; background:#CBA35C; color:#10131C; border-radius:999px; padding:22px 58px; font-size:30px; font-weight:800;'>{{shareCta}} →</div><div style='margin-top:14px; text-align:center; color:#5F6474; font-size:21px; letter-spacing:4px;'>{{academyName}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.14
+    }
+  ]
+}

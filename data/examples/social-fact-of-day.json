@@ -1,0 +1,181 @@
+{
+  "name": "social-fact-of-day",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#0A0F1E",
+  "outputFormat": "mp4",
+  "variables": {
+    "channelName": "DAILY WONDER",
+    "factNumber": "Fact #214",
+    "hookQuestion": "How long is a day on Venus?",
+    "fact": "A single day on Venus lasts longer than its entire year.",
+    "explainer": "Venus spins so slowly that it orbits the Sun (225 Earth days) faster than it completes one rotation (243 Earth days).",
+    "sourceNote": "Source: NASA planetary fact sheet",
+    "showSource": true,
+    "ctaText": "Save this for later 🔖",
+    "bgImage": "https://images.pexels.com/photos/17954395/pexels-photo-17954395.jpeg?auto=compress&cs=tinysrgb&w=1620",
+    "musicUrl": "https://cdn.pixabay.com/audio/2026/02/24/audio_3f375fdf97.mp3"
+  },
+  "scenes": [
+    {
+      "id": "hook",
+      "duration": 3.4,
+      "backgroundColor": "#0A0F1E",
+      "transition": "circleopen",
+      "transitionId": "reveal",
+      "transitionDuration": 0.6,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{bgImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.4
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 3.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='sfdShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#0A0F1E' stop-opacity='0.55'/><stop offset='0.5' stop-color='#0A0F1E' stop-opacity='0.2'/><stop offset='1' stop-color='#0A0F1E' stop-opacity='0.8'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#sfdShade)'/><circle cx='540' cy='700' r='160' fill='none' stroke='rgba(94,214,255,0.6)' stroke-width='2'/><text x='540' y='760' text-anchor='middle' font-family='Georgia' font-size='170' fill='#5ED6FF'>?</text></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 160,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.15,
+          "enterEnd": 0.55,
+          "enterAnimation": "smoothdown",
+          "exitEnd": 3.4,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='display:inline-block; background:rgba(10,15,30,0.8); border:1.5px solid rgba(94,214,255,0.6); color:#5ED6FF; border-radius:999px; padding:14px 36px; font-size:26px; font-weight:700; letter-spacing:4px;'>{{channelName}} · {{factNumber}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1050,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.4,
+          "enterEnd": 0.9,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.4,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:72px; line-height:1.1; font-weight:700;'>{{hookQuestion}}</div><div style='margin-top:18px; text-align:center; color:#9FB2D8; font-size:28px; font-weight:500;'>The answer will break your brain…</div>"
+        }
+      ]
+    },
+    {
+      "id": "reveal",
+      "duration": 8.2,
+      "backgroundColor": "#0A0F1E",
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{bgImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "opacity": 0.45,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 8.2
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 8.2,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><rect width='1080' height='1920' fill='rgba(10,15,30,0.55)'/><rect x='80' y='450' width='920' height='740' rx='40' fill='rgba(10,15,30,0.85)' stroke='rgba(94,214,255,0.45)' stroke-width='1.5'/><path d='M80 640 H1000' stroke='rgba(94,214,255,0.25)' stroke-width='1'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 510,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.6,
+          "enterAnimation": "fade",
+          "exitEnd": 8.2,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='text-align:center; color:#5ED6FF; font-size:30px; font-weight:700; letter-spacing:6px;'>DID YOU KNOW</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 700,
+          "width": 800,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.5,
+          "enterEnd": 1.05,
+          "enterAnimation": "smoothup",
+          "exitEnd": 8.2,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:56px; line-height:1.25; font-weight:700;'>{{fact}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1280,
+          "width": 860,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 1.6,
+          "enterEnd": 2.2,
+          "enterAnimation": "smoothup",
+          "exitEnd": 8.2,
+          "style": { "fontFamily": "Inter" },
+          "html": "<div style='text-align:center; color:#B9C6E4; font-size:29px; line-height:1.5; font-weight:500;'>{{explainer}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showSource}}",
+          "x": 540,
+          "y": 1620,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 2.4,
+          "enterEnd": 2.9,
+          "enterAnimation": "fade",
+          "exitEnd": 8.2,
+          "style": { "fontFamily": "Inter" },
+          "html": "<div style='text-align:center; color:#5F6E92; font-size:21px; font-weight:600;'>{{sourceNote}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1720,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 3,
+          "enterEnd": 3.4,
+          "enterAnimation": "circleopen",
+          "exitEnd": 8.2,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='display:inline-block; background:#5ED6FF; color:#0A0F1E; border-radius:999px; padding:18px 46px; font-size:28px; font-weight:700;'>{{ctaText}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.15
+    }
+  ]
+}

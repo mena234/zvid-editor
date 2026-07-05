@@ -1,0 +1,169 @@
+{
+  "name": "auto-sold",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#131018",
+  "outputFormat": "mp4",
+  "variables": {
+    "dealerName": "Cityline Auto",
+    "vehicle": "2021 Compact SUV",
+    "buyerLine": "Congrats to the R. family on their new ride! 🎉",
+    "daysOnLot": "Sold in 6 days",
+    "showDays": true,
+    "proofLine": "That's the 14th car finding a home this month.",
+    "ctaText": "Yours could be next",
+    "ctaUrl": "citylineauto.example",
+    "photoImage": "https://images.pexels.com/photos/7144232/pexels-photo-7144232.jpeg?auto=compress&cs=tinysrgb&w=1620",
+    "musicUrl": "https://cdn.pixabay.com/audio/2026/02/24/audio_3f375fdf97.mp3"
+  },
+  "scenes": [
+    {
+      "id": "moment",
+      "duration": 5.2,
+      "backgroundColor": "#131018",
+      "transition": "smoothup",
+      "transitionId": "proof",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{photoImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 5.2
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 5.2,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='soldShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#131018' stop-opacity='0.4'/><stop offset='0.5' stop-color='#131018' stop-opacity='0.05'/><stop offset='1' stop-color='#131018' stop-opacity='0.85'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#soldShade)'/></svg>"
+        },
+        {
+          "type": "GIF",
+          "src": "https://media.giphy.com/media/TgoPuXFbihKJ54unZH/giphy.gif",
+          "x": 540,
+          "y": 500,
+          "width": 820,
+          "height": 820,
+          "anchor": "center-center",
+          "track": 3,
+          "enterBegin": 0.5,
+          "enterEnd": 0.8,
+          "enterAnimation": "fade",
+          "exitBegin": 3.8,
+          "exitEnd": 4.4,
+          "exitAnimation": "fade"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 430,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.65,
+          "enterAnimation": "circleopen",
+          "exitEnd": 5.2,
+          "style": {
+            "fontFamily": "Archivo Black"
+          },
+          "html": "<div style='text-align:center;'><span style='display:inline-block; border:8px solid #FF4D6D; color:#FF4D6D; border-radius:26px; padding:20px 66px; font-size:130px; line-height:1; letter-spacing:8px; background:rgba(19,16,24,0.55);'>SOLD</span></div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 1560,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.8,
+          "enterEnd": 1.25,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5.2,
+          "style": {
+            "fontFamily": "Nunito"
+          },
+          "html": "<div style='color:#FFFFFF; font-size:44px; line-height:1.2; font-weight:800;'>{{buyerLine}}</div><div style='margin-top:10px; color:#C0B9CC; font-size:28px; font-weight:700;'>{{vehicle}} · {{dealerName}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showDays}}",
+          "x": 90,
+          "y": 150,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 1.2,
+          "enterEnd": 1.6,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 5.2,
+          "style": {
+            "fontFamily": "Nunito"
+          },
+          "html": "<div style='display:inline-block; background:#FF4D6D; color:#FFFFFF; border-radius:999px; padding:14px 34px; font-size:28px; font-weight:800;'>⚡ {{daysOnLot}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "proof",
+      "duration": 4.6,
+      "backgroundColor": "#131018",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='prfGlow' cx='0.5' cy='0.4' r='0.9'><stop offset='0' stop-color='#221B2E'/><stop offset='1' stop-color='#131018'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#prfGlow)'/><path d='M400 560 L540 460 L680 560' fill='none' stroke='rgba(255,77,109,0.7)' stroke-width='3'/><rect x='450' y='560' width='180' height='130' fill='none' stroke='rgba(255,77,109,0.7)' stroke-width='3'/><rect x='515' y='610' width='50' height='80' fill='rgba(255,77,109,0.7)'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 830,
+          "width": 880,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.75,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.6,
+          "style": {
+            "fontFamily": "Nunito"
+          },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:56px; line-height:1.18; font-weight:800;'>{{proofLine}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1180,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.85,
+          "enterEnd": 1.25,
+          "enterAnimation": "circleopen",
+          "exitEnd": 4.6,
+          "style": {
+            "fontFamily": "Nunito"
+          },
+          "html": "<div style='display:inline-block; background:#FF4D6D; color:#FFFFFF; border-radius:999px; padding:28px 66px; font-size:40px; font-weight:800;'>{{ctaText}} →</div><div style='margin-top:18px; text-align:center; color:#8B8399; font-size:26px; font-weight:700; letter-spacing:2px;'>{{ctaUrl}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.18
+    }
+  ]
+}

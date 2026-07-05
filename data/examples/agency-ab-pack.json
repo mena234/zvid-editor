@@ -1,0 +1,199 @@
+{
+  "name": "agency-ab-pack",
+  "resolution": "tiktok",
+  "frameRate": 30,
+  "backgroundColor": "#0C0C10",
+  "outputFormat": "mp4",
+  "variables": {
+    "brandName": "KICKLAB",
+    "productName": "AirFlex Runner",
+    "packLabel": "Hook test — 3 variants from one render call",
+    "ctaText": "Run faster. Order today.",
+    "productVideo": "https://videos.pexels.com/video-files/30328821/13000575_1080_1920_30fps.mp4",
+    "hooks": [
+      {
+        "variant": "A",
+        "hook": "POV: your shoes retire before you do",
+        "angle": "Durability angle"
+      },
+      {
+        "variant": "B",
+        "hook": "The last running shoe you'll buy this decade",
+        "angle": "Value angle"
+      },
+      {
+        "variant": "C",
+        "hook": "Marathoners kept buying out our stock. Again.",
+        "angle": "Social proof angle"
+      }
+    ],
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/03/19/audio_56ae1dae5f.mp3"
+  },
+  "scenes": [
+    {
+      "id": "slate",
+      "duration": 2.8,
+      "backgroundColor": "#0C0C10",
+      "transition": "slideleft",
+      "transitionId": "variant",
+      "transitionDuration": 0.45,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 2.8,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><rect width='1080' height='1920' fill='#0C0C10'/><path d='M0 320 L1080 250 L1080 274 L0 344 Z' fill='#F5E642' opacity='0.9'/><path d='M0 1650 L1080 1580 L1080 1604 L0 1674 Z' fill='#F5E642' opacity='0.9'/><rect x='120' y='700' width='840' height='500' rx='24' fill='rgba(245,230,66,0.05)' stroke='rgba(245,230,66,0.4)' stroke-width='2'/><circle cx='200' cy='770' r='16' fill='#FF5C5C'/><text x='236' y='781' font-family='Arial' font-size='28' font-weight='700' fill='#9A9AA6'>REC · CREATIVE LAB</text></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 880,
+          "width": 800,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.15,
+          "enterEnd": 0.55,
+          "enterAnimation": "circleopen",
+          "exitEnd": 2.8,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:74px; line-height:1.02; font-weight:700; letter-spacing:-1px;'>A/B/C<br><span style='color:#F5E642;'>creative pack</span></div><div style='margin-top:20px; text-align:center; color:#9A9AA6; font-size:26px; font-weight:600;'>{{packLabel}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "variant",
+      "iterate": "hooks",
+      "iterateAs": "hook",
+      "duration": 3.6,
+      "backgroundColor": "#0C0C10",
+      "transition": "slideleft",
+      "transitionId": "cta",
+      "transitionDuration": 0.45,
+      "visuals": [
+        {
+          "type": "VIDEO",
+          "src": "{{productVideo}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "volume": 0,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.6
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 3.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='abvShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#0C0C10' stop-opacity='0.45'/><stop offset='0.4' stop-color='#0C0C10' stop-opacity='0.05'/><stop offset='1' stop-color='#0C0C10' stop-opacity='0.8'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#abvShade)'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 150,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.15,
+          "enterEnd": 0.5,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 3.6,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='display:inline-block; background:#F5E642; color:#0C0C10; border-radius:12px; padding:14px 30px; font-size:30px; font-weight:700; letter-spacing:2px;'>VARIANT {{hook.variant}}</div><span style='display:inline-block; margin-left:14px; background:rgba(12,12,16,0.75); border:1px solid rgba(255,255,255,0.3); color:#D6D6DE; border-radius:12px; padding:14px 26px; font-size:24px; font-weight:600;'>{{hook.angle}}</span>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 700,
+          "width": 920,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.4,
+          "enterEnd": 0.75,
+          "enterAnimation": "circleopen",
+          "exitEnd": 3.6,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:68px; line-height:1.12; font-weight:700; text-shadow:0 6px 30px rgba(12,12,16,0.9);'>{{hook.hook}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1780,
+          "anchor": "center-center",
+          "track": 10,
+          "enterBegin": 0,
+          "exitEnd": 3.6,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='color:rgba(255,255,255,0.7); font-size:23px; font-weight:700; letter-spacing:5px;'>{{brandName}} · {{productName}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "cta",
+      "duration": 3.4,
+      "backgroundColor": "#0C0C10",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='abEnd' cx='0.5' cy='0.42' r='0.9'><stop offset='0' stop-color='#1B1B22'/><stop offset='1' stop-color='#0C0C10'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#abEnd)'/><path d='M240 960 H840' stroke='rgba(245,230,66,0.3)' stroke-width='1.5'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 760,
+          "width": 920,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.6,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.4,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:70px; line-height:1.05; font-weight:700; letter-spacing:-1px;'>{{ctaText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1060,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.7,
+          "enterEnd": 1.1,
+          "enterAnimation": "circleopen",
+          "exitEnd": 3.4,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='display:inline-block; background:#F5E642; color:#0C0C10; border-radius:999px; padding:26px 66px; font-size:38px; font-weight:700;'>{{brandName}}.example</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.2
+    }
+  ]
+}

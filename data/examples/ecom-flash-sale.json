@@ -1,0 +1,276 @@
+{
+  "name": "ecom-flash-sale",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#0D0D0D",
+  "outputFormat": "mp4",
+  "variables": {
+    "brandName": "KICKLAB",
+    "productName": "AirFlex Runner '26",
+    "discountPct": "40",
+    "oldPrice": "$129",
+    "newPrice": "$77",
+    "deadline": "Ends Sunday midnight",
+    "showDeadline": true,
+    "promoCode": "FLASH40",
+    "showPromoCode": true,
+    "ctaText": "Grab yours now",
+    "productImage": "https://images.pexels.com/photos/15592493/pexels-photo-15592493.jpeg?auto=compress&cs=tinysrgb&w=1620",
+    "altImage": "https://images.pexels.com/photos/4273288/pexels-photo-4273288.jpeg?auto=compress&cs=tinysrgb&w=1620",
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/03/19/audio_56ae1dae5f.mp3"
+  },
+  "scenes": [
+    {
+      "id": "alarm",
+      "duration": 2.8,
+      "backgroundColor": "#E11D2E",
+      "transition": "slideup",
+      "transitionId": "deal",
+      "transitionDuration": 0.4,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 2.8,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><rect width='1080' height='1920' fill='#E11D2E'/><path d='M-200 320 L1280 120 L1280 240 L-200 440 Z' fill='#0D0D0D' opacity='0.14'/><path d='M-200 1620 L1280 1420 L1280 1540 L-200 1740 Z' fill='#0D0D0D' opacity='0.14'/><path d='M-200 480 L1280 280 L1280 300 L-200 500 Z' fill='#FFD54A' opacity='0.9'/><path d='M-200 1580 L1280 1380 L1280 1400 L-200 1600 Z' fill='#FFD54A' opacity='0.9'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 800,
+          "width": 1000,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.1,
+          "enterEnd": 0.45,
+          "enterAnimation": "circleopen",
+          "exitEnd": 2.8,
+          "style": {
+            "fontFamily": "Anton"
+          },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:170px; line-height:0.95; letter-spacing:2px;'>FLASH<br><span style='color:#FFD54A;'>SALE</span></div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1250,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.5,
+          "enterEnd": 0.85,
+          "enterAnimation": "smoothup",
+          "exitEnd": 2.8,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='display:inline-block; background:#0D0D0D; color:#FFFFFF; border-radius:14px; padding:20px 44px; font-size:40px; font-weight:700; letter-spacing:3px;'>UP TO {{discountPct}}% OFF</div>"
+        }
+      ]
+    },
+    {
+      "id": "deal",
+      "duration": 5.4,
+      "backgroundColor": "#0D0D0D",
+      "transition": "slideleft",
+      "transitionId": "checkout",
+      "transitionDuration": 0.4,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{productImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 5.4
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 5.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='dealShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#0D0D0D' stop-opacity='0.5'/><stop offset='0.42' stop-color='#0D0D0D' stop-opacity='0'/><stop offset='1' stop-color='#0D0D0D' stop-opacity='0.92'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#dealShade)'/><path d='M0 96 L1080 96' stroke='#E11D2E' stroke-width='44' stroke-dasharray='6 0'/><path d='M0 1824 L1080 1824' stroke='#E11D2E' stroke-width='44'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 96,
+          "anchor": "center-center",
+          "track": 10,
+          "enterBegin": 0,
+          "exitEnd": 5.4,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='color:#FFFFFF; font-size:28px; font-weight:800; letter-spacing:6px;'>{{brandName}} · TODAY ONLY</div>"
+        },
+        {
+          "type": "GIF",
+          "src": "https://media.giphy.com/media/LjtUQubEKZ0D176hFB/giphy.gif",
+          "x": 870,
+          "y": 1155,
+          "width": 150,
+          "height": 150,
+          "anchor": "center-center",
+          "track": 11,
+          "enterBegin": 1.5,
+          "enterEnd": 1.8,
+          "enterAnimation": "fade",
+          "exitEnd": 5.4
+        },
+        {
+          "type": "TEXT",
+          "x": 80,
+          "y": 1235,
+          "width": 920,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.4,
+          "enterEnd": 0.9,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5.4,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='color:#FFD54A; font-size:26px; font-weight:800; letter-spacing:5px;'>HOT RIGHT NOW</div><div style='margin-top:12px; color:#FFFFFF; font-size:72px; line-height:1; font-weight:800; letter-spacing:-1px;'>{{productName}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 80,
+          "y": 1475,
+          "anchor": "top-left",
+          "track": 11,
+          "enterBegin": 1,
+          "enterEnd": 1.45,
+          "enterAnimation": "circleopen",
+          "exitEnd": 5.4,
+          "style": {
+            "fontFamily": "Anton"
+          },
+          "html": "<div style='color:#FFFFFF;'><s style='color:#9CA3AF; font-size:56px;'>{{oldPrice}}</s>&nbsp;&nbsp;<span style='color:#FFD54A; font-size:120px; letter-spacing:1px;'>{{newPrice}}</span></div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showDeadline}}",
+          "x": 80,
+          "y": 1680,
+          "anchor": "top-left",
+          "track": 11,
+          "enterBegin": 1.6,
+          "enterEnd": 2,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 5.4,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='display:inline-block; background:#E11D2E; color:#FFFFFF; border-radius:999px; padding:16px 36px; font-size:30px; font-weight:800; letter-spacing:1px;'>⏳ {{deadline}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "checkout",
+      "duration": 4.8,
+      "backgroundColor": "#0D0D0D",
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{altImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "track": 0,
+          "opacity": 0.35,
+          "enterBegin": 0,
+          "exitEnd": 4.8
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 4.8,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='outShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#0D0D0D' stop-opacity='0.72'/><stop offset='1' stop-color='#0D0D0D' stop-opacity='0.94'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#outShade)'/><rect x='90' y='560' width='900' height='800' rx='44' fill='rgba(13,13,13,0.72)' stroke='rgba(255,213,74,0.5)' stroke-width='2'/></svg>"
+        },
+        {
+          "type": "GIF",
+          "src": "https://media.giphy.com/media/TgoPuXFbihKJ54unZH/giphy.gif",
+          "x": 540,
+          "y": 400,
+          "width": 640,
+          "height": 640,
+          "anchor": "center-center",
+          "track": 3,
+          "enterBegin": 0.3,
+          "enterEnd": 0.5,
+          "enterAnimation": "fade",
+          "exitBegin": 3.4,
+          "exitEnd": 3.9,
+          "exitAnimation": "fade"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 640,
+          "width": 800,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.65,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.8,
+          "style": {
+            "fontFamily": "Anton"
+          },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:84px; line-height:1; letter-spacing:1px;'>SAVE {{discountPct}}%<br><span style='color:#FFD54A;'>BEFORE IT'S GONE</span></div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showPromoCode}}",
+          "x": 540,
+          "y": 950,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.7,
+          "enterEnd": 1.1,
+          "enterAnimation": "circleopen",
+          "exitEnd": 4.8,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='text-align:center; color:#9CA3AF; font-size:26px; font-weight:700; letter-spacing:4px;'>USE CODE</div><div style='margin-top:12px; display:inline-block; border:2px dashed #FFD54A; border-radius:18px; padding:20px 56px; color:#FFD54A; font-size:56px; font-weight:800; letter-spacing:8px;'>{{promoCode}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1210,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 1.15,
+          "enterEnd": 1.55,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.8,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='display:inline-block; background:#E11D2E; color:#FFFFFF; border-radius:999px; padding:28px 70px; font-size:40px; font-weight:800;'>{{ctaText}} →</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.22
+    }
+  ]
+}

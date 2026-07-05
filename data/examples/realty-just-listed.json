@@ -1,0 +1,235 @@
+{
+  "name": "realty-just-listed",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#12211B",
+  "outputFormat": "mp4",
+  "variables": {
+    "agencyName": "Grove & Key Realty",
+    "address": "48 Alder Court, Maplewood",
+    "price": "$742,000",
+    "beds": "4",
+    "baths": "3",
+    "area": "2,650 sq ft",
+    "highlight": "Corner lot with a west-facing garden and a kitchen made for slow Sundays.",
+    "agentName": "Dana Whitfield",
+    "agentPhone": "(555) 210-8890",
+    "showAgent": true,
+    "droneVideo": "https://videos.pexels.com/video-files/12542933/12542933-hd_1080_1920_60fps.mp4",
+    "exteriorImage": "https://images.pexels.com/photos/1974596/pexels-photo-1974596.jpeg?auto=compress&cs=tinysrgb&w=1620",
+    "interiorImage": "https://images.pexels.com/photos/18033166/pexels-photo-18033166.jpeg?auto=compress&cs=tinysrgb&w=1620",
+    "musicUrl": "https://cdn.pixabay.com/audio/2026/02/24/audio_3f375fdf97.mp3"
+  },
+  "scenes": [
+    {
+      "id": "aerial",
+      "duration": 4.4,
+      "backgroundColor": "#12211B",
+      "transition": "fade",
+      "transitionId": "exterior",
+      "transitionDuration": 0.6,
+      "visuals": [
+        {
+          "type": "VIDEO",
+          "src": "{{droneVideo}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "volume": 0,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.4
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 4.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='rjlShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#12211B' stop-opacity='0.55'/><stop offset='0.45' stop-color='#12211B' stop-opacity='0.05'/><stop offset='1' stop-color='#12211B' stop-opacity='0.85'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#rjlShade)'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 170,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.7,
+          "enterAnimation": "smoothdown",
+          "exitEnd": 4.4,
+          "style": {
+            "fontFamily": "Libre Baskerville"
+          },
+          "html": "<div style='display:inline-block; background:rgba(18,33,27,0.8); border:1.5px solid rgba(243,239,230,0.5); color:#F3EFE6; border-radius:999px; padding:18px 46px; font-size:28px; letter-spacing:6px;'>JUST LISTED</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 80,
+          "y": 1480,
+          "width": 920,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.6,
+          "enterEnd": 1.1,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.4,
+          "style": {
+            "fontFamily": "Libre Baskerville"
+          },
+          "html": "<div style='color:#F3EFE6; font-size:56px; line-height:1.15;'>{{address}}</div><div style='margin-top:16px; color:#BBD3A8; font-size:64px; font-weight:700;'>{{price}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "exterior",
+      "duration": 4.6,
+      "backgroundColor": "#12211B",
+      "transition": "smoothleft",
+      "transitionId": "kitchen",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{exteriorImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.6
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 4.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='rjlExt' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#12211B' stop-opacity='0.2'/><stop offset='0.55' stop-color='#12211B' stop-opacity='0.02'/><stop offset='1' stop-color='#12211B' stop-opacity='0.88'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#rjlExt)'/><rect x='80' y='1440' width='920' height='300' rx='30' fill='rgba(18,33,27,0.85)' stroke='rgba(187,211,168,0.4)' stroke-width='1.5'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1500,
+          "width": 860,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.4,
+          "enterEnd": 0.9,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.6,
+          "style": {
+            "fontFamily": "Manrope"
+          },
+          "html": "<div style='display:flex; color:#F3EFE6; text-align:center;'><div style='flex:1;'><div style='font-size:56px; font-weight:800; color:#BBD3A8;'>{{beds}}</div><div style='margin-top:6px; font-size:23px; font-weight:700; letter-spacing:3px; color:#9DB3A2;'>BEDS</div></div><div style='flex:1; border-left:1px solid rgba(243,239,230,0.2); border-right:1px solid rgba(243,239,230,0.2);'><div style='font-size:56px; font-weight:800; color:#BBD3A8;'>{{baths}}</div><div style='margin-top:6px; font-size:23px; font-weight:700; letter-spacing:3px; color:#9DB3A2;'>BATHS</div></div><div style='flex:1;'><div style='font-size:44px; font-weight:800; color:#BBD3A8; padding-top:8px;'>{{area}}</div><div style='margin-top:10px; font-size:23px; font-weight:700; letter-spacing:3px; color:#9DB3A2;'>LIVING</div></div></div>"
+        }
+      ]
+    },
+    {
+      "id": "kitchen",
+      "duration": 4.2,
+      "backgroundColor": "#12211B",
+      "transition": "smoothup",
+      "transitionId": "contact",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{interiorImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.2
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 4.2,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='rjlKit' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#12211B' stop-opacity='0.32'/><stop offset='0.55' stop-color='#12211B' stop-opacity='0.04'/><stop offset='1' stop-color='#12211B' stop-opacity='0.82'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#rjlKit)'/><path d='M80 1500 H320' stroke='#BBD3A8' stroke-width='3'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 80,
+          "y": 1540,
+          "width": 920,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.4,
+          "enterEnd": 0.9,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.2,
+          "style": {
+            "fontFamily": "Libre Baskerville"
+          },
+          "html": "<div style='color:#F3EFE6; font-size:38px; line-height:1.35; font-style:italic;'>{{highlight}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "contact",
+      "duration": 4.6,
+      "backgroundColor": "#12211B",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='rjlEnd' cx='0.5' cy='0.4' r='0.9'><stop offset='0' stop-color='#1C3328'/><stop offset='1' stop-color='#12211B'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#rjlEnd)'/><path d='M470 560 L540 500 L610 560 M488 552 V660 H592 V552' fill='none' stroke='#BBD3A8' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/><rect x='120' y='60' width='840' height='1800' fill='none' stroke='rgba(187,211,168,0.25)' stroke-width='1'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 780,
+          "width": 880,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.75,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.6,
+          "style": {
+            "fontFamily": "Libre Baskerville"
+          },
+          "html": "<div style='text-align:center; color:#F3EFE6; font-size:58px; line-height:1.2;'>Come see it<br>before the open house.</div><div style='margin-top:20px; text-align:center; color:#9DB3A2; font-size:28px;'>{{address}} · {{price}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showAgent}}",
+          "x": 540,
+          "y": 1180,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.9,
+          "enterEnd": 1.35,
+          "enterAnimation": "circleopen",
+          "exitEnd": 4.6,
+          "style": {
+            "fontFamily": "Manrope"
+          },
+          "html": "<div style='display:inline-block; background:#BBD3A8; color:#12211B; border-radius:999px; padding:26px 62px; font-size:36px; font-weight:800;'>Call {{agentName}}</div><div style='margin-top:16px; text-align:center; color:#F3EFE6; font-size:30px; font-weight:700;'>{{agentPhone}}</div><div style='margin-top:12px; text-align:center; color:#7E937F; font-size:23px; font-weight:600; letter-spacing:4px;'>{{agencyName}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.16
+    }
+  ]
+}

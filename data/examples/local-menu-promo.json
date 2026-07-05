@@ -1,0 +1,200 @@
+{
+  "name": "local-menu-promo",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#180F0A",
+  "outputFormat": "mp4",
+  "variables": {
+    "restaurantName": "EMBER & OAK",
+    "dishName": "The Smokehouse Stack",
+    "dishDescription": "Double-smashed patty, bourbon glaze, aged cheddar, crispy onions on a brioche bun.",
+    "price": "$14.50",
+    "badgeText": "CHEF'S FAVORITE",
+    "showBadge": true,
+    "ctaText": "Order now — ready in 15 min",
+    "prepVideo": "https://videos.pexels.com/video-files/34803863/14756686_1080_1920_30fps.mp4",
+    "dishImage": "https://images.pexels.com/photos/34407507/pexels-photo-34407507.jpeg?auto=compress&cs=tinysrgb&w=1620",
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/03/19/audio_56ae1dae5f.mp3"
+  },
+  "scenes": [
+    {
+      "id": "sizzle",
+      "duration": 3.6,
+      "backgroundColor": "#180F0A",
+      "transition": "fade",
+      "transitionId": "dish",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "VIDEO",
+          "src": "{{prepVideo}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "volume": 0,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.6
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 3.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='lmpShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#180F0A' stop-opacity='0.5'/><stop offset='0.5' stop-color='#180F0A' stop-opacity='0.15'/><stop offset='1' stop-color='#180F0A' stop-opacity='0.8'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#lmpShade)'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 165,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.6,
+          "enterAnimation": "fade",
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "Bebas Neue" },
+          "html": "<div style='text-align:center; color:#F2E5D5; font-size:38px; letter-spacing:10px;'>{{restaurantName}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1500,
+          "width": 920,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.5,
+          "enterEnd": 0.95,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "DM Sans" },
+          "html": "<div style='text-align:center; color:#F2E5D5; font-size:52px; line-height:1.15; font-weight:800;'>Fresh off the grill,<br>every single day. 🔥</div>"
+        }
+      ]
+    },
+    {
+      "id": "dish",
+      "duration": 6,
+      "backgroundColor": "#180F0A",
+      "transition": "smoothup",
+      "transitionId": "order",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{dishImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 6
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='lmdShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#180F0A' stop-opacity='0.35'/><stop offset='0.45' stop-color='#180F0A' stop-opacity='0.02'/><stop offset='1' stop-color='#180F0A' stop-opacity='0.9'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#lmdShade)'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showBadge}}",
+          "x": 90,
+          "y": 150,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.55,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 6,
+          "style": { "fontFamily": "DM Sans" },
+          "html": "<div style='display:inline-block; background:#E86A33; color:#FFF4E8; border-radius:999px; padding:14px 34px; font-size:27px; font-weight:800; letter-spacing:3px;'>👨‍🍳 {{badgeText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 1330,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.5,
+          "enterEnd": 1,
+          "enterAnimation": "smoothup",
+          "exitEnd": 6,
+          "style": { "fontFamily": "Bebas Neue" },
+          "html": "<div style='color:#FFF4E8; font-size:104px; line-height:0.98; letter-spacing:2px;'>{{dishName}}</div><div style='margin-top:18px; font-family:DM Sans, sans-serif; color:#E4CBB0; font-size:29px; line-height:1.45; font-weight:500;'>{{dishDescription}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 1710,
+          "anchor": "top-left",
+          "track": 11,
+          "enterBegin": 1.1,
+          "enterEnd": 1.5,
+          "enterAnimation": "circleopen",
+          "exitEnd": 6,
+          "style": { "fontFamily": "DM Sans" },
+          "html": "<div style='display:inline-block; background:#FFF4E8; color:#180F0A; border-radius:18px; padding:14px 38px; font-size:44px; font-weight:800;'>{{price}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "order",
+      "duration": 3.8,
+      "backgroundColor": "#180F0A",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.8,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='lmoEnd' cx='0.5' cy='0.4' r='0.9'><stop offset='0' stop-color='#2E1B10'/><stop offset='1' stop-color='#180F0A'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#lmoEnd)'/><path d='M470 560 C470 610 610 610 610 560 M450 560 H630 L610 760 C608 780 472 780 470 760 Z' fill='none' stroke='#E86A33' stroke-width='7' stroke-linejoin='round'/><path d='M505 500 C505 480 520 480 520 460 M545 500 C545 480 560 480 560 460 M585 500 C585 480 600 480 600 460' stroke='rgba(232,106,51,0.7)' stroke-width='6' stroke-linecap='round' fill='none'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 900,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.7,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.8,
+          "style": { "fontFamily": "Bebas Neue" },
+          "html": "<div style='text-align:center; color:#FFF4E8; font-size:86px; line-height:1; letter-spacing:2px;'>HUNGRY YET?</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1120,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.8,
+          "enterEnd": 1.2,
+          "enterAnimation": "circleopen",
+          "exitEnd": 3.8,
+          "style": { "fontFamily": "DM Sans" },
+          "html": "<div style='display:inline-block; background:#E86A33; color:#FFF4E8; border-radius:999px; padding:26px 62px; font-size:36px; font-weight:800;'>{{ctaText}}</div><div style='margin-top:16px; text-align:center; color:#9C8672; font-size:25px; letter-spacing:5px; font-family:Bebas Neue, sans-serif;'>{{restaurantName}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.18
+    }
+  ]
+}

@@ -1,0 +1,175 @@
+{
+  "name": "saas-product-demo",
+  "resolution": "full-hd",
+  "frameRate": 30,
+  "backgroundColor": "#0C1220",
+  "outputFormat": "mp4",
+  "variables": {
+    "productName": "DeployBot",
+    "demoTitle": "From commit to production in 90 seconds",
+    "callout1": "Push to main — DeployBot picks it up instantly",
+    "callout2": "Tests, build and canary rollout run in parallel",
+    "callout3": "One click to promote — or auto-rollback on errors",
+    "ctaText": "Start deploying free",
+    "ctaUrl": "deploybot.example",
+    "screenVideo": "https://videos.pexels.com/video-files/2887463/2887463-hd_1920_1080_25fps.mp4",
+    "musicUrl": "https://cdn.pixabay.com/audio/2026/02/24/audio_3f375fdf97.mp3"
+  },
+  "scenes": [
+    {
+      "id": "demo",
+      "duration": 12,
+      "backgroundColor": "#0C1220",
+      "transition": "fade",
+      "transitionId": "cta",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "VIDEO",
+          "src": "{{screenVideo}}",
+          "width": 1920,
+          "height": 1080,
+          "position": "center-center",
+          "resize": "cover",
+          "volume": 0,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 12
+        },
+        {
+          "type": "SVG",
+          "width": 1920,
+          "height": 1080,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 12,
+          "svg": "<svg width='1920' height='1080' viewBox='0 0 1920 1080' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='spdShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#0C1220' stop-opacity='0.65'/><stop offset='0.35' stop-color='#0C1220' stop-opacity='0.2'/><stop offset='1' stop-color='#0C1220' stop-opacity='0.75'/></linearGradient></defs><rect width='1920' height='1080' fill='url(#spdShade)'/><rect x='90' y='70' width='430' height='66' rx='33' fill='rgba(12,18,32,0.75)' stroke='rgba(126,231,135,0.55)' stroke-width='1.5'/><circle cx='134' cy='103' r='10' fill='#7EE787'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 165,
+          "y": 103,
+          "anchor": "center-left",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.55,
+          "enterAnimation": "fade",
+          "exitEnd": 12,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='color:#FFFFFF; font-size:27px; font-weight:700; letter-spacing:2px;'>{{productName}} · LIVE DEMO</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 210,
+          "width": 1100,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.4,
+          "enterEnd": 0.85,
+          "enterAnimation": "smoothup",
+          "exitBegin": 3.3,
+          "exitEnd": 3.7,
+          "exitAnimation": "fade",
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='color:#FFFFFF; font-size:62px; line-height:1.1; font-weight:700; letter-spacing:-1px;'>{{demoTitle}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 850,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 11,
+          "enterBegin": 1.2,
+          "enterEnd": 1.6,
+          "enterAnimation": "smoothleft",
+          "exitBegin": 4.4,
+          "exitEnd": 4.7,
+          "exitAnimation": "fade",
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='display:inline-block; background:rgba(12,18,32,0.85); border-left:6px solid #7EE787; color:#FFFFFF; border-radius:14px; padding:22px 34px; font-size:32px; font-weight:600;'>① {{callout1}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 850,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 11,
+          "enterBegin": 4.9,
+          "enterEnd": 5.3,
+          "enterAnimation": "smoothleft",
+          "exitBegin": 8,
+          "exitEnd": 8.3,
+          "exitAnimation": "fade",
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='display:inline-block; background:rgba(12,18,32,0.85); border-left:6px solid #58A6FF; color:#FFFFFF; border-radius:14px; padding:22px 34px; font-size:32px; font-weight:600;'>② {{callout2}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 850,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 11,
+          "enterBegin": 8.5,
+          "enterEnd": 8.9,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 12,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='display:inline-block; background:rgba(12,18,32,0.85); border-left:6px solid #FFA657; color:#FFFFFF; border-radius:14px; padding:22px 34px; font-size:32px; font-weight:600;'>③ {{callout3}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "cta",
+      "duration": 4,
+      "backgroundColor": "#0C1220",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1920,
+          "height": 1080,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4,
+          "svg": "<svg width='1920' height='1080' viewBox='0 0 1920 1080' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='spdEnd' cx='0.5' cy='0.4' r='0.9'><stop offset='0' stop-color='#14213A'/><stop offset='1' stop-color='#0C1220'/></radialGradient></defs><rect width='1920' height='1080' fill='url(#spdEnd)'/><path d='M900 280 L960 220 L1020 280 M960 226 V400' stroke='#7EE787' stroke-width='12' fill='none' stroke-linecap='round' stroke-linejoin='round'/><path d='M840 440 H1080' stroke='rgba(126,231,135,0.4)' stroke-width='4' stroke-linecap='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 960,
+          "y": 520,
+          "width": 1300,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.7,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:60px; line-height:1.1; font-weight:700;'>Ship faster. Sleep better.</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 960,
+          "y": 700,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.8,
+          "enterEnd": 1.2,
+          "enterAnimation": "circleopen",
+          "exitEnd": 4,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='display:inline-block; background:#7EE787; color:#0C1220; border-radius:999px; padding:24px 66px; font-size:34px; font-weight:700;'>{{ctaText}} →</div><div style='margin-top:16px; text-align:center; color:#5F7089; font-size:24px; font-family:JetBrains Mono, monospace;'>{{ctaUrl}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.15
+    }
+  ]
+}

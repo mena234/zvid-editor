@@ -16,6 +16,8 @@ const items = ref<LibraryItem[]>([])
 const pending = ref(true)
 const error = ref('')
 const loadingSlug = ref('')
+/** Card the pointer is over — that card swaps its thumbnail for the preview video. */
+const hoverSlug = ref('')
 
 async function loadList() {
   pending.value = true
@@ -46,13 +48,20 @@ async function load(item: LibraryItem) {
     loadingSlug.value = ''
   }
 }
+
+function onEnter(slug: string) {
+  hoverSlug.value = slug
+}
+function onLeave(slug: string) {
+  if (hoverSlug.value === slug) hoverSlug.value = ''
+}
 </script>
 
 <template>
-  <UiModal title="Example projects" width="680px" @close="editor.closeModal()">
+  <UiModal title="Example projects" width="860px" @close="editor.closeModal()">
     <p class="hint">
-      Curated example projects — load one to explore how features map
-    to JSON. Loading replaces the current project.
+      Curated example projects — hover a card to preview, click to load it into
+      the editor. Loading replaces the current project.
     </p>
     <p v-if="pending" class="hint">Loading examples…</p>
     <div v-else-if="error" class="error-box">
@@ -66,18 +75,44 @@ async function load(item: LibraryItem) {
         class="card"
         :class="{ busy: loadingSlug === ex.slug }"
         @click="load(ex)"
+        @mouseenter="onEnter(ex.slug)"
+        @mouseleave="onLeave(ex.slug)"
+        @focus="onEnter(ex.slug)"
+        @blur="onLeave(ex.slug)"
       >
-        <span class="card-head">
-          <UiIcon
-            :name="ex.meta?.hasScenes ? 'scene' : ex.meta?.hasSubtitle ? 'subtitles' : 'film'"
-            :size="15"
+        <span class="shot">
+          <img
+            v-if="ex.meta?.thumbnail"
+            class="thumb"
+            :src="ex.meta.thumbnail"
+            :alt="ex.title"
+            loading="lazy"
           />
+          <span v-else class="thumb thumb-fallback">
+            <UiIcon
+              :name="ex.meta?.hasScenes ? 'scene' : ex.meta?.hasSubtitle ? 'subtitles' : 'film'"
+              :size="22"
+            />
+          </span>
+          <video
+            v-if="hoverSlug === ex.slug && ex.meta?.preview"
+            class="shot-video"
+            :src="ex.meta.preview"
+            autoplay
+            muted
+            loop
+            playsinline
+          />
+          <span v-if="ex.meta?.duration" class="shot-badge mono">
+            {{ ex.meta.duration }}s
+          </span>
+        </span>
+        <span class="card-head">
           <b>{{ ex.title }}</b>
         </span>
         <span class="card-desc">{{ ex.description }}</span>
         <span class="card-meta mono">
           {{ ex.meta?.resolution }}
-          <template v-if="ex.meta?.duration"> · {{ ex.meta.duration }}s</template>
           <template v-if="ex.meta?.scenes"> · {{ ex.meta.scenes }} scenes</template>
         </span>
       </button>
@@ -88,14 +123,17 @@ async function load(item: LibraryItem) {
 <style scoped>
 .grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  max-height: 62vh;
+  overflow-y: auto;
+  padding-right: 2px;
 }
 .card {
   display: flex;
   flex-direction: column;
   gap: 5px;
-  padding: 12px;
+  padding: 8px;
   border: 1px solid var(--border-1);
   border-radius: var(--radius-m);
   background: var(--bg-1);
@@ -110,22 +148,62 @@ async function load(item: LibraryItem) {
   opacity: 0.6;
   pointer-events: none;
 }
+.shot {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  border-radius: calc(var(--radius-m) - 3px);
+  overflow: hidden;
+  background: var(--bg-3);
+}
+.thumb {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.thumb-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-3);
+}
+.shot-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.shot-badge {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: rgba(10, 10, 16, 0.72);
+  color: #fff;
+  font-size: 9.5px;
+}
 .card-head {
   display: flex;
   align-items: center;
   gap: 7px;
-  font-size: 12.5px;
-}
-.card-head :deep(svg) {
-  color: var(--accent-strong);
+  font-size: 12px;
 }
 .card-desc {
-  font-size: 11px;
+  font-size: 10.5px;
   color: var(--text-2);
   line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 .card-meta {
-  font-size: 9.5px;
+  font-size: 9px;
   color: var(--text-3);
 }
 .error-box {

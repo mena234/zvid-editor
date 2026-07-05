@@ -1,0 +1,171 @@
+{
+  "name": "auto-finance-offer",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#F4F6FA",
+  "outputFormat": "mp4",
+  "variables": {
+    "dealerName": "Cityline Auto",
+    "vehicle": "2023 Series 3 Sedan",
+    "monthly": "$299",
+    "downPayment": "$1,990 down",
+    "apr": "3.9% APR",
+    "term": "48 months",
+    "qualifier": "Approved in under 30 minutes — even first-time buyers.",
+    "ctaText": "Get pre-approved",
+    "disclaimer": "*Example payment with approved credit. Taxes, title and fees extra. Terms and availability vary.",
+    "showDisclaimer": true,
+    "carImage": "https://images.pexels.com/photos/13767596/pexels-photo-13767596.jpeg?auto=compress&cs=tinysrgb&w=1620",
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/04/21/audio_ed6f0ed574.mp3"
+  },
+  "scenes": [
+    {
+      "id": "payment",
+      "duration": 5,
+      "backgroundColor": "#F4F6FA",
+      "transition": "smoothleft",
+      "transitionId": "terms",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{carImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 5
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 5,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='afoShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#0E1B3A' stop-opacity='0.42'/><stop offset='0.45' stop-color='#0E1B3A' stop-opacity='0.05'/><stop offset='1' stop-color='#0E1B3A' stop-opacity='0.9'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#afoShade)'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 150,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.6,
+          "enterAnimation": "smoothdown",
+          "exitEnd": 5,
+          "style": {
+            "fontFamily": "Manrope"
+          },
+          "html": "<div style='display:inline-block; background:rgba(14,27,58,0.8); border:1.5px solid rgba(255,255,255,0.4); color:#FFFFFF; border-radius:999px; padding:16px 42px; font-size:28px; font-weight:800; letter-spacing:3px;'>DRIVE NOW · PAY MONTHLY</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 1260,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.5,
+          "enterEnd": 1,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5,
+          "style": {
+            "fontFamily": "Manrope"
+          },
+          "html": "<div style='color:#DCE4F2; font-size:34px; font-weight:700;'>{{vehicle}} from</div><div style='margin-top:4px; color:#FFFFFF;'><span style='font-size:160px; line-height:1; font-weight:800; letter-spacing:-4px;'>{{monthly}}</span><span style='font-size:44px; font-weight:700; color:#9FB6E8;'>/mo</span></div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 1660,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 1.05,
+          "enterEnd": 1.5,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5,
+          "style": {
+            "fontFamily": "Manrope"
+          },
+          "html": "<div><span style='display:inline-block; background:rgba(255,255,255,0.14); border:1px solid rgba(255,255,255,0.3); color:#FFFFFF; border-radius:999px; padding:12px 28px; font-size:26px; font-weight:700; margin-right:14px;'>{{downPayment}}</span><span style='display:inline-block; background:rgba(255,255,255,0.14); border:1px solid rgba(255,255,255,0.3); color:#FFFFFF; border-radius:999px; padding:12px 28px; font-size:26px; font-weight:700; margin-right:14px;'>{{apr}}</span><span style='display:inline-block; background:rgba(255,255,255,0.14); border:1px solid rgba(255,255,255,0.3); color:#FFFFFF; border-radius:999px; padding:12px 28px; font-size:26px; font-weight:700;'>{{term}}</span></div>"
+        }
+      ]
+    },
+    {
+      "id": "terms",
+      "duration": 5,
+      "backgroundColor": "#0E1B3A",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 5,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='afoGlow' cx='0.5' cy='0.35' r='0.9'><stop offset='0' stop-color='#1A2C57'/><stop offset='1' stop-color='#0E1B3A'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#afoGlow)'/><circle cx='540' cy='560' r='130' fill='rgba(120,169,255,0.12)' stroke='rgba(120,169,255,0.55)' stroke-width='2'/><path d='M478 560 L522 606 L610 512' stroke='#78A9FF' stroke-width='14' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 800,
+          "width": 880,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.3,
+          "enterEnd": 0.8,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5,
+          "style": {
+            "fontFamily": "Manrope"
+          },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:58px; line-height:1.15; font-weight:800;'>{{qualifier}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1140,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.9,
+          "enterEnd": 1.3,
+          "enterAnimation": "circleopen",
+          "exitEnd": 5,
+          "style": {
+            "fontFamily": "Manrope"
+          },
+          "html": "<div style='display:inline-block; background:#78A9FF; color:#0E1B3A; border-radius:999px; padding:28px 70px; font-size:40px; font-weight:800;'>{{ctaText}} →</div><div style='margin-top:20px; text-align:center; color:#8FA3CC; font-size:26px; font-weight:700; letter-spacing:3px;'>{{dealerName}} · FINANCE DESK</div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showDisclaimer}}",
+          "x": 540,
+          "y": 1760,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 1.3,
+          "enterEnd": 1.7,
+          "enterAnimation": "fade",
+          "exitEnd": 5,
+          "style": {
+            "fontFamily": "Manrope"
+          },
+          "html": "<div style='text-align:center; color:#5F729C; font-size:17px; line-height:1.4;'>{{disclaimer}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.15
+    }
+  ]
+}

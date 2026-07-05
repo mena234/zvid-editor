@@ -1,0 +1,248 @@
+{
+  "name": "edu-quiz",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#231A33",
+  "outputFormat": "mp4",
+  "variables": {
+    "quizName": "GEO GENIUS QUIZ",
+    "question": "Which country has the most time zones?",
+    "optionA": "Russia",
+    "optionB": "USA",
+    "optionC": "France",
+    "optionD": "China",
+    "correctLetter": "C",
+    "correctAnswer": "France",
+    "explanation": "Thanks to its overseas territories, France spans 12 time zones — more than Russia's 11.",
+    "showExplanation": true,
+    "ctaText": "Follow for tomorrow's question",
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/03/19/audio_56ae1dae5f.mp3"
+  },
+  "scenes": [
+    {
+      "id": "question",
+      "duration": 9,
+      "backgroundColor": "#231A33",
+      "transition": "circleopen",
+      "transitionId": "answer",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 9,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='eqzBg' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#33244D'/><stop offset='1' stop-color='#231A33'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#eqzBg)'/><rect x='80' y='330' width='920' height='400' rx='36' fill='rgba(255,255,255,0.05)' stroke='rgba(255,171,64,0.5)' stroke-width='2'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 170,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.15,
+          "enterEnd": 0.5,
+          "enterAnimation": "smoothdown",
+          "exitEnd": 9,
+          "style": { "fontFamily": "Fredoka" },
+          "html": "<div style='display:inline-block; background:#FFAB40; color:#231A33; border-radius:999px; padding:14px 40px; font-size:28px; font-weight:600; letter-spacing:3px;'>🧠 {{quizName}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 420,
+          "width": 820,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.4,
+          "enterEnd": 0.85,
+          "enterAnimation": "smoothup",
+          "exitEnd": 9,
+          "style": { "fontFamily": "Fredoka" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:58px; line-height:1.2; font-weight:600;'>{{question}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 120,
+          "y": 830,
+          "width": 840,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.8,
+          "enterEnd": 1.2,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 9,
+          "style": { "fontFamily": "Fredoka" },
+          "html": "<div style='background:rgba(255,255,255,0.07); border:2px solid rgba(255,255,255,0.25); border-radius:22px; padding:26px 34px; color:#FFFFFF; font-size:38px; font-weight:500;'><b style='color:#FFAB40;'>A.</b>&nbsp; {{optionA}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 120,
+          "y": 1010,
+          "width": 840,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 1.1,
+          "enterEnd": 1.5,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 9,
+          "style": { "fontFamily": "Fredoka" },
+          "html": "<div style='background:rgba(255,255,255,0.07); border:2px solid rgba(255,255,255,0.25); border-radius:22px; padding:26px 34px; color:#FFFFFF; font-size:38px; font-weight:500;'><b style='color:#FFAB40;'>B.</b>&nbsp; {{optionB}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 120,
+          "y": 1190,
+          "width": 840,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 1.4,
+          "enterEnd": 1.8,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 9,
+          "style": { "fontFamily": "Fredoka" },
+          "html": "<div style='background:rgba(255,255,255,0.07); border:2px solid rgba(255,255,255,0.25); border-radius:22px; padding:26px 34px; color:#FFFFFF; font-size:38px; font-weight:500;'><b style='color:#FFAB40;'>C.</b>&nbsp; {{optionC}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 120,
+          "y": 1370,
+          "width": 840,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 1.7,
+          "enterEnd": 2.1,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 9,
+          "style": { "fontFamily": "Fredoka" },
+          "html": "<div style='background:rgba(255,255,255,0.07); border:2px solid rgba(255,255,255,0.25); border-radius:22px; padding:26px 34px; color:#FFFFFF; font-size:38px; font-weight:500;'><b style='color:#FFAB40;'>D.</b>&nbsp; {{optionD}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1680,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 5.4,
+          "enterEnd": 5.7,
+          "enterAnimation": "circleopen",
+          "exitBegin": 6.4,
+          "exitEnd": 6.6,
+          "exitAnimation": "fade",
+          "style": { "fontFamily": "Fredoka" },
+          "html": "<div style='text-align:center; color:#FFAB40; font-size:110px; font-weight:600;'>3</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1680,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 6.6,
+          "enterEnd": 6.9,
+          "enterAnimation": "circleopen",
+          "exitBegin": 7.6,
+          "exitEnd": 7.8,
+          "exitAnimation": "fade",
+          "style": { "fontFamily": "Fredoka" },
+          "html": "<div style='text-align:center; color:#FFAB40; font-size:110px; font-weight:600;'>2</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1680,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 7.8,
+          "enterEnd": 8.1,
+          "enterAnimation": "circleopen",
+          "exitEnd": 9,
+          "style": { "fontFamily": "Fredoka" },
+          "html": "<div style='text-align:center; color:#FFAB40; font-size:110px; font-weight:600;'>1</div>"
+        }
+      ]
+    },
+    {
+      "id": "answer",
+      "duration": 6.4,
+      "backgroundColor": "#231A33",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 6.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='eqaBg' cx='0.5' cy='0.38' r='0.9'><stop offset='0' stop-color='#2C4033'/><stop offset='1' stop-color='#1B2A21'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#eqaBg)'/><circle cx='540' cy='560' r='130' fill='rgba(105,240,174,0.14)' stroke='#69F0AE' stroke-width='4'/><path d='M488 560 L525 598 L600 512' stroke='#69F0AE' stroke-width='15' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>"
+        },
+        {
+          "type": "GIF",
+          "src": "https://media.giphy.com/media/TgoPuXFbihKJ54unZH/giphy.gif",
+          "x": 540,
+          "y": 480,
+          "width": 720,
+          "height": 720,
+          "anchor": "center-center",
+          "track": 3,
+          "enterBegin": 0.3,
+          "enterEnd": 0.6,
+          "enterAnimation": "fade",
+          "exitBegin": 2.6,
+          "exitEnd": 3.1,
+          "exitAnimation": "fade"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 790,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.3,
+          "enterEnd": 0.75,
+          "enterAnimation": "circleopen",
+          "exitEnd": 6.4,
+          "style": { "fontFamily": "Fredoka" },
+          "html": "<div style='text-align:center; color:#B8E6C9; font-size:30px; font-weight:600; letter-spacing:4px;'>THE ANSWER IS</div><div style='margin-top:14px; text-align:center; color:#FFFFFF; font-size:96px; font-weight:600;'>{{correctLetter}}. {{correctAnswer}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showExplanation}}",
+          "x": 540,
+          "y": 1130,
+          "width": 860,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 1,
+          "enterEnd": 1.5,
+          "enterAnimation": "smoothup",
+          "exitEnd": 6.4,
+          "style": { "fontFamily": "Fredoka" },
+          "html": "<div style='text-align:center; color:#D7EDDD; font-size:32px; line-height:1.5; font-weight:400;'>{{explanation}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1500,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 1.7,
+          "enterEnd": 2.1,
+          "enterAnimation": "circleopen",
+          "exitEnd": 6.4,
+          "style": { "fontFamily": "Fredoka" },
+          "html": "<div style='display:inline-block; background:#69F0AE; color:#1B2A21; border-radius:999px; padding:24px 58px; font-size:32px; font-weight:600;'>{{ctaText}}</div><div style='margin-top:16px; text-align:center; color:#7FA98E; font-size:24px; letter-spacing:3px;'>{{quizName}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.18
+    }
+  ]
+}

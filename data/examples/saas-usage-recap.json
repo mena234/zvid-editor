@@ -1,0 +1,208 @@
+{
+  "name": "saas-usage-recap",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#12071F",
+  "outputFormat": "mp4",
+  "variables": {
+    "productName": "Flowdesk",
+    "userName": "Sarah",
+    "period": "June",
+    "openerLine": "Your {{period}} was busier than you think.",
+    "funFact": "That puts you in the top 4% of planners on Flowdesk.",
+    "ctaText": "See your full recap",
+    "shareNote": "Share your stats with #FlowdeskWrapped",
+    "showShare": true,
+    "stats": [
+      {
+        "value": "312",
+        "label": "tasks completed",
+        "sub": "Your best month yet — up 41% on May"
+      },
+      {
+        "value": "27h",
+        "label": "of focus time protected",
+        "sub": "Smart Snooze held 1,204 notifications for you"
+      },
+      {
+        "value": "9",
+        "label": "projects shipped",
+        "sub": "Including the one you thought would never end"
+      }
+    ],
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/03/19/audio_56ae1dae5f.mp3"
+  },
+  "scenes": [
+    {
+      "id": "opener",
+      "duration": 3.6,
+      "backgroundColor": "#12071F",
+      "transition": "circleopen",
+      "transitionId": "stat",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='surBg' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#2A0F4A'/><stop offset='1' stop-color='#12071F'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#surBg)'/><circle cx='540' cy='700' r='230' fill='none' stroke='rgba(255,107,214,0.55)' stroke-width='3'/><circle cx='540' cy='700' r='290' fill='none' stroke='rgba(255,107,214,0.22)' stroke-width='2'/><circle cx='540' cy='700' r='350' fill='none' stroke='rgba(255,107,214,0.1)' stroke-width='2'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 700,
+          "width": 500,
+          "anchor": "center-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.65,
+          "enterAnimation": "circleopen",
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='text-align:center; color:#FF6BD6; font-size:100px; line-height:1; font-weight:800; letter-spacing:-2px;'>{{period}}</div><div style='margin-top:10px; text-align:center; color:#FFFFFF; font-size:40px; font-weight:800; letter-spacing:4px;'>WRAPPED</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1180,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.7,
+          "enterEnd": 1.15,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:52px; line-height:1.15; font-weight:800;'>Hey {{userName}} —<br>{{openerLine}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "stat",
+      "iterate": "stats",
+      "iterateAs": "stat",
+      "duration": 3.2,
+      "backgroundColor": "#12071F",
+      "transition": "smoothup",
+      "transitionId": "closer",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.2,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='sstBg' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#240D40'/><stop offset='1' stop-color='#12071F'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#sstBg)'/><path d='M150 1340 L360 1180 L520 1250 L720 1040 L930 1120' fill='none' stroke='rgba(255,107,214,0.45)' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/><circle cx='930' cy='1120' r='11' fill='#FF6BD6'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 560,
+          "width": 960,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.6,
+          "enterAnimation": "circleopen",
+          "exitEnd": 3.2,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='text-align:center; color:#FF6BD6; font-size:230px; line-height:1; font-weight:800; letter-spacing:-8px;'>{{stat.value}}</div><div style='margin-top:14px; text-align:center; color:#FFFFFF; font-size:46px; font-weight:800;'>{{stat.label}}</div><div style='margin-top:20px; text-align:center; color:#B79FD1; font-size:28px; font-weight:500;'>{{stat.sub}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 96,
+          "anchor": "center-center",
+          "track": 10,
+          "enterBegin": 0,
+          "exitEnd": 3.2,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='color:rgba(255,255,255,0.6); font-size:22px; font-weight:700; letter-spacing:5px;'>{{userName}}'S {{period}} · {{productName}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "closer",
+      "duration": 4.4,
+      "backgroundColor": "#12071F",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='surEnd' cx='0.5' cy='0.4' r='0.9'><stop offset='0' stop-color='#2A0F4A'/><stop offset='1' stop-color='#12071F'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#surEnd)'/></svg>"
+        },
+        {
+          "type": "GIF",
+          "src": "https://media.giphy.com/media/l1J9EQhfkb8tPu836/giphy.gif",
+          "x": 540,
+          "y": 620,
+          "width": 700,
+          "height": 700,
+          "anchor": "center-center",
+          "opacity": 0.35,
+          "track": 1,
+          "enterBegin": 0.2,
+          "enterEnd": 0.6,
+          "enterAnimation": "fade",
+          "exitEnd": 4.4
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 560,
+          "width": 880,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.7,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.4,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:56px; line-height:1.2; font-weight:800;'>{{funFact}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1080,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.9,
+          "enterEnd": 1.3,
+          "enterAnimation": "circleopen",
+          "exitEnd": 4.4,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='display:inline-block; background:#FF6BD6; color:#12071F; border-radius:999px; padding:26px 64px; font-size:36px; font-weight:800;'>{{ctaText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showShare}}",
+          "x": 540,
+          "y": 1260,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 1.4,
+          "enterEnd": 1.8,
+          "enterAnimation": "fade",
+          "exitEnd": 4.4,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='text-align:center; color:#B79FD1; font-size:26px; font-weight:600;'>{{shareNote}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.2
+    }
+  ]
+}
