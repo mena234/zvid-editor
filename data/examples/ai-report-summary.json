@@ -1,0 +1,202 @@
+{
+  "name": "ai-report-summary",
+  "resolution": "full-hd",
+  "frameRate": 30,
+  "backgroundColor": "#0A0E1A",
+  "outputFormat": "mp4",
+  "variables": {
+    "productName": "INSIGHT AI",
+    "reportName": "Q3 Growth Report",
+    "kicker": "AUTO-GENERATED SUMMARY",
+    "hookLine1": "Your 40-page report,",
+    "hookLine2": "in 20 seconds.",
+    "hookSub": "INSIGHT reads the data and tells you what actually matters.",
+    "showDisclaimer": true,
+    "disclaimerText": "Figures summarized by AI from your uploaded source data.",
+    "outroLine1": "Stop reading reports.",
+    "outroLine2": "Start hearing them.",
+    "ctaText": "Summarize my report",
+    "ctaHandle": "insight.ai/upload",
+    "accentColor": "#FFB454",
+    "hookImage": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDgwMTZ8MHwxfHNlYXJjaHwxfHxkYXRhJTIwZGFzaGJvYXJkJTIwYW5hbHl0aWNzJTIwc2NyZWVufGVufDB8fHx8MTc4MzI2ODU0M3ww&ixlib=rb-4.1.0&q=80&w=1080",
+    "metrics": [
+      {
+        "label": "Monthly revenue",
+        "value": "$318K",
+        "delta": "▲ 27% QoQ",
+        "note": "Driven by the new enterprise tier"
+      },
+      {
+        "label": "Active users",
+        "value": "94,200",
+        "delta": "▲ 41% QoQ",
+        "note": "Highest quarterly gain on record"
+      },
+      {
+        "label": "Churn rate",
+        "value": "1.9%",
+        "delta": "▼ from 3.4%",
+        "note": "Onboarding revamp is paying off"
+      }
+    ],
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/04/21/audio_ed6f0ed574.mp3"
+  },
+  "scenes": [
+    {
+      "id": "title",
+      "duration": 4.2,
+      "backgroundColor": "#0A0E1A",
+      "transition": "smoothleft",
+      "transitionId": "metric",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{hookImage}}",
+          "width": 1920,
+          "height": 1080,
+          "position": "center-center",
+          "resize": "cover",
+          "opacity": 0.35,
+          "zoom": true,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.2
+        },
+        {
+          "type": "SVG",
+          "width": 1920,
+          "height": 1080,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 4.2,
+          "svg": "<svg width='1920' height='1080' viewBox='0 0 1920 1080' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='rsShade' x1='0' y1='0' x2='1' y2='0'><stop offset='0' stop-color='#0A0E1A' stop-opacity='0.96'/><stop offset='0.55' stop-color='#0A0E1A' stop-opacity='0.66'/><stop offset='1' stop-color='#0A0E1A' stop-opacity='0.3'/></linearGradient></defs><rect width='1920' height='1080' fill='url(#rsShade)'/><path d='M120 690 H430' stroke='#FFB454' stroke-width='6' stroke-linecap='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 120,
+          "y": 300,
+          "width": 1180,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.75,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.2,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='color:#FFB454; font-size:26px; font-weight:800; letter-spacing:6px;'>{{productName}} · {{kicker}}</div><div style='margin-top:22px; color:#FFFFFF; font-size:90px; line-height:1; font-weight:800; letter-spacing:-2px;'>{{hookLine1}}<br>{{hookLine2}}</div><div style='margin-top:56px; color:#9AA6C0; font-size:30px; font-weight:500;'>{{hookSub}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "metric",
+      "iterate": "metrics",
+      "iterateAs": "m",
+      "duration": 3.6,
+      "backgroundColor": "#0A0E1A",
+      "transition": "smoothup",
+      "transitionId": "outro",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1920,
+          "height": 1080,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.6,
+          "svg": "<svg width='1920' height='1080' viewBox='0 0 1920 1080' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='rsGlow' cx='0.28' cy='0.4' r='0.95'><stop offset='0' stop-color='#131A2E'/><stop offset='1' stop-color='#0A0E1A'/></radialGradient></defs><rect width='1920' height='1080' fill='url(#rsGlow)'/><rect x='120' y='190' width='1010' height='700' rx='40' fill='rgba(255,255,255,0.03)' stroke='rgba(255,180,84,0.35)' stroke-width='1.5'/><rect x='1300' y='700' width='70' height='180' rx='10' fill='rgba(255,180,84,0.35)'/><rect x='1400' y='600' width='70' height='280' rx='10' fill='rgba(255,180,84,0.5)'/><rect x='1500' y='470' width='70' height='410' rx='10' fill='rgba(255,180,84,0.7)'/><rect x='1600' y='330' width='70' height='550' rx='10' fill='#FFB454'/><path d='M1300 900 H1720' stroke='rgba(255,255,255,0.18)' stroke-width='1.5'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 200,
+          "y": 280,
+          "width": 860,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.7,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='color:#9AA6C0; font-size:30px; font-weight:700; letter-spacing:4px;'>{{m.label}}</div><div style='margin-top:18px; color:#FFFFFF; font-size:150px; line-height:1; font-weight:800; letter-spacing:-4px;'>{{m.value}}</div><div style='margin-top:26px;'><span style='display:inline-block; background:rgba(255,180,84,0.14); border:1.5px solid rgba(255,180,84,0.5); color:#FFB454; border-radius:999px; padding:12px 30px; font-size:30px; font-weight:800;'>{{m.delta}}</span></div><div style='margin-top:26px; color:#78859E; font-size:27px; font-weight:500;'>{{m.note}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 1800,
+          "y": 96,
+          "anchor": "center-right",
+          "track": 10,
+          "enterBegin": 0,
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='color:rgba(154,166,192,0.7); font-size:22px; font-weight:700; letter-spacing:4px;'>{{reportName}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "outro",
+      "duration": 4.6,
+      "backgroundColor": "#0A0E1A",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1920,
+          "height": 1080,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.6,
+          "svg": "<svg width='1920' height='1080' viewBox='0 0 1920 1080' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='rsEnd' cx='0.5' cy='0.4' r='0.9'><stop offset='0' stop-color='#141C34'/><stop offset='1' stop-color='#0A0E1A'/></radialGradient></defs><rect width='1920' height='1080' fill='url(#rsEnd)'/><rect x='860' y='240' width='200' height='150' rx='16' fill='none' stroke='rgba(255,180,84,0.6)' stroke-width='3'/><path d='M905 300 H1015 M905 340 H985' stroke='#FFB454' stroke-width='7' stroke-linecap='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 960,
+          "y": 460,
+          "width": 1300,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.3,
+          "enterEnd": 0.8,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.6,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:74px; line-height:1.08; font-weight:800; letter-spacing:-1px;'>{{outroLine1}}<br>{{outroLine2}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 960,
+          "y": 720,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.7,
+          "enterEnd": 1.15,
+          "enterAnimation": "circleopen",
+          "exitEnd": 4.6,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='display:inline-block; background:{{accentColor}}; color:#0A0E1A; border-radius:999px; padding:24px 60px; font-size:36px; font-weight:800;'>{{ctaText}} · {{ctaHandle}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showDisclaimer}}",
+          "x": 960,
+          "y": 960,
+          "width": 1300,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1,
+          "enterEnd": 1.4,
+          "enterAnimation": "fade",
+          "exitEnd": 4.6,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='text-align:center; color:#5E6C88; font-size:22px; font-weight:500; letter-spacing:1px;'>{{disclaimerText}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.15
+    }
+  ]
+}

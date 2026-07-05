@@ -1,0 +1,208 @@
+{
+  "name": "sports-match-preview",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#070B18",
+  "outputFormat": "mp4",
+  "variables": {
+    "competition": "PREMIER LEAGUE · MATCHDAY 27",
+    "kicker": "MATCH PREVIEW",
+    "teamA": "ARSENAL",
+    "teamAShort": "ARS",
+    "teamAColor": "#EF2B2D",
+    "teamARecord": "W W D W W",
+    "teamB": "MAN CITY",
+    "teamBShort": "MCI",
+    "teamBColor": "#57C6EE",
+    "teamBRecord": "W W W L W",
+    "kickoff": "SAT · 17:30 GMT",
+    "venue": "Emirates Stadium · London",
+    "showVenue": true,
+    "tagline": "Title race decider under the lights.",
+    "bgVideo": "https://videos.pexels.com/video-files/34466875/14604722_1080_1920_30fps.mp4",
+    "musicUrl": "https://cdn.pixabay.com/audio/2026/02/24/audio_3f375fdf97.mp3"
+  },
+  "scenes": [
+    {
+      "id": "hook",
+      "duration": 4,
+      "backgroundColor": "#070B18",
+      "transition": "smoothup",
+      "transitionId": "clash",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "VIDEO",
+          "src": "{{bgVideo}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "volume": 0,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='mpHook' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#070B18' stop-opacity='0.82'/><stop offset='0.45' stop-color='#070B18' stop-opacity='0.28'/><stop offset='1' stop-color='#070B18' stop-opacity='0.95'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#mpHook)'/><path d='M0 1180 L1080 1080 L1080 1112 L0 1212 Z' fill='#57C6EE'/><path d='M0 1230 L1080 1130 L1080 1146 L0 1246 Z' fill='rgba(239,43,45,0.9)'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 150,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.7,
+          "enterAnimation": "fade",
+          "exitEnd": 4,
+          "style": { "fontFamily": "Archivo" },
+          "html": "<div style='display:inline-block; border:1.5px solid rgba(255,255,255,0.45); border-radius:999px; padding:14px 34px; color:#FFFFFF; font-size:24px; font-weight:800; letter-spacing:5px;'>{{competition}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 1300,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.55,
+          "enterEnd": 1.1,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4,
+          "style": { "fontFamily": "Archivo" },
+          "html": "<div style='color:#57C6EE; font-size:30px; font-weight:900; letter-spacing:8px;'>{{kicker}}</div><div style='margin-top:14px; color:#FFFFFF; font-size:120px; line-height:0.9; font-weight:900; letter-spacing:-4px;'>{{teamA}}<br><span style='color:#8794AE; font-size:64px; font-weight:800;'>vs</span> {{teamB}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "clash",
+      "duration": 5,
+      "backgroundColor": "#070B18",
+      "transition": "fade",
+      "transitionId": "info",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 5,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='mpSplit' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#12172B'/><stop offset='1' stop-color='#070B18'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#mpSplit)'/><path d='M0 0 L620 0 L460 1920 L0 1920 Z' fill='rgba(239,43,45,0.16)'/><path d='M1080 0 L620 0 L460 1920 L1080 1920 Z' fill='rgba(87,198,238,0.14)'/><path d='M620 0 L460 1920' stroke='rgba(255,255,255,0.25)' stroke-width='3'/><path d='M150 300 H430' stroke='#EF2B2D' stroke-width='6'/><path d='M650 1620 H930' stroke='#57C6EE' stroke-width='6'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 120,
+          "y": 360,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.75,
+          "enterAnimation": "smoothright",
+          "exitEnd": 5,
+          "style": { "fontFamily": "Archivo" },
+          "html": "<div style='color:{{teamAColor}}; font-size:200px; line-height:0.85; font-weight:900; letter-spacing:-6px;'>{{teamAShort}}</div><div style='margin-top:10px; color:#FFFFFF; font-size:48px; font-weight:900; letter-spacing:-1px;'>{{teamA}}</div><div style='margin-top:20px; color:#8794AE; font-size:26px; font-weight:800; letter-spacing:8px;'>FORM · {{teamARecord}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 900,
+          "anchor": "center-center",
+          "track": 11,
+          "enterBegin": 0.5,
+          "enterEnd": 0.95,
+          "enterAnimation": "circleopen",
+          "exitEnd": 5,
+          "style": { "fontFamily": "Archivo" },
+          "html": "<div style='display:inline-block; background:#FFFFFF; color:#070B18; border-radius:999px; width:120px; height:120px; line-height:120px; text-align:center; font-size:52px; font-weight:900;'>VS</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 960,
+          "y": 1200,
+          "width": 820,
+          "anchor": "top-right",
+          "track": 10,
+          "enterBegin": 0.7,
+          "enterEnd": 1.2,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 5,
+          "style": { "fontFamily": "Archivo" },
+          "html": "<div style='text-align:right; color:{{teamBColor}}; font-size:200px; line-height:0.85; font-weight:900; letter-spacing:-6px;'>{{teamBShort}}</div><div style='margin-top:10px; text-align:right; color:#FFFFFF; font-size:48px; font-weight:900; letter-spacing:-1px;'>{{teamB}}</div><div style='margin-top:20px; text-align:right; color:#8794AE; font-size:26px; font-weight:800; letter-spacing:8px;'>FORM · {{teamBRecord}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "info",
+      "duration": 4.6,
+      "backgroundColor": "#070B18",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='mpInfo' cx='0.5' cy='0.42' r='0.9'><stop offset='0' stop-color='#141B33'/><stop offset='1' stop-color='#070B18'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#mpInfo)'/><rect x='90' y='760' width='900' height='400' rx='36' fill='rgba(255,255,255,0.04)' stroke='rgba(87,198,238,0.4)' stroke-width='1.5'/><path d='M540 560 v120 M480 620 h120' stroke='#EF2B2D' stroke-width='8' stroke-linecap='round'/><circle cx='540' cy='620' r='84' fill='none' stroke='rgba(239,43,45,0.6)' stroke-width='3'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 820,
+          "width": 820,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.75,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.6,
+          "style": { "fontFamily": "Archivo" },
+          "html": "<div style='text-align:center; color:#57C6EE; font-size:26px; font-weight:900; letter-spacing:8px;'>KICK-OFF</div><div style='margin-top:16px; text-align:center; color:#FFFFFF; font-size:96px; line-height:1; font-weight:900; letter-spacing:-2px;'>{{kickoff}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showVenue}}",
+          "x": 540,
+          "y": 1030,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.6,
+          "enterEnd": 1.05,
+          "enterAnimation": "fade",
+          "exitEnd": 4.6,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='display:inline-block; background:rgba(87,198,238,0.14); border:1.5px solid rgba(87,198,238,0.5); color:#57C6EE; border-radius:999px; padding:14px 34px; font-size:28px; font-weight:700;'>{{venue}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1320,
+          "width": 880,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.9,
+          "enterEnd": 1.35,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.6,
+          "style": { "fontFamily": "Archivo" },
+          "html": "<div style='text-align:center; color:#C6CEDE; font-size:44px; line-height:1.25; font-weight:800;'>{{tagline}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.16
+    }
+  ]
+}

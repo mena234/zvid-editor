@@ -1,0 +1,148 @@
+{
+  "name": "dataviz-analytics-alert",
+  "resolution": "full-hd",
+  "frameRate": 30,
+  "backgroundColor": "#0B0B10",
+  "outputFormat": "mp4",
+  "variables": {
+    "alertKicker": "ANALYTICS ALERT",
+    "metricName": "Checkout conversion rate",
+    "changeValue": "-18%",
+    "changeWord": "DROP DETECTED",
+    "timeframe": "Last 24 hours vs 7-day baseline",
+    "fromValue": "4.2%",
+    "toValue": "3.4%",
+    "context": "Mobile checkout is the driver — desktop is flat. Payment step abandonment doubled.",
+    "actionTitle": "Recommended action",
+    "actionLine": "Owner: Growth. Investigate the mobile payment step and roll back yesterday's checkout release.",
+    "showAction": true,
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/03/19/audio_56ae1dae5f.mp3"
+  },
+  "scenes": [
+    {
+      "id": "alert",
+      "duration": 4.6,
+      "backgroundColor": "#0B0B10",
+      "transition": "fadeblack",
+      "transitionId": "detail",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1920,
+          "height": 1080,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.6,
+          "svg": "<svg width='1920' height='1080' viewBox='0 0 1920 1080' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='aaAlert' cx='0.5' cy='0.42' r='0.9'><stop offset='0' stop-color='#2A0E12'/><stop offset='1' stop-color='#0B0B10'/></radialGradient></defs><rect width='1920' height='1080' fill='url(#aaAlert)'/><circle cx='960' cy='300' r='150' fill='none' stroke='rgba(248,113,113,0.6)' stroke-width='2.5'/><circle cx='960' cy='300' r='180' fill='none' stroke='rgba(248,113,113,0.25)' stroke-width='1.5'/><path d='M960 232 L960 320' stroke='#F87171' stroke-width='10' stroke-linecap='round'/><circle cx='960' cy='362' r='7' fill='#F87171'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 960,
+          "y": 520,
+          "width": 1300,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.65,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.6,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='text-align:center; color:#F87171; font-size:28px; font-weight:700; letter-spacing:8px;'>{{alertKicker}}</div><div style='margin-top:26px; text-align:center;'><span style='display:inline-block; background:rgba(248,113,113,0.16); border:1.5px solid rgba(248,113,113,0.55); color:#FCA5A5; border-radius:999px; padding:12px 36px; font-size:28px; font-weight:700; letter-spacing:4px;'>{{changeWord}}</span></div><div style='margin-top:34px; text-align:center; color:#FFFFFF; font-size:64px; line-height:1.1; font-weight:700; letter-spacing:-1px;'>{{metricName}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "detail",
+      "duration": 4.8,
+      "backgroundColor": "#0B0B10",
+      "transition": "smoothup",
+      "transitionId": "action",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1920,
+          "height": 1080,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.8,
+          "svg": "<svg width='1920' height='1080' viewBox='0 0 1920 1080' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='aaDetail' cx='0.3' cy='0.4' r='1'><stop offset='0' stop-color='#1C1116'/><stop offset='1' stop-color='#0B0B10'/></radialGradient></defs><rect width='1920' height='1080' fill='url(#aaDetail)'/><path d='M1200 420 L1330 500 L1460 620 L1590 700 L1720 800' fill='none' stroke='#F87171' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/><circle cx='1200' cy='420' r='11' fill='#94A3B8'/><circle cx='1720' cy='800' r='13' fill='#F87171'/><line x1='1180' y1='840' x2='1740' y2='840' stroke='rgba(255,255,255,0.12)' stroke-width='2'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 160,
+          "y": 300,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.7,
+          "enterAnimation": "smoothright",
+          "exitEnd": 4.8,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='color:#94A3B8; font-size:28px; font-weight:700; letter-spacing:4px;'>{{timeframe}}</div><div style='margin-top:20px; color:#F87171; font-size:200px; line-height:0.85; font-weight:700; letter-spacing:-8px;'>{{changeValue}}</div><div style='margin-top:30px; color:#CBD5E1; font-size:40px; font-weight:600;'>{{fromValue}} <span style='color:#6B7280;'>&rarr;</span> {{toValue}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 160,
+          "y": 800,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.6,
+          "enterEnd": 1.05,
+          "enterAnimation": "fade",
+          "exitEnd": 4.8,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='color:#9AA3B2; font-size:30px; line-height:1.4; font-weight:500;'>{{context}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "action",
+      "duration": 4.6,
+      "backgroundColor": "#0B0B10",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1920,
+          "height": 1080,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.6,
+          "svg": "<svg width='1920' height='1080' viewBox='0 0 1920 1080' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='aaAct' cx='0.5' cy='0.42' r='0.85'><stop offset='0' stop-color='#171821'/><stop offset='1' stop-color='#0B0B10'/></radialGradient></defs><rect width='1920' height='1080' fill='url(#aaAct)'/><rect x='260' y='330' width='1400' height='420' rx='40' fill='rgba(248,113,113,0.05)' stroke='rgba(248,113,113,0.3)' stroke-width='1.5'/><rect x='260' y='330' width='10' height='420' rx='5' fill='#F87171'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showAction}}",
+          "x": 960,
+          "y": 420,
+          "width": 1200,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.3,
+          "enterEnd": 0.8,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.6,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='text-align:center; color:#F87171; font-size:26px; font-weight:700; letter-spacing:5px;'>{{actionTitle}}</div><div style='margin-top:26px; text-align:center; color:#F1F5F9; font-size:46px; line-height:1.35; font-weight:600;'>{{actionLine}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.16
+    }
+  ]
+}

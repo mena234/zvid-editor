@@ -1,0 +1,227 @@
+{
+  "name": "apppersonal-leaderboard",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#0C0D10",
+  "outputFormat": "mp4",
+  "variables": {
+    "appName": "STRIDE",
+    "seasonName": "June Sprint",
+    "kicker": "This week's leaderboard",
+    "yourName": "You",
+    "yourRank": "#4",
+    "yourScore": "9,120 pts",
+    "ctaText": "Climb the board",
+    "showYourRank": true,
+    "yourRankText": "You're 380 points from the podium — one good day does it.",
+    "accent": "#C6F135",
+    "accent2": "#A78BFA",
+    "bgVideo": "https://videos.pexels.com/video-files/36825184/15602543_1080_1920_25fps.mp4",
+    "leaders": [
+      {
+        "rank": "1",
+        "name": "Team Nova",
+        "score": "14,880 pts",
+        "trend": "▲ 2"
+      },
+      {
+        "rank": "2",
+        "name": "The Sprinters",
+        "score": "13,240 pts",
+        "trend": "▲ 1"
+      },
+      {
+        "rank": "3",
+        "name": "Early Birds",
+        "score": "11,760 pts",
+        "trend": "▼ 1"
+      }
+    ],
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/03/19/audio_56ae1dae5f.mp3"
+  },
+  "scenes": [
+    {
+      "id": "intro",
+      "duration": 3.6,
+      "backgroundColor": "#0C0D10",
+      "transition": "slideup",
+      "transitionId": "leader",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "VIDEO",
+          "src": "{{bgVideo}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "volume": 0,
+          "opacity": 0.45,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.6
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 3.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='lbIntro' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#0C0D10' stop-opacity='0.8'/><stop offset='0.5' stop-color='#0C0D10' stop-opacity='0.45'/><stop offset='1' stop-color='#0C0D10' stop-opacity='0.96'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#lbIntro)'/><path d='M120 1120 H360' stroke='#C6F135' stroke-width='6'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 120,
+          "y": 760,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.7,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='color:{{accent}}; font-size:28px; font-weight:800; letter-spacing:5px;'>{{appName}} · {{seasonName}}</div><div style='margin-top:20px; color:#FFFFFF; font-size:104px; line-height:0.98; font-weight:700; letter-spacing:-3px;'>{{kicker}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "leader",
+      "iterate": "leaders",
+      "iterateAs": "l",
+      "duration": 2.8,
+      "backgroundColor": "#0C0D10",
+      "transition": "slideup",
+      "transitionId": "you",
+      "transitionDuration": 0.45,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 2.8,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='lbRow' cx='0.4' cy='0.4' r='0.95'><stop offset='0' stop-color='#161821'/><stop offset='0.6' stop-color='#0F1015'/><stop offset='1' stop-color='#0C0D10'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#lbRow)'/><rect x='96' y='760' width='888' height='400' rx='40' fill='rgba(255,255,255,0.04)' stroke='rgba(198,241,53,0.4)' stroke-width='1.5'/><rect x='96' y='760' width='16' height='400' rx='8' fill='#C6F135'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 200,
+          "y": 700,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.1,
+          "enterEnd": 0.5,
+          "enterAnimation": "circleopen",
+          "exitEnd": 2.8,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='color:#C6F135; font-size:300px; line-height:1; font-weight:700; letter-spacing:-12px;'>{{l.rank}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 150,
+          "y": 830,
+          "width": 780,
+          "anchor": "top-left",
+          "track": 11,
+          "enterBegin": 0.3,
+          "enterEnd": 0.75,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 2.8,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='color:#FFFFFF; font-size:64px; line-height:1.02; font-weight:700; letter-spacing:-1px;'>{{l.name}}</div><div style='margin-top:16px; color:{{accent2}}; font-size:40px; font-weight:700;'>{{l.score}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 900,
+          "y": 830,
+          "anchor": "top-right",
+          "track": 11,
+          "enterBegin": 0.45,
+          "enterEnd": 0.9,
+          "enterAnimation": "smoothright",
+          "exitEnd": 2.8,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='display:inline-block; background:rgba(167,139,250,0.16); border:1.5px solid rgba(167,139,250,0.5); color:#A78BFA; border-radius:999px; padding:10px 26px; font-size:30px; font-weight:800;'>{{l.trend}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "you",
+      "duration": 4.4,
+      "backgroundColor": "#0C0D10",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='lbYou' cx='0.5' cy='0.4' r='0.95'><stop offset='0' stop-color='#1B1633'/><stop offset='0.55' stop-color='#12101F'/><stop offset='1' stop-color='#0C0D10'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#lbYou)'/><rect x='96' y='560' width='888' height='360' rx='40' fill='rgba(198,241,53,0.08)' stroke='#C6F135' stroke-width='2'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 150,
+          "y": 600,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.65,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 4.4,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='color:#C6F135; font-size:28px; font-weight:800; letter-spacing:5px;'>YOUR RANK</div><div style='margin-top:12px; color:#FFFFFF; font-size:150px; line-height:1; font-weight:700; letter-spacing:-6px;'>{{yourRank}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 900,
+          "y": 640,
+          "anchor": "top-right",
+          "track": 10,
+          "enterBegin": 0.4,
+          "enterEnd": 0.85,
+          "enterAnimation": "smoothright",
+          "exitEnd": 4.4,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='text-align:right; color:#A78BFA; font-size:34px; font-weight:800;'>{{yourName}}</div><div style='margin-top:10px; text-align:right; color:#FFFFFF; font-size:52px; font-weight:700;'>{{yourScore}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showYourRank}}",
+          "x": 540,
+          "y": 1010,
+          "width": 860,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.6,
+          "enterEnd": 1.05,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.4,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='text-align:center; color:#D6D2E0; font-size:40px; line-height:1.4; font-weight:500;'>{{yourRankText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1300,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.9,
+          "enterEnd": 1.35,
+          "enterAnimation": "circleopen",
+          "exitEnd": 4.4,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='display:inline-block; background:#C6F135; color:#0C0D10; border-radius:999px; padding:28px 66px; font-size:40px; font-weight:800;'>{{ctaText}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.18
+    }
+  ]
+}

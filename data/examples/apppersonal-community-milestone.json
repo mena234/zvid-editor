@@ -1,0 +1,173 @@
+{
+  "name": "apppersonal-community-milestone",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#04121A",
+  "outputFormat": "mp4",
+  "variables": {
+    "appName": "BLOOM",
+    "kicker": "A community milestone",
+    "bigNumber": "10,000",
+    "bigLabel": "members and growing",
+    "userLine": "And you were member #842.",
+    "gratitudeHeadline": "We couldn't have<br>done it without you.",
+    "ctaText": "Invite a friend",
+    "showThanks": true,
+    "thanksText": "Every one of you made this feel like home.",
+    "accent": "#1BE3B4",
+    "accent2": "#FFC93C",
+    "bgVideo": "https://videos.pexels.com/video-files/34767711/14740099_1440_2560_30fps.mp4",
+    "musicUrl": "https://cdn.pixabay.com/audio/2026/02/24/audio_3f375fdf97.mp3"
+  },
+  "scenes": [
+    {
+      "id": "reveal",
+      "duration": 4.6,
+      "backgroundColor": "#04121A",
+      "transition": "fade",
+      "transitionId": "thanks",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "VIDEO",
+          "src": "{{bgVideo}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "volume": 0,
+          "opacity": 0.62,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.6
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 4.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='cmReveal' cx='0.5' cy='0.42' r='0.9'><stop offset='0' stop-color='#04121A' stop-opacity='0.2'/><stop offset='0.6' stop-color='#04121A' stop-opacity='0.55'/><stop offset='1' stop-color='#04121A' stop-opacity='0.95'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#cmReveal)'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 560,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.65,
+          "enterAnimation": "fade",
+          "exitEnd": 4.6,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='display:inline-block; border:1.5px solid rgba(27,227,180,0.6); color:{{accent}}; border-radius:999px; padding:12px 34px; font-size:26px; font-weight:800; letter-spacing:6px;'>{{kicker}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 700,
+          "width": 960,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.45,
+          "enterEnd": 1,
+          "enterAnimation": "circleopen",
+          "exitEnd": 4.6,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:210px; line-height:0.9; font-weight:800; letter-spacing:-8px;'>{{bigNumber}}</div><div style='margin-top:16px; text-align:center; color:{{accent2}}; font-size:44px; font-weight:700;'>{{bigLabel}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1180,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.85,
+          "enterEnd": 1.3,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.6,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='display:inline-block; background:rgba(27,227,180,0.14); border:1.5px solid rgba(27,227,180,0.5); color:#1BE3B4; border-radius:999px; padding:16px 40px; font-size:34px; font-weight:700;'>{{userLine}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "thanks",
+      "duration": 4.6,
+      "backgroundColor": "#04121A",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='cmThanks' cx='0.5' cy='0.4' r='0.95'><stop offset='0' stop-color='#0A2830'/><stop offset='0.55' stop-color='#061A22'/><stop offset='1' stop-color='#04121A'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#cmThanks)'/><circle cx='540' cy='600' r='150' fill='none' stroke='rgba(255,201,60,0.7)' stroke-width='3'/><path d='M540 540 C540 512 566 500 588 512 C608 522 608 548 588 566 L540 610 L492 566 C472 548 472 522 492 512 C514 500 540 512 540 540 Z' fill='#FFC93C'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 820,
+          "width": 940,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.75,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.6,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:80px; line-height:1.05; font-weight:800; letter-spacing:-2px;'>{{gratitudeHeadline}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showThanks}}",
+          "x": 540,
+          "y": 1130,
+          "width": 820,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.6,
+          "enterEnd": 1.05,
+          "enterAnimation": "fade",
+          "exitEnd": 4.6,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='text-align:center; color:#9DC7C1; font-size:36px; line-height:1.4; font-weight:500;'>{{thanksText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1330,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.9,
+          "enterEnd": 1.35,
+          "enterAnimation": "circleopen",
+          "exitEnd": 4.6,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='display:inline-block; background:#1BE3B4; color:#04121A; border-radius:999px; padding:28px 66px; font-size:40px; font-weight:800;'>{{ctaText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1500,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1.2,
+          "enterEnd": 1.6,
+          "enterAnimation": "fade",
+          "exitEnd": 4.6,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='text-align:center; color:rgba(157,199,193,0.7); font-size:26px; font-weight:700; letter-spacing:5px;'>{{appName}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.18
+    }
+  ]
+}

@@ -1,0 +1,254 @@
+{
+  "name": "social-5-mistakes",
+  "resolution": "tiktok",
+  "frameRate": 30,
+  "backgroundColor": "#0A0A0C",
+  "outputFormat": "mp4",
+  "variables": {
+    "handle": "@growth.unfiltered",
+    "hookKicker": "STOP DOING THIS",
+    "hookTitle": "5 mistakes killing<br>your reach",
+    "hookSub": "Number 2 is why nobody sees your posts.",
+    "showBadge": true,
+    "badgeText": "SAVE THIS",
+    "ctaTitle": "Which one<br>are you guilty of?",
+    "ctaText": "Follow for daily creator fixes",
+    "accent": "#FF5B4A",
+    "accentSoft": "#FF8A7D",
+    "hookVideo": "https://videos.pexels.com/video-files/4994156/4994156-uhd_1440_2560_25fps.mp4",
+    "mistakes": [
+      {
+        "no": "1",
+        "wrong": "Posting and ghosting",
+        "fix": "Reply to every comment in the first hour — it tells the algorithm your post is worth pushing."
+      },
+      {
+        "no": "2",
+        "wrong": "A weak first 2 seconds",
+        "fix": "Open on the payoff, not the intro. If they don't stop scrolling, nothing else matters."
+      },
+      {
+        "no": "3",
+        "wrong": "Talking to everyone",
+        "fix": "Pick one person. The narrower the message, the harder it hits and the more it spreads."
+      },
+      {
+        "no": "4",
+        "wrong": "No reason to save",
+        "fix": "Give one tip they'll want later. Saves and shares beat likes for reach every time."
+      },
+      {
+        "no": "5",
+        "wrong": "Ending with 'that's it'",
+        "fix": "Close with a question. Comments are rocket fuel — make replying irresistible."
+      }
+    ],
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/03/19/audio_56ae1dae5f.mp3"
+  },
+  "scenes": [
+    {
+      "id": "hook",
+      "duration": 4,
+      "backgroundColor": "#0A0A0C",
+      "transition": "slideup",
+      "transitionId": "mistake",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "VIDEO",
+          "src": "{{hookVideo}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "volume": 0,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='m5Shade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#0A0A0C' stop-opacity='0.72'/><stop offset='0.42' stop-color='#0A0A0C' stop-opacity='0.15'/><stop offset='0.72' stop-color='#0A0A0C' stop-opacity='0.4'/><stop offset='1' stop-color='#0A0A0C' stop-opacity='0.95'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#m5Shade)'/><rect x='90' y='1240' width='150' height='12' rx='6' fill='#FF5B4A'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 150,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.6,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 4,
+          "style": { "fontFamily": "Bricolage Grotesque" },
+          "html": "<div style='display:inline-block; background:{{accent}}; color:#0A0A0C; border-radius:10px; padding:14px 30px; font-size:28px; font-weight:800; letter-spacing:4px;'>{{hookKicker}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showBadge}}",
+          "x": 990,
+          "y": 164,
+          "anchor": "top-right",
+          "track": 11,
+          "enterBegin": 0.55,
+          "enterEnd": 0.95,
+          "enterAnimation": "fade",
+          "exitEnd": 4,
+          "style": { "fontFamily": "Bricolage Grotesque" },
+          "html": "<div style='display:inline-block; border:2px solid rgba(255,255,255,0.7); color:#FFFFFF; border-radius:999px; padding:12px 26px; font-size:24px; font-weight:800; letter-spacing:3px;'>{{badgeText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 1290,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.45,
+          "enterEnd": 1,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4,
+          "style": { "fontFamily": "Bricolage Grotesque" },
+          "html": "<div style='color:#FFFFFF; font-size:110px; line-height:0.98; font-weight:800; letter-spacing:-4px;'>{{hookTitle}}</div><div style='margin-top:28px; color:#C9C6CF; font-size:34px; line-height:1.35; font-weight:500;'>{{hookSub}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 1810,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0,
+          "exitEnd": 4,
+          "style": { "fontFamily": "Bricolage Grotesque" },
+          "html": "<div style='color:rgba(255,255,255,0.6); font-size:26px; font-weight:700; letter-spacing:3px;'>{{handle}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "mistake",
+      "iterate": "mistakes",
+      "iterateAs": "m",
+      "duration": 3.6,
+      "backgroundColor": "#0A0A0C",
+      "transition": "slideup",
+      "transitionId": "cta",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='m5Bg' cx='0.32' cy='0.3' r='1'><stop offset='0' stop-color='#1A1216'/><stop offset='1' stop-color='#0A0A0C'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#m5Bg)'/><rect x='84' y='820' width='912' height='560' rx='36' fill='rgba(255,255,255,0.04)' stroke='rgba(255,91,74,0.4)' stroke-width='1.5'/><rect x='84' y='820' width='912' height='10' rx='5' fill='#FF5B4A'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 300,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.1,
+          "enterEnd": 0.5,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "Bricolage Grotesque" },
+          "html": "<div style='color:rgba(255,138,125,0.85); font-size:30px; font-weight:800; letter-spacing:6px;'>MISTAKE</div><div style='color:{{accent}}; font-size:300px; line-height:0.86; font-weight:800; letter-spacing:-12px;'>{{m.no}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 132,
+          "y": 872,
+          "width": 816,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.35,
+          "enterEnd": 0.8,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "Bricolage Grotesque" },
+          "html": "<div style='color:#FFFFFF; font-size:60px; line-height:1.02; font-weight:800; letter-spacing:-1px;'>{{m.wrong}}</div><div style='margin-top:30px; color:#C9C6CF; font-size:36px; line-height:1.42; font-weight:500;'>{{m.fix}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 1810,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0,
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "Bricolage Grotesque" },
+          "html": "<div style='color:rgba(255,255,255,0.5); font-size:24px; font-weight:700; letter-spacing:3px;'>{{handle}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "cta",
+      "duration": 4.4,
+      "backgroundColor": "#0A0A0C",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='m5Cta' cx='0.5' cy='0.4' r='0.95'><stop offset='0' stop-color='#2A1512'/><stop offset='1' stop-color='#0A0A0C'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#m5Cta)'/><circle cx='540' cy='560' r='150' fill='none' stroke='rgba(255,91,74,0.85)' stroke-width='3'/><circle cx='540' cy='560' r='176' fill='none' stroke='rgba(255,91,74,0.25)' stroke-width='1.5'/><path d='M492 560 L528 596 L596 520' fill='none' stroke='#FF5B4A' stroke-width='14' stroke-linecap='round' stroke-linejoin='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 820,
+          "width": 920,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.75,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.4,
+          "style": { "fontFamily": "Bricolage Grotesque" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:82px; line-height:1.02; font-weight:800; letter-spacing:-2px;'>{{ctaTitle}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1160,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.7,
+          "enterEnd": 1.15,
+          "enterAnimation": "circleopen",
+          "exitEnd": 4.4,
+          "style": { "fontFamily": "Bricolage Grotesque" },
+          "html": "<div style='display:inline-block; background:{{accent}}; color:#0A0A0C; border-radius:999px; padding:28px 66px; font-size:38px; font-weight:800;'>{{ctaText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1330,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1.05,
+          "enterEnd": 1.45,
+          "enterAnimation": "fade",
+          "exitEnd": 4.4,
+          "style": { "fontFamily": "Bricolage Grotesque" },
+          "html": "<div style='text-align:center; color:{{accentSoft}}; font-size:30px; font-weight:800; letter-spacing:3px;'>{{handle}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.18
+    }
+  ]
+}

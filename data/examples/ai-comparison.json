@@ -1,0 +1,223 @@
+{
+  "name": "ai-comparison",
+  "resolution": "full-hd",
+  "frameRate": 30,
+  "backgroundColor": "#0A0913",
+  "outputFormat": "mp4",
+  "variables": {
+    "kicker": "SAME PROMPT · TWO MODELS",
+    "promptText": "\"Write a launch tweet for our new AI app.\"",
+    "leftName": "Model A",
+    "leftTag": "OLD MODEL",
+    "leftOutput": "Excited to announce our new AI app is now live! Check it out and let us know what you think. #AI #launch",
+    "leftScore": "6.1",
+    "rightName": "ORION 4",
+    "rightTag": "NEW MODEL",
+    "rightOutput": "Your busywork just got a bodyguard. ORION 4 is live — it reads, writes and ships while you sleep. Meet it →",
+    "rightScore": "9.4",
+    "showWinner": true,
+    "winnerText": "ORION 4 WINS · +54% ENGAGEMENT",
+    "outroLine1": "Better prompts in,",
+    "outroLine2": "better everything out.",
+    "ctaText": "Compare on your own prompt",
+    "ctaHandle": "orion.ai/compare",
+    "leftColor": "#8A93A8",
+    "accentColor": "#8B5CF6",
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/03/19/audio_56ae1dae5f.mp3"
+  },
+  "scenes": [
+    {
+      "id": "intro",
+      "duration": 3.6,
+      "backgroundColor": "#0A0913",
+      "transition": "smoothup",
+      "transitionId": "split",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1920,
+          "height": 1080,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.6,
+          "svg": "<svg width='1920' height='1080' viewBox='0 0 1920 1080' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='cmpIntro' cx='0.5' cy='0.42' r='0.9'><stop offset='0' stop-color='#151228'/><stop offset='1' stop-color='#0A0913'/></radialGradient></defs><rect width='1920' height='1080' fill='url(#cmpIntro)'/><rect x='560' y='560' width='800' height='230' rx='28' fill='rgba(139,92,246,0.06)' stroke='rgba(139,92,246,0.4)' stroke-width='1.5'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 960,
+          "y": 340,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.65,
+          "enterAnimation": "fade",
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='display:inline-block; border:1.5px solid rgba(139,92,246,0.6); color:#C4B5FD; border-radius:999px; padding:14px 34px; font-size:24px; font-weight:800; letter-spacing:6px;'>{{kicker}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 960,
+          "y": 600,
+          "width": 760,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.5,
+          "enterEnd": 0.95,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:44px; line-height:1.35; font-weight:600;'>{{promptText}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "split",
+      "duration": 5.4,
+      "backgroundColor": "#0A0913",
+      "transition": "fade",
+      "transitionId": "outro",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1920,
+          "height": 1080,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 5.4,
+          "svg": "<svg width='1920' height='1080' viewBox='0 0 1920 1080' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='cmpR' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#1A1230'/><stop offset='1' stop-color='#0A0913'/></linearGradient></defs><rect width='1920' height='1080' fill='#0A0913'/><rect x='90' y='150' width='840' height='860' rx='36' fill='rgba(255,255,255,0.03)' stroke='rgba(138,147,168,0.3)' stroke-width='1.5'/><rect x='990' y='150' width='840' height='860' rx='36' fill='url(#cmpR)' stroke='rgba(139,92,246,0.6)' stroke-width='2'/><line x1='960' y1='210' x2='960' y2='950' stroke='rgba(255,255,255,0.12)' stroke-width='2' stroke-dasharray='4 12'/><circle cx='960' cy='580' r='46' fill='#0A0913' stroke='rgba(139,92,246,0.6)' stroke-width='2'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 960,
+          "y": 552,
+          "anchor": "center-center",
+          "track": 12,
+          "enterBegin": 0,
+          "exitEnd": 5.4,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='text-align:center; color:#C4B5FD; font-size:28px; font-weight:800;'>VS</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 150,
+          "y": 210,
+          "width": 720,
+          "anchor": "top-left",
+          "track": 11,
+          "enterBegin": 0.3,
+          "enterEnd": 0.75,
+          "enterAnimation": "smoothright",
+          "exitEnd": 5.4,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='display:inline-block; border:1.5px solid rgba(138,147,168,0.5); color:#8A93A8; border-radius:8px; padding:7px 18px; font-size:20px; font-weight:800; letter-spacing:3px;'>{{leftTag}}</div><div style='margin-top:16px; color:#C9CEDA; font-size:46px; font-weight:800; letter-spacing:-1px;'>{{leftName}}</div><div style='margin-top:24px; color:#9AA0AE; font-size:31px; line-height:1.45; font-weight:500;'>{{leftOutput}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 150,
+          "y": 880,
+          "anchor": "top-left",
+          "track": 11,
+          "enterBegin": 0.6,
+          "enterEnd": 1,
+          "enterAnimation": "fade",
+          "exitEnd": 5.4,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='color:{{leftColor}}; font-size:26px; font-weight:700; letter-spacing:3px;'>SCORE <span style='color:#C9CEDA; font-size:52px; font-weight:800;'>{{leftScore}}</span></div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 1050,
+          "y": 210,
+          "width": 720,
+          "anchor": "top-left",
+          "track": 11,
+          "enterBegin": 0.45,
+          "enterEnd": 0.9,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 5.4,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='display:inline-block; background:{{accentColor}}; color:#0A0913; border-radius:8px; padding:7px 18px; font-size:20px; font-weight:800; letter-spacing:3px;'>{{rightTag}}</div><div style='margin-top:16px; color:#FFFFFF; font-size:46px; font-weight:800; letter-spacing:-1px;'>{{rightName}}</div><div style='margin-top:24px; color:#E4DEF7; font-size:31px; line-height:1.45; font-weight:500;'>{{rightOutput}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 1050,
+          "y": 880,
+          "anchor": "top-left",
+          "track": 11,
+          "enterBegin": 0.75,
+          "enterEnd": 1.15,
+          "enterAnimation": "fade",
+          "exitEnd": 5.4,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='color:#C4B5FD; font-size:26px; font-weight:700; letter-spacing:3px;'>SCORE <span style='color:#FFFFFF; font-size:52px; font-weight:800;'>{{rightScore}}</span></div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showWinner}}",
+          "x": 960,
+          "y": 1030,
+          "anchor": "center-center",
+          "track": 12,
+          "enterBegin": 1.2,
+          "enterEnd": 1.65,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5.4,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='display:inline-block; background:rgba(139,92,246,0.16); border:1.5px solid rgba(139,92,246,0.6); color:#C4B5FD; border-radius:999px; padding:14px 40px; font-size:28px; font-weight:800; letter-spacing:2px;'>{{winnerText}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "outro",
+      "duration": 4.2,
+      "backgroundColor": "#0A0913",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1920,
+          "height": 1080,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.2,
+          "svg": "<svg width='1920' height='1080' viewBox='0 0 1920 1080' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='cmpEnd' cx='0.5' cy='0.4' r='0.9'><stop offset='0' stop-color='#17122E'/><stop offset='1' stop-color='#0A0913'/></radialGradient></defs><rect width='1920' height='1080' fill='url(#cmpEnd)'/><circle cx='960' cy='320' r='80' fill='none' stroke='rgba(139,92,246,0.7)' stroke-width='2.5'/><path d='M918 320 L948 350 L1006 288' fill='none' stroke='#8B5CF6' stroke-width='8' stroke-linecap='round' stroke-linejoin='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 960,
+          "y": 470,
+          "width": 1300,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.3,
+          "enterEnd": 0.75,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.2,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:74px; line-height:1.08; font-weight:800; letter-spacing:-1px;'>{{outroLine1}}<br>{{outroLine2}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 960,
+          "y": 740,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.7,
+          "enterEnd": 1.15,
+          "enterAnimation": "circleopen",
+          "exitEnd": 4.2,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='display:inline-block; background:{{accentColor}}; color:#0A0913; border-radius:999px; padding:24px 60px; font-size:36px; font-weight:800;'>{{ctaText}} · {{ctaHandle}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.16
+    }
+  ]
+}

@@ -1,0 +1,263 @@
+{
+  "name": "auto-car-of-the-week",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#07090C",
+  "outputFormat": "mp4",
+  "variables": {
+    "dealerName": "APEX MOTORS",
+    "kicker": "CAR OF THE WEEK",
+    "carName": "911 Carrera GTS",
+    "carYear": "2024",
+    "tagline": "One week. One machine. Zero compromise.",
+    "specOne": "473 HP",
+    "specOneLabel": "Twin-turbo flat-six",
+    "specTwo": "3.3s",
+    "specTwoLabel": "0–60 mph",
+    "specThree": "Sport Chrono",
+    "specThreeLabel": "Package included",
+    "price": "$142,900",
+    "showPrice": true,
+    "badgeText": "CERTIFIED PRE-OWNED",
+    "showBadge": true,
+    "ctaText": "Book a test drive",
+    "ctaHandle": "apexmotors.com/gts",
+    "accentColor": "#39E5FF",
+    "heroVideo": "https://videos.pexels.com/video-files/16244938/16244938-uhd_1440_2560_60fps.mp4",
+    "carImage": "https://images.unsplash.com/photo-1580881647059-923632b8fd75?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDgwMTZ8MHwxfHNlYXJjaHwzfHxsdXh1cnklMjBjYXIlMjBzcG9ydHMlMjB2ZWhpY2xlfGVufDB8fHx8MTc4MzI2ODYxOHww&ixlib=rb-4.1.0&q=80&w=1080",
+    "musicUrl": "https://cdn.pixabay.com/audio/2026/02/24/audio_3f375fdf97.mp3"
+  },
+  "scenes": [
+    {
+      "id": "hook",
+      "duration": 4.4,
+      "backgroundColor": "#07090C",
+      "transition": "smoothup",
+      "transitionId": "specs",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "VIDEO",
+          "src": "{{heroVideo}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "volume": 0,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.4
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 4.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='cotwHook' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#07090C' stop-opacity='0.72'/><stop offset='0.4' stop-color='#07090C' stop-opacity='0.08'/><stop offset='0.74' stop-color='#07090C' stop-opacity='0.35'/><stop offset='1' stop-color='#07090C' stop-opacity='0.95'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#cotwHook)'/><rect x='56' y='56' width='968' height='1808' rx='30' fill='none' stroke='rgba(57,229,255,0.25)' stroke-width='1.5'/><rect x='90' y='250' width='84' height='5' fill='#39E5FF'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 130,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.6,
+          "enterAnimation": "fade",
+          "exitEnd": 4.4,
+          "style": { "fontFamily": "Archivo" },
+          "html": "<div style='color:#EAF6FA; font-size:28px; font-weight:800; letter-spacing:8px;'>{{dealerName}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 300,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.35,
+          "enterEnd": 0.75,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 4.4,
+          "style": { "fontFamily": "Archivo" },
+          "html": "<div style='color:{{accentColor}}; font-size:26px; font-weight:800; letter-spacing:7px;'>{{kicker}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 1360,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.55,
+          "enterEnd": 1.05,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.4,
+          "style": { "fontFamily": "Archivo" },
+          "html": "<div style='color:#7C8894; font-size:34px; font-weight:700; letter-spacing:2px;'>{{carYear}}</div><div style='margin-top:6px; color:#FFFFFF; font-size:112px; line-height:0.98; font-weight:900; letter-spacing:-3px;'>{{carName}}</div><div style='margin-top:26px; color:#C7D2DA; font-size:34px; line-height:1.35; font-weight:500;'>{{tagline}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "specs",
+      "duration": 5,
+      "backgroundColor": "#07090C",
+      "transition": "fade",
+      "transitionId": "cta",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{carImage}}",
+          "x": 540,
+          "y": 640,
+          "width": 1080,
+          "height": 1180,
+          "anchor": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 5
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 5,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='cotwSpec' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#07090C' stop-opacity='0.35'/><stop offset='0.5' stop-color='#07090C' stop-opacity='0.15'/><stop offset='0.78' stop-color='#07090C' stop-opacity='0.85'/><stop offset='1' stop-color='#07090C' stop-opacity='1'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#cotwSpec)'/><rect x='90' y='1180' width='900' height='1' fill='rgba(57,229,255,0.5)'/><rect x='388' y='1230' width='1' height='230' fill='rgba(255,255,255,0.18)'/><rect x='690' y='1230' width='1' height='230' fill='rgba(255,255,255,0.18)'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showBadge}}",
+          "x": 90,
+          "y": 130,
+          "anchor": "top-left",
+          "track": 11,
+          "enterBegin": 0.2,
+          "enterEnd": 0.6,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 5,
+          "style": { "fontFamily": "Archivo" },
+          "html": "<div style='display:inline-block; background:rgba(57,229,255,0.12); border:1.5px solid rgba(57,229,255,0.6); color:{{accentColor}}; border-radius:10px; padding:14px 30px; font-size:24px; font-weight:800; letter-spacing:4px;'>{{badgeText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 1240,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.4,
+          "enterEnd": 0.85,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5,
+          "style": { "fontFamily": "Archivo" },
+          "html": "<div style='color:#FFFFFF; font-size:70px; line-height:1; font-weight:900; letter-spacing:-2px;'>{{specOne}}</div><div style='margin-top:10px; color:#8B97A2; font-size:23px; font-weight:600;'>{{specOneLabel}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 420,
+          "y": 1240,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.55,
+          "enterEnd": 1,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5,
+          "style": { "fontFamily": "Archivo" },
+          "html": "<div style='color:#FFFFFF; font-size:70px; line-height:1; font-weight:900; letter-spacing:-2px;'>{{specTwo}}</div><div style='margin-top:10px; color:#8B97A2; font-size:23px; font-weight:600;'>{{specTwoLabel}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 720,
+          "y": 1240,
+          "width": 280,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.7,
+          "enterEnd": 1.15,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5,
+          "style": { "fontFamily": "Archivo" },
+          "html": "<div style='color:{{accentColor}}; font-size:46px; line-height:1; font-weight:900; letter-spacing:-1px;'>{{specThree}}</div><div style='margin-top:10px; color:#8B97A2; font-size:23px; font-weight:600;'>{{specThreeLabel}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showPrice}}",
+          "x": 90,
+          "y": 1560,
+          "anchor": "top-left",
+          "track": 11,
+          "enterBegin": 1,
+          "enterEnd": 1.45,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 5,
+          "style": { "fontFamily": "Archivo" },
+          "html": "<div style='display:inline-block; background:{{accentColor}}; color:#07090C; border-radius:14px; padding:20px 44px; font-size:52px; font-weight:900; letter-spacing:-1px;'>{{price}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "cta",
+      "duration": 4.6,
+      "backgroundColor": "#07090C",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='cotwCta' cx='0.5' cy='0.4' r='0.95'><stop offset='0' stop-color='#0C1A22'/><stop offset='1' stop-color='#07090C'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#cotwCta)'/><rect x='56' y='56' width='968' height='1808' rx='30' fill='none' stroke='rgba(57,229,255,0.3)' stroke-width='1.5'/><circle cx='540' cy='620' r='150' fill='none' stroke='rgba(57,229,255,0.75)' stroke-width='2'/><circle cx='540' cy='620' r='172' fill='none' stroke='rgba(57,229,255,0.25)' stroke-width='1'/><path d='M470 620 H610 M540 555 V685' stroke='#39E5FF' stroke-width='6' stroke-linecap='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 900,
+          "width": 920,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.3,
+          "enterEnd": 0.8,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.6,
+          "style": { "fontFamily": "Archivo" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:78px; line-height:1.04; font-weight:900; letter-spacing:-2px;'>The keys are<br>waiting.</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1220,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.7,
+          "enterEnd": 1.15,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.6,
+          "style": { "fontFamily": "Archivo" },
+          "html": "<div style='display:inline-block; background:{{accentColor}}; color:#07090C; border-radius:999px; padding:28px 66px; font-size:40px; font-weight:900;'>{{ctaText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1400,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1,
+          "enterEnd": 1.4,
+          "enterAnimation": "fade",
+          "exitEnd": 4.6,
+          "style": { "fontFamily": "Archivo" },
+          "html": "<div style='text-align:center; color:#6E7A85; font-size:28px; font-weight:700; letter-spacing:3px;'>{{ctaHandle}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    { "src": "{{musicUrl}}", "volume": 0.16 }
+  ]
+}

@@ -1,0 +1,216 @@
+{
+  "name": "agency-founder-message-ad",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#0A1024",
+  "outputFormat": "mp4",
+  "variables": {
+    "founderName": "Maya Ortiz",
+    "founderRole": "Founder & CEO, Northwind",
+    "kicker": "A NOTE FROM THE FOUNDER",
+    "openingLine": "I built this because I<br>was tired of the old way.",
+    "storyLine": "Five years ago I was a solo consultant drowning in spreadsheets. Today Northwind runs 200+ campaigns on one dashboard.",
+    "promiseLabel": "MY PROMISE TO YOU",
+    "promiseLine": "If it doesn't save you 10 hours a week, you don't pay. Simple as that.",
+    "badgeText": "Founder-led · human support",
+    "showBadge": true,
+    "ctaText": "Read our story",
+    "ctaUrl": "northwind.example/story",
+    "accentColor": "#E8C169",
+    "founderImage": "https://images.pexels.com/photos/12903168/pexels-photo-12903168.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/04/21/audio_ed6f0ed574.mp3"
+  },
+  "scenes": [
+    {
+      "id": "intro",
+      "duration": 4.6,
+      "backgroundColor": "#0A1024",
+      "transition": "fade",
+      "transitionId": "story",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{founderImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.6
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 4.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='fmShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#0A1024' stop-opacity='0.78'/><stop offset='0.4' stop-color='#0A1024' stop-opacity='0.2'/><stop offset='0.72' stop-color='#0A1024' stop-opacity='0.45'/><stop offset='1' stop-color='#0A1024' stop-opacity='0.96'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#fmShade)'/><rect x='96' y='1250' width='6' height='400' rx='3' fill='#E8C169'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 108,
+          "y": 190,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.65,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 4.6,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='color:{{accentColor}}; font-size:25px; font-weight:700; letter-spacing:6px;'>{{kicker}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 122,
+          "y": 1260,
+          "width": 880,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.5,
+          "enterEnd": 1.05,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.6,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='color:#F5F1E6; font-size:80px; line-height:1.05; font-weight:700; letter-spacing:-2px;'>{{openingLine}}</div><div style='margin-top:30px; color:#C7CEDE; font-size:30px; font-weight:600; letter-spacing:2px;'>{{founderName}} — {{founderRole}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "story",
+      "duration": 4.6,
+      "backgroundColor": "#0A1024",
+      "transition": "smoothup",
+      "transitionId": "cta",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='fmStory' cx='0.32' cy='0.3' r='0.95'><stop offset='0' stop-color='#111A38'/><stop offset='1' stop-color='#0A1024'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#fmStory)'/><text x='120' y='620' font-family='Georgia' font-size='320' fill='rgba(232,193,105,0.22)'>&#8220;</text></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 120,
+          "y": 640,
+          "width": 860,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.3,
+          "enterEnd": 0.85,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.6,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='color:#F5F1E6; font-size:52px; line-height:1.4; font-weight:600;'>{{storyLine}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 120,
+          "y": 1330,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.7,
+          "enterEnd": 1.15,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 4.6,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='color:{{accentColor}}; font-size:26px; font-weight:700; letter-spacing:5px;'>{{promiseLabel}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 120,
+          "y": 1400,
+          "width": 840,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.85,
+          "enterEnd": 1.3,
+          "enterAnimation": "fade",
+          "exitEnd": 4.6,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='color:#D8DEEC; font-size:40px; line-height:1.34; font-weight:600;'>{{promiseLine}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "cta",
+      "duration": 4.4,
+      "backgroundColor": "#0A1024",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='fmCta' cx='0.5' cy='0.4' r='0.95'><stop offset='0' stop-color='#131C3C'/><stop offset='1' stop-color='#0A1024'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#fmCta)'/><rect x='50' y='50' width='980' height='1820' rx='38' fill='none' stroke='rgba(232,193,105,0.32)' stroke-width='1.5'/><path d='M470 620 L540 690 L680 540' fill='none' stroke='#E8C169' stroke-width='10' stroke-linecap='round' stroke-linejoin='round'/><circle cx='560' cy='620' r='150' fill='none' stroke='rgba(232,193,105,0.5)' stroke-width='2'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 870,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.3,
+          "enterEnd": 0.8,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.4,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='text-align:center; color:#F5F1E6; font-size:72px; line-height:1.08; font-weight:700; letter-spacing:-1px;'>Come build the<br>new way with us.</div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showBadge}}",
+          "x": 540,
+          "y": 1130,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.7,
+          "enterEnd": 1.1,
+          "enterAnimation": "circleopen",
+          "exitEnd": 4.4,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='display:inline-block; background:rgba(232,193,105,0.12); border:1.5px solid rgba(232,193,105,0.5); color:{{accentColor}}; border-radius:999px; padding:14px 34px; font-size:28px; font-weight:700; letter-spacing:1px;'>{{badgeText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1270,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.95,
+          "enterEnd": 1.4,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.4,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='display:inline-block; background:{{accentColor}}; color:#0A1024; border-radius:999px; padding:26px 64px; font-size:40px; font-weight:800;'>{{ctaText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1440,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1.3,
+          "enterEnd": 1.7,
+          "enterAnimation": "fade",
+          "exitEnd": 4.4,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='text-align:center; color:#8A93A8; font-size:27px; font-weight:600; letter-spacing:2px;'>{{ctaUrl}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    { "src": "{{musicUrl}}", "volume": 0.15 }
+  ]
+}

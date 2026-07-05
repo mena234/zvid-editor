@@ -1,0 +1,339 @@
+{
+  "name": "finance-market-recap",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#070B14",
+  "outputFormat": "mp4",
+  "variables": {
+    "showName": "THE DAILY TAPE",
+    "dateLine": "Markets · Fri, Jul 3",
+    "hookLine": "Here's how the market closed.",
+    "sessionMood": "Risk-on into the weekend.",
+    "accentUp": "#3DDC97",
+    "accentDown": "#FF5C72",
+    "accentGold": "#E7C173",
+    "indexes": [
+      {
+        "name": "S&P 500",
+        "value": "5,537.02",
+        "delta": "+0.51%",
+        "dir": "up",
+        "note": "New record close"
+      },
+      {
+        "name": "Nasdaq 100",
+        "value": "20,391.97",
+        "delta": "+0.90%",
+        "dir": "up",
+        "note": "Chips led the tape"
+      },
+      {
+        "name": "Dow Jones",
+        "value": "39,375.87",
+        "delta": "-0.08%",
+        "dir": "down",
+        "note": "Slight fade at the bell"
+      }
+    ],
+    "topGainer": "NVDA",
+    "gainerMove": "+4.6%",
+    "topLoser": "TSLA",
+    "loserMove": "-2.1%",
+    "showDisclaimer": true,
+    "disclaimer": "Informational only. Not investment advice.",
+    "hookVideo": "https://videos.pexels.com/video-files/38209367/16220684_1920_1080_25fps.mp4",
+    "musicUrl": "https://cdn.pixabay.com/audio/2026/02/24/audio_3f375fdf97.mp3"
+  },
+  "scenes": [
+    {
+      "id": "hook",
+      "duration": 4,
+      "backgroundColor": "#070B14",
+      "transition": "smoothup",
+      "transitionId": "index",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "VIDEO",
+          "src": "{{hookVideo}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "volume": 0,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='mrHook' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#070B14' stop-opacity='0.72'/><stop offset='0.45' stop-color='#070B14' stop-opacity='0.28'/><stop offset='1' stop-color='#070B14' stop-opacity='0.94'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#mrHook)'/><rect x='48' y='48' width='984' height='1824' rx='38' fill='none' stroke='rgba(61,220,151,0.28)' stroke-width='1.5'/><path d='M90 1180 L250 1100 L360 1150 L520 1010 L660 1060 L820 900 L990 960' fill='none' stroke='rgba(61,220,151,0.55)' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 150,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.7,
+          "enterAnimation": "fade",
+          "exitEnd": 4,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='display:inline-block; border:1.5px solid rgba(231,193,115,0.6); border-radius:999px; padding:14px 32px; color:{{accentGold}}; font-size:24px; font-weight:700; letter-spacing:6px;'>{{showName}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 1300,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.55,
+          "enterEnd": 1.1,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='color:#8CA0BF; font-size:28px; font-weight:600; letter-spacing:4px;'>{{dateLine}}</div><div style='margin-top:18px; color:#FFFFFF; font-size:92px; line-height:1.02; font-weight:700; letter-spacing:-2px;'>{{hookLine}}</div><div style='margin-top:28px; width:130px; height:6px; border-radius:3px; background:{{accentUp}};'></div>"
+        }
+      ]
+    },
+    {
+      "id": "index",
+      "iterate": "indexes",
+      "iterateAs": "ix",
+      "duration": 3.4,
+      "backgroundColor": "#070B14",
+      "transition": "smoothup",
+      "transitionId": "movers",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='mrIx' cx='0.5' cy='0.32' r='0.95'><stop offset='0' stop-color='#101B30'/><stop offset='1' stop-color='#070B14'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#mrIx)'/><rect x='80' y='560' width='920' height='800' rx='44' fill='rgba(255,255,255,0.03)' stroke='rgba(140,160,191,0.28)' stroke-width='1.5'/><path d='M140 1200 L280 1150 L400 1180 L540 1080 L680 1120 L820 1000 L940 1040' fill='none' stroke='rgba(61,220,151,0.4)' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/><rect x='140' y='1290' width='800' height='1.5' fill='rgba(140,160,191,0.25)'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 300,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0,
+          "exitEnd": 3.4,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='color:#6B7C99; font-size:24px; font-weight:700; letter-spacing:6px;'>MARKET CLOSE · INDEX {{index}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 640,
+          "width": 820,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.65,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.4,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='text-align:center; color:#B7C4D9; font-size:40px; font-weight:700; letter-spacing:2px;'>{{ix.name}}</div><div style='margin-top:20px; text-align:center; color:#FFFFFF; font-size:132px; line-height:1; font-weight:700; letter-spacing:-4px;'>{{ix.value}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{ix.dir}}",
+          "x": 540,
+          "y": 990,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.45,
+          "enterEnd": 0.9,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.4,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='display:inline-block; background:rgba(61,220,151,0.14); border:1.5px solid rgba(61,220,151,0.55); color:{{accentUp}}; border-radius:999px; padding:14px 40px; font-size:46px; font-weight:700;'>{{ix.delta}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1160,
+          "width": 760,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.7,
+          "enterEnd": 1.15,
+          "enterAnimation": "fade",
+          "exitEnd": 3.4,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='text-align:center; color:#8CA0BF; font-size:32px; font-weight:500;'>{{ix.note}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1830,
+          "anchor": "center-center",
+          "track": 10,
+          "enterBegin": 0,
+          "exitEnd": 3.4,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='color:rgba(140,160,191,0.6); font-size:22px; font-weight:700; letter-spacing:4px;'>{{showName}} · {{dateLine}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "movers",
+      "duration": 4.4,
+      "backgroundColor": "#070B14",
+      "transition": "fade",
+      "transitionId": "outro",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='mrMov' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#0C1524'/><stop offset='1' stop-color='#070B14'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#mrMov)'/><rect x='80' y='620' width='920' height='340' rx='36' fill='rgba(61,220,151,0.07)' stroke='rgba(61,220,151,0.45)' stroke-width='1.5'/><rect x='80' y='1000' width='920' height='340' rx='36' fill='rgba(255,92,114,0.06)' stroke='rgba(255,92,114,0.45)' stroke-width='1.5'/><path d='M860 900 L900 860 M900 860 L900 900 M900 860 L860 860' stroke='#3DDC97' stroke-width='6' stroke-linecap='round' fill='none'/><path d='M860 1060 L900 1100 M900 1100 L900 1060 M900 1100 L860 1100' stroke='#FF5C72' stroke-width='6' stroke-linecap='round' fill='none'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 350,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.65,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.4,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='text-align:center; color:#8CA0BF; font-size:26px; font-weight:700; letter-spacing:6px;'>TODAY'S MOVERS</div><div style='margin-top:18px; text-align:center; color:#FFFFFF; font-size:64px; font-weight:700; letter-spacing:-1px;'>{{sessionMood}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 130,
+          "y": 690,
+          "anchor": "top-left",
+          "track": 11,
+          "enterBegin": 0.5,
+          "enterEnd": 0.95,
+          "enterAnimation": "smoothright",
+          "exitEnd": 4.4,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='color:{{accentUp}}; font-size:26px; font-weight:700; letter-spacing:4px;'>TOP GAINER</div><div style='margin-top:10px; color:#FFFFFF; font-size:76px; font-weight:700;'>{{topGainer}} <span style='color:{{accentUp}}; font-size:56px;'>{{gainerMove}}</span></div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 130,
+          "y": 1070,
+          "anchor": "top-left",
+          "track": 11,
+          "enterBegin": 0.75,
+          "enterEnd": 1.2,
+          "enterAnimation": "smoothright",
+          "exitEnd": 4.4,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='color:{{accentDown}}; font-size:26px; font-weight:700; letter-spacing:4px;'>TOP LOSER</div><div style='margin-top:10px; color:#FFFFFF; font-size:76px; font-weight:700;'>{{topLoser}} <span style='color:{{accentDown}}; font-size:56px;'>{{loserMove}}</span></div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showDisclaimer}}",
+          "x": 540,
+          "y": 1480,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1.1,
+          "enterEnd": 1.5,
+          "enterAnimation": "fade",
+          "exitEnd": 4.4,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='display:inline-block; background:rgba(255,255,255,0.05); border:1px solid rgba(140,160,191,0.3); color:#8CA0BF; border-radius:999px; padding:12px 30px; font-size:22px; font-weight:600; letter-spacing:1px;'>{{disclaimer}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "outro",
+      "duration": 3.4,
+      "backgroundColor": "#070B14",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='mrOut' cx='0.5' cy='0.42' r='0.9'><stop offset='0' stop-color='#0E1B30'/><stop offset='1' stop-color='#070B14'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#mrOut)'/><circle cx='540' cy='720' r='150' fill='none' stroke='rgba(231,193,115,0.7)' stroke-width='2.5'/><path d='M470 720 L520 770 L620 660' fill='none' stroke='#E7C173' stroke-width='10' stroke-linecap='round' stroke-linejoin='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 960,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.7,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.4,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:70px; line-height:1.1; font-weight:700;'>That's the tape.<br>See you Monday.</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1230,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.7,
+          "enterEnd": 1.1,
+          "enterAnimation": "fade",
+          "exitEnd": 3.4,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='display:inline-block; color:{{accentGold}}; font-size:28px; font-weight:700; letter-spacing:5px;'>{{showName}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.16
+    }
+  ]
+}

@@ -1,0 +1,205 @@
+{
+  "name": "hr-day-in-the-life",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#1A0F08",
+  "outputFormat": "mp4",
+  "variables": {
+    "companyName": "ATLAS STUDIO",
+    "roleTitle": "Product Designer",
+    "hookLine": "A day in the life.",
+    "moments": [
+      { "time": "09:30", "label": "STAND-UP", "text": "Coffee, quick sync, plan the day.", "image": "https://images.pexels.com/photos/8117466/pexels-photo-8117466.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" },
+      { "time": "11:00", "label": "DEEP WORK", "text": "Heads-down on the new onboarding flow.", "image": "https://images.pexels.com/photos/7658416/pexels-photo-7658416.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" },
+      { "time": "14:00", "label": "COLLAB", "text": "Whiteboard session with engineering.", "image": "https://images.pexels.com/photos/6805157/pexels-photo-6805157.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" },
+      { "time": "16:30", "label": "SHIP IT", "text": "Design review, then push to staging.", "image": "https://images.pexels.com/photos/4623328/pexels-photo-4623328.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" }
+    ],
+    "ctaText": "This could be you",
+    "ctaUrl": "atlas.studio/join",
+    "accentColor": "#F0862E",
+    "heroImage": "https://images.pexels.com/photos/12902858/pexels-photo-12902858.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "musicUrl": "https://cdn.pixabay.com/audio/2026/02/24/audio_3f375fdf97.mp3"
+  },
+  "scenes": [
+    {
+      "id": "hook",
+      "duration": 3.4,
+      "backgroundColor": "#1A0F08",
+      "transition": "smoothup",
+      "transitionId": "moment",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{heroImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.4
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 3.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='dlHook' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#1A0F08' stop-opacity='0.6'/><stop offset='0.45' stop-color='#1A0F08' stop-opacity='0.2'/><stop offset='1' stop-color='#1A0F08' stop-opacity='0.94'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#dlHook)'/><rect x='90' y='1330' width='7' height='300' rx='3.5' fill='#F0862E'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 130,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.6,
+          "enterAnimation": "fade",
+          "exitEnd": 3.4,
+          "style": { "fontFamily": "Manrope" },
+          "html": "<div style='color:#FFFFFF; font-size:26px; font-weight:800; letter-spacing:8px;'>{{companyName}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 132,
+          "y": 1320,
+          "width": 860,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.4,
+          "enterEnd": 0.9,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.4,
+          "style": { "fontFamily": "Manrope" },
+          "html": "<div style='color:{{accentColor}}; font-size:28px; font-weight:800; letter-spacing:5px;'>{{roleTitle}}</div><div style='margin-top:14px; color:#FFFFFF; font-size:116px; line-height:0.98; font-weight:800; letter-spacing:-4px;'>{{hookLine}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "moment",
+      "iterate": "moments",
+      "iterateAs": "m",
+      "duration": 3.2,
+      "backgroundColor": "#1A0F08",
+      "transition": "slideup",
+      "transitionId": "cta",
+      "transitionDuration": 0.45,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{m.image}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.2
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 3.2,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='dlMoment' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#1A0F08' stop-opacity='0.78'/><stop offset='0.4' stop-color='#1A0F08' stop-opacity='0.12'/><stop offset='1' stop-color='#1A0F08' stop-opacity='0.92'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#dlMoment)'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 200,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.6,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 3.2,
+          "style": { "fontFamily": "Manrope" },
+          "html": "<div style='display:inline-block; background:{{accentColor}}; color:#1A0F08; border-radius:18px; padding:16px 34px; font-size:60px; font-weight:800; letter-spacing:-1px;'>{{m.time}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 1360,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.45,
+          "enterEnd": 0.9,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.2,
+          "style": { "fontFamily": "Manrope" },
+          "html": "<div style='color:{{accentColor}}; font-size:30px; font-weight:800; letter-spacing:6px;'>{{m.label}}</div><div style='margin-top:16px; color:#FFFFFF; font-size:66px; line-height:1.08; font-weight:800; letter-spacing:-1px;'>{{m.text}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "cta",
+      "duration": 4,
+      "backgroundColor": "#1A0F08",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='dlCta' cx='0.5' cy='0.4' r='0.95'><stop offset='0' stop-color='#3A1E0C'/><stop offset='1' stop-color='#1A0F08'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#dlCta)'/><circle cx='540' cy='620' r='150' fill='none' stroke='rgba(240,134,46,0.8)' stroke-width='2.5'/><path d='M492 620 L528 656 L596 576' fill='none' stroke='#F0862E' stroke-width='9' stroke-linecap='round' stroke-linejoin='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 900,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.3,
+          "enterEnd": 0.75,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4,
+          "style": { "fontFamily": "Manrope" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:80px; line-height:1.05; font-weight:800; letter-spacing:-2px;'>Every day,<br>real impact.</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1200,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.7,
+          "enterEnd": 1.15,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4,
+          "style": { "fontFamily": "Manrope" },
+          "html": "<div style='display:inline-block; background:{{accentColor}}; color:#1A0F08; border-radius:999px; padding:26px 66px; font-size:40px; font-weight:800;'>{{ctaText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1380,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1.1,
+          "enterEnd": 1.5,
+          "enterAnimation": "fade",
+          "exitEnd": 4,
+          "style": { "fontFamily": "Manrope" },
+          "html": "<div style='text-align:center; color:#A5764D; font-size:28px; font-weight:600; letter-spacing:2px;'>{{ctaUrl}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.16
+    }
+  ]
+}

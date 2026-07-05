@@ -1,0 +1,202 @@
+{
+  "name": "ecom-launch-countdown",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#0A0A1A",
+  "outputFormat": "mp4",
+  "variables": {
+    "brandName": "OS ONE",
+    "teaseKicker": "COMING SOON",
+    "productName": "The OS One Phone",
+    "teaseLine": "A phone that finally gets out of your way.",
+    "daysLeft": "3",
+    "daysWord": "DAYS TO LAUNCH",
+    "featureLine": "6.7\" OLED · 3-day battery · titanium frame",
+    "showFeature": true,
+    "notifyText": "Get the launch alert",
+    "notifyHandle": "osone.example/launch",
+    "accentColor": "#8A7CFF",
+    "teaseImage": "https://images.pexels.com/photos/6237886/pexels-photo-6237886.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "musicUrl": "https://cdn.pixabay.com/audio/2026/02/24/audio_3f375fdf97.mp3"
+  },
+  "scenes": [
+    {
+      "id": "tease",
+      "duration": 4,
+      "backgroundColor": "#0A0A1A",
+      "transition": "fade",
+      "transitionId": "countdown",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{teaseImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "opacity": 0.55,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='tzBg' cx='0.5' cy='0.44' r='0.9'><stop offset='0' stop-color='#0A0A1A' stop-opacity='0.35'/><stop offset='1' stop-color='#0A0A1A' stop-opacity='0.94'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#tzBg)'/><rect x='48' y='48' width='984' height='1824' rx='40' fill='none' stroke='rgba(138,124,255,0.3)' stroke-width='1.5'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 150,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.15,
+          "enterEnd": 0.6,
+          "enterAnimation": "fade",
+          "exitEnd": 4,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='display:inline-block; border:1.5px solid {{accentColor}}; color:{{accentColor}}; border-radius:999px; padding:14px 36px; font-size:26px; font-weight:800; letter-spacing:8px;'>{{teaseKicker}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1240,
+          "width": 920,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.45,
+          "enterEnd": 0.95,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='text-align:center; color:#F4F4FF; font-size:88px; line-height:1.02; font-weight:800; letter-spacing:-2px;'>{{productName}}</div><div style='margin-top:22px; text-align:center; color:#B7B7D6; font-size:34px; line-height:1.4; font-weight:500;'>{{teaseLine}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "countdown",
+      "duration": 4,
+      "backgroundColor": "#0A0A1A",
+      "transition": "fade",
+      "transitionId": "notify",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='cdBg' cx='0.5' cy='0.42' r='0.9'><stop offset='0' stop-color='#161636'/><stop offset='1' stop-color='#0A0A1A'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#cdBg)'/><circle cx='540' cy='780' r='330' fill='none' stroke='rgba(138,124,255,0.85)' stroke-width='4'/><circle cx='540' cy='780' r='368' fill='none' stroke='rgba(138,124,255,0.3)' stroke-width='2'/><circle cx='540' cy='780' r='406' fill='none' stroke='rgba(138,124,255,0.12)' stroke-width='1.5'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 760,
+          "anchor": "center-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.65,
+          "enterAnimation": "circleopen",
+          "exitEnd": 4,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='text-align:center; color:#F4F4FF; font-size:360px; line-height:1; font-weight:800; letter-spacing:-12px;'>{{daysLeft}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1200,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.5,
+          "enterEnd": 0.95,
+          "enterAnimation": "fade",
+          "exitEnd": 4,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='text-align:center; color:{{accentColor}}; font-size:44px; font-weight:800; letter-spacing:8px;'>{{daysWord}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showFeature}}",
+          "x": 540,
+          "y": 1400,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.8,
+          "enterEnd": 1.25,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='text-align:center; color:#A9A9CE; font-size:30px; font-weight:600; letter-spacing:1px;'>{{featureLine}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "notify",
+      "duration": 4,
+      "backgroundColor": "#0A0A1A",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='ntBg' cx='0.5' cy='0.4' r='0.9'><stop offset='0' stop-color='#181840'/><stop offset='1' stop-color='#0A0A1A'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#ntBg)'/><path d='M480 640 C480 590 600 590 600 640 C600 700 640 720 640 760 H440 C440 720 480 700 480 640 Z' fill='none' stroke='#8A7CFF' stroke-width='6' stroke-linejoin='round'/><path d='M515 800 C515 830 565 830 565 800' fill='none' stroke='#8A7CFF' stroke-width='6' stroke-linecap='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 900,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.3,
+          "enterEnd": 0.8,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='text-align:center; color:#F4F4FF; font-size:74px; line-height:1.08; font-weight:800; letter-spacing:-1px;'>Be first in line.</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1140,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.75,
+          "enterEnd": 1.2,
+          "enterAnimation": "circleopen",
+          "exitEnd": 4,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='display:inline-block; background:{{accentColor}}; color:#0A0A1A; border-radius:999px; padding:28px 68px; font-size:42px; font-weight:800;'>{{notifyText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1320,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1.15,
+          "enterEnd": 1.55,
+          "enterAnimation": "fade",
+          "exitEnd": 4,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='text-align:center; color:#7C7CA0; font-size:27px; font-weight:600; letter-spacing:2px;'>{{notifyHandle}} · {{brandName}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    { "src": "{{musicUrl}}", "volume": 0.16 }
+  ]
+}

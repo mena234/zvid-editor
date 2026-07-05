@@ -1,0 +1,240 @@
+{
+  "name": "saas-customer-success-story",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#0B1220",
+  "outputFormat": "mp4",
+  "variables": {
+    "kicker": "CUSTOMER STORY",
+    "companyName": "Brightfold",
+    "quote": "We replaced four tools with one and cut reporting time by 90%.",
+    "authorName": "Maya Okafor",
+    "authorRole": "Head of Ops, Brightfold",
+    "statValue": "90%",
+    "statLabel": "less time on manual reports",
+    "showResult": true,
+    "resultText": "Payback in under 6 weeks",
+    "outroTitle": "Your team's success story is next.",
+    "ctaText": "Book a demo",
+    "handle": "vaultworks.io/customers",
+    "productName": "Vaultworks",
+    "accent": "#E0B341",
+    "authorImage": "https://images.pexels.com/photos/12902858/pexels-photo-12902858.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "bgImage": "https://images.pexels.com/photos/6805157/pexels-photo-6805157.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/04/21/audio_ed6f0ed574.mp3"
+  },
+  "scenes": [
+    {
+      "id": "quote",
+      "duration": 5,
+      "backgroundColor": "#0B1220",
+      "transition": "fade",
+      "transitionId": "result",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{bgImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "opacity": 0.22,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 5
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 5,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='cssShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#0B1220' stop-opacity='0.9'/><stop offset='0.5' stop-color='#0B1220' stop-opacity='0.82'/><stop offset='1' stop-color='#0B1220' stop-opacity='0.96'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#cssShade)'/><text x='110' y='560' font-family='Georgia' font-size='320' fill='rgba(224,179,65,0.25)'>&#8220;</text><rect x='110' y='1560' width='140' height='6' rx='3' fill='#E0B341'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 100,
+          "y": 250,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.65,
+          "enterAnimation": "fade",
+          "exitEnd": 5,
+          "style": { "fontFamily": "Inter" },
+          "html": "<div style='display:inline-block; border:1.5px solid rgba(224,179,65,0.6); border-radius:999px; padding:12px 28px; color:{{accent}}; font-size:23px; font-weight:700; letter-spacing:5px;'>{{kicker}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 100,
+          "y": 640,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.45,
+          "enterEnd": 1,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5,
+          "style": { "fontFamily": "Fraunces" },
+          "html": "<div style='color:#FFFFFF; font-size:76px; line-height:1.22; font-weight:600; font-style:italic;'>{{quote}}</div>"
+        },
+        {
+          "type": "IMAGE",
+          "src": "{{authorImage}}",
+          "x": 170,
+          "y": 1680,
+          "width": 130,
+          "height": 130,
+          "anchor": "center-center",
+          "resize": "cover",
+          "radius": { "tl": 65, "tr": 65, "bl": 65, "br": 65 },
+          "track": 11,
+          "enterBegin": 0.9,
+          "enterEnd": 1.35,
+          "enterAnimation": "fade",
+          "exitEnd": 5
+        },
+        {
+          "type": "TEXT",
+          "x": 260,
+          "y": 1680,
+          "width": 700,
+          "anchor": "center-left",
+          "track": 11,
+          "enterBegin": 0.95,
+          "enterEnd": 1.4,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 5,
+          "style": { "fontFamily": "Inter" },
+          "html": "<div style='color:#FFFFFF; font-size:36px; font-weight:700;'>{{authorName}}</div><div style='margin-top:6px; color:#9AA8C0; font-size:27px; font-weight:500;'>{{authorRole}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "result",
+      "duration": 4.2,
+      "backgroundColor": "#0B1220",
+      "transition": "smoothleft",
+      "transitionId": "cta",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.2,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='cssRes' cx='0.5' cy='0.38' r='0.9'><stop offset='0' stop-color='#132038'/><stop offset='1' stop-color='#0B1220'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#cssRes)'/><circle cx='540' cy='720' r='340' fill='none' stroke='rgba(224,179,65,0.25)' stroke-width='1.5'/><circle cx='540' cy='720' r='300' fill='none' stroke='rgba(224,179,65,0.5)' stroke-width='2.5' stroke-dasharray='6 16'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 590,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.7,
+          "enterAnimation": "circleopen",
+          "exitEnd": 4.2,
+          "style": { "fontFamily": "Fraunces" },
+          "html": "<div style='text-align:center; color:{{accent}}; font-size:200px; line-height:1; font-weight:600;'>{{statValue}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 840,
+          "width": 700,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.6,
+          "enterEnd": 1.05,
+          "enterAnimation": "fade",
+          "exitEnd": 4.2,
+          "style": { "fontFamily": "Inter" },
+          "html": "<div style='text-align:center; color:#C4D0E4; font-size:36px; line-height:1.4; font-weight:500;'>{{statLabel}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showResult}}",
+          "x": 540,
+          "y": 1180,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.95,
+          "enterEnd": 1.4,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.2,
+          "style": { "fontFamily": "Inter" },
+          "html": "<div style='display:inline-block; background:rgba(224,179,65,0.16); border:1.5px solid rgba(224,179,65,0.55); color:#F0D48A; border-radius:999px; padding:16px 38px; font-size:30px; font-weight:700;'>{{resultText}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "cta",
+      "duration": 4.4,
+      "backgroundColor": "#0B1220",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='cssCta' cx='0.5' cy='0.42' r='0.9'><stop offset='0' stop-color='#152238'/><stop offset='1' stop-color='#0B1220'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#cssCta)'/><rect x='48' y='48' width='984' height='1824' rx='36' fill='none' stroke='rgba(224,179,65,0.3)' stroke-width='1.5'/><path d='M470 640 L540 710 L640 560' fill='none' stroke='#E0B341' stroke-width='9' stroke-linecap='round' stroke-linejoin='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 850,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.3,
+          "enterEnd": 0.75,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.4,
+          "style": { "fontFamily": "Fraunces" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:66px; line-height:1.16; font-weight:600;'>{{outroTitle}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1160,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.75,
+          "enterEnd": 1.2,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.4,
+          "style": { "fontFamily": "Inter" },
+          "html": "<div style='display:inline-block; background:{{accent}}; color:#0B1220; border-radius:999px; padding:26px 60px; font-size:38px; font-weight:800;'>{{ctaText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1330,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1.15,
+          "enterEnd": 1.55,
+          "enterAnimation": "fade",
+          "exitEnd": 4.4,
+          "style": { "fontFamily": "Inter" },
+          "html": "<div style='text-align:center; color:#7C8AA4; font-size:26px; font-weight:600; letter-spacing:2px;'>{{productName}} · {{handle}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.15
+    }
+  ]
+}

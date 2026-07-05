@@ -1,0 +1,173 @@
+{
+  "name": "ecom-review-highlight",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#F3E7E0",
+  "outputFormat": "mp4",
+  "variables": {
+    "brandName": "MAISON RAE",
+    "productName": "The Everyday Trench",
+    "kicker": "★★★★★ · 2,148 REVIEWS",
+    "quote": "It's the only coat I've reached for all season. Cut like couture, priced like a staple.",
+    "reviewerName": "Amara O.",
+    "reviewerMeta": "Verified buyer · London",
+    "rating": "★★★★★",
+    "ctaText": "Read the reviews",
+    "ctaHandle": "maisonrae.example/trench",
+    "showBadge": true,
+    "badgeText": "EDITOR'S PICK",
+    "accentColor": "#B04A38",
+    "reviewerImage": "https://images.pexels.com/photos/14577095/pexels-photo-14577095.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "productImage": "https://images.pexels.com/photos/833169/pexels-photo-833169.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/04/21/audio_ed6f0ed574.mp3"
+  },
+  "scenes": [
+    {
+      "id": "quote",
+      "duration": 5.2,
+      "backgroundColor": "#F3E7E0",
+      "transition": "smoothleft",
+      "transitionId": "product",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 5.2,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='qBg' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#F7EEE8'/><stop offset='1' stop-color='#EFE0D8'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#qBg)'/><text x='120' y='560' font-family='Georgia' font-size='420' fill='rgba(176,74,56,0.14)'>&#8220;</text><path d='M120 1500 H360' stroke='#B04A38' stroke-width='5'/></svg>"
+        },
+        {
+          "type": "IMAGE",
+          "src": "{{reviewerImage}}",
+          "x": 176,
+          "y": 1636,
+          "width": 128,
+          "height": 128,
+          "anchor": "center-center",
+          "resize": "cover",
+          "radius": { "tl": 64, "tr": 64, "bl": 64, "br": 64 },
+          "track": 5,
+          "enterBegin": 0.8,
+          "enterEnd": 1.2,
+          "enterAnimation": "fade",
+          "exitEnd": 5.2
+        },
+        {
+          "type": "TEXT",
+          "x": 120,
+          "y": 130,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.6,
+          "enterAnimation": "fade",
+          "exitEnd": 5.2,
+          "style": { "fontFamily": "Outfit" },
+          "html": "<div style='color:#8A6F64; font-size:24px; font-weight:800; letter-spacing:8px;'>{{brandName}}</div><div style='margin-top:14px; color:{{accentColor}}; font-size:24px; font-weight:700; letter-spacing:5px;'>{{kicker}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 120,
+          "y": 620,
+          "width": 860,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.45,
+          "enterEnd": 1,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5.2,
+          "style": { "fontFamily": "Playfair Display" },
+          "html": "<div style='color:#2A1B16; font-size:76px; line-height:1.18; font-weight:600; font-style:italic;'>{{quote}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 280,
+          "y": 1580,
+          "anchor": "top-left",
+          "track": 11,
+          "enterBegin": 1,
+          "enterEnd": 1.45,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 5.2,
+          "style": { "fontFamily": "Outfit" },
+          "html": "<div style='color:#2A1B16; font-size:38px; font-weight:700;'>{{reviewerName}}</div><div style='margin-top:6px; color:#8A6F64; font-size:26px; font-weight:500;'>{{reviewerMeta}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "product",
+      "duration": 4.8,
+      "backgroundColor": "#2A1B16",
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{productImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.8
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 4.8,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='pgShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#1B110D' stop-opacity='0.5'/><stop offset='0.45' stop-color='#1B110D' stop-opacity='0.12'/><stop offset='1' stop-color='#1B110D' stop-opacity='0.95'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#pgShade)'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showBadge}}",
+          "x": 120,
+          "y": 150,
+          "anchor": "top-left",
+          "track": 11,
+          "enterBegin": 0.35,
+          "enterEnd": 0.8,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 4.8,
+          "style": { "fontFamily": "Outfit" },
+          "html": "<div style='display:inline-block; background:{{accentColor}}; color:#F3E7E0; border-radius:8px; padding:12px 26px; font-size:24px; font-weight:800; letter-spacing:4px;'>{{badgeText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 120,
+          "y": 1360,
+          "width": 860,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.5,
+          "enterEnd": 1,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.8,
+          "style": { "fontFamily": "Playfair Display" },
+          "html": "<div style='color:{{accentColor}}; font-size:40px; letter-spacing:8px;'>{{rating}}</div><div style='margin-top:16px; color:#F3E7E0; font-size:82px; line-height:1.04; font-weight:600;'>{{productName}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 120,
+          "y": 1640,
+          "anchor": "top-left",
+          "track": 11,
+          "enterBegin": 1,
+          "enterEnd": 1.45,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.8,
+          "style": { "fontFamily": "Outfit" },
+          "html": "<div style='display:inline-block; background:#F3E7E0; color:#2A1B16; border-radius:999px; padding:22px 52px; font-size:34px; font-weight:700;'>{{ctaText}}</div><div style='margin-top:24px; color:#B7A79E; font-size:26px; font-weight:600; letter-spacing:2px;'>{{ctaHandle}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    { "src": "{{musicUrl}}", "volume": 0.15 }
+  ]
+}

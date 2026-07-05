@@ -1,0 +1,359 @@
+{
+  "name": "ai-vs-manual",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#0A0A0E",
+  "outputFormat": "mp4",
+  "variables": {
+    "toolName": "Loopr AI",
+    "hookKicker": "THE OLD WAY VS THE NEW WAY",
+    "hookLine": "Same job.\nOne takes a day.\nOne takes a minute.",
+    "manualLabel": "WITHOUT AI",
+    "manualTitle": "The manual grind",
+    "manualPoints": [
+      "Brief a designer, wait 2 days",
+      "Three rounds of revisions",
+      "Re-export every single size by hand",
+      "Miss the trend window entirely"
+    ],
+    "aiLabel": "WITH AI",
+    "aiTitle": "The automated flow",
+    "aiPoints": [
+      "Describe it once in plain English",
+      "First draft back in seconds",
+      "Every size rendered automatically",
+      "Ship while it's still trending"
+    ],
+    "verdictBig": "10× faster",
+    "verdictSub": "Same output. A fraction of the time, effort, and cost.",
+    "cta": "Switch to AI",
+    "ctaUrl": "loopr.ai/start",
+    "manualColor": "#F87171",
+    "accentColor": "#4ADE80",
+    "manualBg": "https://images.unsplash.com/photo-1614741118887-7a4ee193a5fa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDgwMTZ8MHwxfHNlYXJjaHw4fHxwcm9ncmFtbWluZyUyMGNvZGUlMjBzY3JlZW4lMjBkZXZlbG9wZXJ8ZW58MHx8fHwxNzgzMjY4NTM4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/04/21/audio_ed6f0ed574.mp3"
+  },
+  "scenes": [
+    {
+      "id": "hook",
+      "duration": 4,
+      "backgroundColor": "#0A0A0E",
+      "transition": "wipeleft",
+      "transitionId": "manual",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='hkBg' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#1A0F12'/><stop offset='0.5' stop-color='#0A0A0E'/><stop offset='1' stop-color='#0C1710'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#hkBg)'/><rect x='534' y='560' width='12' height='800' rx='6' fill='rgba(255,255,255,0.12)'/><circle cx='540' cy='960' r='84' fill='#0A0A0E' stroke='rgba(255,255,255,0.25)' stroke-width='2'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 960,
+          "anchor": "center-center",
+          "track": 12,
+          "enterBegin": 0.3,
+          "enterEnd": 0.7,
+          "enterAnimation": "fade",
+          "exitEnd": 4,
+          "style": {
+            "fontFamily": "Manrope"
+          },
+          "html": "<div style='color:#FFFFFF; font-size:44px; font-weight:800;'>VS</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 240,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.6,
+          "enterAnimation": "fade",
+          "exitEnd": 4,
+          "style": {
+            "fontFamily": "Manrope"
+          },
+          "html": "<div style='display:inline-block; border:1.5px solid rgba(255,255,255,0.35); border-radius:999px; padding:14px 32px; color:#EDEDED; font-size:24px; font-weight:700; letter-spacing:4px;'>{{hookKicker}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1160,
+          "width": 940,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.5,
+          "enterEnd": 1,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4,
+          "style": {
+            "fontFamily": "Manrope"
+          },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:76px; line-height:1.08; font-weight:800; letter-spacing:-2px;'>Same job.<br><span style='color:#F87171;'>One takes a day.</span><br><span style='color:#4ADE80;'>One takes a minute.</span></div>"
+        }
+      ]
+    },
+    {
+      "id": "manual",
+      "duration": 5,
+      "backgroundColor": "#12080A",
+      "transition": "wipeleft",
+      "transitionId": "ai",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{manualBg}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "opacity": 0.28,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 5
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 5,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='mnShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#12080A' stop-opacity='0.86'/><stop offset='0.5' stop-color='#12080A' stop-opacity='0.7'/><stop offset='1' stop-color='#12080A' stop-opacity='0.95'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#mnShade)'/><rect x='80' y='560' width='920' height='1000' rx='44' fill='rgba(248,113,113,0.05)' stroke='rgba(248,113,113,0.4)' stroke-width='1.5'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 240,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.6,
+          "enterAnimation": "smoothdown",
+          "exitEnd": 5,
+          "style": {
+            "fontFamily": "Manrope"
+          },
+          "html": "<div style='display:inline-block; background:rgba(248,113,113,0.16); border:1.5px solid rgba(248,113,113,0.6); color:#F87171; border-radius:999px; padding:14px 36px; font-size:26px; font-weight:800; letter-spacing:5px;'>{{manualLabel}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 380,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.35,
+          "enterEnd": 0.8,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5,
+          "style": {
+            "fontFamily": "Manrope"
+          },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:72px; line-height:1; font-weight:800; letter-spacing:-2px;'>{{manualTitle}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 150,
+          "y": 640,
+          "width": 780,
+          "anchor": "top-left",
+          "track": 11,
+          "enterBegin": 0.6,
+          "enterEnd": 1.1,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 5,
+          "style": {
+            "fontFamily": "Manrope"
+          },
+          "html": "<div style='color:#F1D6D6; font-size:38px; line-height:2.05; font-weight:600;'><div>✗&nbsp;&nbsp;Brief a designer, wait 2 days</div><div>✗&nbsp;&nbsp;Three rounds of revisions</div><div>✗&nbsp;&nbsp;Re-export every size by hand</div><div>✗&nbsp;&nbsp;Miss the trend window entirely</div></div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1440,
+          "anchor": "center-center",
+          "track": 11,
+          "enterBegin": 1.1,
+          "enterEnd": 1.5,
+          "enterAnimation": "fade",
+          "exitEnd": 5,
+          "style": {
+            "fontFamily": "Manrope"
+          },
+          "html": "<div style='display:inline-block; background:rgba(248,113,113,0.14); color:#F87171; border-radius:16px; padding:16px 40px; font-size:34px; font-weight:800; letter-spacing:1px;'>⏳ ~ 8 hours</div>"
+        }
+      ]
+    },
+    {
+      "id": "ai",
+      "duration": 5,
+      "backgroundColor": "#06120C",
+      "transition": "smoothup",
+      "transitionId": "verdict",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 5,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='aiBg' cx='0.5' cy='0.36' r='0.95'><stop offset='0' stop-color='#0C2418'/><stop offset='1' stop-color='#06120C'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#aiBg)'/><rect x='80' y='560' width='920' height='1000' rx='44' fill='rgba(74,222,128,0.05)' stroke='rgba(74,222,128,0.45)' stroke-width='1.5'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 240,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.6,
+          "enterAnimation": "smoothdown",
+          "exitEnd": 5,
+          "style": {
+            "fontFamily": "Manrope"
+          },
+          "html": "<div style='display:inline-block; background:rgba(74,222,128,0.16); border:1.5px solid rgba(74,222,128,0.6); color:#4ADE80; border-radius:999px; padding:14px 36px; font-size:26px; font-weight:800; letter-spacing:5px;'>{{aiLabel}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 380,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.35,
+          "enterEnd": 0.8,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5,
+          "style": {
+            "fontFamily": "Manrope"
+          },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:72px; line-height:1; font-weight:800; letter-spacing:-2px;'>{{aiTitle}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 150,
+          "y": 640,
+          "width": 780,
+          "anchor": "top-left",
+          "track": 11,
+          "enterBegin": 0.6,
+          "enterEnd": 1.1,
+          "enterAnimation": "smoothright",
+          "exitEnd": 5,
+          "style": {
+            "fontFamily": "Manrope"
+          },
+          "html": "<div style='color:#D6F1E1; font-size:38px; line-height:2.05; font-weight:600;'><div>✓&nbsp;&nbsp;Describe it once, in plain English</div><div>✓&nbsp;&nbsp;First draft back in seconds</div><div>✓&nbsp;&nbsp;Every size rendered automatically</div><div>✓&nbsp;&nbsp;Ship while it's still trending</div></div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1440,
+          "anchor": "center-center",
+          "track": 11,
+          "enterBegin": 1.1,
+          "enterEnd": 1.5,
+          "enterAnimation": "fade",
+          "exitEnd": 5,
+          "style": {
+            "fontFamily": "Manrope"
+          },
+          "html": "<div style='display:inline-block; background:rgba(74,222,128,0.16); color:#4ADE80; border-radius:16px; padding:16px 40px; font-size:34px; font-weight:800; letter-spacing:1px;'>⚡ ~ 45 seconds</div>"
+        }
+      ]
+    },
+    {
+      "id": "verdict",
+      "duration": 4.6,
+      "backgroundColor": "#06120C",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='vdBg' cx='0.5' cy='0.4' r='0.95'><stop offset='0' stop-color='#0E2A1B'/><stop offset='1' stop-color='#06120C'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#vdBg)'/><rect x='44' y='44' width='992' height='1832' rx='44' fill='none' stroke='rgba(74,222,128,0.4)' stroke-width='1.5'/><circle cx='540' cy='700' r='260' fill='none' stroke='rgba(74,222,128,0.35)' stroke-width='2'/><circle cx='540' cy='700' r='290' fill='none' stroke='rgba(74,222,128,0.15)' stroke-width='1'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 700,
+          "width": 960,
+          "anchor": "center-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.75,
+          "enterAnimation": "circleopen",
+          "exitEnd": 4.6,
+          "style": {
+            "fontFamily": "Manrope"
+          },
+          "html": "<div style='text-align:center; color:#4ADE80; font-size:150px; line-height:0.95; font-weight:800; letter-spacing:-5px;'>{{verdictBig}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1080,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.6,
+          "enterEnd": 1.05,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.6,
+          "style": {
+            "fontFamily": "Manrope"
+          },
+          "html": "<div style='text-align:center; color:#C8DED2; font-size:38px; line-height:1.4; font-weight:500;'>{{verdictSub}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1330,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.95,
+          "enterEnd": 1.4,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.6,
+          "style": {
+            "fontFamily": "Manrope"
+          },
+          "html": "<div style='display:inline-block; background:{{accentColor}}; color:#04140B; border-radius:999px; padding:28px 70px; font-size:42px; font-weight:800;'>{{cta}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1500,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1.3,
+          "enterEnd": 1.7,
+          "enterAnimation": "fade",
+          "exitEnd": 4.6,
+          "style": {
+            "fontFamily": "Manrope"
+          },
+          "html": "<div style='text-align:center; color:#7A9488; font-size:27px; font-weight:600; letter-spacing:2px;'>{{toolName}} · {{ctaUrl}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.15
+    }
+  ]
+}

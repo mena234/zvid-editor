@@ -1,0 +1,270 @@
+{
+  "name": "events-workshop-promo",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#08140E",
+  "outputFormat": "mp4",
+  "variables": {
+    "kicker": "HANDS-ON WORKSHOP",
+    "title": "Ship Your First AI Agent in a Weekend",
+    "subline": "A live, build-along session — leave with a working project, not just notes.",
+    "instructor": "Led by Marcus Feld",
+    "instructorRole": "Staff Engineer · former OpenAI",
+    "formatLine": "Sat Sep 6 · 3 hours · Live + recording",
+    "takeaways": [
+      {
+        "num": "01",
+        "title": "Wire up your first tool-calling loop",
+        "detail": "From empty file to a working agent in under an hour."
+      },
+      {
+        "num": "02",
+        "title": "Add memory and guardrails",
+        "detail": "The patterns that keep agents on the rails in production."
+      },
+      {
+        "num": "03",
+        "title": "Deploy it live",
+        "detail": "Push your build to a public URL before we wrap."
+      }
+    ],
+    "price": "$79",
+    "priceNote": "Includes toolkit + lifetime replay",
+    "showPrice": true,
+    "ctaText": "Reserve my spot",
+    "handle": "buildlab.dev/workshop",
+    "accentColor": "#B6F441",
+    "bgImage": "https://images.pexels.com/photos/5486096/pexels-photo-5486096.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/03/19/audio_56ae1dae5f.mp3"
+  },
+  "scenes": [
+    {
+      "id": "hook",
+      "duration": 4.4,
+      "backgroundColor": "#08140E",
+      "transition": "smoothleft",
+      "transitionId": "learn",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{bgImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "opacity": 0.4,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.4
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 4.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='wsShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#08140E' stop-opacity='0.85'/><stop offset='0.45' stop-color='#08140E' stop-opacity='0.4'/><stop offset='1' stop-color='#08140E' stop-opacity='0.97'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#wsShade)'/><rect x='90' y='1150' width='160' height='8' rx='4' fill='#B6F441'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 220,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.15,
+          "enterEnd": 0.6,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 4.4,
+          "style": {
+            "fontFamily": "Sora"
+          },
+          "html": "<div style='display:inline-block; background:#B6F441; color:#08140E; border-radius:999px; padding:14px 32px; font-size:26px; font-weight:800; letter-spacing:3px;'>{{kicker}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 1200,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.4,
+          "enterEnd": 0.95,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.4,
+          "style": {
+            "fontFamily": "Bricolage Grotesque"
+          },
+          "html": "<div style='color:#FFFFFF; font-size:96px; line-height:0.98; font-weight:800; letter-spacing:-3px;'>{{title}}</div><div style='margin-top:26px; color:#B8CDBE; font-size:34px; line-height:1.4; font-weight:500; font-family:Sora, sans-serif;'>{{subline}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "learn",
+      "iterate": "takeaways",
+      "iterateAs": "t",
+      "duration": 3.2,
+      "backgroundColor": "#08140E",
+      "transition": "smoothup",
+      "transitionId": "cta",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.2,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='wsLearn' cx='0.3' cy='0.35' r='0.95'><stop offset='0' stop-color='#0F2417'/><stop offset='1' stop-color='#08140E'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#wsLearn)'/><rect x='80' y='640' width='920' height='640' rx='44' fill='rgba(255,255,255,0.03)' stroke='rgba(182,244,65,0.35)' stroke-width='1.5'/><path d='M150 900 H930' stroke='rgba(255,255,255,0.1)' stroke-width='1.5'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 300,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0,
+          "exitEnd": 3.2,
+          "style": {
+            "fontFamily": "Sora"
+          },
+          "html": "<div style='text-align:center; color:#7FA487; font-size:26px; font-weight:800; letter-spacing:6px;'>WHAT YOU'LL BUILD</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 470,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.15,
+          "enterEnd": 0.55,
+          "enterAnimation": "circleopen",
+          "exitEnd": 3.2,
+          "style": {
+            "fontFamily": "Bricolage Grotesque"
+          },
+          "html": "<div style='text-align:center; color:#B6F441; font-size:110px; line-height:1; font-weight:800; letter-spacing:-4px;'>{{t.num}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 720,
+          "width": 820,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.35,
+          "enterEnd": 0.8,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.2,
+          "style": {
+            "fontFamily": "Bricolage Grotesque"
+          },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:66px; line-height:1.04; font-weight:800; letter-spacing:-1px;'>{{t.title}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 960,
+          "width": 760,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.6,
+          "enterEnd": 1,
+          "enterAnimation": "fade",
+          "exitEnd": 3.2,
+          "style": {
+            "fontFamily": "Sora"
+          },
+          "html": "<div style='text-align:center; color:#B8CDBE; font-size:34px; line-height:1.45; font-weight:500;'>{{t.detail}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "cta",
+      "duration": 5,
+      "backgroundColor": "#08140E",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 5,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='wsCta' cx='0.5' cy='0.36' r='0.95'><stop offset='0' stop-color='#122A1B'/><stop offset='1' stop-color='#08140E'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#wsCta)'/><rect x='80' y='300' width='920' height='420' rx='40' fill='rgba(255,255,255,0.03)' stroke='rgba(182,244,65,0.35)' stroke-width='1.5'/><rect x='80' y='300' width='12' height='420' rx='6' fill='#B6F441'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 140,
+          "y": 360,
+          "width": 820,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.7,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5,
+          "style": {
+            "fontFamily": "Sora"
+          },
+          "html": "<div style='color:#7FA487; font-size:26px; font-weight:700; letter-spacing:5px;'>YOUR INSTRUCTOR</div><div style='margin-top:14px; color:#FFFFFF; font-size:60px; line-height:1; font-weight:800; letter-spacing:-1px; font-family:Bricolage Grotesque, sans-serif;'>{{instructor}}</div><div style='margin-top:16px; color:#B6F441; font-size:30px; font-weight:600;'>{{instructorRole}}</div><div style='margin-top:22px; color:#B8CDBE; font-size:30px; font-weight:500;'>{{formatLine}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showPrice}}",
+          "x": 540,
+          "y": 850,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.6,
+          "enterEnd": 1.05,
+          "enterAnimation": "circleopen",
+          "exitEnd": 5,
+          "style": {
+            "fontFamily": "Bricolage Grotesque"
+          },
+          "html": "<div style='text-align:center; color:#B6F441; font-size:150px; line-height:1; font-weight:800; letter-spacing:-4px;'>{{price}}</div><div style='margin-top:8px; text-align:center; color:#8FB097; font-size:30px; font-weight:600; font-family:Sora, sans-serif;'>{{priceNote}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1290,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1,
+          "enterEnd": 1.45,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5,
+          "style": {
+            "fontFamily": "Sora"
+          },
+          "html": "<div style='display:inline-block; background:{{accentColor}}; color:#08140E; border-radius:999px; padding:30px 74px; font-size:44px; font-weight:800;'>{{ctaText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1470,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1.4,
+          "enterEnd": 1.8,
+          "enterAnimation": "fade",
+          "exitEnd": 5,
+          "style": {
+            "fontFamily": "Sora"
+          },
+          "html": "<div style='text-align:center; color:#5F7A67; font-size:28px; font-weight:600; letter-spacing:2px;'>{{handle}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.16
+    }
+  ]
+}

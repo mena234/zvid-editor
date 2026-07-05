@@ -1,0 +1,232 @@
+{
+  "name": "finance-econ-calendar",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#0D0A05",
+  "outputFormat": "mp4",
+  "variables": {
+    "brandTag": "THE MACRO WEEK",
+    "weekLabel": "Week of Jul 7",
+    "hookLine": "Mark your calendar.",
+    "subLine": "The data that moves markets this week.",
+    "accent": "#F2C14E",
+    "accentHi": "#FF8A5B",
+    "events": [
+      {
+        "day": "MON",
+        "date": "Jul 7",
+        "event": "Consumer Credit",
+        "impact": "LOW",
+        "time": "3:00 PM ET"
+      },
+      {
+        "day": "WED",
+        "date": "Jul 9",
+        "event": "FOMC Minutes",
+        "impact": "HIGH",
+        "time": "2:00 PM ET"
+      },
+      {
+        "day": "THU",
+        "date": "Jul 10",
+        "event": "CPI Inflation",
+        "impact": "HIGH",
+        "time": "8:30 AM ET"
+      },
+      {
+        "day": "FRI",
+        "date": "Jul 11",
+        "event": "PPI + Jobless Claims",
+        "impact": "MED",
+        "time": "8:30 AM ET"
+      }
+    ],
+    "closingLine": "Trade the reaction, not the number.",
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/03/19/audio_56ae1dae5f.mp3"
+  },
+  "scenes": [
+    {
+      "id": "intro",
+      "duration": 3.6,
+      "backgroundColor": "#0D0A05",
+      "transition": "smoothleft",
+      "transitionId": "event",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='ecInt' cx='0.5' cy='0.32' r='1'><stop offset='0' stop-color='#241B0C'/><stop offset='1' stop-color='#0D0A05'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#ecInt)'/><rect x='390' y='520' width='300' height='300' rx='36' fill='none' stroke='rgba(242,193,78,0.7)' stroke-width='4'/><rect x='390' y='520' width='300' height='80' rx='36' fill='rgba(242,193,78,0.18)'/><path d='M460 520 V480 M620 520 V480' stroke='#F2C14E' stroke-width='10' stroke-linecap='round'/><path d='M450 690 H630 M450 750 H580' stroke='rgba(242,193,78,0.55)' stroke-width='8' stroke-linecap='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 170,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.15,
+          "enterEnd": 0.6,
+          "enterAnimation": "fade",
+          "exitEnd": 3.6,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='display:inline-block; border:1.5px solid rgba(242,193,78,0.55); border-radius:999px; padding:14px 34px; color:{{accent}}; font-size:24px; font-weight:700; letter-spacing:6px;'>{{brandTag}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 950,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.35,
+          "enterEnd": 0.85,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.6,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='text-align:center; color:{{accent}}; font-size:30px; font-weight:700; letter-spacing:4px;'>{{weekLabel}}</div><div style='margin-top:18px; text-align:center; color:#FFFFFF; font-size:96px; line-height:1.02; font-weight:700; letter-spacing:-2px;'>{{hookLine}}</div><div style='margin-top:26px; text-align:center; color:#B7A88C; font-size:34px; line-height:1.4; font-weight:500;'>{{subLine}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "event",
+      "iterate": "events",
+      "iterateAs": "e",
+      "duration": 2.9,
+      "backgroundColor": "#0D0A05",
+      "transition": "smoothleft",
+      "transitionId": "outro",
+      "transitionDuration": 0.45,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 2.9,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='ecEv' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#181206'/><stop offset='1' stop-color='#0D0A05'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#ecEv)'/><rect x='80' y='560' width='920' height='800' rx='44' fill='rgba(255,255,255,0.03)' stroke='rgba(242,193,78,0.3)' stroke-width='1.5'/><rect x='80' y='560' width='920' height='170' rx='44' fill='rgba(242,193,78,0.1)'/><path d='M120 900 H960' stroke='rgba(242,193,78,0.2)' stroke-width='1.5'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 300,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0,
+          "exitEnd": 2.9,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='color:#8C7C5C; font-size:24px; font-weight:700; letter-spacing:6px;'>UP NEXT · {{weekLabel}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 600,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.15,
+          "enterEnd": 0.55,
+          "enterAnimation": "smoothup",
+          "exitEnd": 2.9,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='text-align:center; color:{{accent}}; font-size:56px; font-weight:700; letter-spacing:6px;'>{{e.day}} · {{e.date}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 790,
+          "width": 840,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.3,
+          "enterEnd": 0.75,
+          "enterAnimation": "smoothup",
+          "exitEnd": 2.9,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:88px; line-height:1.06; font-weight:700; letter-spacing:-2px;'>{{e.event}}</div><div style='margin-top:30px; text-align:center; color:#B7A88C; font-size:36px; font-weight:500;'>{{e.time}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1170,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.5,
+          "enterEnd": 0.95,
+          "enterAnimation": "circleopen",
+          "exitEnd": 2.9,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='display:inline-block; background:rgba(255,138,91,0.16); border:1.5px solid rgba(255,138,91,0.55); color:{{accentHi}}; border-radius:999px; padding:12px 36px; font-size:32px; font-weight:700; letter-spacing:3px;'>{{e.impact}} IMPACT</div>"
+        }
+      ]
+    },
+    {
+      "id": "outro",
+      "duration": 3.4,
+      "backgroundColor": "#0D0A05",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='ecOut' cx='0.5' cy='0.4' r='0.9'><stop offset='0' stop-color='#241B0C'/><stop offset='1' stop-color='#0D0A05'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#ecOut)'/><circle cx='540' cy='700' r='150' fill='none' stroke='rgba(242,193,78,0.6)' stroke-width='2.5'/><path d='M540 640 V710 L590 740' fill='none' stroke='#F2C14E' stroke-width='10' stroke-linecap='round' stroke-linejoin='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 950,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.7,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.4,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:70px; line-height:1.15; font-weight:700;'>{{closingLine}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1230,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.7,
+          "enterEnd": 1.1,
+          "enterAnimation": "fade",
+          "exitEnd": 3.4,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='color:{{accent}}; font-size:26px; font-weight:700; letter-spacing:5px;'>{{brandTag}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.15
+    }
+  ]
+}

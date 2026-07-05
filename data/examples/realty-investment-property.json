@@ -1,0 +1,257 @@
+{
+  "name": "realty-investment-property",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#0A1428",
+  "outputFormat": "mp4",
+  "variables": {
+    "fundName": "MERIDIAN CAPITAL",
+    "kicker": "INVESTMENT OPPORTUNITY",
+    "propertyName": "Harbourfront Residences",
+    "locationLine": "Docklands · Zone 2",
+    "priceLine": "£465,000",
+    "summaryLine": "A tenanted 2-bed with strong yield in a high-demand rental corridor.",
+    "closingHead": "Numbers that<br>compound.",
+    "ctaLine": "Request the full investment memo.",
+    "handle": "meridiancapital.co / invest",
+    "showDisclaimer": true,
+    "disclaimer": "Illustrative figures. Past performance is not a guarantee of future returns.",
+    "accent": "#D4AF6A",
+    "stats": [
+      {
+        "label": "NET RENTAL YIELD",
+        "value": "6.8%",
+        "note": "vs 4.1% area average",
+        "index": "01"
+      },
+      {
+        "label": "MONTHLY RENT",
+        "value": "£2,640",
+        "note": "AST in place until 2027",
+        "index": "02"
+      },
+      {
+        "label": "5-YR PRICE GROWTH",
+        "value": "+34%",
+        "note": "Postcode trailing average",
+        "index": "03"
+      }
+    ],
+    "heroImage": "https://images.pexels.com/photos/26851069/pexels-photo-26851069.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/04/21/audio_ed6f0ed574.mp3"
+  },
+  "scenes": [
+    {
+      "id": "hook",
+      "duration": 4.4,
+      "backgroundColor": "#0A1428",
+      "transition": "smoothup",
+      "transitionId": "stat",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{heroImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.4
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 4.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='inHook' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#0A1428' stop-opacity='0.78'/><stop offset='0.4' stop-color='#0A1428' stop-opacity='0.2'/><stop offset='0.72' stop-color='#0A1428' stop-opacity='0.45'/><stop offset='1' stop-color='#0A1428' stop-opacity='0.96'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#inHook)'/><path d='M90 1330 H360' stroke='#D4AF6A' stroke-width='5'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 132,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.7,
+          "enterAnimation": "fade",
+          "exitEnd": 4.4,
+          "style": {
+            "fontFamily": "Sora"
+          },
+          "html": "<div style='color:#D4AF6A; font-size:26px; font-weight:800; letter-spacing:7px;'>{{fundName}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 1370,
+          "width": 920,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.5,
+          "enterEnd": 1,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.4,
+          "style": {
+            "fontFamily": "Sora"
+          },
+          "html": "<div style='color:#D4AF6A; font-size:25px; font-weight:800; letter-spacing:5px;'>{{kicker}}</div><div style='margin-top:16px; color:#FFFFFF; font-size:88px; line-height:1; font-weight:800; letter-spacing:-2px;'>{{propertyName}}</div><div style='margin-top:20px; color:#A9BAD4; font-size:34px; font-weight:500;'>{{locationLine}} · {{priceLine}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "stat",
+      "iterate": "stats",
+      "iterateAs": "stat",
+      "duration": 3.4,
+      "backgroundColor": "#0A1428",
+      "transition": "smoothleft",
+      "transitionId": "close",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='inStat' cx='0.3' cy='0.32' r='1'><stop offset='0' stop-color='#12213E'/><stop offset='1' stop-color='#0A1428'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#inStat)'/><rect x='90' y='430' width='900' height='1060' rx='44' fill='rgba(255,255,255,0.03)' stroke='rgba(212,175,106,0.35)' stroke-width='1.5'/><path d='M170 1300 L320 1180 L470 1240 L640 1010 L810 1080 L910 860' fill='none' stroke='#D4AF6A' stroke-width='7' stroke-linecap='round' stroke-linejoin='round'/><circle cx='910' cy='860' r='13' fill='#D4AF6A'/><path d='M170 1360 H910' stroke='rgba(255,255,255,0.16)' stroke-width='1.5'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 320,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0,
+          "exitEnd": 3.4,
+          "style": {
+            "fontFamily": "Sora"
+          },
+          "html": "<div style='text-align:center; color:rgba(169,186,212,0.7); font-size:24px; font-weight:800; letter-spacing:5px;'>{{propertyName}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 150,
+          "y": 520,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.65,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 3.4,
+          "style": {
+            "fontFamily": "Sora"
+          },
+          "html": "<div style='color:rgba(212,175,106,0.5); font-size:120px; font-weight:800; letter-spacing:-4px;'>{{stat.index}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 150,
+          "y": 720,
+          "width": 780,
+          "anchor": "top-left",
+          "track": 11,
+          "enterBegin": 0.35,
+          "enterEnd": 0.85,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.4,
+          "style": {
+            "fontFamily": "Sora"
+          },
+          "html": "<div style='color:#A9BAD4; font-size:30px; font-weight:800; letter-spacing:4px;'>{{stat.label}}</div><div style='margin-top:14px; color:#FFFFFF; font-size:150px; line-height:1; font-weight:800; letter-spacing:-5px;'>{{stat.value}}</div><div style='margin-top:22px;'><span style='display:inline-block; background:rgba(212,175,106,0.14); border:1.5px solid rgba(212,175,106,0.5); color:#D4AF6A; border-radius:999px; padding:12px 30px; font-size:28px; font-weight:700;'>{{stat.note}}</span></div>"
+        }
+      ]
+    },
+    {
+      "id": "close",
+      "duration": 5,
+      "backgroundColor": "#0A1428",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 5,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='inClose' cx='0.5' cy='0.4' r='0.95'><stop offset='0' stop-color='#132340'/><stop offset='1' stop-color='#0A1428'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#inClose)'/><rect x='54' y='54' width='972' height='1812' rx='34' fill='none' stroke='rgba(212,175,106,0.35)' stroke-width='1.5'/><circle cx='540' cy='560' r='140' fill='none' stroke='rgba(212,175,106,0.7)' stroke-width='2.5'/><path d='M475 560 L520 605 L610 500' fill='none' stroke='#D4AF6A' stroke-width='11' stroke-linecap='round' stroke-linejoin='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 780,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.3,
+          "enterEnd": 0.8,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5,
+          "style": {
+            "fontFamily": "Sora"
+          },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:80px; line-height:1.05; font-weight:800; letter-spacing:-2px;'>{{closingHead}}</div><div style='margin-top:26px; text-align:center; color:#A9BAD4; font-size:32px; line-height:1.4; font-weight:500;'>{{summaryLine}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1230,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.85,
+          "enterEnd": 1.3,
+          "enterAnimation": "circleopen",
+          "exitEnd": 5,
+          "style": {
+            "fontFamily": "Sora"
+          },
+          "html": "<div style='display:inline-block; background:{{accent}}; color:#0A1428; border-radius:999px; padding:26px 62px; font-size:36px; font-weight:800;'>{{ctaLine}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1400,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1.2,
+          "enterEnd": 1.6,
+          "enterAnimation": "fade",
+          "exitEnd": 5,
+          "style": {
+            "fontFamily": "Sora"
+          },
+          "html": "<div style='text-align:center; color:#6C7C98; font-size:27px; font-weight:700; letter-spacing:2px;'>{{handle}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showDisclaimer}}",
+          "x": 540,
+          "y": 1780,
+          "width": 880,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1.5,
+          "enterEnd": 1.9,
+          "enterAnimation": "fade",
+          "exitEnd": 5,
+          "style": {
+            "fontFamily": "Sora"
+          },
+          "html": "<div style='text-align:center; color:rgba(108,124,152,0.85); font-size:20px; line-height:1.4; font-weight:500;'>{{disclaimer}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.15
+    }
+  ]
+}

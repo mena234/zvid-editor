@@ -1,0 +1,280 @@
+{
+  "name": "ai-result-gallery",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#050A0A",
+  "outputFormat": "mp4",
+  "variables": {
+    "toolName": "Pixel Forge",
+    "introKicker": "MADE 100% BY AI",
+    "introTitle": "This week's\nbest renders.",
+    "introSub": "Four prompts. Zero designers. Swipe through what the model dreamed up.",
+    "cta": "Generate yours",
+    "ctaUrl": "pixelforge.ai",
+    "accentColor": "#34D399",
+    "brandColor": "#A7F3D0",
+    "introImage": "https://images.pexels.com/photos/9665181/pexels-photo-9665181.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "results": [
+      {
+        "index": "01",
+        "title": "Neon Skyline",
+        "caption": "\"a rain-slicked cyberpunk city at dusk, reflections, cinematic\"",
+        "imageUrl": "https://images.pexels.com/photos/7307672/pexels-photo-7307672.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+      },
+      {
+        "index": "02",
+        "title": "Liquid Chrome",
+        "caption": "\"flowing chrome ribbon on black, studio light, octane render\"",
+        "imageUrl": "https://pixabay.com/get/g0348b7852795e0ad2a1a95ca086ec912af333f41ca8769c944f34cf8d0c92a585dea306f2db53242a20852eac05b857c73fab053c51abca0c315a42d9152ef00_1280.jpg"
+      },
+      {
+        "index": "03",
+        "title": "Prism Bloom",
+        "caption": "\"abstract prism gradient bloom, soft bokeh, dreamy pastel palette\"",
+        "imageUrl": "https://images.pexels.com/photos/6152745/pexels-photo-6152745.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+      },
+      {
+        "index": "04",
+        "title": "Deep Circuit",
+        "caption": "\"macro shot of a glowing neural circuit board, teal accents\"",
+        "imageUrl": "https://images.unsplash.com/flagged/photo-1579274216947-86eaa4b00475?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDgwMTZ8MHwxfHNlYXJjaHwxfHxzZXJ2ZXIlMjBkYXRhJTIwY2VudGVyJTIwdGVjaG5vbG9neXxlbnwwfHx8fDE3ODMyNjg1NDB8MA&ixlib=rb-4.1.0&q=80&w=1080"
+      }
+    ],
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/03/19/audio_56ae1dae5f.mp3"
+  },
+  "scenes": [
+    {
+      "id": "intro",
+      "duration": 3.8,
+      "backgroundColor": "#050A0A",
+      "transition": "slideup",
+      "transitionId": "result",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{introImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "opacity": 0.45,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.8
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 3.8,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='giShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#050A0A' stop-opacity='0.78'/><stop offset='0.5' stop-color='#050A0A' stop-opacity='0.35'/><stop offset='1' stop-color='#050A0A' stop-opacity='0.94'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#giShade)'/><path d='M-60 470 L1140 400 L1140 430 L-60 500 Z' fill='#34D399' opacity='0.85'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 250,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.65,
+          "enterAnimation": "fade",
+          "exitEnd": 3.8,
+          "style": {
+            "fontFamily": "Sora"
+          },
+          "html": "<div style='display:inline-block; border:1.5px solid rgba(167,243,208,0.55); border-radius:999px; padding:14px 34px; color:#A7F3D0; font-size:25px; font-weight:700; letter-spacing:5px;'>{{introKicker}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 900,
+          "width": 940,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.45,
+          "enterEnd": 0.95,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.8,
+          "style": {
+            "fontFamily": "Sora"
+          },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:104px; line-height:1; font-weight:800; letter-spacing:-3px;'>This week's<br>best renders.</div><div style='margin-top:30px; text-align:center; color:#B7C4C0; font-size:33px; line-height:1.42; font-weight:500;'>{{introSub}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "result",
+      "iterate": "results",
+      "iterateAs": "item",
+      "duration": 3.4,
+      "backgroundColor": "#050A0A",
+      "transition": "slideup",
+      "transitionId": "outro",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='grBg' cx='0.5' cy='0.34' r='0.95'><stop offset='0' stop-color='#0B1815'/><stop offset='1' stop-color='#050A0A'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#grBg)'/><rect x='84' y='250' width='912' height='1150' rx='48' fill='rgba(255,255,255,0.03)' stroke='rgba(52,211,153,0.4)' stroke-width='1.5'/></svg>"
+        },
+        {
+          "type": "IMAGE",
+          "src": "{{item.imageUrl}}",
+          "x": 540,
+          "y": 700,
+          "width": 830,
+          "height": 830,
+          "anchor": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "radius": {
+            "tl": 36,
+            "tr": 36,
+            "bl": 36,
+            "br": 36
+          },
+          "track": 1,
+          "enterBegin": 0.1,
+          "enterEnd": 0.6,
+          "enterAnimation": "circleopen",
+          "exitEnd": 3.4
+        },
+        {
+          "type": "TEXT",
+          "x": 130,
+          "y": 296,
+          "anchor": "top-left",
+          "track": 11,
+          "enterBegin": 0.25,
+          "enterEnd": 0.6,
+          "enterAnimation": "fade",
+          "exitEnd": 3.4,
+          "style": {
+            "fontFamily": "Sora"
+          },
+          "html": "<div style='color:{{accentColor}}; font-size:70px; font-weight:800; letter-spacing:-2px;'>{{item.index}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1200,
+          "width": 840,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.5,
+          "enterEnd": 0.95,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.4,
+          "style": {
+            "fontFamily": "Sora"
+          },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:62px; line-height:1; font-weight:800; letter-spacing:-1px;'>{{item.title}}</div><div style='margin-top:22px; text-align:center; color:#8FA69E; font-size:29px; line-height:1.4; font-weight:500; font-style:italic;'>{{item.caption}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1800,
+          "anchor": "center-center",
+          "track": 11,
+          "enterBegin": 0,
+          "exitEnd": 3.4,
+          "style": {
+            "fontFamily": "Sora"
+          },
+          "html": "<div style='color:rgba(255,255,255,0.55); font-size:23px; font-weight:700; letter-spacing:4px;'>{{toolName}} · AI GALLERY</div>"
+        }
+      ]
+    },
+    {
+      "id": "outro",
+      "duration": 4.2,
+      "backgroundColor": "#050A0A",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.2,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='grEnd' cx='0.5' cy='0.42' r='0.95'><stop offset='0' stop-color='#0E2019'/><stop offset='1' stop-color='#050A0A'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#grEnd)'/><rect x='44' y='44' width='992' height='1832' rx='44' fill='none' stroke='rgba(52,211,153,0.4)' stroke-width='1.5'/><circle cx='540' cy='640' r='150' fill='none' stroke='rgba(167,243,208,0.8)' stroke-width='2.5'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 640,
+          "anchor": "center-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.65,
+          "enterAnimation": "fade",
+          "exitEnd": 4.2,
+          "style": {
+            "fontFamily": "Sora"
+          },
+          "html": "<div style='text-align:center; color:#34D399; font-size:110px; font-weight:800;'>◆</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 910,
+          "width": 940,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.45,
+          "enterEnd": 0.9,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.2,
+          "style": {
+            "fontFamily": "Sora"
+          },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:80px; line-height:1.06; font-weight:800; letter-spacing:-2px;'>Your prompt could<br>be next.</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1230,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.85,
+          "enterEnd": 1.3,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.2,
+          "style": {
+            "fontFamily": "Sora"
+          },
+          "html": "<div style='display:inline-block; background:{{accentColor}}; color:#04140E; border-radius:999px; padding:28px 70px; font-size:42px; font-weight:800;'>{{cta}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1400,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1.2,
+          "enterEnd": 1.6,
+          "enterAnimation": "fade",
+          "exitEnd": 4.2,
+          "style": {
+            "fontFamily": "Sora"
+          },
+          "html": "<div style='text-align:center; color:#7E938B; font-size:28px; font-weight:600; letter-spacing:2px;'>{{ctaUrl}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.16
+    }
+  ]
+}

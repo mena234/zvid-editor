@@ -1,0 +1,255 @@
+{
+  "name": "realty-rented-announcement",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#1A2B24",
+  "outputFormat": "mp4",
+  "variables": {
+    "agencyName": "GREENHAUS LETTINGS",
+    "kicker": "NOW LET",
+    "propertyName": "The Maple Loft",
+    "addressLine": "42 Birchwood Lane · Riverside",
+    "rentLine": "£1,650 / month",
+    "specLine": "2 bed · 1 bath · furnished",
+    "tenantLine": "Let within 6 days of listing",
+    "closingHead": "Another home,<br>happily let.",
+    "ctaLine": "Landlord? List with us — we let faster.",
+    "handle": "greenhaus.co / lettings",
+    "showBadge": true,
+    "badgeText": "LET AGREED",
+    "accent": "#C7A96B",
+    "heroVideo": "https://videos.pexels.com/video-files/8293116/8293116-hd_1080_1920_25fps.mp4",
+    "roomImage": "https://images.unsplash.com/photo-1738168279272-c08d6dd22002?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDgwMTZ8MHwxfHNlYXJjaHw1fHxhcGFydG1lbnQlMjBsaXZpbmclMjByb29tJTIwaW50ZXJpb3J8ZW58MHx8fHwxNzgzMjY4NjEyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+    "musicUrl": "https://cdn.pixabay.com/audio/2026/02/24/audio_3f375fdf97.mp3"
+  },
+  "scenes": [
+    {
+      "id": "hook",
+      "duration": 4.4,
+      "backgroundColor": "#1A2B24",
+      "transition": "smoothup",
+      "transitionId": "detail",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "VIDEO",
+          "src": "{{heroVideo}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "volume": 0,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.4
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 4.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='rrHook' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#12201A' stop-opacity='0.72'/><stop offset='0.42' stop-color='#12201A' stop-opacity='0.15'/><stop offset='0.74' stop-color='#12201A' stop-opacity='0.4'/><stop offset='1' stop-color='#12201A' stop-opacity='0.94'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#rrHook)'/><rect x='54' y='54' width='972' height='1812' rx='34' fill='none' stroke='rgba(199,169,107,0.5)' stroke-width='1.5'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 132,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.7,
+          "enterAnimation": "fade",
+          "exitEnd": 4.4,
+          "style": {
+            "fontFamily": "Manrope"
+          },
+          "html": "<div style='color:#EAE4D6; font-size:26px; font-weight:700; letter-spacing:8px;'>{{agencyName}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showBadge}}",
+          "x": 540,
+          "y": 640,
+          "anchor": "center-center",
+          "track": 12,
+          "enterBegin": 0.45,
+          "enterEnd": 0.95,
+          "enterAnimation": "circleopen",
+          "exitEnd": 4.4,
+          "style": {
+            "fontFamily": "Manrope"
+          },
+          "html": "<div style='display:inline-block; border:3px solid {{accent}}; color:{{accent}}; border-radius:16px; padding:22px 46px; font-size:56px; font-weight:800; letter-spacing:6px; background:rgba(18,32,26,0.32);'>{{badgeText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 1360,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.6,
+          "enterEnd": 1.1,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.4,
+          "style": {
+            "fontFamily": "Fraunces"
+          },
+          "html": "<div style='color:{{accent}}; font-size:26px; font-weight:700; letter-spacing:6px; font-family:Manrope, sans-serif;'>{{kicker}}</div><div style='margin-top:18px; color:#FBF8F0; font-size:96px; line-height:1; font-weight:600; letter-spacing:-2px;'>{{propertyName}}</div><div style='margin-top:20px; color:#CFC8B6; font-size:34px; font-weight:500; font-family:Manrope, sans-serif;'>{{addressLine}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "detail",
+      "duration": 4.6,
+      "backgroundColor": "#14231D",
+      "transition": "smoothleft",
+      "transitionId": "close",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='rrDetail' cx='0.5' cy='0.34' r='0.95'><stop offset='0' stop-color='#1E3128'/><stop offset='1' stop-color='#14231D'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#rrDetail)'/></svg>"
+        },
+        {
+          "type": "IMAGE",
+          "src": "{{roomImage}}",
+          "x": 540,
+          "y": 660,
+          "width": 900,
+          "height": 900,
+          "anchor": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "radius": {
+            "tl": 40,
+            "tr": 40,
+            "bl": 40,
+            "br": 40
+          },
+          "track": 1,
+          "enterBegin": 0,
+          "enterEnd": 0.55,
+          "enterAnimation": "smoothdown",
+          "exitEnd": 4.6
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 4.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><rect x='90' y='210' width='900' height='900' rx='40' fill='none' stroke='rgba(199,169,107,0.45)' stroke-width='1.5'/><path d='M120 1250 H960' stroke='rgba(199,169,107,0.5)' stroke-width='2'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 1300,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.4,
+          "enterEnd": 0.9,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.6,
+          "style": {
+            "fontFamily": "Manrope"
+          },
+          "html": "<div style='color:#FBF8F0; font-size:60px; font-weight:800; letter-spacing:-1px;'>{{rentLine}}</div><div style='margin-top:14px; color:#CFC8B6; font-size:34px; font-weight:500;'>{{specLine}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 1560,
+          "anchor": "top-left",
+          "track": 11,
+          "enterBegin": 0.85,
+          "enterEnd": 1.3,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 4.6,
+          "style": {
+            "fontFamily": "Manrope"
+          },
+          "html": "<div style='display:inline-block; background:{{accent}}; color:#14231D; border-radius:999px; padding:20px 44px; font-size:32px; font-weight:800;'>{{tenantLine}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "close",
+      "duration": 4.8,
+      "backgroundColor": "#14231D",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.8,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='rrClose' cx='0.5' cy='0.42' r='0.95'><stop offset='0' stop-color='#213529'/><stop offset='1' stop-color='#14231D'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#rrClose)'/><rect x='54' y='54' width='972' height='1812' rx='34' fill='none' stroke='rgba(199,169,107,0.35)' stroke-width='1.5'/><path d='M470 560 L520 610 L620 500' fill='none' stroke='#C7A96B' stroke-width='12' stroke-linecap='round' stroke-linejoin='round'/><circle cx='540' cy='555' r='120' fill='none' stroke='rgba(199,169,107,0.65)' stroke-width='2.5'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 800,
+          "width": 920,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.3,
+          "enterEnd": 0.8,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.8,
+          "style": {
+            "fontFamily": "Fraunces"
+          },
+          "html": "<div style='text-align:center; color:#FBF8F0; font-size:82px; line-height:1.05; font-weight:600; letter-spacing:-1px;'>{{closingHead}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1130,
+          "width": 860,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.7,
+          "enterEnd": 1.15,
+          "enterAnimation": "fade",
+          "exitEnd": 4.8,
+          "style": {
+            "fontFamily": "Manrope"
+          },
+          "html": "<div style='text-align:center; color:#CFC8B6; font-size:34px; line-height:1.4; font-weight:500;'>{{ctaLine}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1360,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1.05,
+          "enterEnd": 1.5,
+          "enterAnimation": "circleopen",
+          "exitEnd": 4.8,
+          "style": {
+            "fontFamily": "Manrope"
+          },
+          "html": "<div style='display:inline-block; background:{{accent}}; color:#14231D; border-radius:999px; padding:26px 62px; font-size:36px; font-weight:800; letter-spacing:1px;'>{{handle}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.16
+    }
+  ]
+}

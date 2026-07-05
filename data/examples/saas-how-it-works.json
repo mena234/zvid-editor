@@ -1,0 +1,206 @@
+{
+  "name": "saas-how-it-works",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#F4F3FB",
+  "outputFormat": "mp4",
+  "variables": {
+    "productName": "Snapline",
+    "kicker": "HOW IT WORKS",
+    "introTitle": "From signup to shipped in three steps.",
+    "showNote": true,
+    "noteText": "No credit card. No setup call.",
+    "outroTitle": "That's it. You're live.",
+    "ctaText": "Start in 3 steps",
+    "handle": "snapline.app",
+    "accent": "#5B4BE8",
+    "steps": [
+      {
+        "num": "1",
+        "title": "Connect your data",
+        "desc": "Plug in any source in a click — no engineers, no CSV wrangling."
+      },
+      {
+        "num": "2",
+        "title": "Pick a template",
+        "desc": "Choose from 40+ layouts, or start blank. Drag, drop, done."
+      },
+      {
+        "num": "3",
+        "title": "Ship it anywhere",
+        "desc": "Publish to web, embed, or export. Updates sync automatically."
+      }
+    ],
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/04/21/audio_ed6f0ed574.mp3"
+  },
+  "scenes": [
+    {
+      "id": "intro",
+      "duration": 3.4,
+      "backgroundColor": "#F4F3FB",
+      "transition": "smoothleft",
+      "transitionId": "step",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><rect width='1080' height='1920' fill='#F4F3FB'/><circle cx='880' cy='320' r='260' fill='rgba(91,75,232,0.08)'/><circle cx='180' cy='1600' r='300' fill='rgba(91,75,232,0.06)'/><path d='M100 1120 H360' stroke='#5B4BE8' stroke-width='6' stroke-linecap='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 100,
+          "y": 700,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.75,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.4,
+          "style": { "fontFamily": "Outfit" },
+          "html": "<div style='color:{{accent}}; font-size:26px; font-weight:800; letter-spacing:6px;'>{{productName}} · {{kicker}}</div><div style='margin-top:22px; color:#1A1730; font-size:84px; line-height:1.06; font-weight:800; letter-spacing:-2px;'>{{introTitle}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "step",
+      "iterate": "steps",
+      "iterateAs": "s",
+      "duration": 3.4,
+      "backgroundColor": "#F4F3FB",
+      "transition": "smoothleft",
+      "transitionId": "outro",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><rect width='1080' height='1920' fill='#F4F3FB'/><rect x='80' y='560' width='920' height='800' rx='48' fill='#FFFFFF' stroke='rgba(91,75,232,0.16)' stroke-width='1.5'/><rect x='80' y='560' width='920' height='14' rx='7' fill='#5B4BE8'/><circle cx='250' cy='760' r='90' fill='rgba(91,75,232,0.1)'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 250,
+          "y": 760,
+          "anchor": "center-center",
+          "track": 11,
+          "enterBegin": 0.2,
+          "enterEnd": 0.6,
+          "enterAnimation": "circleopen",
+          "exitEnd": 3.4,
+          "style": { "fontFamily": "Outfit" },
+          "html": "<div style='text-align:center; color:{{accent}}; font-size:100px; line-height:1; font-weight:800;'>{{s.num}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 160,
+          "y": 900,
+          "width": 760,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.4,
+          "enterEnd": 0.85,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.4,
+          "style": { "fontFamily": "Outfit" },
+          "html": "<div style='color:#1A1730; font-size:66px; line-height:1.04; font-weight:800; letter-spacing:-1px;'>{{s.title}}</div><div style='margin-top:24px; color:#615B7A; font-size:34px; line-height:1.5; font-weight:500; font-family:Inter, sans-serif;'>{{s.desc}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 130,
+          "anchor": "center-center",
+          "track": 10,
+          "enterBegin": 0,
+          "exitEnd": 3.4,
+          "style": { "fontFamily": "Inter" },
+          "html": "<div style='color:#9A93B8; font-size:24px; font-weight:700; letter-spacing:4px;'>{{productName}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "outro",
+      "duration": 4.4,
+      "backgroundColor": "#1A1730",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='hiwEnd' cx='0.5' cy='0.4' r='0.9'><stop offset='0' stop-color='#2A2456'/><stop offset='1' stop-color='#1A1730'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#hiwEnd)'/><circle cx='540' cy='620' r='140' fill='none' stroke='rgba(139,127,255,0.7)' stroke-width='2.5'/><path d='M480 620 L525 665 L610 575' fill='none' stroke='#8B7FFF' stroke-width='10' stroke-linecap='round' stroke-linejoin='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 840,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.3,
+          "enterEnd": 0.75,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.4,
+          "style": { "fontFamily": "Outfit" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:76px; line-height:1.08; font-weight:800; letter-spacing:-1px;'>{{outroTitle}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showNote}}",
+          "x": 540,
+          "y": 1000,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.65,
+          "enterEnd": 1.05,
+          "enterAnimation": "fade",
+          "exitEnd": 4.4,
+          "style": { "fontFamily": "Inter" },
+          "html": "<div style='text-align:center; color:#A79FD0; font-size:30px; font-weight:500;'>{{noteText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1160,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.9,
+          "enterEnd": 1.3,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.4,
+          "style": { "fontFamily": "Outfit" },
+          "html": "<div style='display:inline-block; background:#8B7FFF; color:#1A1730; border-radius:999px; padding:26px 60px; font-size:38px; font-weight:800;'>{{ctaText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1330,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1.25,
+          "enterEnd": 1.65,
+          "enterAnimation": "fade",
+          "exitEnd": 4.4,
+          "style": { "fontFamily": "Inter" },
+          "html": "<div style='text-align:center; color:#726A98; font-size:26px; font-weight:600; letter-spacing:2px;'>{{handle}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.15
+    }
+  ]
+}

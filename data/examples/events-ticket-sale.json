@@ -1,0 +1,266 @@
+{
+  "name": "events-ticket-sale",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#0B0704",
+  "outputFormat": "mp4",
+  "variables": {
+    "eventName": "SKYLINE SESSIONS",
+    "phaseLabel": "EARLY BIRD IS LIVE",
+    "headline": "Tickets just dropped.",
+    "subline": "Rooftop sets, city views, and the best line-up we've ever booked.",
+    "tierName": "Early Bird",
+    "price": "$39",
+    "strikePrice": "$65",
+    "priceNote": "First 300 tickets only",
+    "earlyBirdBadge": "Save 40%",
+    "showEarlyBird": true,
+    "dateLine": "Sep 12 · The Metropolitan Roof",
+    "ctaText": "Buy early bird",
+    "handle": "skylinesessions.live",
+    "accentColor": "#FF7A1A",
+    "heroVideo": "https://videos.pexels.com/video-files/35323903/14966336_1080_1920_30fps.mp4",
+    "cityImage": "https://images.pexels.com/photos/26851069/pexels-photo-26851069.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "musicUrl": "https://cdn.pixabay.com/audio/2026/02/24/audio_3f375fdf97.mp3"
+  },
+  "scenes": [
+    {
+      "id": "drop",
+      "duration": 4.4,
+      "backgroundColor": "#0B0704",
+      "transition": "smoothup",
+      "transitionId": "price",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "VIDEO",
+          "src": "{{heroVideo}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "volume": 0,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.4
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 4.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='tsShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#0B0704' stop-opacity='0.8'/><stop offset='0.42' stop-color='#0B0704' stop-opacity='0.3'/><stop offset='1' stop-color='#0B0704' stop-opacity='0.97'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#tsShade)'/><rect x='44' y='44' width='992' height='1832' rx='36' fill='none' stroke='rgba(255,122,26,0.35)' stroke-width='1.5'/><rect x='90' y='1160' width='160' height='8' rx='4' fill='#FF7A1A'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 220,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.15,
+          "enterEnd": 0.6,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 4.4,
+          "style": {
+            "fontFamily": "Sora"
+          },
+          "html": "<div style='display:inline-block; background:#FF7A1A; color:#0B0704; border-radius:999px; padding:14px 34px; font-size:26px; font-weight:800; letter-spacing:3px;'>{{phaseLabel}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 1210,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.4,
+          "enterEnd": 0.95,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.4,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='color:#FFFFFF; font-size:104px; line-height:0.98; font-weight:700; letter-spacing:-3px;'>{{headline}}</div><div style='margin-top:26px; color:#D6C3B4; font-size:34px; line-height:1.4; font-weight:500; font-family:Sora, sans-serif;'>{{subline}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "price",
+      "duration": 5,
+      "backgroundColor": "#0B0704",
+      "transition": "fade",
+      "transitionId": "cta",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{cityImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "opacity": 0.28,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 5
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 5,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='tsPrice' cx='0.5' cy='0.42' r='0.9'><stop offset='0' stop-color='#1F1005' stop-opacity='0.85'/><stop offset='1' stop-color='#0B0704' stop-opacity='0.98'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#tsPrice)'/><rect x='120' y='560' width='840' height='800' rx='48' fill='rgba(255,255,255,0.03)' stroke='rgba(255,122,26,0.45)' stroke-width='2'/><path d='M120 560 A48 48 0 0 0 120 656 M960 560 A48 48 0 0 1 960 656' fill='none'/><circle cx='120' cy='960' r='30' fill='#0B0704' stroke='rgba(255,122,26,0.45)' stroke-width='2'/><circle cx='960' cy='960' r='30' fill='#0B0704' stroke='rgba(255,122,26,0.45)' stroke-width='2'/><path d='M180 960 H900' stroke='rgba(255,122,26,0.4)' stroke-width='2' stroke-dasharray='10 12'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 640,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.65,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5,
+          "style": {
+            "fontFamily": "Sora"
+          },
+          "html": "<div style='text-align:center; color:#FF7A1A; font-size:30px; font-weight:800; letter-spacing:5px;'>{{tierName}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 720,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.35,
+          "enterEnd": 0.8,
+          "enterAnimation": "circleopen",
+          "exitEnd": 5,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:230px; line-height:0.9; font-weight:700; letter-spacing:-10px;'>{{price}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showEarlyBird}}",
+          "x": 540,
+          "y": 1030,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.6,
+          "enterEnd": 1.05,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5,
+          "style": {
+            "fontFamily": "Sora"
+          },
+          "html": "<div style='text-align:center;'><span style='color:#8C7B6C; font-size:40px; font-weight:600; text-decoration:line-through;'>{{strikePrice}}</span><span style='display:inline-block; margin-left:20px; background:#FF7A1A; color:#0B0704; border-radius:999px; padding:10px 28px; font-size:32px; font-weight:800;'>{{earlyBirdBadge}}</span></div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1200,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.85,
+          "enterEnd": 1.25,
+          "enterAnimation": "fade",
+          "exitEnd": 5,
+          "style": {
+            "fontFamily": "Sora"
+          },
+          "html": "<div style='text-align:center; color:#D6C3B4; font-size:32px; font-weight:600;'>{{priceNote}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1460,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 1.1,
+          "enterEnd": 1.5,
+          "enterAnimation": "fade",
+          "exitEnd": 5,
+          "style": {
+            "fontFamily": "Sora"
+          },
+          "html": "<div style='text-align:center; color:#A08D7C; font-size:30px; font-weight:600; letter-spacing:2px;'>{{dateLine}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "cta",
+      "duration": 4.4,
+      "backgroundColor": "#0B0704",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='tsCta' cx='0.5' cy='0.4' r='0.95'><stop offset='0' stop-color='#241205'/><stop offset='1' stop-color='#0B0704'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#tsCta)'/><path d='M320 560 H760' stroke='#FF7A1A' stroke-width='6' stroke-linecap='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 660,
+          "width": 940,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.7,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.4,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:94px; line-height:1; font-weight:700; letter-spacing:-3px;'>These go<br>fast.</div><div style='margin-top:24px; text-align:center; color:#D6C3B4; font-size:34px; font-weight:500; font-family:Sora, sans-serif;'>Early bird ends when the first 300 sell out.</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1180,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.7,
+          "enterEnd": 1.15,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.4,
+          "style": {
+            "fontFamily": "Sora"
+          },
+          "html": "<div style='display:inline-block; background:{{accentColor}}; color:#0B0704; border-radius:999px; padding:30px 74px; font-size:44px; font-weight:800;'>{{ctaText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1370,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1.1,
+          "enterEnd": 1.5,
+          "enterAnimation": "fade",
+          "exitEnd": 4.4,
+          "style": {
+            "fontFamily": "Sora"
+          },
+          "html": "<div style='text-align:center; color:#8C7B6C; font-size:30px; font-weight:600; letter-spacing:2px;'>{{eventName}} · {{handle}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.17
+    }
+  ]
+}

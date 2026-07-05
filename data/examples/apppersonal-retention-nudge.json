@@ -1,0 +1,208 @@
+{
+  "name": "apppersonal-retention-nudge",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#170A16",
+  "outputFormat": "mp4",
+  "variables": {
+    "appName": "LINGUA",
+    "userName": "Chris",
+    "kicker": "We saved your spot",
+    "missLine": "You were 2 lessons<br>from fluent basics.",
+    "taskName": "Spanish · Unit 4",
+    "progressText": "68% complete",
+    "reassureLine": "It only takes 5 minutes to pick up where you left off.",
+    "ctaText": "Finish Unit 4",
+    "showIncentive": true,
+    "incentiveText": "Come back today and keep your 12-day streak alive.",
+    "accent": "#FF7A59",
+    "accent2": "#FFE4C4",
+    "bgVideo": "https://videos.pexels.com/video-files/7639588/7639588-hd_1080_1920_30fps.mp4",
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/04/21/audio_ed6f0ed574.mp3"
+  },
+  "scenes": [
+    {
+      "id": "hook",
+      "duration": 4.4,
+      "backgroundColor": "#170A16",
+      "transition": "smoothleft",
+      "transitionId": "resume",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "VIDEO",
+          "src": "{{bgVideo}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "volume": 0,
+          "opacity": 0.5,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.4
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 4.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='rnHook' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#170A16' stop-opacity='0.78'/><stop offset='0.45' stop-color='#170A16' stop-opacity='0.4'/><stop offset='1' stop-color='#170A16' stop-opacity='0.96'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#rnHook)'/><rect x='90' y='1210' width='120' height='8' rx='4' fill='#FF7A59'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 240,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.65,
+          "enterAnimation": "fade",
+          "exitEnd": 4.4,
+          "style": { "fontFamily": "Manrope" },
+          "html": "<div style='display:inline-block; border:1.5px solid rgba(255,122,89,0.6); color:{{accent}}; border-radius:999px; padding:12px 30px; font-size:24px; font-weight:800; letter-spacing:4px;'>{{appName}} · {{kicker}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 1260,
+          "width": 920,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.5,
+          "enterEnd": 1.05,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.4,
+          "style": { "fontFamily": "Manrope" },
+          "html": "<div style='color:#FFE4C4; font-size:88px; line-height:1.02; font-weight:800; letter-spacing:-2px;'>{{missLine}}</div><div style='margin-top:24px; color:#D9B3A6; font-size:34px; font-weight:500;'>Hey {{userName}} — your progress is still here.</div>"
+        }
+      ]
+    },
+    {
+      "id": "resume",
+      "duration": 4.6,
+      "backgroundColor": "#170A16",
+      "transition": "smoothleft",
+      "transitionId": "cta",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='rnRes' cx='0.5' cy='0.38' r='0.95'><stop offset='0' stop-color='#2A1226'/><stop offset='0.55' stop-color='#1D0D1B'/><stop offset='1' stop-color='#170A16'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#rnRes)'/><rect x='110' y='860' width='860' height='40' rx='20' fill='rgba(255,228,196,0.15)'/><rect x='110' y='860' width='585' height='40' rx='20' fill='#FF7A59'/><circle cx='695' cy='880' r='30' fill='#FF7A59' stroke='#170A16' stroke-width='6'/><rect x='96' y='560' width='888' height='240' rx='40' fill='rgba(255,255,255,0.04)' stroke='rgba(255,122,89,0.4)' stroke-width='1.5'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 150,
+          "y": 610,
+          "width": 780,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.65,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 4.6,
+          "style": { "fontFamily": "Manrope" },
+          "html": "<div style='color:#FF7A59; font-size:28px; font-weight:800; letter-spacing:4px;'>PICK UP WHERE YOU LEFT OFF</div><div style='margin-top:16px; color:#FFE4C4; font-size:68px; line-height:1; font-weight:800; letter-spacing:-2px;'>{{taskName}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 150,
+          "y": 930,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.5,
+          "enterEnd": 0.95,
+          "enterAnimation": "fade",
+          "exitEnd": 4.6,
+          "style": { "fontFamily": "Manrope" },
+          "html": "<div style='color:#FFFFFF; font-size:40px; font-weight:800;'>{{progressText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1120,
+          "width": 860,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.75,
+          "enterEnd": 1.2,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.6,
+          "style": { "fontFamily": "Manrope" },
+          "html": "<div style='text-align:center; color:#D9B3A6; font-size:40px; line-height:1.4; font-weight:500;'>{{reassureLine}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "cta",
+      "duration": 4,
+      "backgroundColor": "#FF7A59",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='rnCta' cx='0.5' cy='0.4' r='0.95'><stop offset='0' stop-color='#FF8E70'/><stop offset='1' stop-color='#E85B3B'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#rnCta)'/><circle cx='540' cy='640' r='150' fill='none' stroke='rgba(255,255,255,0.65)' stroke-width='3'/><path d='M508 578 L604 640 L508 702 Z' fill='#FFFFFF'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 900,
+          "width": 920,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.75,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4,
+          "style": { "fontFamily": "Manrope" },
+          "html": "<div style='text-align:center; color:#3A0F04; font-size:84px; line-height:1.03; font-weight:800; letter-spacing:-2px;'>Your streak<br>misses you.</div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showIncentive}}",
+          "x": 540,
+          "y": 1130,
+          "width": 820,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.55,
+          "enterEnd": 1,
+          "enterAnimation": "fade",
+          "exitEnd": 4,
+          "style": { "fontFamily": "Manrope" },
+          "html": "<div style='text-align:center; color:#4A1608; font-size:34px; line-height:1.4; font-weight:600;'>{{incentiveText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1330,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.85,
+          "enterEnd": 1.3,
+          "enterAnimation": "circleopen",
+          "exitEnd": 4,
+          "style": { "fontFamily": "Manrope" },
+          "html": "<div style='display:inline-block; background:#170A16; color:{{accent2}}; border-radius:999px; padding:28px 66px; font-size:40px; font-weight:800;'>{{ctaText}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.16
+    }
+  ]
+}

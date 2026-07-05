@@ -1,0 +1,255 @@
+{
+  "name": "finance-dividend-alert",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#06120C",
+  "outputFormat": "mp4",
+  "variables": {
+    "brandTag": "INCOME DESK",
+    "company": "Coca-Cola Co.",
+    "ticker": "KO",
+    "headline": "Dividend declared.",
+    "dividend": "$0.485",
+    "perShareLabel": "per share · quarterly",
+    "yield": "3.1%",
+    "payDate": "Jul 1",
+    "exDate": "Jun 14",
+    "streakLine": "62 straight years of raises",
+    "showBadge": true,
+    "badgeText": "★ DIVIDEND KING",
+    "closingLine": "Reliable income, quarter after quarter.",
+    "accent": "#E9C46A",
+    "accentGreen": "#4FD08A",
+    "bgImage": "https://images.pexels.com/photos/9965979/pexels-photo-9965979.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/04/21/audio_ed6f0ed574.mp3"
+  },
+  "scenes": [
+    {
+      "id": "hero",
+      "duration": 4.2,
+      "backgroundColor": "#06120C",
+      "transition": "fade",
+      "transitionId": "detail",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{bgImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "opacity": 0.45,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.2
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 4.2,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='dvHero' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#06120C' stop-opacity='0.82'/><stop offset='0.5' stop-color='#06120C' stop-opacity='0.42'/><stop offset='1' stop-color='#06120C' stop-opacity='0.96'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#dvHero)'/><rect x='52' y='52' width='976' height='1816' rx='38' fill='none' stroke='rgba(233,196,106,0.35)' stroke-width='1.5'/><circle cx='540' cy='640' r='170' fill='none' stroke='rgba(233,196,106,0.6)' stroke-width='2.5'/><path d='M540 560 V720 M540 590 C572 590 588 606 588 626 C588 648 566 654 540 654 C566 654 592 662 592 686 C592 710 574 716 540 716' fill='none' stroke='#E9C46A' stroke-width='9' stroke-linecap='round' stroke-linejoin='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 160,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.15,
+          "enterEnd": 0.6,
+          "enterAnimation": "fade",
+          "exitEnd": 4.2,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='display:inline-block; border:1.5px solid rgba(233,196,106,0.55); border-radius:999px; padding:14px 34px; color:{{accent}}; font-size:24px; font-weight:700; letter-spacing:6px;'>{{brandTag}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 920,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.4,
+          "enterEnd": 0.9,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.2,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='text-align:center; color:{{accent}}; font-size:38px; font-weight:700; letter-spacing:6px;'>{{ticker}}</div><div style='margin-top:12px; text-align:center; color:#FFFFFF; font-size:82px; line-height:1.04; font-weight:700; letter-spacing:-1px;'>{{company}}</div><div style='margin-top:24px; text-align:center; color:#8FB79E; font-size:44px; font-weight:600;'>{{headline}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showBadge}}",
+          "x": 540,
+          "y": 1300,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.8,
+          "enterEnd": 1.25,
+          "enterAnimation": "circleopen",
+          "exitEnd": 4.2,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='display:inline-block; background:rgba(233,196,106,0.16); border:1.5px solid rgba(233,196,106,0.6); color:{{accent}}; border-radius:999px; padding:14px 40px; font-size:30px; font-weight:700; letter-spacing:2px;'>{{badgeText}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "detail",
+      "duration": 5,
+      "backgroundColor": "#06120C",
+      "transition": "smoothup",
+      "transitionId": "outro",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 5,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='dvDet' cx='0.5' cy='0.35' r='0.95'><stop offset='0' stop-color='#0B2016'/><stop offset='1' stop-color='#06120C'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#dvDet)'/><rect x='80' y='620' width='920' height='420' rx='40' fill='rgba(233,196,106,0.07)' stroke='rgba(233,196,106,0.4)' stroke-width='1.5'/><rect x='80' y='1080' width='440' height='300' rx='36' fill='rgba(255,255,255,0.03)' stroke='rgba(79,208,138,0.4)' stroke-width='1.5'/><rect x='560' y='1080' width='440' height='300' rx='36' fill='rgba(255,255,255,0.03)' stroke='rgba(79,208,138,0.4)' stroke-width='1.5'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 320,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.65,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='text-align:center; color:#79A88C; font-size:26px; font-weight:700; letter-spacing:5px;'>DECLARED DIVIDEND</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 660,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.35,
+          "enterEnd": 0.8,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='text-align:center; color:{{accent}}; font-size:150px; line-height:1; font-weight:700; letter-spacing:-4px;'>{{dividend}}</div><div style='margin-top:14px; text-align:center; color:#A8C7B6; font-size:32px; font-weight:600;'>{{perShareLabel}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 300,
+          "y": 1130,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.65,
+          "enterEnd": 1.1,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='text-align:center; color:#79A88C; font-size:26px; font-weight:700; letter-spacing:3px;'>YIELD</div><div style='margin-top:10px; text-align:center; color:{{accentGreen}}; font-size:88px; line-height:1; font-weight:700;'>{{yield}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 780,
+          "y": 1130,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.8,
+          "enterEnd": 1.25,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='text-align:center; color:#79A88C; font-size:26px; font-weight:700; letter-spacing:3px;'>PAY DATE</div><div style='margin-top:10px; text-align:center; color:#FFFFFF; font-size:88px; line-height:1; font-weight:700;'>{{payDate}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1470,
+          "width": 860,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 1.05,
+          "enterEnd": 1.5,
+          "enterAnimation": "fade",
+          "exitEnd": 5,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='text-align:center; color:#8FB79E; font-size:30px; font-weight:500;'>Ex-dividend {{exDate}}  ·  {{streakLine}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "outro",
+      "duration": 3.6,
+      "backgroundColor": "#06120C",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='dvOut' cx='0.5' cy='0.42' r='0.9'><stop offset='0' stop-color='#0B2016'/><stop offset='1' stop-color='#06120C'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#dvOut)'/><path d='M540 640 L575 710 L650 720 L595 772 L610 848 L540 810 L470 848 L485 772 L430 720 L505 710 Z' fill='none' stroke='#E9C46A' stroke-width='6' stroke-linejoin='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 960,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.7,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.6,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:64px; line-height:1.18; font-weight:700;'>{{closingLine}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1250,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.7,
+          "enterEnd": 1.1,
+          "enterAnimation": "fade",
+          "exitEnd": 3.6,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='color:{{accent}}; font-size:26px; font-weight:700; letter-spacing:5px;'>{{brandTag}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.14
+    }
+  ]
+}

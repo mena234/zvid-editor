@@ -1,0 +1,217 @@
+{
+  "name": "saas-security-update",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#0A1018",
+  "outputFormat": "mp4",
+  "variables": {
+    "productName": "Sentinel",
+    "kicker": "SECURITY UPDATE",
+    "hookLine": "Your data just got safer.",
+    "subLine": "New protections rolled out across every workspace.",
+    "showBadge": true,
+    "badgeText": "SOC 2 Type II certified",
+    "outroTitle": "Security you never have to think about.",
+    "ctaText": "Read the security report",
+    "handle": "sentinel.io/trust",
+    "accent": "#34D399",
+    "heroVideo": "https://videos.pexels.com/video-files/28709421/12457750_1080_1920_30fps.mp4",
+    "updates": [
+      {
+        "title": "End-to-end encryption",
+        "desc": "Every file is now encrypted in transit and at rest with AES-256."
+      },
+      {
+        "title": "Mandatory 2FA",
+        "desc": "Two-factor auth is on by default for all admin accounts."
+      },
+      {
+        "title": "Real-time threat monitoring",
+        "desc": "Anomalies are flagged and contained within seconds, 24/7."
+      }
+    ],
+    "musicUrl": "https://cdn.pixabay.com/audio/2026/02/24/audio_3f375fdf97.mp3"
+  },
+  "scenes": [
+    {
+      "id": "hook",
+      "duration": 4.2,
+      "backgroundColor": "#0A1018",
+      "transition": "smoothup",
+      "transitionId": "update",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "VIDEO",
+          "src": "{{heroVideo}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "volume": 0,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.2
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 4.2,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='seShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#0A1018' stop-opacity='0.8'/><stop offset='0.4' stop-color='#0A1018' stop-opacity='0.4'/><stop offset='1' stop-color='#0A1018' stop-opacity='0.96'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#seShade)'/><path d='M540 460 L660 510 L660 650 C660 740 600 800 540 830 C480 800 420 740 420 650 L420 510 Z' fill='none' stroke='#34D399' stroke-width='4'/><path d='M498 645 L528 675 L590 605' fill='none' stroke='#34D399' stroke-width='7' stroke-linecap='round' stroke-linejoin='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 200,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.65,
+          "enterAnimation": "smoothdown",
+          "exitEnd": 4.2,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='display:inline-block; background:rgba(52,211,153,0.16); border:1.5px solid rgba(52,211,153,0.6); color:{{accent}}; border-radius:999px; padding:14px 32px; font-size:24px; font-weight:800; letter-spacing:5px;'>{{productName}} · {{kicker}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1200,
+          "width": 920,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.5,
+          "enterEnd": 1,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.2,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:88px; line-height:1.02; font-weight:800; letter-spacing:-2px;'>{{hookLine}}</div><div style='margin-top:24px; text-align:center; color:#A9C4BC; font-size:34px; line-height:1.4; font-weight:500;'>{{subLine}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "update",
+      "iterate": "updates",
+      "iterateAs": "u",
+      "duration": 3.6,
+      "backgroundColor": "#0A1018",
+      "transition": "smoothup",
+      "transitionId": "outro",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='seUpd' cx='0.5' cy='0.36' r='0.9'><stop offset='0' stop-color='#0F1E24'/><stop offset='1' stop-color='#0A1018'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#seUpd)'/><rect x='80' y='560' width='920' height='800' rx='44' fill='rgba(52,211,153,0.05)' stroke='rgba(52,211,153,0.3)' stroke-width='1.5'/><circle cx='250' cy='720' r='80' fill='none' stroke='#34D399' stroke-width='4'/><path d='M212 720 L240 748 L292 686' fill='none' stroke='#34D399' stroke-width='7' stroke-linecap='round' stroke-linejoin='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 130,
+          "y": 880,
+          "width": 820,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.3,
+          "enterEnd": 0.75,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='color:#FFFFFF; font-size:70px; line-height:1.05; font-weight:800; letter-spacing:-1px;'>{{u.title}}</div><div style='margin-top:28px; color:#A9C4BC; font-size:34px; line-height:1.5; font-weight:500; font-family:Inter, sans-serif;'>{{u.desc}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 120,
+          "anchor": "center-center",
+          "track": 10,
+          "enterBegin": 0,
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "Inter" },
+          "html": "<div style='color:#6C8880; font-size:24px; font-weight:700; letter-spacing:4px;'>{{productName}} · {{kicker}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "outro",
+      "duration": 4.4,
+      "backgroundColor": "#0A1018",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='seEnd' cx='0.5' cy='0.4' r='0.9'><stop offset='0' stop-color='#0F1E24'/><stop offset='1' stop-color='#0A1018'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#seEnd)'/><rect x='48' y='48' width='984' height='1824' rx='36' fill='none' stroke='rgba(52,211,153,0.3)' stroke-width='1.5'/><path d='M540 490 L680 550 L680 690 C680 790 610 850 540 880 C470 850 400 790 400 690 L400 550 Z' fill='none' stroke='#34D399' stroke-width='4'/><path d='M498 685 L528 715 L590 645' fill='none' stroke='#34D399' stroke-width='9' stroke-linecap='round' stroke-linejoin='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showBadge}}",
+          "x": 540,
+          "y": 940,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.25,
+          "enterEnd": 0.7,
+          "enterAnimation": "fade",
+          "exitEnd": 4.4,
+          "style": { "fontFamily": "Inter" },
+          "html": "<div style='display:inline-block; background:rgba(52,211,153,0.16); border:1.5px solid rgba(52,211,153,0.6); color:#7FE9C4; border-radius:999px; padding:14px 34px; font-size:28px; font-weight:700; letter-spacing:2px;'>{{badgeText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1060,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.5,
+          "enterEnd": 0.95,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.4,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:62px; line-height:1.12; font-weight:800; letter-spacing:-1px;'>{{outroTitle}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1340,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.9,
+          "enterEnd": 1.35,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.4,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='display:inline-block; background:{{accent}}; color:#0A1018; border-radius:999px; padding:24px 56px; font-size:36px; font-weight:800;'>{{ctaText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1500,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1.3,
+          "enterEnd": 1.7,
+          "enterAnimation": "fade",
+          "exitEnd": 4.4,
+          "style": { "fontFamily": "Inter" },
+          "html": "<div style='text-align:center; color:#6C8880; font-size:26px; font-weight:600; letter-spacing:2px;'>{{handle}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.16
+    }
+  ]
+}

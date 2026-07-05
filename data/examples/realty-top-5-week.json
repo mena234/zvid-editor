@@ -1,0 +1,266 @@
+{
+  "name": "realty-top-5-week",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#1B0F22",
+  "outputFormat": "mp4",
+  "variables": {
+    "agencyName": "@vantage.homes",
+    "introKicker": "THIS WEEK'S DROP",
+    "introHead": "5 homes<br>we're obsessed with",
+    "introSub": "Fresh to market. Swipe if you dare.",
+    "ctaHead": "Which one's<br>your favourite?",
+    "ctaText": "DM us the number 💬",
+    "accent": "#FF6B57",
+    "accent2": "#F5C15A",
+    "coverImage": "https://images.pexels.com/photos/20296321/pexels-photo-20296321.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "listings": [
+      {
+        "rank": "5",
+        "name": "Skyline Penthouse",
+        "meta": "2 bed · City Centre",
+        "price": "£589,000",
+        "image": "https://images.pexels.com/photos/26851069/pexels-photo-26851069.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+      },
+      {
+        "rank": "4",
+        "name": "The Garden Cottage",
+        "meta": "3 bed · Riverside",
+        "price": "£425,000",
+        "image": "https://images.unsplash.com/photo-1691425700585-c108acad6467?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDgwMTZ8MHwxfHNlYXJjaHw4fHxtb2Rlcm4lMjBob3VzZSUyMGV4dGVyaW9yJTIwcmVhbCUyMGVzdGF0ZXxlbnwwfHx8fDE3ODMyNjg2MDl8MA&ixlib=rb-4.1.0&q=80&w=1080"
+      },
+      {
+        "rank": "3",
+        "name": "Loft No. 12",
+        "meta": "1 bed · Warehouse District",
+        "price": "£312,000",
+        "image": "https://images.unsplash.com/photo-1556593825-c11de986cb0b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDgwMTZ8MHwxfHNlYXJjaHw2fHxhcGFydG1lbnQlMjBsaXZpbmclMjByb29tJTIwaW50ZXJpb3J8ZW58MHx8fHwxNzgzMjY4NjEyfDA&ixlib=rb-4.1.0&q=80&w=1080"
+      },
+      {
+        "rank": "2",
+        "name": "Willow House",
+        "meta": "4 bed · Leafy Suburb",
+        "price": "£675,000",
+        "image": "https://images.pexels.com/photos/19344325/pexels-photo-19344325.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+      },
+      {
+        "rank": "1",
+        "name": "The Solenne Villa",
+        "meta": "5 bed · Hillside Reserve",
+        "price": "£1,240,000",
+        "image": "https://images.unsplash.com/photo-1602343168117-bb8ffe3e2e9f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDgwMTZ8MHwxfHNlYXJjaHw0fHxsdXh1cnklMjB2aWxsYSUyMG1hbnNpb24lMjBwb29sfGVufDB8fHx8MTc4MzI2ODYxNHww&ixlib=rb-4.1.0&q=80&w=1080"
+      }
+    ],
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/03/19/audio_56ae1dae5f.mp3"
+  },
+  "scenes": [
+    {
+      "id": "cover",
+      "duration": 3.2,
+      "backgroundColor": "#1B0F22",
+      "transition": "slideleft",
+      "transitionId": "item",
+      "transitionDuration": 0.45,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{coverImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "opacity": 0.42,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.2
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 3.2,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='t5Cover' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#1B0F22' stop-opacity='0.7'/><stop offset='0.5' stop-color='#1B0F22' stop-opacity='0.35'/><stop offset='1' stop-color='#1B0F22' stop-opacity='0.92'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#t5Cover)'/><path d='M-40 500 L1120 430 L1120 462 L-40 532 Z' fill='#FF6B57'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 780,
+          "width": 940,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.15,
+          "enterEnd": 0.6,
+          "enterAnimation": "circleopen",
+          "exitEnd": 3.2,
+          "style": {
+            "fontFamily": "Syne"
+          },
+          "html": "<div style='text-align:center; color:{{accent2}}; font-size:26px; font-weight:800; letter-spacing:6px;'>{{introKicker}}</div><div style='margin-top:22px; text-align:center; color:#FBF3EE; font-size:104px; line-height:0.98; font-weight:800; letter-spacing:-3px;'>{{introHead}}</div><div style='margin-top:26px; text-align:center; color:#D3BCC9; font-size:32px; font-weight:600;'>{{introSub}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "item",
+      "iterate": "listings",
+      "iterateAs": "item",
+      "duration": 3.3,
+      "backgroundColor": "#1B0F22",
+      "transition": "slideleft",
+      "transitionId": "outro",
+      "transitionDuration": 0.45,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{item.image}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.3
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 3.3,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='t5Item' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#1B0F22' stop-opacity='0.55'/><stop offset='0.45' stop-color='#1B0F22' stop-opacity='0.1'/><stop offset='0.72' stop-color='#1B0F22' stop-opacity='0.5'/><stop offset='1' stop-color='#1B0F22' stop-opacity='0.96'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#t5Item)'/><rect x='72' y='1360' width='120' height='120' rx='24' fill='#FF6B57'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 132,
+          "y": 1370,
+          "anchor": "center-center",
+          "track": 11,
+          "enterBegin": 0.15,
+          "enterEnd": 0.55,
+          "enterAnimation": "circleopen",
+          "exitEnd": 3.3,
+          "style": {
+            "fontFamily": "Syne"
+          },
+          "html": "<div style='color:#1B0F22; font-size:76px; font-weight:800;'>{{item.rank}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 230,
+          "y": 1358,
+          "width": 780,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.3,
+          "enterEnd": 0.75,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 3.3,
+          "style": {
+            "fontFamily": "Syne"
+          },
+          "html": "<div style='color:#FBF3EE; font-size:66px; line-height:1; font-weight:800; letter-spacing:-2px;'>{{item.name}}</div><div style='margin-top:12px; color:{{accent2}}; font-size:30px; font-weight:700;'>{{item.meta}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 1560,
+          "anchor": "top-left",
+          "track": 11,
+          "enterBegin": 0.6,
+          "enterEnd": 1.05,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.3,
+          "style": {
+            "fontFamily": "Syne"
+          },
+          "html": "<div style='display:inline-block; background:{{accent2}}; color:#1B0F22; border-radius:999px; padding:18px 42px; font-size:44px; font-weight:800;'>{{item.price}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 130,
+          "anchor": "center-center",
+          "track": 10,
+          "enterBegin": 0,
+          "exitEnd": 3.3,
+          "style": {
+            "fontFamily": "Syne"
+          },
+          "html": "<div style='color:rgba(251,243,238,0.7); font-size:24px; font-weight:800; letter-spacing:4px;'>{{agencyName}} · TOP 5</div>"
+        }
+      ]
+    },
+    {
+      "id": "outro",
+      "duration": 3.6,
+      "backgroundColor": "#1B0F22",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='t5Out' cx='0.5' cy='0.38' r='0.95'><stop offset='0' stop-color='#2C1636'/><stop offset='1' stop-color='#1B0F22'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#t5Out)'/><circle cx='300' cy='300' r='60' fill='rgba(255,107,87,0.4)'/><circle cx='820' cy='1600' r='90' fill='rgba(245,193,90,0.3)'/><path d='M420 620 C420 560 480 520 540 520 C600 520 660 560 660 620 C660 680 600 700 570 730 C550 750 545 770 545 790' fill='none' stroke='#FF6B57' stroke-width='16' stroke-linecap='round'/><circle cx='545' cy='860' r='12' fill='#FF6B57'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 990,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.65,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.6,
+          "style": {
+            "fontFamily": "Syne"
+          },
+          "html": "<div style='text-align:center; color:#FBF3EE; font-size:88px; line-height:1; font-weight:800; letter-spacing:-2px;'>{{ctaHead}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1300,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.75,
+          "enterEnd": 1.2,
+          "enterAnimation": "circleopen",
+          "exitEnd": 3.6,
+          "style": {
+            "fontFamily": "Syne"
+          },
+          "html": "<div style='display:inline-block; background:{{accent}}; color:#1B0F22; border-radius:999px; padding:24px 58px; font-size:36px; font-weight:800;'>{{ctaText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1470,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1.1,
+          "enterEnd": 1.5,
+          "enterAnimation": "fade",
+          "exitEnd": 3.6,
+          "style": {
+            "fontFamily": "Syne"
+          },
+          "html": "<div style='text-align:center; color:#9E86A0; font-size:28px; font-weight:700; letter-spacing:3px;'>{{agencyName}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.18
+    }
+  ]
+}

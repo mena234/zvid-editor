@@ -1,0 +1,236 @@
+{
+  "name": "apppersonal-trial-progress",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#07090F",
+  "outputFormat": "mp4",
+  "variables": {
+    "appName": "FLUX",
+    "userName": "Riley",
+    "kicker": "Your free trial",
+    "usedCount": "3",
+    "totalCount": "5",
+    "headline": "You've unlocked<br>3 of 5 features.",
+    "encourageLine": "Two more power features are waiting for you.",
+    "ctaText": "Try what's left",
+    "showUpgrade": true,
+    "upgradeText": "Upgrade now and keep everything after your trial ends.",
+    "accent": "#2E9BFF",
+    "accent2": "#FFB020",
+    "bgImage": "https://images.pexels.com/photos/7307672/pexels-photo-7307672.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "features": [
+      {
+        "name": "Smart Import",
+        "state": "done",
+        "note": "You imported 4 projects"
+      },
+      {
+        "name": "Auto Layouts",
+        "state": "done",
+        "note": "Used on 11 designs"
+      },
+      {
+        "name": "Team Sharing",
+        "state": "done",
+        "note": "Invited 2 teammates"
+      },
+      {
+        "name": "AI Cleanup",
+        "state": "locked",
+        "note": "Tap to try it once, free"
+      },
+      {
+        "name": "Export 4K",
+        "state": "locked",
+        "note": "Your best work deserves it"
+      }
+    ],
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/03/19/audio_56ae1dae5f.mp3"
+  },
+  "scenes": [
+    {
+      "id": "intro",
+      "duration": 4,
+      "backgroundColor": "#07090F",
+      "transition": "wipeleft",
+      "transitionId": "feature",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{bgImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "opacity": 0.5,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='tpIntro' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#07090F' stop-opacity='0.7'/><stop offset='0.45' stop-color='#07090F' stop-opacity='0.35'/><stop offset='1' stop-color='#07090F' stop-opacity='0.96'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#tpIntro)'/><rect x='110' y='860' width='860' height='40' rx='20' fill='rgba(255,255,255,0.1)'/><rect x='110' y='860' width='516' height='40' rx='20' fill='#2E9BFF'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 560,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.65,
+          "enterAnimation": "fade",
+          "exitEnd": 4,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='display:inline-block; border:1.5px solid rgba(46,155,255,0.6); color:{{accent}}; border-radius:999px; padding:12px 32px; font-size:26px; font-weight:800; letter-spacing:5px;'>{{appName}} · {{kicker}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 640,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.45,
+          "enterEnd": 0.95,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:82px; line-height:1.04; font-weight:700; letter-spacing:-2px;'>{{headline}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 940,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.7,
+          "enterEnd": 1.1,
+          "enterAnimation": "fade",
+          "exitEnd": 4,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='text-align:center; color:#9AA7BD; font-size:30px; font-weight:600;'>{{usedCount}} / {{totalCount}} features used, {{userName}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "feature",
+      "iterate": "features",
+      "iterateAs": "f",
+      "duration": 2.6,
+      "backgroundColor": "#07090F",
+      "transition": "wipeleft",
+      "transitionId": "outro",
+      "transitionDuration": 0.4,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 2.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='tpFeat' cx='0.5' cy='0.4' r='0.95'><stop offset='0' stop-color='#101828'/><stop offset='0.6' stop-color='#0A0E18'/><stop offset='1' stop-color='#07090F'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#tpFeat)'/><rect x='96' y='740' width='888' height='440' rx='40' fill='rgba(255,255,255,0.04)' stroke='rgba(46,155,255,0.4)' stroke-width='1.5'/><circle cx='250' cy='860' r='72' fill='none' stroke='rgba(46,155,255,0.5)' stroke-width='3'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 250,
+          "y": 806,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.1,
+          "enterEnd": 0.5,
+          "enterAnimation": "circleopen",
+          "exitEnd": 2.6,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='text-align:center; color:#2E9BFF; font-size:74px; line-height:1; font-weight:800;'>{{f.state}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 366,
+          "y": 792,
+          "width": 560,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.7,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 2.6,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='color:#FFFFFF; font-size:56px; line-height:1.05; font-weight:700; letter-spacing:-1px;'>{{f.name}}</div><div style='margin-top:14px; color:#9AA7BD; font-size:30px; font-weight:500;'>{{f.note}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "outro",
+      "duration": 4.4,
+      "backgroundColor": "#07090F",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='tpOut' cx='0.5' cy='0.4' r='0.95'><stop offset='0' stop-color='#0E2138'/><stop offset='0.55' stop-color='#091220'/><stop offset='1' stop-color='#07090F'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#tpOut)'/><rect x='110' y='560' width='860' height='40' rx='20' fill='rgba(255,255,255,0.1)'/><rect x='110' y='560' width='516' height='40' rx='20' fill='#FFB020'/><circle cx='626' cy='580' r='30' fill='#FFB020' stroke='#07090F' stroke-width='6'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 680,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.75,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.4,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:72px; line-height:1.08; font-weight:700; letter-spacing:-2px;'>{{encourageLine}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showUpgrade}}",
+          "x": 540,
+          "y": 980,
+          "width": 820,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.55,
+          "enterEnd": 1,
+          "enterAnimation": "fade",
+          "exitEnd": 4.4,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='text-align:center; color:{{accent2}}; font-size:32px; line-height:1.4; font-weight:600;'>{{upgradeText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1210,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.85,
+          "enterEnd": 1.3,
+          "enterAnimation": "circleopen",
+          "exitEnd": 4.4,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='display:inline-block; background:#2E9BFF; color:#07090F; border-radius:999px; padding:28px 66px; font-size:40px; font-weight:800;'>{{ctaText}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.18
+    }
+  ]
+}

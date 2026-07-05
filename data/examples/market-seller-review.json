@@ -1,0 +1,233 @@
+{
+  "name": "market-seller-review",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#0B1230",
+  "outputFormat": "mp4",
+  "variables": {
+    "marketName": "TRUSTMARKET",
+    "kicker": "VERIFIED REVIEW",
+    "quote": "Item was exactly as described, packed with care and shipped same day. Best seller I've bought from.",
+    "reviewerName": "Marcus D.",
+    "reviewerMeta": "Verified buyer · Bought a road bike",
+    "ratingText": "5.0",
+    "sellerLine": "Reviewing: Pedal & Chain Cyclery",
+    "showAvatar": true,
+    "ctaText": "Read all reviews",
+    "ctaHandle": "trustmarket.co/pedal-chain",
+    "accentColor": "#E8B457",
+    "avatarImage": "https://images.pexels.com/photos/6152745/pexels-photo-6152745.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/04/21/audio_ed6f0ed574.mp3"
+  },
+  "scenes": [
+    {
+      "id": "quote",
+      "duration": 5.4,
+      "backgroundColor": "#0B1230",
+      "transition": "fade",
+      "transitionId": "rating",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 5.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='srBg' cx='0.5' cy='0.34' r='0.95'><stop offset='0' stop-color='#141E48'/><stop offset='1' stop-color='#0B1230'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#srBg)'/><rect x='60' y='60' width='960' height='1800' rx='40' fill='none' stroke='rgba(232,180,87,0.3)' stroke-width='1.5'/><text x='140' y='620' font-family='Georgia' font-size='320' fill='rgba(232,180,87,0.35)'>&#8220;</text></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 140,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.15,
+          "enterEnd": 0.55,
+          "enterAnimation": "fade",
+          "exitEnd": 5.4,
+          "style": { "fontFamily": "Inter" },
+          "html": "<div style='text-align:center; color:#7C87B8; font-size:24px; font-weight:800; letter-spacing:8px;'>{{marketName}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 230,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.3,
+          "enterEnd": 0.7,
+          "enterAnimation": "fade",
+          "exitEnd": 5.4,
+          "style": { "fontFamily": "Inter" },
+          "html": "<div style='text-align:center; color:{{accentColor}}; font-size:26px; font-weight:800; letter-spacing:7px;'>{{kicker}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 640,
+          "width": 880,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.45,
+          "enterEnd": 1,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5.4,
+          "style": { "fontFamily": "Fraunces" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:66px; line-height:1.25; font-weight:600; font-style:italic;'>{{quote}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1240,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.9,
+          "enterEnd": 1.35,
+          "enterAnimation": "fade",
+          "exitEnd": 5.4,
+          "style": { "fontFamily": "Inter" },
+          "html": "<div style='display:inline-block; color:{{accentColor}}; font-size:52px; letter-spacing:8px;'>★★★★★</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1370,
+          "width": 820,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 1.1,
+          "enterEnd": 1.55,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5.4,
+          "style": { "fontFamily": "Inter" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:40px; font-weight:700;'>{{reviewerName}}</div><div style='margin-top:10px; text-align:center; color:#9BA6CC; font-size:28px; font-weight:500;'>{{reviewerMeta}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "rating",
+      "duration": 4.4,
+      "backgroundColor": "#0B1230",
+      "transition": "smoothleft",
+      "transitionId": "cta",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='srBg2' cx='0.5' cy='0.36' r='0.9'><stop offset='0' stop-color='#141E48'/><stop offset='1' stop-color='#0B1230'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#srBg2)'/><circle cx='540' cy='560' r='230' fill='none' stroke='rgba(232,180,87,0.5)' stroke-width='4'/></svg>"
+        },
+        {
+          "type": "IMAGE",
+          "condition": "{{showAvatar}}",
+          "src": "{{avatarImage}}",
+          "x": 540,
+          "y": 560,
+          "width": 400,
+          "height": 400,
+          "anchor": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "radius": { "tl": 200, "tr": 200, "bl": 200, "br": 200 },
+          "track": 1,
+          "enterBegin": 0.15,
+          "enterEnd": 0.65,
+          "enterAnimation": "circleopen",
+          "exitEnd": 4.4
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 860,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.4,
+          "enterEnd": 0.85,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.4,
+          "style": { "fontFamily": "Fraunces" },
+          "html": "<div style='text-align:center; color:{{accentColor}}; font-size:180px; line-height:1; font-weight:600; letter-spacing:-4px;'>{{ratingText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1120,
+          "width": 860,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.65,
+          "enterEnd": 1.1,
+          "enterAnimation": "fade",
+          "exitEnd": 4.4,
+          "style": { "fontFamily": "Inter" },
+          "html": "<div style='text-align:center; color:{{accentColor}}; font-size:48px; letter-spacing:8px;'>★★★★★</div><div style='margin-top:26px; text-align:center; color:#FFFFFF; font-size:40px; line-height:1.3; font-weight:600;'>{{sellerLine}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "cta",
+      "duration": 3.8,
+      "backgroundColor": "#0B1230",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.8,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='srCta' cx='0.5' cy='0.42' r='0.9'><stop offset='0' stop-color='#161F4C'/><stop offset='1' stop-color='#0B1230'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#srCta)'/><path d='M540 560 l24 60 l64 4 l-50 42 l16 62 l-54 -36 l-54 36 l16 -62 l-50 -42 l64 -4 z' fill='{{accentColor}}'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 820,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.3,
+          "enterEnd": 0.8,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.8,
+          "style": { "fontFamily": "Fraunces" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:68px; line-height:1.15; font-weight:600;'>Buy from sellers<br>buyers rave about.</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1180,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.7,
+          "enterEnd": 1.15,
+          "enterAnimation": "circleopen",
+          "exitEnd": 3.8,
+          "style": { "fontFamily": "Inter" },
+          "html": "<div style='display:inline-block; background:{{accentColor}}; color:#0B1230; border-radius:999px; padding:26px 62px; font-size:36px; font-weight:800;'>{{ctaText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1340,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1,
+          "enterEnd": 1.4,
+          "enterAnimation": "fade",
+          "exitEnd": 3.8,
+          "style": { "fontFamily": "Inter" },
+          "html": "<div style='text-align:center; color:#9BA6CC; font-size:27px; font-weight:600; letter-spacing:1px;'>{{ctaHandle}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    { "src": "{{musicUrl}}", "volume": 0.14 }
+  ]
+}

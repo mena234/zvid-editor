@@ -1,0 +1,184 @@
+{
+  "name": "localservice-faq-video",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#111827",
+  "outputFormat": "mp4",
+  "variables": {
+    "brandName": "RELIABLE PLUMBING",
+    "introTitle": "Your top<br>plumbing questions.",
+    "introSub": "Straight answers, no jargon.",
+    "faqs": [
+      {
+        "q": "Do you charge for call-outs?",
+        "a": "No hidden fees. You get a flat quote before we lift a wrench."
+      },
+      {
+        "q": "How fast can you come out?",
+        "a": "Most local jobs are booked same-day, often within 2 hours."
+      },
+      {
+        "q": "Are your plumbers licensed?",
+        "a": "Every tech is fully licensed, insured and background-checked."
+      }
+    ],
+    "ctaText": "Ask us anything",
+    "ctaPhone": "(555) 771-3300",
+    "accentColor": "#F59E0B",
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/04/21/audio_ed6f0ed574.mp3"
+  },
+  "scenes": [
+    {
+      "id": "intro",
+      "duration": 3.4,
+      "backgroundColor": "#111827",
+      "transition": "smoothup",
+      "transitionId": "faq",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='fqIntro' cx='0.5' cy='0.36' r='0.95'><stop offset='0' stop-color='#1D2A44'/><stop offset='1' stop-color='#111827'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#fqIntro)'/><circle cx='540' cy='560' r='120' fill='none' stroke='#F59E0B' stroke-width='6'/><path d='M500 526 q0 -34 40 -34 q40 0 40 36 q0 26 -30 38 q-14 6 -14 24 M540 636 v4' fill='none' stroke='#F59E0B' stroke-width='11' stroke-linecap='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 780,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.7,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.4,
+          "style": { "fontFamily": "DM Sans" },
+          "html": "<div style='text-align:center; color:{{accentColor}}; font-size:26px; font-weight:800; letter-spacing:5px;'>FAQ · {{brandName}}</div><div style='margin-top:22px; text-align:center; color:#FFFFFF; font-size:88px; line-height:1.04; font-weight:800; letter-spacing:-2px;'>{{introTitle}}</div><div style='margin-top:22px; text-align:center; color:#94A3B8; font-size:34px; font-weight:500;'>{{introSub}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "faq",
+      "iterate": "faqs",
+      "iterateAs": "f",
+      "duration": 4,
+      "backgroundColor": "#111827",
+      "transition": "smoothleft",
+      "transitionId": "cta",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='fqCard' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#16203A'/><stop offset='1' stop-color='#111827'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#fqCard)'/><rect x='80' y='560' width='920' height='800' rx='40' fill='rgba(255,255,255,0.03)' stroke='rgba(245,158,11,0.4)' stroke-width='1.5'/><rect x='80' y='560' width='920' height='14' rx='7' fill='#F59E0B'/><path d='M140 900 H940' stroke='rgba(255,255,255,0.12)' stroke-width='1.5'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 240,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0,
+          "exitEnd": 4,
+          "style": { "fontFamily": "DM Sans" },
+          "html": "<div style='text-align:center; color:rgba(148,163,184,0.7); font-size:24px; font-weight:800; letter-spacing:5px;'>{{brandName}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 640,
+          "width": 800,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.65,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4,
+          "style": { "fontFamily": "DM Sans" },
+          "html": "<div style='text-align:center; color:{{accentColor}}; font-size:30px; font-weight:800; letter-spacing:3px;'>Q.</div><div style='margin-top:12px; text-align:center; color:#FFFFFF; font-size:56px; line-height:1.14; font-weight:800; letter-spacing:-1px;'>{{f.q}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 960,
+          "width": 800,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.55,
+          "enterEnd": 1,
+          "enterAnimation": "fade",
+          "exitEnd": 4,
+          "style": { "fontFamily": "DM Sans" },
+          "html": "<div style='text-align:center; color:{{accentColor}}; font-size:30px; font-weight:800; letter-spacing:3px;'>A.</div><div style='margin-top:12px; text-align:center; color:#CBD5E1; font-size:38px; line-height:1.45; font-weight:500;'>{{f.a}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "cta",
+      "duration": 3.8,
+      "backgroundColor": "#111827",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.8,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='fqCta' cx='0.5' cy='0.42' r='0.95'><stop offset='0' stop-color='#2A2410'/><stop offset='1' stop-color='#111827'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#fqCta)'/><circle cx='540' cy='640' r='150' fill='none' stroke='#F59E0B' stroke-width='3'/><path d='M470 600 q0 -34 34 -34 l16 0 q14 0 18 12 l10 28 q4 12 -6 20 l-14 12 q18 34 52 52 l12 -14 q8 -10 20 -6 l28 10 q12 4 12 18 l0 16 q0 34 -34 34 q-124 -8 -192 -192 z' fill='#F59E0B'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 900,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.7,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.8,
+          "style": { "fontFamily": "DM Sans" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:72px; line-height:1.08; font-weight:800; letter-spacing:-1px;'>Still have<br>a question?</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1190,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.65,
+          "enterEnd": 1.1,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.8,
+          "style": { "fontFamily": "DM Sans" },
+          "html": "<div style='display:inline-block; background:{{accentColor}}; color:#111827; border-radius:999px; padding:26px 60px; font-size:40px; font-weight:800;'>{{ctaText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1370,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1,
+          "enterEnd": 1.45,
+          "enterAnimation": "fade",
+          "exitEnd": 3.8,
+          "style": { "fontFamily": "DM Sans" },
+          "html": "<div style='text-align:center; color:#94A3B8; font-size:32px; font-weight:700; letter-spacing:2px;'>{{ctaPhone}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    { "src": "{{musicUrl}}", "volume": 0.14 }
+  ]
+}

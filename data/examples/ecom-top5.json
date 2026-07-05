@@ -1,0 +1,209 @@
+{
+  "name": "ecom-top5",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#0B0A08",
+  "outputFormat": "mp4",
+  "variables": {
+    "brandName": "AUREL",
+    "listTitle": "Our 5 most-loved timepieces",
+    "listSub": "Ranked by you — 12,000+ orders this quarter.",
+    "coverImage": "https://images.pexels.com/photos/33511755/pexels-photo-33511755.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "accentColor": "#C9A24B",
+    "ctaText": "Shop the ranking",
+    "ctaHandle": "aurel.example/bestsellers",
+    "products": [
+      { "rank": "5", "name": "Meridian 38", "meta": "Everyday minimalist", "price": "$180", "image": "https://images.pexels.com/photos/22032446/pexels-photo-22032446.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" },
+      { "rank": "4", "name": "Nocturne GMT", "meta": "Dual-time traveler", "price": "$240", "image": "https://images.pexels.com/photos/13155695/pexels-photo-13155695.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" },
+      { "rank": "3", "name": "Aria Skeleton", "meta": "Open-heart automatic", "price": "$320", "image": "https://images.pexels.com/photos/33511755/pexels-photo-33511755.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" },
+      { "rank": "2", "name": "Solis Chrono", "meta": "Racing chronograph", "price": "$360", "image": "https://images.pexels.com/photos/22032446/pexels-photo-22032446.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" },
+      { "rank": "1", "name": "Aurel Heritage", "meta": "The one everyone wants", "price": "$420", "image": "https://images.pexels.com/photos/13155695/pexels-photo-13155695.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" }
+    ],
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/04/21/audio_ed6f0ed574.mp3"
+  },
+  "scenes": [
+    {
+      "id": "cover",
+      "duration": 3.4,
+      "backgroundColor": "#0B0A08",
+      "transition": "smoothleft",
+      "transitionId": "item",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{coverImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "opacity": 0.55,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.4
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 3.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='cvShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#0B0A08' stop-opacity='0.6'/><stop offset='0.5' stop-color='#0B0A08' stop-opacity='0.3'/><stop offset='1' stop-color='#0B0A08' stop-opacity='0.94'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#cvShade)'/><path d='M90 1200 H420' stroke='#C9A24B' stroke-width='4'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 150,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.15,
+          "enterEnd": 0.6,
+          "enterAnimation": "fade",
+          "exitEnd": 3.4,
+          "style": { "fontFamily": "Playfair Display" },
+          "html": "<div style='color:{{accentColor}}; font-size:34px; font-weight:600; letter-spacing:14px;'>{{brandName}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 1270,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.35,
+          "enterEnd": 0.85,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.4,
+          "style": { "fontFamily": "Playfair Display" },
+          "html": "<div style='color:#F4EFE4; font-size:82px; line-height:1.1; font-weight:600;'>{{listTitle}}</div><div style='margin-top:22px; color:#B3A98F; font-size:30px; font-weight:500; font-family:Outfit, sans-serif;'>{{listSub}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "item",
+      "iterate": "products",
+      "iterateAs": "p",
+      "duration": 3.2,
+      "backgroundColor": "#0B0A08",
+      "transition": "smoothleft",
+      "transitionId": "cta",
+      "transitionDuration": 0.45,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{p.image}}",
+          "x": 540,
+          "y": 640,
+          "width": 900,
+          "height": 1020,
+          "anchor": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "radius": { "tl": 40, "tr": 40, "bl": 40, "br": 40 },
+          "track": 1,
+          "enterBegin": 0,
+          "enterEnd": 0.5,
+          "enterAnimation": "smoothright",
+          "exitEnd": 3.2
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.2,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='itBg' cx='0.5' cy='0.34' r='0.95'><stop offset='0' stop-color='#151109'/><stop offset='1' stop-color='#0B0A08'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#itBg)'/><rect x='90' y='1220' width='900' height='560' rx='40' fill='rgba(201,162,75,0.05)' stroke='rgba(201,162,75,0.4)' stroke-width='1.5'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 130,
+          "y": 320,
+          "anchor": "center-center",
+          "track": 10,
+          "enterBegin": 0.1,
+          "enterEnd": 0.5,
+          "enterAnimation": "fade",
+          "exitEnd": 3.2,
+          "style": { "fontFamily": "Playfair Display" },
+          "html": "<div style='color:{{accentColor}}; font-size:200px; line-height:1; font-weight:700;'>{{p.rank}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 130,
+          "y": 1290,
+          "width": 620,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.4,
+          "enterEnd": 0.85,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.2,
+          "style": { "fontFamily": "Playfair Display" },
+          "html": "<div style='color:#F4EFE4; font-size:70px; line-height:1.05; font-weight:600;'>{{p.name}}</div><div style='margin-top:14px; color:#B3A98F; font-size:30px; font-weight:500; font-family:Outfit, sans-serif;'>{{p.meta}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 950,
+          "y": 1310,
+          "anchor": "top-right",
+          "track": 11,
+          "enterBegin": 0.6,
+          "enterEnd": 1.05,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 3.2,
+          "style": { "fontFamily": "Outfit" },
+          "html": "<div style='display:inline-block; background:{{accentColor}}; color:#0B0A08; border-radius:12px; padding:14px 30px; font-size:40px; font-weight:800;'>{{p.price}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "cta",
+      "duration": 4,
+      "backgroundColor": "#0B0A08",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='ctaG' cx='0.5' cy='0.4' r='0.9'><stop offset='0' stop-color='#1A1409'/><stop offset='1' stop-color='#0B0A08'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#ctaG)'/><rect x='48' y='48' width='984' height='1824' rx='40' fill='none' stroke='rgba(201,162,75,0.4)' stroke-width='1.5'/><path d='M420 760 H660' stroke='#C9A24B' stroke-width='3'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 860,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.3,
+          "enterEnd": 0.8,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4,
+          "style": { "fontFamily": "Playfair Display" },
+          "html": "<div style='text-align:center; color:#F4EFE4; font-size:72px; line-height:1.12; font-weight:600;'>Find the one<br>on your wrist.</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1180,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.75,
+          "enterEnd": 1.2,
+          "enterAnimation": "circleopen",
+          "exitEnd": 4,
+          "style": { "fontFamily": "Outfit" },
+          "html": "<div style='display:inline-block; background:{{accentColor}}; color:#0B0A08; border-radius:999px; padding:24px 60px; font-size:38px; font-weight:800;'>{{ctaText}}</div><div style='margin-top:24px; text-align:center; color:#8A8069; font-size:26px; font-weight:600; letter-spacing:2px;'>{{ctaHandle}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    { "src": "{{musicUrl}}", "volume": 0.15 }
+  ]
+}

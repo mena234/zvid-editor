@@ -1,0 +1,291 @@
+{
+  "name": "edu-multiple-choice-quiz",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#151533",
+  "outputFormat": "mp4",
+  "variables": {
+    "channelName": "BRAINWAVE · daily quiz",
+    "kicker": "POP QUIZ",
+    "question": "Which planet has the most moons in our solar system?",
+    "optionA": "Jupiter",
+    "optionB": "Saturn",
+    "optionC": "Neptune",
+    "optionD": "Uranus",
+    "correctLetter": "B",
+    "correctAnswer": "Saturn",
+    "explainLine": "Saturn leads with 146 confirmed moons — Jupiter trails at 95.",
+    "difficulty": "Medium · Astronomy",
+    "showDifficulty": true,
+    "ctaText": "Follow for a quiz every day",
+    "accentColor": "#7C6BFF",
+    "bgImage": "https://pixabay.com/get/g0348b7852795e0ad2a1a95ca086ec912af333f41ca8769c944f34cf8d0c92a585dea306f2db53242a20852eac05b857c73fab053c51abca0c315a42d9152ef00_1280.jpg",
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/03/19/audio_56ae1dae5f.mp3"
+  },
+  "scenes": [
+    {
+      "id": "question",
+      "duration": 5,
+      "backgroundColor": "#151533",
+      "transition": "smoothup",
+      "transitionId": "reveal",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{bgImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "opacity": 0.28,
+          "zoom": true,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 5
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 5,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='mcqShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#151533' stop-opacity='0.72'/><stop offset='0.5' stop-color='#151533' stop-opacity='0.85'/><stop offset='1' stop-color='#0E0E24' stop-opacity='0.96'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#mcqShade)'/><circle cx='150' cy='250' r='120' fill='rgba(124,107,255,0.16)'/><circle cx='960' cy='1720' r='170' fill='rgba(124,107,255,0.12)'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 150,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.65,
+          "enterAnimation": "fade",
+          "exitEnd": 5,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='display:inline-block; background:{{accentColor}}; color:#0E0E24; border-radius:999px; padding:14px 40px; font-size:28px; font-weight:800; letter-spacing:6px;'>{{kicker}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 300,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.4,
+          "enterEnd": 0.9,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:66px; line-height:1.16; font-weight:800; letter-spacing:-1px;'>{{question}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 720,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 11,
+          "enterBegin": 0.7,
+          "enterEnd": 1.1,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 5,
+          "style": { "fontFamily": "Inter" },
+          "html": "<div style='background:rgba(255,255,255,0.06); border:1.5px solid rgba(255,255,255,0.14); border-radius:26px; padding:30px 34px; color:#EDECFF; font-size:40px; font-weight:600;'><span style='display:inline-block; width:56px; height:56px; line-height:56px; text-align:center; background:{{accentColor}}; color:#0E0E24; border-radius:14px; font-weight:800; margin-right:22px;'>A</span>{{optionA}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 880,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 11,
+          "enterBegin": 0.85,
+          "enterEnd": 1.25,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 5,
+          "style": { "fontFamily": "Inter" },
+          "html": "<div style='background:rgba(255,255,255,0.06); border:1.5px solid rgba(255,255,255,0.14); border-radius:26px; padding:30px 34px; color:#EDECFF; font-size:40px; font-weight:600;'><span style='display:inline-block; width:56px; height:56px; line-height:56px; text-align:center; background:{{accentColor}}; color:#0E0E24; border-radius:14px; font-weight:800; margin-right:22px;'>B</span>{{optionB}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 1040,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 11,
+          "enterBegin": 1.0,
+          "enterEnd": 1.4,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 5,
+          "style": { "fontFamily": "Inter" },
+          "html": "<div style='background:rgba(255,255,255,0.06); border:1.5px solid rgba(255,255,255,0.14); border-radius:26px; padding:30px 34px; color:#EDECFF; font-size:40px; font-weight:600;'><span style='display:inline-block; width:56px; height:56px; line-height:56px; text-align:center; background:{{accentColor}}; color:#0E0E24; border-radius:14px; font-weight:800; margin-right:22px;'>C</span>{{optionC}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 1200,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 11,
+          "enterBegin": 1.15,
+          "enterEnd": 1.55,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 5,
+          "style": { "fontFamily": "Inter" },
+          "html": "<div style='background:rgba(255,255,255,0.06); border:1.5px solid rgba(255,255,255,0.14); border-radius:26px; padding:30px 34px; color:#EDECFF; font-size:40px; font-weight:600;'><span style='display:inline-block; width:56px; height:56px; line-height:56px; text-align:center; background:{{accentColor}}; color:#0E0E24; border-radius:14px; font-weight:800; margin-right:22px;'>D</span>{{optionD}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showDifficulty}}",
+          "x": 540,
+          "y": 1440,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1.4,
+          "enterEnd": 1.8,
+          "enterAnimation": "fade",
+          "exitEnd": 5,
+          "style": { "fontFamily": "Inter" },
+          "html": "<div style='color:#9C97D6; font-size:28px; font-weight:700; letter-spacing:2px;'>{{difficulty}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1600,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 1.6,
+          "enterEnd": 2,
+          "enterAnimation": "fade",
+          "exitEnd": 5,
+          "style": { "fontFamily": "Inter" },
+          "html": "<div style='color:#EDECFF; font-size:32px; font-weight:700; letter-spacing:3px;'>Answer in 3… 2… 1…</div>"
+        }
+      ]
+    },
+    {
+      "id": "reveal",
+      "duration": 4.6,
+      "backgroundColor": "#1B1B45",
+      "transition": "fade",
+      "transitionId": "cta",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='mcqReveal' cx='0.5' cy='0.36' r='0.95'><stop offset='0' stop-color='#2A2A66'/><stop offset='1' stop-color='#12122E'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#mcqReveal)'/><circle cx='540' cy='660' r='240' fill='none' stroke='rgba(124,107,255,0.55)' stroke-width='2.5'/><circle cx='540' cy='660' r='270' fill='none' stroke='rgba(124,107,255,0.22)' stroke-width='1.5'/><path d='M448 662 L520 738 L640 588' fill='none' stroke='#7C6BFF' stroke-width='18' stroke-linecap='round' stroke-linejoin='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 980,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.6,
+          "enterAnimation": "fade",
+          "exitEnd": 4.6,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='color:#9C97D6; font-size:30px; font-weight:800; letter-spacing:8px;'>CORRECT ANSWER</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1050,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.4,
+          "enterEnd": 0.9,
+          "enterAnimation": "circleopen",
+          "exitEnd": 4.6,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:118px; line-height:1; font-weight:800; letter-spacing:-3px;'>{{correctLetter}} · {{correctAnswer}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1300,
+          "width": 860,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.8,
+          "enterEnd": 1.25,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.6,
+          "style": { "fontFamily": "Inter" },
+          "html": "<div style='text-align:center; color:#CFCCF2; font-size:36px; line-height:1.45; font-weight:500;'>{{explainLine}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "cta",
+      "duration": 3.6,
+      "backgroundColor": "#0E0E24",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='mcqCta' cx='0.5' cy='0.44' r='0.9'><stop offset='0' stop-color='#1E1E4A'/><stop offset='1' stop-color='#0E0E24'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#mcqCta)'/><rect x='60' y='60' width='960' height='1800' rx='44' fill='none' stroke='rgba(124,107,255,0.4)' stroke-width='1.5'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 820,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.7,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:72px; line-height:1.1; font-weight:800;'>Did you<br>get it right?</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1120,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.7,
+          "enterEnd": 1.1,
+          "enterAnimation": "circleopen",
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='display:inline-block; background:{{accentColor}}; color:#0E0E24; border-radius:999px; padding:26px 64px; font-size:34px; font-weight:800;'>{{ctaText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1300,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1,
+          "enterEnd": 1.4,
+          "enterAnimation": "fade",
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "Inter" },
+          "html": "<div style='color:#7E79B8; font-size:26px; font-weight:700; letter-spacing:5px;'>{{channelName}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.16
+    }
+  ]
+}

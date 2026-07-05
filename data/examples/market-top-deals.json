@@ -1,0 +1,270 @@
+{
+  "name": "market-top-deals",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#07160F",
+  "outputFormat": "mp4",
+  "variables": {
+    "marketName": "DEALHUB",
+    "introKicker": "TOP DEALS TODAY",
+    "introLine": "5 listings worth grabbing right now",
+    "showBadge": true,
+    "hotBadge": "HAND-PICKED",
+    "ctaText": "Browse all deals",
+    "ctaHandle": "dealhub.market/today",
+    "accentColor": "#8CE05B",
+    "coverImage": "https://images.pexels.com/photos/32549949/pexels-photo-32549949.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "deals": [
+      {
+        "name": "Dyson V11 Vacuum",
+        "meta": "Refurbished · Warranty incl.",
+        "price": "$189",
+        "was": "$320"
+      },
+      {
+        "name": "iPad Air 5th Gen",
+        "meta": "64GB · Space Grey · Boxed",
+        "price": "$420",
+        "was": "$599"
+      },
+      {
+        "name": "KitchenAid Mixer",
+        "meta": "Artisan · Barely used",
+        "price": "$210",
+        "was": "$379"
+      },
+      {
+        "name": "Mountain Bike 29\"",
+        "meta": "Hydraulic brakes · Tuned",
+        "price": "$340",
+        "was": "$540"
+      },
+      {
+        "name": "Nintendo Switch OLED",
+        "meta": "With 3 games · Mint",
+        "price": "$260",
+        "was": "$349"
+      }
+    ],
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/03/19/audio_56ae1dae5f.mp3"
+  },
+  "scenes": [
+    {
+      "id": "cover",
+      "duration": 3.2,
+      "backgroundColor": "#07160F",
+      "transition": "slideleft",
+      "transitionId": "deal",
+      "transitionDuration": 0.45,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{coverImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "opacity": 0.4,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.2
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 3.2,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='tdShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#07160F' stop-opacity='0.7'/><stop offset='0.5' stop-color='#07160F' stop-opacity='0.4'/><stop offset='1' stop-color='#07160F' stop-opacity='0.94'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#tdShade)'/><path d='M-40 1090 L1120 1030 L1120 1058 L-40 1118 Z' fill='#8CE05B' opacity='0.9'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showBadge}}",
+          "x": 540,
+          "y": 720,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.2,
+          "enterEnd": 0.6,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.2,
+          "style": { "fontFamily": "DM Sans" },
+          "html": "<div style='display:inline-block; background:{{accentColor}}; color:#07160F; border-radius:999px; padding:12px 34px; font-size:24px; font-weight:800; letter-spacing:3px;'>{{hotBadge}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 830,
+          "width": 940,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.35,
+          "enterEnd": 0.8,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.2,
+          "style": { "fontFamily": "DM Sans" },
+          "html": "<div style='text-align:center; color:{{accentColor}}; font-size:28px; font-weight:800; letter-spacing:7px;'>{{introKicker}}</div><div style='margin-top:20px; text-align:center; color:#FFFFFF; font-size:80px; line-height:1.05; font-weight:800; letter-spacing:-2px;'>{{introLine}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 130,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.15,
+          "enterEnd": 0.55,
+          "enterAnimation": "fade",
+          "exitEnd": 3.2,
+          "style": { "fontFamily": "DM Sans" },
+          "html": "<div style='text-align:center; color:#8FB79C; font-size:26px; font-weight:800; letter-spacing:8px;'>{{marketName}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "deal",
+      "iterate": "deals",
+      "iterateAs": "d",
+      "duration": 3.2,
+      "backgroundColor": "#07160F",
+      "transition": "slideleft",
+      "transitionId": "outro",
+      "transitionDuration": 0.45,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.2,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='tdBg' cx='0.5' cy='0.32' r='0.9'><stop offset='0' stop-color='#0E2417'/><stop offset='1' stop-color='#07160F'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#tdBg)'/><rect x='90' y='740' width='900' height='560' rx='40' fill='rgba(140,224,91,0.05)' stroke='rgba(140,224,91,0.4)' stroke-width='1.5'/><path d='M90 900 H990' stroke='rgba(140,224,91,0.18)' stroke-width='1.5'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 420,
+          "anchor": "center-center",
+          "track": 10,
+          "enterBegin": 0.15,
+          "enterEnd": 0.55,
+          "enterAnimation": "circleopen",
+          "exitEnd": 3.2,
+          "style": { "fontFamily": "DM Sans" },
+          "html": "<div style='text-align:center; color:{{accentColor}}; font-size:230px; line-height:1; font-weight:800; letter-spacing:-6px;'>{{index}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 620,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.7,
+          "enterAnimation": "fade",
+          "exitEnd": 3.2,
+          "style": { "fontFamily": "DM Sans" },
+          "html": "<div style='text-align:center; color:#6E8A78; font-size:26px; font-weight:800; letter-spacing:6px;'>DEAL OF THE DAY</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 800,
+          "width": 820,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.4,
+          "enterEnd": 0.85,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.2,
+          "style": { "fontFamily": "DM Sans" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:66px; line-height:1.05; font-weight:800; letter-spacing:-1px;'>{{d.name}}</div><div style='margin-top:20px; text-align:center; color:#9FBBA8; font-size:30px; font-weight:500;'>{{d.meta}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1030,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.6,
+          "enterEnd": 1.05,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.2,
+          "style": { "fontFamily": "DM Sans" },
+          "html": "<div style='display:inline-block; color:#FFFFFF; font-size:64px; font-weight:800; letter-spacing:-1px;'>{{d.price}}</div><div style='display:inline-block; margin-left:22px; color:#6E8A78; font-size:38px; font-weight:600; text-decoration:line-through;'>{{d.was}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1800,
+          "anchor": "center-center",
+          "track": 10,
+          "enterBegin": 0,
+          "exitEnd": 3.2,
+          "style": { "fontFamily": "DM Sans" },
+          "html": "<div style='color:rgba(255,255,255,0.55); font-size:23px; font-weight:700; letter-spacing:4px;'>{{marketName}} · {{introKicker}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "outro",
+      "duration": 3.6,
+      "backgroundColor": "#07160F",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='tdEnd' cx='0.5' cy='0.4' r='0.9'><stop offset='0' stop-color='#12301E'/><stop offset='1' stop-color='#07160F'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#tdEnd)'/><rect x='430' y='560' width='220' height='170' rx='20' fill='none' stroke='#8CE05B' stroke-width='6'/><path d='M470 645 l40 40 l90 -90' fill='none' stroke='#8CE05B' stroke-width='12' stroke-linecap='round' stroke-linejoin='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 820,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.7,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "DM Sans" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:72px; line-height:1.1; font-weight:800; letter-spacing:-1px;'>New deals drop<br>every morning.</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1140,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.75,
+          "enterEnd": 1.2,
+          "enterAnimation": "circleopen",
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "DM Sans" },
+          "html": "<div style='display:inline-block; background:{{accentColor}}; color:#07160F; border-radius:999px; padding:26px 62px; font-size:38px; font-weight:800;'>{{ctaText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1300,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1.05,
+          "enterEnd": 1.45,
+          "enterAnimation": "fade",
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "DM Sans" },
+          "html": "<div style='text-align:center; color:#6E8A78; font-size:27px; font-weight:600; letter-spacing:1px;'>{{ctaHandle}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    { "src": "{{musicUrl}}", "volume": 0.18 }
+  ]
+}

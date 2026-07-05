@@ -1,0 +1,205 @@
+{
+  "name": "social-storytelling",
+  "resolution": "tiktok",
+  "frameRate": 30,
+  "backgroundColor": "#0A140F",
+  "outputFormat": "mp4",
+  "variables": {
+    "handle": "@quiet.lessons",
+    "chapterLabel": "A SHORT STORY",
+    "problemKicker": "THE PROBLEM",
+    "problemText": "For years I chased every new idea at once — and finished none of them.",
+    "conflictKicker": "THE TURNING POINT",
+    "conflictText": "Then a mentor asked one question: 'What would this look like if it were easy?' It broke something open.",
+    "lessonKicker": "THE LESSON",
+    "lessonText": "One thing, done fully, beats ten things half-started. Depth is the shortcut.",
+    "accent": "#E8A544",
+    "problemVideo": "https://videos.pexels.com/video-files/37426048/15851067_1080_1920_30fps.mp4",
+    "conflictImage": "https://images.pexels.com/photos/2893123/pexels-photo-2893123.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "showTakeaway": true,
+    "takeawayText": "Save this for the next time you feel scattered.",
+    "ctaText": "Follow for the quiet lessons",
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/04/21/audio_ed6f0ed574.mp3"
+  },
+  "scenes": [
+    {
+      "id": "problem",
+      "duration": 4.6,
+      "backgroundColor": "#0A140F",
+      "transition": "fade",
+      "transitionId": "conflict",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "VIDEO",
+          "src": "{{problemVideo}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "volume": 0,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.6
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 4.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='storyA' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#0A140F' stop-opacity='0.72'/><stop offset='0.4' stop-color='#0A140F' stop-opacity='0.2'/><stop offset='1' stop-color='#0A140F' stop-opacity='0.95'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#storyA)'/><rect x='90' y='1240' width='120' height='6' rx='3' fill='#E8A544'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 200,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.65,
+          "enterAnimation": "fade",
+          "exitEnd": 4.6,
+          "style": { "fontFamily": "Syne" },
+          "html": "<div style='display:inline-block; padding:12px 32px; border:1.5px solid rgba(232,165,68,0.6); border-radius:999px; color:#E8A544; font-size:26px; font-weight:700; letter-spacing:6px;'>{{chapterLabel}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 1290,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.5,
+          "enterEnd": 1.05,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.6,
+          "style": { "fontFamily": "Syne" },
+          "html": "<div style='color:{{accent}}; font-size:28px; font-weight:800; letter-spacing:5px;'>{{problemKicker}}</div><div style='margin-top:20px; color:#F2EEE4; font-size:66px; line-height:1.14; font-weight:700; letter-spacing:-1px;'>{{problemText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1820,
+          "anchor": "center-center",
+          "track": 10,
+          "enterBegin": 0,
+          "exitEnd": 4.6,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='color:rgba(242,238,228,0.55); font-size:26px; font-weight:700; letter-spacing:4px;'>{{handle}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "conflict",
+      "duration": 5,
+      "backgroundColor": "#0A140F",
+      "transition": "smoothup",
+      "transitionId": "lesson",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{conflictImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "opacity": 0.5,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 5
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 5,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='storyB' cx='0.5' cy='0.45' r='0.9'><stop offset='0' stop-color='#0A140F' stop-opacity='0.55'/><stop offset='1' stop-color='#0A140F' stop-opacity='0.96'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#storyB)'/><path d='M540 470 V690' stroke='rgba(232,165,68,0.5)' stroke-width='3'/><circle cx='540' cy='450' r='10' fill='#E8A544'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 780,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.3,
+          "enterEnd": 0.8,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5,
+          "style": { "fontFamily": "Syne" },
+          "html": "<div style='text-align:center; color:{{accent}}; font-size:28px; font-weight:800; letter-spacing:5px;'>{{conflictKicker}}</div><div style='margin-top:24px; text-align:center; color:#F2EEE4; font-size:56px; line-height:1.24; font-weight:700;'>{{conflictText}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "lesson",
+      "duration": 4.8,
+      "backgroundColor": "#0A140F",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.8,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='storyC' cx='0.5' cy='0.4' r='0.95'><stop offset='0' stop-color='#132419'/><stop offset='1' stop-color='#0A140F'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#storyC)'/><circle cx='540' cy='540' r='130' fill='none' stroke='rgba(232,165,68,0.6)' stroke-width='3'/><path d='M496 540 l30 34 l60 -70' fill='none' stroke='#E8A544' stroke-width='12' stroke-linecap='round' stroke-linejoin='round'/><rect x='340' y='1560' width='400' height='1.5' fill='rgba(242,238,228,0.2)'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 780,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.75,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.8,
+          "style": { "fontFamily": "Syne" },
+          "html": "<div style='text-align:center; color:{{accent}}; font-size:28px; font-weight:800; letter-spacing:5px;'>{{lessonKicker}}</div><div style='margin-top:24px; text-align:center; color:#F2EEE4; font-size:72px; line-height:1.14; font-weight:800; letter-spacing:-1px;'>{{lessonText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showTakeaway}}",
+          "x": 540,
+          "y": 1400,
+          "width": 860,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.8,
+          "enterEnd": 1.25,
+          "enterAnimation": "fade",
+          "exitEnd": 4.8,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='text-align:center; color:#B8C4B8; font-size:34px; line-height:1.4; font-weight:500;'>{{takeawayText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1640,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1.15,
+          "enterEnd": 1.55,
+          "enterAnimation": "circleopen",
+          "exitEnd": 4.8,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='display:inline-block; background:{{accent}}; color:#0A140F; border-radius:999px; padding:24px 58px; font-size:34px; font-weight:800;'>{{ctaText}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.15
+    }
+  ]
+}

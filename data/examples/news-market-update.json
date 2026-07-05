@@ -1,0 +1,277 @@
+{
+  "name": "news-market-update",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#05070A",
+  "outputFormat": "mp4",
+  "variables": {
+    "deskName": "MARKETS DESK",
+    "sessionLine": "Closing Bell · Wall St.",
+    "introHeadline": "Where the market closed today.",
+    "heroImage": "https://images.pexels.com/photos/7567223/pexels-photo-7567223.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "showDisclaimer": true,
+    "disclaimer": "Not financial advice · Data delayed 15 min",
+    "handle": "markets.daily",
+    "upColor": "#2FD673",
+    "downColor": "#FF4D4D",
+    "movers": [
+      {
+        "ticker": "S&P 500",
+        "value": "5,431.60",
+        "delta": "+1.24%",
+        "note": "Broad rally led by tech",
+        "up": true,
+        "down": false
+      },
+      {
+        "ticker": "NASDAQ",
+        "value": "17,192.10",
+        "delta": "+1.98%",
+        "note": "Chipmakers set fresh highs",
+        "up": true,
+        "down": false
+      },
+      {
+        "ticker": "DOW JONES",
+        "value": "38,441.54",
+        "delta": "-0.31%",
+        "note": "Energy names drag the blue chips",
+        "up": false,
+        "down": true
+      },
+      {
+        "ticker": "CRUDE OIL",
+        "value": "$78.20",
+        "delta": "-2.10%",
+        "note": "Supply glut pressures barrels",
+        "up": false,
+        "down": true
+      }
+    ],
+    "musicUrl": "https://cdn.pixabay.com/audio/2026/02/24/audio_3f375fdf97.mp3"
+  },
+  "scenes": [
+    {
+      "id": "open",
+      "duration": 3.2,
+      "backgroundColor": "#05070A",
+      "transition": "slideleft",
+      "transitionId": "mover",
+      "transitionDuration": 0.45,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{heroImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "opacity": 0.45,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.2
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 3.2,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='mktShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#05070A' stop-opacity='0.82'/><stop offset='0.5' stop-color='#05070A' stop-opacity='0.5'/><stop offset='1' stop-color='#05070A' stop-opacity='0.97'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#mktShade)'/><path d='M0 1150 L180 1090 L340 1130 L520 1000 L700 1050 L880 920 L1080 970' fill='none' stroke='rgba(47,214,115,0.5)' stroke-width='4'/><rect x='90' y='1300' width='140' height='8' rx='4' fill='#2FD673'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 1180,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.15,
+          "enterEnd": 0.55,
+          "enterAnimation": "smoothright",
+          "exitEnd": 3.2,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='color:#2FD673; font-size:30px; font-weight:700; letter-spacing:8px;'>{{deskName}}</div><div style='margin-top:10px; color:rgba(255,255,255,0.6); font-size:26px; font-weight:600; letter-spacing:3px;'>{{sessionLine}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 1360,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.45,
+          "enterEnd": 0.95,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.2,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='color:#FFFFFF; font-size:74px; line-height:1.05; font-weight:700; letter-spacing:-2px;'>{{introHeadline}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "mover",
+      "iterate": "movers",
+      "iterateAs": "m",
+      "duration": 3,
+      "backgroundColor": "#05070A",
+      "transition": "slideleft",
+      "transitionId": "close",
+      "transitionDuration": 0.4,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='mktBg' cx='0.5' cy='0.36' r='0.95'><stop offset='0' stop-color='#0C1016'/><stop offset='1' stop-color='#05070A'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#mktBg)'/><rect x='70' y='560' width='940' height='800' rx='32' fill='rgba(255,255,255,0.03)' stroke='rgba(255,255,255,0.12)' stroke-width='1.5'/><path d='M120 400 H1000' stroke='rgba(255,255,255,0.1)' stroke-width='1.5'/><path d='M120 1500 H1000' stroke='rgba(255,255,255,0.1)' stroke-width='1.5'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 120,
+          "y": 300,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0,
+          "exitEnd": 3,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='color:rgba(255,255,255,0.45); font-size:26px; font-weight:700; letter-spacing:6px;'>{{deskName}} · {{sessionLine}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 130,
+          "y": 640,
+          "anchor": "top-left",
+          "track": 11,
+          "enterBegin": 0.15,
+          "enterEnd": 0.55,
+          "enterAnimation": "smoothright",
+          "exitEnd": 3,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='color:#9AA6B5; font-size:40px; font-weight:700; letter-spacing:5px;'>{{m.ticker}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 130,
+          "y": 720,
+          "anchor": "top-left",
+          "track": 11,
+          "enterBegin": 0.3,
+          "enterEnd": 0.75,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='color:#FFFFFF; font-size:150px; line-height:1; font-weight:700; letter-spacing:-4px;'>{{m.value}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{m.up}}",
+          "x": 130,
+          "y": 990,
+          "anchor": "top-left",
+          "track": 12,
+          "enterBegin": 0.55,
+          "enterEnd": 0.95,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 3,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<span style='display:inline-block; background:rgba(47,214,115,0.16); border:2px solid {{upColor}}; color:{{upColor}}; border-radius:16px; padding:16px 36px; font-size:52px; font-weight:800;'>▲ {{m.delta}}</span>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{m.down}}",
+          "x": 130,
+          "y": 990,
+          "anchor": "top-left",
+          "track": 12,
+          "enterBegin": 0.55,
+          "enterEnd": 0.95,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 3,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<span style='display:inline-block; background:rgba(255,77,77,0.16); border:2px solid {{downColor}}; color:{{downColor}}; border-radius:16px; padding:16px 36px; font-size:52px; font-weight:800;'>▼ {{m.delta}}</span>"
+        },
+        {
+          "type": "TEXT",
+          "x": 130,
+          "y": 1170,
+          "width": 820,
+          "anchor": "top-left",
+          "track": 11,
+          "enterBegin": 0.8,
+          "enterEnd": 1.2,
+          "enterAnimation": "fade",
+          "exitEnd": 3,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='color:#8895A6; font-size:34px; line-height:1.4; font-weight:500;'>{{m.note}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "close",
+      "duration": 3.4,
+      "backgroundColor": "#05070A",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='mktEnd' cx='0.5' cy='0.4' r='0.9'><stop offset='0' stop-color='#0B1A12'/><stop offset='1' stop-color='#05070A'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#mktEnd)'/><path d='M180 900 L360 800 L520 850 L700 700 L860 760 L940 600' fill='none' stroke='#2FD673' stroke-width='8' stroke-linecap='round' stroke-linejoin='round'/><circle cx='940' cy='600' r='14' fill='#2FD673'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1020,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.7,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.4,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:70px; line-height:1.1; font-weight:700; letter-spacing:-1px;'>Markets, decoded.<br>Every close.</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1300,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.65,
+          "enterEnd": 1.05,
+          "enterAnimation": "circleopen",
+          "exitEnd": 3.4,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='display:inline-block; background:#2FD673; color:#05070A; border-radius:999px; padding:22px 54px; font-size:32px; font-weight:800;'>@{{handle}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showDisclaimer}}",
+          "x": 540,
+          "y": 1460,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1,
+          "enterEnd": 1.4,
+          "enterAnimation": "fade",
+          "exitEnd": 3.4,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='text-align:center; color:#5C6675; font-size:24px; font-weight:600; letter-spacing:2px;'>{{disclaimer}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.15
+    }
+  ]
+}

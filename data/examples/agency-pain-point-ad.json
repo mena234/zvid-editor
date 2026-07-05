@@ -1,0 +1,233 @@
+{
+  "name": "agency-pain-point-ad",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#0C0A0A",
+  "outputFormat": "mp4",
+  "variables": {
+    "kicker": "SOUND FAMILIAR?",
+    "painLine": "Running ads that just<br>drain the budget?",
+    "agitateLine": "You boost posts, tweak targeting, refresh creative — and the cost-per-lead keeps climbing.",
+    "twistLabel": "THERE'S A FIX",
+    "solutionLine": "We rebuild the funnel so every dollar is tracked, tested, and scaled.",
+    "resultPill": "−38% cost per lead in 30 days",
+    "ctaText": "Get my ad audit",
+    "ctaUrl": "brightpath.example/audit",
+    "disclaimer": "Results vary by account. Based on 40+ managed campaigns.",
+    "showDisclaimer": true,
+    "accentColor": "#FF5A47",
+    "hookImage": "https://images.pexels.com/photos/4623328/pexels-photo-4623328.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "solutionImage": "https://images.pexels.com/photos/12902858/pexels-photo-12902858.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/03/19/audio_56ae1dae5f.mp3"
+  },
+  "scenes": [
+    {
+      "id": "pain",
+      "duration": 4.4,
+      "backgroundColor": "#0C0A0A",
+      "transition": "smoothup",
+      "transitionId": "solution",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{hookImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.4
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 4.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='ppShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#0C0A0A' stop-opacity='0.82'/><stop offset='0.42' stop-color='#0C0A0A' stop-opacity='0.28'/><stop offset='0.7' stop-color='#0C0A0A' stop-opacity='0.5'/><stop offset='1' stop-color='#0C0A0A' stop-opacity='0.95'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#ppShade)'/><rect x='90' y='1290' width='8' height='330' rx='4' fill='#FF5A47'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 108,
+          "y": 190,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.65,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 4.4,
+          "style": { "fontFamily": "Archivo" },
+          "html": "<div style='display:inline-block; background:{{accentColor}}; color:#0C0A0A; border-radius:8px; padding:12px 26px; font-size:26px; font-weight:800; letter-spacing:5px;'>{{kicker}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 122,
+          "y": 1300,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.5,
+          "enterEnd": 1.05,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.4,
+          "style": { "fontFamily": "Archivo" },
+          "html": "<div style='color:#FFFFFF; font-size:96px; line-height:1.0; font-weight:800; letter-spacing:-2px;'>{{painLine}}</div><div style='margin-top:30px; color:#C9C2C0; font-size:33px; line-height:1.42; font-weight:500;'>{{agitateLine}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "solution",
+      "duration": 4.8,
+      "backgroundColor": "#0C0A0A",
+      "transition": "smoothleft",
+      "transitionId": "cta",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{solutionImage}}",
+          "x": 540,
+          "y": 700,
+          "width": 900,
+          "height": 1000,
+          "anchor": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "radius": { "tl": 44, "tr": 44, "bl": 44, "br": 44 },
+          "track": 1,
+          "enterBegin": 0,
+          "enterEnd": 0.55,
+          "enterAnimation": "smoothright",
+          "exitEnd": 4.8
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.8,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='ppSol' cx='0.5' cy='0.35' r='0.9'><stop offset='0' stop-color='#1C1210'/><stop offset='1' stop-color='#0C0A0A'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#ppSol)'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 108,
+          "y": 116,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.7,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 4.8,
+          "style": { "fontFamily": "Archivo" },
+          "html": "<div style='color:{{accentColor}}; font-size:27px; font-weight:800; letter-spacing:6px;'>{{twistLabel}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1290,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.5,
+          "enterEnd": 1,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.8,
+          "style": { "fontFamily": "Archivo" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:50px; line-height:1.28; font-weight:700;'>{{solutionLine}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1560,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1,
+          "enterEnd": 1.45,
+          "enterAnimation": "circleopen",
+          "exitEnd": 4.8,
+          "style": { "fontFamily": "Archivo" },
+          "html": "<div style='display:inline-block; background:rgba(255,90,71,0.16); border:2px solid {{accentColor}}; color:{{accentColor}}; border-radius:999px; padding:18px 42px; font-size:34px; font-weight:800;'>{{resultPill}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "cta",
+      "duration": 4.6,
+      "backgroundColor": "#0C0A0A",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='ppCta' cx='0.5' cy='0.4' r='0.95'><stop offset='0' stop-color='#241210'/><stop offset='1' stop-color='#0C0A0A'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#ppCta)'/><rect x='50' y='50' width='980' height='1820' rx='38' fill='none' stroke='rgba(255,90,71,0.32)' stroke-width='1.5'/><circle cx='540' cy='560' r='138' fill='none' stroke='rgba(255,90,71,0.85)' stroke-width='2.5'/><circle cx='540' cy='560' r='158' fill='none' stroke='rgba(255,90,71,0.22)' stroke-width='1'/><path d='M490 560 H590 M540 510 V610' stroke='#FF5A47' stroke-width='7' stroke-linecap='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 830,
+          "width": 940,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.3,
+          "enterEnd": 0.8,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.6,
+          "style": { "fontFamily": "Archivo" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:74px; line-height:1.06; font-weight:800; letter-spacing:-1px;'>Stop guessing.<br>Start scaling.</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1160,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.75,
+          "enterEnd": 1.2,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.6,
+          "style": { "fontFamily": "Archivo" },
+          "html": "<div style='display:inline-block; background:{{accentColor}}; color:#0C0A0A; border-radius:999px; padding:28px 70px; font-size:42px; font-weight:800;'>{{ctaText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1330,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1.1,
+          "enterEnd": 1.5,
+          "enterAnimation": "fade",
+          "exitEnd": 4.6,
+          "style": { "fontFamily": "Archivo" },
+          "html": "<div style='text-align:center; color:#8C8480; font-size:28px; font-weight:600; letter-spacing:2px;'>{{ctaUrl}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showDisclaimer}}",
+          "x": 540,
+          "y": 1800,
+          "width": 880,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1.4,
+          "enterEnd": 1.8,
+          "enterAnimation": "fade",
+          "exitEnd": 4.6,
+          "style": { "fontFamily": "Archivo" },
+          "html": "<div style='text-align:center; color:#6B6360; font-size:22px; line-height:1.4; font-weight:500;'>{{disclaimer}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    { "src": "{{musicUrl}}", "volume": 0.16 }
+  ]
+}

@@ -1,0 +1,224 @@
+{
+  "name": "hr-hiring-event",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#0A1428",
+  "outputFormat": "mp4",
+  "variables": {
+    "companyName": "NEXUS GROUP",
+    "kicker": "YOU'RE INVITED",
+    "eventName": "Tech Careers Fair",
+    "eventTagline": "Meet the team. Skip the queue. Land the role.",
+    "eventDate": "Thu · April 24",
+    "eventTime": "6:00 – 9:00 PM",
+    "eventPlace": "The Loft, Shoreditch + Livestream",
+    "priceLabel": "Free entry",
+    "showPrice": true,
+    "agenda": [
+      { "text": "Live hiring-manager Q&A" },
+      { "text": "On-the-spot interviews" },
+      { "text": "Food, drinks & networking" }
+    ],
+    "ctaText": "Reserve your spot",
+    "ctaUrl": "nexus.group/careers-fair",
+    "accentColor": "#F5A623",
+    "heroVideo": "https://videos.pexels.com/video-files/7983988/7983988-hd_1080_1920_25fps.mp4",
+    "musicUrl": "https://cdn.pixabay.com/audio/2026/02/24/audio_3f375fdf97.mp3"
+  },
+  "scenes": [
+    {
+      "id": "hook",
+      "duration": 4.2,
+      "backgroundColor": "#0A1428",
+      "transition": "smoothup",
+      "transitionId": "info",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "VIDEO",
+          "src": "{{heroVideo}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "volume": 0,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.2
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 4.2,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='heHook' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#0A1428' stop-opacity='0.78'/><stop offset='0.42' stop-color='#0A1428' stop-opacity='0.2'/><stop offset='1' stop-color='#0A1428' stop-opacity='0.96'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#heHook)'/><rect x='44' y='44' width='992' height='1832' rx='40' fill='none' stroke='rgba(245,166,35,0.35)' stroke-width='1.5'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 140,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.6,
+          "enterAnimation": "fade",
+          "exitEnd": 4.2,
+          "style": { "fontFamily": "Outfit" },
+          "html": "<div style='color:#FFFFFF; font-size:27px; font-weight:700; letter-spacing:9px;'>{{companyName}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1120,
+          "width": 940,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.4,
+          "enterEnd": 0.9,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.2,
+          "style": { "fontFamily": "Outfit" },
+          "html": "<div style='text-align:center;'><span style='display:inline-block; background:{{accentColor}}; color:#0A1428; border-radius:999px; padding:12px 32px; font-size:26px; font-weight:800; letter-spacing:4px;'>{{kicker}}</span></div><div style='margin-top:26px; text-align:center; color:#FFFFFF; font-size:116px; line-height:0.98; font-weight:800; letter-spacing:-4px;'>{{eventName}}</div><div style='margin-top:24px; text-align:center; color:#C6D3E8; font-size:36px; line-height:1.35; font-weight:500;'>{{eventTagline}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "info",
+      "duration": 5.2,
+      "backgroundColor": "#0A1428",
+      "transition": "fade",
+      "transitionId": "cta",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 5.2,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='heInfo' cx='0.5' cy='0.28' r='0.95'><stop offset='0' stop-color='#12224A'/><stop offset='1' stop-color='#0A1428'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#heInfo)'/><rect x='90' y='300' width='900' height='420' rx='40' fill='rgba(255,255,255,0.04)' stroke='rgba(245,166,35,0.4)' stroke-width='1.5'/><path d='M150 470 H930' stroke='rgba(255,255,255,0.12)' stroke-width='1.5'/><path d='M150 590 H930' stroke='rgba(255,255,255,0.12)' stroke-width='1.5'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 130,
+          "y": 350,
+          "width": 820,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.7,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5.2,
+          "style": { "fontFamily": "Outfit" },
+          "html": "<div style='color:{{accentColor}}; font-size:38px; font-weight:800; letter-spacing:1px;'>📅 {{eventDate}}</div><div style='margin-top:34px; color:#FFFFFF; font-size:38px; font-weight:600;'>🕕 {{eventTime}}</div><div style='margin-top:34px; color:#C6D3E8; font-size:34px; font-weight:600;'>📍 {{eventPlace}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 820,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.55,
+          "enterEnd": 1,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 5.2,
+          "style": { "fontFamily": "Outfit" },
+          "html": "<div style='color:{{accentColor}}; font-size:27px; font-weight:800; letter-spacing:5px;'>ON THE NIGHT</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 130,
+          "y": 900,
+          "width": 840,
+          "anchor": "top-left",
+          "track": 11,
+          "enterBegin": 0.75,
+          "enterEnd": 1.2,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 5.2,
+          "style": { "fontFamily": "Outfit" },
+          "html": "<div style='color:#FFFFFF; font-size:40px; line-height:1.7; font-weight:600;'>✓ {{agenda.0.text}}<br>✓ {{agenda.1.text}}<br>✓ {{agenda.2.text}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showPrice}}",
+          "x": 90,
+          "y": 1360,
+          "anchor": "top-left",
+          "track": 11,
+          "enterBegin": 1.2,
+          "enterEnd": 1.65,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5.2,
+          "style": { "fontFamily": "Outfit" },
+          "html": "<div style='display:inline-block; background:{{accentColor}}; color:#0A1428; border-radius:18px; padding:18px 42px; font-size:42px; font-weight:800;'>🎟️ {{priceLabel}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "cta",
+      "duration": 4,
+      "backgroundColor": "#0A1428",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='heCta' cx='0.5' cy='0.42' r='0.9'><stop offset='0' stop-color='#2A2410'/><stop offset='1' stop-color='#0A1428'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#heCta)'/><circle cx='540' cy='620' r='160' fill='none' stroke='rgba(245,166,35,0.8)' stroke-width='2.5'/><circle cx='540' cy='620' r='186' fill='none' stroke='rgba(245,166,35,0.22)' stroke-width='1.5'/><rect x='480' y='560' width='120' height='120' rx='20' fill='none' stroke='#F5A623' stroke-width='6'/><path d='M480 600 H600' stroke='#F5A623' stroke-width='6'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 880,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.3,
+          "enterEnd": 0.75,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4,
+          "style": { "fontFamily": "Outfit" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:80px; line-height:1.04; font-weight:800; letter-spacing:-2px;'>Seats are<br>limited.</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1180,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.7,
+          "enterEnd": 1.15,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4,
+          "style": { "fontFamily": "Outfit" },
+          "html": "<div style='display:inline-block; background:{{accentColor}}; color:#0A1428; border-radius:999px; padding:26px 66px; font-size:40px; font-weight:800;'>{{ctaText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1360,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1.1,
+          "enterEnd": 1.5,
+          "enterAnimation": "fade",
+          "exitEnd": 4,
+          "style": { "fontFamily": "Outfit" },
+          "html": "<div style='text-align:center; color:#8B98B0; font-size:28px; font-weight:600; letter-spacing:2px;'>{{ctaUrl}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.15
+    }
+  ]
+}

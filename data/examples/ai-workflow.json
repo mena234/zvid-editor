@@ -1,0 +1,233 @@
+{
+  "name": "ai-workflow",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#080B08",
+  "outputFormat": "mp4",
+  "variables": {
+    "productName": "AUTOPILOT",
+    "kicker": "AUTOMATION IN 3 STEPS",
+    "hookTitle": "Your busywork,\non autopilot.",
+    "hookSub": "Connect once. It runs itself forever.",
+    "outroTitle": "Set it up in 4 minutes.",
+    "ctaText": "Start automating",
+    "ctaHandle": "autopilot.ai/build",
+    "accentColor": "#8FF04A",
+    "hookVideo": "https://videos.pexels.com/video-files/7252825/7252825-hd_1080_1920_25fps.mp4",
+    "steps": [
+      {
+        "num": "01",
+        "title": "Connect your apps",
+        "desc": "Link Gmail, Slack, Notion and 200+ tools with one click.",
+        "tag": "TRIGGER"
+      },
+      {
+        "num": "02",
+        "title": "Describe the task",
+        "desc": "Type what you want in plain English. The agent builds the flow.",
+        "tag": "BUILD"
+      },
+      {
+        "num": "03",
+        "title": "Let it run",
+        "desc": "It works 24/7, handling every request while you sleep.",
+        "tag": "RUN"
+      }
+    ],
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/03/19/audio_56ae1dae5f.mp3"
+  },
+  "scenes": [
+    {
+      "id": "hook",
+      "duration": 4,
+      "backgroundColor": "#080B08",
+      "transition": "smoothup",
+      "transitionId": "step",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "VIDEO",
+          "src": "{{hookVideo}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "volume": 0,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='wfShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#080B08' stop-opacity='0.72'/><stop offset='0.45' stop-color='#080B08' stop-opacity='0.28'/><stop offset='1' stop-color='#080B08' stop-opacity='0.96'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#wfShade)'/><path d='M90 1300 H420' stroke='#8FF04A' stroke-width='6' stroke-linecap='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 150,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.65,
+          "enterAnimation": "fade",
+          "exitEnd": 4,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='display:inline-block; background:rgba(143,240,74,0.14); border:1.5px solid rgba(143,240,74,0.55); color:#8FF04A; border-radius:999px; padding:14px 32px; font-size:23px; font-weight:800; letter-spacing:5px;'>{{kicker}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 1360,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.55,
+          "enterEnd": 1.05,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='color:#FFFFFF; font-size:86px; line-height:1.02; font-weight:800; letter-spacing:-2px;'>{{hookTitle}}</div><div style='margin-top:22px; color:#B7C6AE; font-size:31px; font-weight:500;'>{{hookSub}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "step",
+      "iterate": "steps",
+      "iterateAs": "step",
+      "duration": 3.6,
+      "backgroundColor": "#080B08",
+      "transition": "smoothleft",
+      "transitionId": "outro",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='stepBg' cx='0.3' cy='0.35' r='0.95'><stop offset='0' stop-color='#101710'/><stop offset='1' stop-color='#080B08'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#stepBg)'/><rect x='90' y='640' width='900' height='640' rx='36' fill='rgba(255,255,255,0.025)' stroke='rgba(143,240,74,0.35)' stroke-width='1.5'/><circle cx='230' cy='420' r='96' fill='none' stroke='rgba(143,240,74,0.5)' stroke-width='2'/><line x1='230' y1='516' x2='230' y2='640' stroke='rgba(143,240,74,0.4)' stroke-width='2' stroke-dasharray='6 10'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 230,
+          "y": 420,
+          "anchor": "center-center",
+          "track": 11,
+          "enterBegin": 0.2,
+          "enterEnd": 0.6,
+          "enterAnimation": "circleopen",
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='text-align:center; color:#8FF04A; font-size:72px; line-height:1; font-weight:800;'>{{step.num}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 150,
+          "y": 720,
+          "anchor": "top-left",
+          "track": 11,
+          "enterBegin": 0.4,
+          "enterEnd": 0.85,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "JetBrains Mono" },
+          "html": "<div style='display:inline-block; border:1.5px solid rgba(143,240,74,0.5); color:#8FF04A; border-radius:8px; padding:8px 20px; font-size:22px; font-weight:700; letter-spacing:4px; font-family:monospace;'>{{step.tag}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 150,
+          "y": 820,
+          "width": 780,
+          "anchor": "top-left",
+          "track": 11,
+          "enterBegin": 0.55,
+          "enterEnd": 1,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='color:#FFFFFF; font-size:64px; line-height:1.05; font-weight:800; letter-spacing:-1px;'>{{step.title}}</div><div style='margin-top:24px; color:#AEBDA6; font-size:33px; line-height:1.45; font-weight:500;'>{{step.desc}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1760,
+          "anchor": "center-center",
+          "track": 10,
+          "enterBegin": 0,
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='color:rgba(255,255,255,0.55); font-size:23px; font-weight:700; letter-spacing:5px;'>{{productName}} · HOW IT WORKS</div>"
+        }
+      ]
+    },
+    {
+      "id": "outro",
+      "duration": 4.2,
+      "backgroundColor": "#080B08",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.2,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='wfEnd' cx='0.5' cy='0.4' r='0.9'><stop offset='0' stop-color='#12200F'/><stop offset='1' stop-color='#080B08'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#wfEnd)'/><path d='M400 620 L480 620 M560 620 L640 620 M720 620 L800 620' stroke='rgba(143,240,74,0.4)' stroke-width='5' stroke-linecap='round'/><circle cx='400' cy='620' r='20' fill='#8FF04A'/><circle cx='680' cy='620' r='20' fill='#8FF04A'/><circle cx='800' cy='620' r='20' fill='none' stroke='#8FF04A' stroke-width='4'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 780,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.7,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.2,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:74px; line-height:1.05; font-weight:800; letter-spacing:-1px;'>{{outroTitle}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1080,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.7,
+          "enterEnd": 1.15,
+          "enterAnimation": "circleopen",
+          "exitEnd": 4.2,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='display:inline-block; background:{{accentColor}}; color:#08110A; border-radius:999px; padding:26px 64px; font-size:38px; font-weight:800;'>{{ctaText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1240,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1,
+          "enterEnd": 1.4,
+          "enterAnimation": "fade",
+          "exitEnd": 4.2,
+          "style": { "fontFamily": "JetBrains Mono" },
+          "html": "<div style='text-align:center; color:#7E8C76; font-size:26px; font-weight:600; letter-spacing:2px; font-family:monospace;'>{{ctaHandle}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.17
+    }
+  ]
+}

@@ -1,0 +1,181 @@
+{
+  "name": "sports-league-table",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#101214",
+  "outputFormat": "mp4",
+  "variables": {
+    "kicker": "STANDINGS UPDATE",
+    "leagueName": "PREMIER LEAGUE",
+    "roundLabel": "AFTER MATCHWEEK 27",
+    "accentColor": "#B4FF39",
+    "rows": [
+      { "pos": "1", "club": "Liverpool", "played": "27", "gd": "+41", "pts": "63", "tag": "CHAMPIONS RACE" },
+      { "pos": "2", "club": "Arsenal", "played": "27", "gd": "+38", "pts": "58", "tag": "TITLE CHASE" },
+      { "pos": "3", "club": "Man City", "played": "27", "gd": "+34", "pts": "55", "tag": "CHASING PACK" },
+      { "pos": "4", "club": "Aston Villa", "played": "27", "gd": "+17", "pts": "50", "tag": "TOP FOUR" },
+      { "pos": "5", "club": "Tottenham", "played": "27", "gd": "+12", "pts": "47", "tag": "EUROPE PUSH" },
+      { "pos": "6", "club": "Newcastle", "played": "27", "gd": "+9", "pts": "44", "tag": "ON THE EDGE" }
+    ],
+    "moverLine": "Liverpool extend the lead to 5 points.",
+    "channelLine": "@premtable",
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/04/21/audio_ed6f0ed574.mp3"
+  },
+  "scenes": [
+    {
+      "id": "intro",
+      "duration": 3.2,
+      "backgroundColor": "#101214",
+      "transition": "smoothup",
+      "transitionId": "row",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.2,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='ltIntro' cx='0.3' cy='0.35' r='0.95'><stop offset='0' stop-color='#1B2015'/><stop offset='1' stop-color='#101214'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#ltIntro)'/><path d='M120 1080 H500' stroke='#B4FF39' stroke-width='7'/><rect x='0' y='0' width='16' height='1920' fill='#B4FF39'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 120,
+          "y": 760,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.75,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.2,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='color:{{accentColor}}; font-size:30px; font-weight:700; letter-spacing:8px;'>{{kicker}}</div><div style='margin-top:18px; color:#FFFFFF; font-size:110px; line-height:0.95; font-weight:700; letter-spacing:-3px;'>{{leagueName}}</div><div style='margin-top:34px; color:#8A9096; font-size:32px; font-weight:600; letter-spacing:3px;'>{{roundLabel}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "row",
+      "iterate": "rows",
+      "iterateAs": "r",
+      "duration": 2.4,
+      "backgroundColor": "#101214",
+      "transition": "smoothup",
+      "transitionId": "outro",
+      "transitionDuration": 0.4,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 2.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='ltRow' cx='0.5' cy='0.4' r='0.95'><stop offset='0' stop-color='#181C1F'/><stop offset='1' stop-color='#101214'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#ltRow)'/><rect x='0' y='0' width='16' height='1920' fill='#B4FF39'/><rect x='80' y='700' width='920' height='520' rx='40' fill='rgba(180,255,57,0.06)' stroke='rgba(180,255,57,0.35)' stroke-width='1.5'/><path d='M80 980 H1000' stroke='rgba(255,255,255,0.1)' stroke-width='1.5'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 130,
+          "y": 240,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.15,
+          "enterEnd": 0.55,
+          "enterAnimation": "smoothright",
+          "exitEnd": 2.4,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='color:{{accentColor}}; font-size:36px; font-weight:700; letter-spacing:6px;'>{{r.tag}}</div><div style='margin-top:8px; color:#FFFFFF; font-size:360px; line-height:0.85; font-weight:700; letter-spacing:-14px;'>{{r.pos}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 130,
+          "y": 740,
+          "width": 820,
+          "anchor": "top-left",
+          "track": 11,
+          "enterBegin": 0.35,
+          "enterEnd": 0.8,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 2.4,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='color:#FFFFFF; font-size:88px; line-height:1; font-weight:700; letter-spacing:-2px;'>{{r.club}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 130,
+          "y": 1010,
+          "width": 820,
+          "anchor": "top-left",
+          "track": 11,
+          "enterBegin": 0.55,
+          "enterEnd": 1.0,
+          "enterAnimation": "fade",
+          "exitEnd": 2.4,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='display:flex; justify-content:space-between; align-items:flex-end; color:#C9CDD1;'><div><div style='font-size:24px; font-weight:700; letter-spacing:3px; color:#8A9096;'>PLAYED</div><div style='margin-top:4px; font-size:60px; font-weight:700;'>{{r.played}}</div></div><div><div style='font-size:24px; font-weight:700; letter-spacing:3px; color:#8A9096;'>GD</div><div style='margin-top:4px; font-size:60px; font-weight:700; color:#B4FF39;'>{{r.gd}}</div></div><div><div style='font-size:24px; font-weight:700; letter-spacing:3px; color:#8A9096;'>POINTS</div><div style='margin-top:4px; font-size:60px; font-weight:700; color:#FFFFFF;'>{{r.pts}}</div></div></div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1620,
+          "anchor": "center-center",
+          "track": 10,
+          "enterBegin": 0,
+          "exitEnd": 2.4,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='color:rgba(255,255,255,0.55); font-size:26px; font-weight:700; letter-spacing:5px;'>{{leagueName}} · {{roundLabel}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "outro",
+      "duration": 3.4,
+      "backgroundColor": "#101214",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='ltOut' cx='0.5' cy='0.4' r='0.9'><stop offset='0' stop-color='#1B2015'/><stop offset='1' stop-color='#101214'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#ltOut)'/><path d='M420 640 L540 560 L660 640 L660 800 L420 800 Z' fill='none' stroke='#B4FF39' stroke-width='5' stroke-linejoin='round'/><path d='M460 720 L520 760 L620 660' fill='none' stroke='#B4FF39' stroke-width='10' stroke-linecap='round' stroke-linejoin='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 920,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.7,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.4,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:62px; line-height:1.15; font-weight:700;'>{{moverLine}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1220,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.7,
+          "enterEnd": 1.1,
+          "enterAnimation": "circleopen",
+          "exitEnd": 3.4,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='display:inline-block; background:{{accentColor}}; color:#101214; border-radius:999px; padding:20px 52px; font-size:32px; font-weight:700; letter-spacing:2px;'>{{channelLine}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.15
+    }
+  ]
+}

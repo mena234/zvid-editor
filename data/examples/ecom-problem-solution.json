@@ -1,0 +1,203 @@
+{
+  "name": "ecom-problem-solution",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#0C1512",
+  "outputFormat": "mp4",
+  "variables": {
+    "brandName": "HALE & CO",
+    "problemKicker": "SOUND FAMILIAR?",
+    "problemLine": "Tired of serums that promise everything and fix nothing?",
+    "solutionKicker": "MEET THE FIX",
+    "productName": "Barrier Repair Serum",
+    "solutionLine": "One bottle. Calmer, stronger skin in 14 days.",
+    "proofLine": "Clinically tested · Fragrance-free · Made for reactive skin",
+    "ctaText": "Fix it for good",
+    "ctaHandle": "haleandco.example",
+    "showProof": true,
+    "accentColor": "#3FD8B4",
+    "problemVideo": "https://videos.pexels.com/video-files/6801666/6801666-uhd_1440_2560_30fps.mp4",
+    "solutionImage": "https://images.pexels.com/photos/16233812/pexels-photo-16233812.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "musicUrl": "https://cdn.pixabay.com/audio/2026/02/24/audio_3f375fdf97.mp3"
+  },
+  "scenes": [
+    {
+      "id": "problem",
+      "duration": 4.4,
+      "backgroundColor": "#0C1512",
+      "transition": "smoothup",
+      "transitionId": "solution",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "VIDEO",
+          "src": "{{problemVideo}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "volume": 0,
+          "opacity": 0.55,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.4
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 4.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='pShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#0C1512' stop-opacity='0.78'/><stop offset='0.45' stop-color='#0C1512' stop-opacity='0.35'/><stop offset='1' stop-color='#0C1512' stop-opacity='0.94'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#pShade)'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 150,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.65,
+          "enterAnimation": "fade",
+          "exitEnd": 4.4,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='display:inline-block; border:1.5px solid rgba(247,247,244,0.4); border-radius:999px; padding:14px 34px; color:#F7F7F4; font-size:24px; font-weight:700; letter-spacing:6px;'>{{brandName}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 1180,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.5,
+          "enterEnd": 1,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.4,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='color:{{accentColor}}; font-size:26px; font-weight:800; letter-spacing:5px;'>{{problemKicker}}</div><div style='margin-top:22px; color:#F7F7F4; font-size:82px; line-height:1.06; font-weight:800; letter-spacing:-2px;'>{{problemLine}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "solution",
+      "duration": 5,
+      "backgroundColor": "#0C1512",
+      "transition": "fade",
+      "transitionId": "cta",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{solutionImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 5
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 5,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='sShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#0C1512' stop-opacity='0.12'/><stop offset='0.5' stop-color='#0C1512' stop-opacity='0.18'/><stop offset='1' stop-color='#0C1512' stop-opacity='0.95'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#sShade)'/><rect x='72' y='1108' width='6' height='560' rx='3' fill='#3FD8B4'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 118,
+          "y": 1132,
+          "width": 880,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.45,
+          "enterEnd": 0.95,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='color:{{accentColor}}; font-size:25px; font-weight:800; letter-spacing:5px;'>{{solutionKicker}}</div><div style='margin-top:16px; color:#F7F7F4; font-size:80px; line-height:1.02; font-weight:800; letter-spacing:-2px;'>{{productName}}</div><div style='margin-top:22px; color:#D5DED9; font-size:34px; line-height:1.38; font-weight:500;'>{{solutionLine}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showProof}}",
+          "x": 118,
+          "y": 1580,
+          "width": 860,
+          "anchor": "top-left",
+          "track": 11,
+          "enterBegin": 1.1,
+          "enterEnd": 1.5,
+          "enterAnimation": "fade",
+          "exitEnd": 5,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='color:#9FB0AA; font-size:27px; font-weight:600; letter-spacing:1px;'>{{proofLine}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "cta",
+      "duration": 4.6,
+      "backgroundColor": "#0C1512",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='ctaGlow' cx='0.5' cy='0.42' r='0.9'><stop offset='0' stop-color='#123028'/><stop offset='1' stop-color='#0C1512'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#ctaGlow)'/><rect x='48' y='48' width='984' height='1824' rx='40' fill='none' stroke='rgba(63,216,180,0.32)' stroke-width='1.5'/><circle cx='540' cy='650' r='130' fill='none' stroke='rgba(63,216,180,0.75)' stroke-width='2.5'/><path d='M486 650 L524 690 L600 606' fill='none' stroke='#3FD8B4' stroke-width='10' stroke-linecap='round' stroke-linejoin='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 880,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.4,
+          "enterEnd": 0.9,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.6,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='text-align:center; color:#F7F7F4; font-size:74px; line-height:1.08; font-weight:800; letter-spacing:-1px;'>Stop patching.<br>Start repairing.</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1220,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.85,
+          "enterEnd": 1.3,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.6,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='display:inline-block; background:{{accentColor}}; color:#0C1512; border-radius:999px; padding:28px 68px; font-size:42px; font-weight:800;'>{{ctaText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1400,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1.25,
+          "enterEnd": 1.65,
+          "enterAnimation": "fade",
+          "exitEnd": 4.6,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='text-align:center; color:#7C8D87; font-size:27px; font-weight:600; letter-spacing:2px;'>{{ctaHandle}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    { "src": "{{musicUrl}}", "volume": 0.16 }
+  ]
+}

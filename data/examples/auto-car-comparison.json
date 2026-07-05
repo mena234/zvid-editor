@@ -1,0 +1,273 @@
+{
+  "name": "auto-car-comparison",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#0D0E11",
+  "outputFormat": "mp4",
+  "variables": {
+    "dealerName": "CROSSROADS AUTO",
+    "kicker": "HEAD TO HEAD",
+    "introTitle": "Which one wins<br>your driveway?",
+    "introSub": "Two icons. One choice. Let's break it down.",
+    "carAName": "Sport Coupe RS",
+    "carAImage": "https://images.pexels.com/photos/28837090/pexels-photo-28837090.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "carAColor": "#FF4D5E",
+    "carAStat1": "0–60 · 3.9s",
+    "carAStat2": "382 HP",
+    "carAStat3": "$54,900",
+    "carBName": "Trail SUV Pro",
+    "carBImage": "https://images.pexels.com/photos/33192069/pexels-photo-33192069.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "carBColor": "#4D9CFF",
+    "carBStat1": "0–60 · 6.4s",
+    "carBStat2": "295 HP",
+    "carBStat3": "$47,500",
+    "verdictLabel": "OUR PICK FOR MOST BUYERS",
+    "verdictName": "Trail SUV Pro",
+    "verdictReason": "More space, better value, all-weather grip.",
+    "showVerdict": true,
+    "ctaText": "Test drive both",
+    "ctaHandle": "crossroadsauto.com",
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/03/19/audio_56ae1dae5f.mp3"
+  },
+  "scenes": [
+    {
+      "id": "intro",
+      "duration": 3.6,
+      "backgroundColor": "#0D0E11",
+      "transition": "wipeleft",
+      "transitionId": "versus",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='ccIntro' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#1A1113'/><stop offset='0.5' stop-color='#0D0E11'/><stop offset='1' stop-color='#101620'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#ccIntro)'/><rect x='0' y='935' width='500' height='6' fill='#FF4D5E'/><rect x='580' y='979' width='500' height='6' fill='#4D9CFF'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 240,
+          "anchor": "center-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.6,
+          "enterAnimation": "fade",
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "Archivo" },
+          "html": "<div style='color:#9AA3AF; font-size:26px; font-weight:800; letter-spacing:8px;'>{{dealerName}} · {{kicker}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 700,
+          "width": 940,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.35,
+          "enterEnd": 0.85,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "Archivo" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:94px; line-height:1.02; font-weight:900; letter-spacing:-3px;'>{{introTitle}}</div><div style='margin-top:200px; text-align:center; color:#B4BCC7; font-size:32px; font-weight:500;'>{{introSub}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 960,
+          "anchor": "center-center",
+          "track": 11,
+          "enterBegin": 0.6,
+          "enterEnd": 1,
+          "enterAnimation": "circleopen",
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "Archivo" },
+          "html": "<div style='color:#FFFFFF; font-size:64px; font-weight:900; letter-spacing:-1px;'>VS</div>"
+        }
+      ]
+    },
+    {
+      "id": "versus",
+      "duration": 5.2,
+      "backgroundColor": "#0D0E11",
+      "transition": "fade",
+      "transitionId": "verdict",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{carAImage}}",
+          "x": 270,
+          "y": 480,
+          "width": 500,
+          "height": 720,
+          "anchor": "center-center",
+          "resize": "cover",
+          "radius": { "tl": 28, "tr": 28, "bl": 28, "br": 28 },
+          "track": 1,
+          "enterBegin": 0,
+          "enterEnd": 0.5,
+          "enterAnimation": "smoothright",
+          "exitEnd": 5.2
+        },
+        {
+          "type": "IMAGE",
+          "src": "{{carBImage}}",
+          "x": 810,
+          "y": 480,
+          "width": 500,
+          "height": 720,
+          "anchor": "center-center",
+          "resize": "cover",
+          "radius": { "tl": 28, "tr": 28, "bl": 28, "br": 28 },
+          "track": 1,
+          "enterBegin": 0,
+          "enterEnd": 0.5,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 5.2
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 5.2,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><rect width='1080' height='1920' fill='#0D0E11'/><rect x='60' y='940' width='960' height='820' rx='30' fill='rgba(255,255,255,0.03)' stroke='rgba(255,255,255,0.1)' stroke-width='1.5'/><rect x='540' y='980' width='1' height='740' fill='rgba(255,255,255,0.12)'/><rect x='96' y='1030' width='60' height='5' fill='#FF4D5E'/><rect x='924' y='1030' width='60' height='5' fill='#4D9CFF'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 270,
+          "y": 990,
+          "width": 420,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.35,
+          "enterEnd": 0.8,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5.2,
+          "style": { "fontFamily": "Archivo" },
+          "html": "<div style='text-align:left; color:{{carAColor}}; font-size:23px; font-weight:800; letter-spacing:3px;'>OPTION A</div><div style='margin-top:10px; text-align:left; color:#FFFFFF; font-size:46px; line-height:1.05; font-weight:900; letter-spacing:-1px;'>{{carAName}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 130,
+          "y": 1200,
+          "width": 380,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.55,
+          "enterEnd": 1,
+          "enterAnimation": "fade",
+          "exitEnd": 5.2,
+          "style": { "fontFamily": "Archivo" },
+          "html": "<div style='color:#C4CBD4; font-size:34px; line-height:1.9; font-weight:600;'>{{carAStat1}}<br>{{carAStat2}}<br><span style='color:{{carAColor}}; font-weight:900;'>{{carAStat3}}</span></div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 810,
+          "y": 990,
+          "width": 420,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.35,
+          "enterEnd": 0.8,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5.2,
+          "style": { "fontFamily": "Archivo" },
+          "html": "<div style='text-align:right; color:{{carBColor}}; font-size:23px; font-weight:800; letter-spacing:3px;'>OPTION B</div><div style='margin-top:10px; text-align:right; color:#FFFFFF; font-size:46px; line-height:1.05; font-weight:900; letter-spacing:-1px;'>{{carBName}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 950,
+          "y": 1200,
+          "width": 380,
+          "anchor": "top-right",
+          "track": 10,
+          "enterBegin": 0.55,
+          "enterEnd": 1,
+          "enterAnimation": "fade",
+          "exitEnd": 5.2,
+          "style": { "fontFamily": "Archivo" },
+          "html": "<div style='text-align:right; color:#C4CBD4; font-size:34px; line-height:1.9; font-weight:600;'>{{carBStat1}}<br>{{carBStat2}}<br><span style='color:{{carBColor}}; font-weight:900;'>{{carBStat3}}</span></div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 640,
+          "anchor": "center-center",
+          "track": 11,
+          "enterBegin": 0.3,
+          "enterEnd": 0.75,
+          "enterAnimation": "circleopen",
+          "exitEnd": 5.2,
+          "style": { "fontFamily": "Archivo" },
+          "html": "<div style='display:inline-block; background:#0D0E11; border:2px solid rgba(255,255,255,0.5); color:#FFFFFF; border-radius:999px; width:96px; height:96px; line-height:92px; text-align:center; font-size:42px; font-weight:900;'>VS</div>"
+        }
+      ]
+    },
+    {
+      "id": "verdict",
+      "duration": 4.4,
+      "backgroundColor": "#0D0E11",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='ccVer' cx='0.5' cy='0.4' r='0.95'><stop offset='0' stop-color='#131A24'/><stop offset='1' stop-color='#0D0E11'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#ccVer)'/><rect x='56' y='56' width='968' height='1808' rx='30' fill='none' stroke='rgba(77,156,255,0.3)' stroke-width='1.5'/><path d='M480 620 L525 668 L610 566' fill='none' stroke='#4D9CFF' stroke-width='16' stroke-linecap='round' stroke-linejoin='round'/><circle cx='540' cy='620' r='118' fill='none' stroke='rgba(77,156,255,0.6)' stroke-width='3'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showVerdict}}",
+          "x": 540,
+          "y": 840,
+          "width": 920,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.3,
+          "enterEnd": 0.75,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.4,
+          "style": { "fontFamily": "Archivo" },
+          "html": "<div style='text-align:center; color:{{carBColor}}; font-size:26px; font-weight:800; letter-spacing:5px;'>{{verdictLabel}}</div><div style='margin-top:16px; text-align:center; color:#FFFFFF; font-size:88px; line-height:1; font-weight:900; letter-spacing:-2px;'>{{verdictName}}</div><div style='margin-top:24px; text-align:center; color:#B4BCC7; font-size:32px; line-height:1.4; font-weight:500;'>{{verdictReason}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1280,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.75,
+          "enterEnd": 1.2,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.4,
+          "style": { "fontFamily": "Archivo" },
+          "html": "<div style='display:inline-block; background:{{carBColor}}; color:#0D0E11; border-radius:999px; padding:26px 62px; font-size:38px; font-weight:900;'>{{ctaText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1460,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1.05,
+          "enterEnd": 1.45,
+          "enterAnimation": "fade",
+          "exitEnd": 4.4,
+          "style": { "fontFamily": "Archivo" },
+          "html": "<div style='text-align:center; color:#6C7684; font-size:27px; font-weight:700; letter-spacing:3px;'>{{ctaHandle}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    { "src": "{{musicUrl}}", "volume": 0.17 }
+  ]
+}

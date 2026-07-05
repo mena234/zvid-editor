@@ -1,0 +1,205 @@
+{
+  "name": "localservice-emergency-ad",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#0A0304",
+  "outputFormat": "mp4",
+  "variables": {
+    "brandName": "RAPID RESPONSE PLUMBING",
+    "alertLabel": "24/7 EMERGENCY",
+    "hookLine": "Burst pipe?<br>We answer now.",
+    "hookSub": "Flooding won't wait — neither do we.",
+    "responseStat": "45 min",
+    "responseLabel": "average arrival time",
+    "point1": "Live human on the phone, day or night",
+    "point2": "Fully-stocked vans across the city",
+    "point3": "No overtime surcharge on emergencies",
+    "showGuarantee": true,
+    "guaranteeText": "On-time or the call-out is free",
+    "ctaText": "Call the hotline",
+    "ctaPhone": "1-800-555-FLOW",
+    "accentColor": "#EF4444",
+    "heroVideo": "https://videos.pexels.com/video-files/36500631/15477149_1440_2560_30fps.mp4",
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/03/19/audio_56ae1dae5f.mp3"
+  },
+  "scenes": [
+    {
+      "id": "alert",
+      "duration": 3.8,
+      "backgroundColor": "#0A0304",
+      "transition": "smoothup",
+      "transitionId": "response",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "VIDEO",
+          "src": "{{heroVideo}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "volume": 0,
+          "opacity": 0.55,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.8
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 3.8,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='emAlert' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#0A0304' stop-opacity='0.8'/><stop offset='0.5' stop-color='#0A0304' stop-opacity='0.35'/><stop offset='1' stop-color='#0A0304' stop-opacity='0.95'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#emAlert)'/><rect x='40' y='40' width='1000' height='1840' rx='36' fill='none' stroke='rgba(239,68,68,0.6)' stroke-width='3'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 150,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.15,
+          "enterEnd": 0.55,
+          "enterAnimation": "smoothdown",
+          "exitEnd": 3.8,
+          "style": { "fontFamily": "Poppins" },
+          "html": "<div style='display:inline-block; background:{{accentColor}}; color:#FFFFFF; border-radius:12px; padding:14px 38px; font-size:30px; font-weight:800; letter-spacing:5px;'>● {{alertLabel}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1180,
+          "width": 940,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.45,
+          "enterEnd": 0.95,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.8,
+          "style": { "fontFamily": "Poppins" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:104px; line-height:1; font-weight:800; letter-spacing:-3px;'>{{hookLine}}</div><div style='margin-top:26px; text-align:center; color:#F3B0B0; font-size:36px; font-weight:600;'>{{hookSub}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "response",
+      "duration": 4.6,
+      "backgroundColor": "#0A0304",
+      "transition": "smoothup",
+      "transitionId": "cta",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='emResp' cx='0.5' cy='0.32' r='0.95'><stop offset='0' stop-color='#2A0A0C'/><stop offset='1' stop-color='#0A0304'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#emResp)'/><circle cx='540' cy='500' r='250' fill='none' stroke='rgba(239,68,68,0.7)' stroke-width='3'/><circle cx='540' cy='500' r='286' fill='none' stroke='rgba(239,68,68,0.28)' stroke-width='2'/><circle cx='540' cy='500' r='322' fill='none' stroke='rgba(239,68,68,0.12)' stroke-width='1.5'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 400,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.65,
+          "enterAnimation": "circleopen",
+          "exitEnd": 4.6,
+          "style": { "fontFamily": "Poppins" },
+          "html": "<div style='text-align:center; color:{{accentColor}}; font-size:150px; line-height:1; font-weight:800; letter-spacing:-4px;'>{{responseStat}}</div><div style='margin-top:6px; text-align:center; color:#F3B0B0; font-size:32px; font-weight:700; letter-spacing:1px;'>{{responseLabel}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 920,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.6,
+          "enterEnd": 1.15,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.6,
+          "style": { "fontFamily": "Poppins" },
+          "html": "<div style='color:#FFFFFF; font-size:38px; line-height:1.7; font-weight:600;'>✓ {{point1}}<br>✓ {{point2}}<br>✓ {{point3}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showGuarantee}}",
+          "x": 540,
+          "y": 1560,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1.05,
+          "enterEnd": 1.5,
+          "enterAnimation": "fade",
+          "exitEnd": 4.6,
+          "style": { "fontFamily": "Poppins" },
+          "html": "<div style='display:inline-block; background:rgba(239,68,68,0.16); border:1.5px solid rgba(239,68,68,0.6); color:#FFB4B4; border-radius:999px; padding:16px 40px; font-size:30px; font-weight:700;'>⏱ {{guaranteeText}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "cta",
+      "duration": 4,
+      "backgroundColor": "#0A0304",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='emCta' cx='0.5' cy='0.4' r='0.95'><stop offset='0' stop-color='#330A0D'/><stop offset='1' stop-color='#0A0304'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#emCta)'/><circle cx='540' cy='620' r='150' fill='#EF4444'/><path d='M482 566 q0 -30 30 -30 l14 0 q12 0 16 10 l10 26 q4 10 -6 18 l-12 10 q16 30 46 46 l10 -12 q8 -10 18 -6 l26 10 q10 4 10 16 l0 14 q0 30 -30 30 q-112 -8 -172 -168 z' fill='#FFFFFF'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 880,
+          "width": 940,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.7,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4,
+          "style": { "fontFamily": "Poppins" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:70px; line-height:1.06; font-weight:800; letter-spacing:-1px;'>Don't panic.<br>Just call us.</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1160,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.65,
+          "enterEnd": 1.1,
+          "enterAnimation": "circleopen",
+          "exitEnd": 4,
+          "style": { "fontFamily": "Poppins" },
+          "html": "<div style='display:inline-block; background:{{accentColor}}; color:#FFFFFF; border-radius:999px; padding:28px 64px; font-size:44px; font-weight:800;'>{{ctaPhone}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1360,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1.05,
+          "enterEnd": 1.5,
+          "enterAnimation": "fade",
+          "exitEnd": 4,
+          "style": { "fontFamily": "Poppins" },
+          "html": "<div style='text-align:center; color:#C98F90; font-size:28px; font-weight:700; letter-spacing:3px;'>{{ctaText}} · {{brandName}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    { "src": "{{musicUrl}}", "volume": 0.16 }
+  ]
+}

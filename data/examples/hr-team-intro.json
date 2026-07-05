@@ -1,0 +1,209 @@
+{
+  "name": "hr-team-intro",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#FBEEEA",
+  "outputFormat": "mp4",
+  "variables": {
+    "companyName": "BLOOM & CO.",
+    "introKicker": "MEET THE TEAM",
+    "introTitle": "The people you'll build with.",
+    "members": [
+      { "name": "Sofia Reyes", "role": "Head of Design", "quote": "\"We sweat the details so users don't have to.\"", "photo": "https://images.pexels.com/photos/34762353/pexels-photo-34762353.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" },
+      { "name": "Marcus Lee", "role": "Engineering Lead", "quote": "\"Ship small, learn fast, repeat.\"", "photo": "https://images.pexels.com/photos/37842959/pexels-photo-37842959.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" },
+      { "name": "Amara Okafor", "role": "Product Manager", "quote": "\"Customers first — every single decision.\"", "photo": "https://images.pexels.com/photos/36819484/pexels-photo-36819484.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" }
+    ],
+    "ctaText": "Come say hi",
+    "ctaUrl": "bloom.co/team",
+    "accentColor": "#E0567F",
+    "inkColor": "#2A2124",
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/04/21/audio_ed6f0ed574.mp3"
+  },
+  "scenes": [
+    {
+      "id": "intro",
+      "duration": 3.4,
+      "backgroundColor": "#FBEEEA",
+      "transition": "smoothleft",
+      "transitionId": "member",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='tiIntro' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#FDF2EF'/><stop offset='1' stop-color='#F7E2DC'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#tiIntro)'/><circle cx='180' cy='320' r='90' fill='rgba(224,86,127,0.16)'/><circle cx='920' cy='1600' r='140' fill='rgba(224,86,127,0.12)'/><circle cx='860' cy='420' r='40' fill='rgba(224,86,127,0.2)'/><path d='M120 1040 H960' stroke='rgba(42,33,36,0.12)' stroke-width='3'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 96,
+          "anchor": "center-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.6,
+          "enterAnimation": "fade",
+          "exitEnd": 3.4,
+          "style": { "fontFamily": "Poppins" },
+          "html": "<div style='color:{{inkColor}}; font-size:26px; font-weight:700; letter-spacing:8px;'>{{companyName}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 780,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.4,
+          "enterEnd": 0.9,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.4,
+          "style": { "fontFamily": "Poppins" },
+          "html": "<div style='text-align:center;'><span style='display:inline-block; background:{{accentColor}}; color:#FFFFFF; border-radius:999px; padding:12px 30px; font-size:26px; font-weight:700; letter-spacing:4px;'>{{introKicker}}</span></div><div style='margin-top:26px; text-align:center; color:{{inkColor}}; font-size:92px; line-height:1.02; font-weight:800; letter-spacing:-3px;'>{{introTitle}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "member",
+      "iterate": "members",
+      "iterateAs": "mem",
+      "duration": 3.4,
+      "backgroundColor": "#FBEEEA",
+      "transition": "smoothleft",
+      "transitionId": "cta",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='tiMem' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#FDF2EF'/><stop offset='1' stop-color='#F5DFD8'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#tiMem)'/><circle cx='540' cy='620' r='330' fill='rgba(224,86,127,0.12)'/><rect x='120' y='1160' width='840' height='560' rx='40' fill='#FFFFFF' stroke='rgba(42,33,36,0.1)' stroke-width='1.5'/><rect x='120' y='1160' width='840' height='12' rx='6' fill='#E0567F'/></svg>"
+        },
+        {
+          "type": "IMAGE",
+          "src": "{{mem.photo}}",
+          "x": 540,
+          "y": 620,
+          "width": 560,
+          "height": 560,
+          "anchor": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "radius": { "tl": 280, "tr": 280, "bl": 280, "br": 280 },
+          "track": 1,
+          "enterBegin": 0,
+          "enterEnd": 0.5,
+          "enterAnimation": "circleopen",
+          "exitEnd": 3.4
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1230,
+          "width": 780,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.35,
+          "enterEnd": 0.8,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.4,
+          "style": { "fontFamily": "Poppins" },
+          "html": "<div style='text-align:center; color:{{inkColor}}; font-size:70px; line-height:1; font-weight:800; letter-spacing:-2px;'>{{mem.name}}</div><div style='margin-top:12px; text-align:center; color:{{accentColor}}; font-size:32px; font-weight:700; letter-spacing:2px;'>{{mem.role}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1460,
+          "width": 720,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.6,
+          "enterEnd": 1.05,
+          "enterAnimation": "fade",
+          "exitEnd": 3.4,
+          "style": { "fontFamily": "Poppins" },
+          "html": "<div style='text-align:center; color:#6E5F62; font-size:34px; line-height:1.4; font-weight:500; font-style:italic;'>{{mem.quote}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 96,
+          "anchor": "center-center",
+          "track": 10,
+          "enterBegin": 0,
+          "exitEnd": 3.4,
+          "style": { "fontFamily": "Poppins" },
+          "html": "<div style='color:#A88C90; font-size:23px; font-weight:700; letter-spacing:5px;'>{{companyName}} · MEET THE TEAM</div>"
+        }
+      ]
+    },
+    {
+      "id": "cta",
+      "duration": 3.8,
+      "backgroundColor": "#2A2124",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.8,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='tiCta' cx='0.5' cy='0.4' r='0.95'><stop offset='0' stop-color='#3C2E33'/><stop offset='1' stop-color='#2A2124'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#tiCta)'/><circle cx='420' cy='560' r='70' fill='rgba(224,86,127,0.5)'/><circle cx='560' cy='560' r='70' fill='rgba(224,86,127,0.7)'/><circle cx='700' cy='560' r='70' fill='rgba(224,86,127,0.9)'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 780,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.3,
+          "enterEnd": 0.75,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.8,
+          "style": { "fontFamily": "Poppins" },
+          "html": "<div style='text-align:center; color:#FBEEEA; font-size:76px; line-height:1.05; font-weight:800; letter-spacing:-2px;'>Want a seat<br>at the table?</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1120,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.7,
+          "enterEnd": 1.15,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.8,
+          "style": { "fontFamily": "Poppins" },
+          "html": "<div style='display:inline-block; background:{{accentColor}}; color:#FFFFFF; border-radius:999px; padding:26px 66px; font-size:40px; font-weight:800;'>{{ctaText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1300,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1.1,
+          "enterEnd": 1.5,
+          "enterAnimation": "fade",
+          "exitEnd": 3.8,
+          "style": { "fontFamily": "Poppins" },
+          "html": "<div style='text-align:center; color:#9A8A8E; font-size:28px; font-weight:600; letter-spacing:2px;'>{{ctaUrl}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.15
+    }
+  ]
+}

@@ -1,0 +1,204 @@
+{
+  "name": "news-explainer",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#071414",
+  "outputFormat": "mp4",
+  "variables": {
+    "brand": "EXPLAINED",
+    "topicTag": "IN 30 SECONDS",
+    "topic": "The new data-privacy rules, explained",
+    "coverImage": "https://images.pexels.com/photos/34872680/pexels-photo-34872680.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "whatHappened": "Regulators passed a law requiring apps to let you delete all your data with a single tap — and to prove they actually did.",
+    "whyItMatters": "It shifts control back to users and forces every major platform to rebuild how it stores your history by next year.",
+    "showContext": true,
+    "contextLine": "Takes effect in 14 months · applies to any app with 1M+ users",
+    "handle": "@explained.daily",
+    "accentColor": "#31D9C4",
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/04/21/audio_ed6f0ed574.mp3"
+  },
+  "scenes": [
+    {
+      "id": "hook",
+      "duration": 3.4,
+      "backgroundColor": "#071414",
+      "transition": "smoothup",
+      "transitionId": "what",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{coverImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "opacity": 0.6,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.4
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 3.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='expShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#071414' stop-opacity='0.78'/><stop offset='0.5' stop-color='#071414' stop-opacity='0.45'/><stop offset='1' stop-color='#071414' stop-opacity='0.96'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#expShade)'/><rect x='90' y='1080' width='150' height='10' rx='5' fill='#31D9C4'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 900,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.15,
+          "enterEnd": 0.55,
+          "enterAnimation": "smoothright",
+          "exitEnd": 3.4,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='color:#31D9C4; font-size:30px; font-weight:800; letter-spacing:10px;'>{{brand}}</div><div style='margin-top:10px; color:rgba(255,255,255,0.6); font-size:26px; font-weight:600; letter-spacing:5px;'>{{topicTag}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 1140,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.45,
+          "enterEnd": 0.95,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.4,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='color:#FFFFFF; font-size:76px; line-height:1.08; font-weight:800; letter-spacing:-2px;'>{{topic}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "what",
+      "duration": 4.6,
+      "backgroundColor": "#071414",
+      "transition": "smoothup",
+      "transitionId": "why",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='whatBg' cx='0.3' cy='0.3' r='1'><stop offset='0' stop-color='#0D2422'/><stop offset='1' stop-color='#071414'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#whatBg)'/><circle cx='200' cy='620' r='80' fill='none' stroke='#31D9C4' stroke-width='4'/><path d='M200 580 V660 M160 620 H240' stroke='#31D9C4' stroke-width='8' stroke-linecap='round'/><rect x='90' y='980' width='900' height='2' fill='rgba(49,217,196,0.35)'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 320,
+          "y": 590,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.15,
+          "enterEnd": 0.55,
+          "enterAnimation": "smoothright",
+          "exitEnd": 4.6,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='color:#31D9C4; font-size:34px; font-weight:800; letter-spacing:6px;'>WHAT HAPPENED</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 1040,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.4,
+          "enterEnd": 0.9,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.6,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='color:#FFFFFF; font-size:52px; line-height:1.32; font-weight:600;'>{{whatHappened}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "why",
+      "duration": 5,
+      "backgroundColor": "#071414",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 5,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='whyBg' cx='0.7' cy='0.3' r='1'><stop offset='0' stop-color='#10302B'/><stop offset='1' stop-color='#071414'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#whyBg)'/><circle cx='200' cy='560' r='80' fill='none' stroke='#31D9C4' stroke-width='4'/><path d='M200 512 L214 550 L254 552 L222 578 L232 618 L200 594 L168 618 L178 578 L146 552 L186 550 Z' fill='#31D9C4'/><rect x='90' y='920' width='900' height='2' fill='rgba(49,217,196,0.35)'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 320,
+          "y": 530,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.15,
+          "enterEnd": 0.55,
+          "enterAnimation": "smoothright",
+          "exitEnd": 5,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='color:#31D9C4; font-size:34px; font-weight:800; letter-spacing:6px;'>WHY IT MATTERS</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 980,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.4,
+          "enterEnd": 0.9,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='color:#FFFFFF; font-size:52px; line-height:1.32; font-weight:600;'>{{whyItMatters}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showContext}}",
+          "x": 90,
+          "y": 1500,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 11,
+          "enterBegin": 0.8,
+          "enterEnd": 1.25,
+          "enterAnimation": "fade",
+          "exitEnd": 5,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='display:inline-block; background:rgba(49,217,196,0.12); border:1.5px solid rgba(49,217,196,0.5); color:#9DE7DD; border-radius:20px; padding:20px 34px; font-size:30px; line-height:1.4; font-weight:600;'>{{contextLine}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1780,
+          "anchor": "center-center",
+          "track": 11,
+          "enterBegin": 1,
+          "enterEnd": 1.4,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='display:inline-block; background:{{accentColor}}; color:#071414; border-radius:999px; padding:18px 46px; font-size:30px; font-weight:800;'>{{handle}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.14
+    }
+  ]
+}

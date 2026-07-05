@@ -1,0 +1,210 @@
+{
+  "name": "apppersonal-renewal-reminder",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#0B0A08",
+  "outputFormat": "mp4",
+  "variables": {
+    "appName": "AURELIA",
+    "userName": "Nadia",
+    "kicker": "Your membership renews soon",
+    "planName": "Aurelia Premium",
+    "renewDate": "renews July 18",
+    "daysLeft": "3 days left",
+    "valueLine": "This year you saved 41 hours and finished 6 courses.",
+    "ctaText": "Confirm renewal",
+    "showPrice": true,
+    "priceText": "$9.99 / month",
+    "showDiscount": true,
+    "discountText": "Renew before Friday and lock in 20% off for a year.",
+    "accent": "#E7C687",
+    "accent2": "#F5EAD4",
+    "bgImage": "https://images.pexels.com/photos/30715673/pexels-photo-30715673.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/04/21/audio_ed6f0ed574.mp3"
+  },
+  "scenes": [
+    {
+      "id": "hook",
+      "duration": 4.4,
+      "backgroundColor": "#0B0A08",
+      "transition": "fade",
+      "transitionId": "value",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{bgImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "opacity": 0.55,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.4
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 4.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='rrHook' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#0B0A08' stop-opacity='0.82'/><stop offset='0.45' stop-color='#0B0A08' stop-opacity='0.42'/><stop offset='1' stop-color='#0B0A08' stop-opacity='0.96'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#rrHook)'/><rect x='56' y='56' width='968' height='1808' rx='40' fill='none' stroke='rgba(231,198,135,0.35)' stroke-width='1.5'/><rect x='90' y='1230' width='120' height='6' rx='3' fill='#E7C687'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 200,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.65,
+          "enterAnimation": "fade",
+          "exitEnd": 4.4,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='display:inline-block; border:1.5px solid rgba(231,198,135,0.6); color:#E7C687; border-radius:999px; padding:14px 36px; font-size:24px; font-weight:700; letter-spacing:7px;'>{{appName}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 1290,
+          "width": 920,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.5,
+          "enterEnd": 1.05,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.4,
+          "style": { "fontFamily": "Bricolage Grotesque" },
+          "html": "<div style='color:{{accent}}; font-size:28px; font-weight:700; letter-spacing:4px;'>{{kicker}}</div><div style='margin-top:16px; color:{{accent2}}; font-size:96px; line-height:1; font-weight:800; letter-spacing:-3px;'>{{planName}}</div><div style='margin-top:22px; color:#C7B79A; font-size:34px; font-weight:500;'>Hi {{userName}} — {{renewDate}}.</div>"
+        }
+      ]
+    },
+    {
+      "id": "value",
+      "duration": 4.6,
+      "backgroundColor": "#0B0A08",
+      "transition": "fade",
+      "transitionId": "cta",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='rrVal' cx='0.5' cy='0.38' r='0.95'><stop offset='0' stop-color='#20190E'/><stop offset='0.55' stop-color='#12100A'/><stop offset='1' stop-color='#0B0A08'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#rrVal)'/><circle cx='540' cy='560' r='140' fill='none' stroke='rgba(231,198,135,0.6)' stroke-width='2'/><path d='M540 500 L559 546 L609 546 L569 578 L585 628 L540 598 L495 628 L511 578 L471 546 L521 546 Z' fill='#E7C687'/><rect x='96' y='1420' width='888' height='150' rx='30' fill='rgba(231,198,135,0.08)' stroke='rgba(231,198,135,0.35)' stroke-width='1.5'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 780,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.75,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.6,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='text-align:center; color:#9C8E76; font-size:28px; font-weight:700; letter-spacing:5px;'>YOUR YEAR WITH US</div><div style='margin-top:22px; text-align:center; color:#F5EAD4; font-size:56px; line-height:1.3; font-weight:600;'>{{valueLine}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1450,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.7,
+          "enterEnd": 1.15,
+          "enterAnimation": "circleopen",
+          "exitEnd": 4.6,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='text-align:center; color:#E7C687; font-size:44px; font-weight:800; padding-top:8px;'>{{daysLeft}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "cta",
+      "duration": 4.6,
+      "backgroundColor": "#0B0A08",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='rrCta' cx='0.5' cy='0.4' r='0.95'><stop offset='0' stop-color='#241B0E'/><stop offset='0.55' stop-color='#140F08'/><stop offset='1' stop-color='#0B0A08'/></radialGradient><linearGradient id='rrRing' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#F5EAD4'/><stop offset='1' stop-color='#E7C687'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#rrCta)'/><rect x='56' y='56' width='968' height='1808' rx='40' fill='none' stroke='rgba(231,198,135,0.3)' stroke-width='1.5'/><circle cx='540' cy='560' r='120' fill='none' stroke='url(#rrRing)' stroke-width='4'/><path d='M494 560 L528 596 L590 520' fill='none' stroke='#E7C687' stroke-width='11' stroke-linecap='round' stroke-linejoin='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 760,
+          "width": 920,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.75,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.6,
+          "style": { "fontFamily": "Bricolage Grotesque" },
+          "html": "<div style='text-align:center; color:#F5EAD4; font-size:80px; line-height:1.05; font-weight:800; letter-spacing:-2px;'>Keep the good<br>stuff going.</div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showDiscount}}",
+          "x": 540,
+          "y": 1000,
+          "width": 820,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.5,
+          "enterEnd": 0.95,
+          "enterAnimation": "fade",
+          "exitEnd": 4.6,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='text-align:center; color:#E7C687; font-size:32px; line-height:1.4; font-weight:600;'>{{discountText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1220,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.8,
+          "enterEnd": 1.25,
+          "enterAnimation": "circleopen",
+          "exitEnd": 4.6,
+          "style": { "fontFamily": "Bricolage Grotesque" },
+          "html": "<div style='display:inline-block; background:#E7C687; color:#0B0A08; border-radius:999px; padding:28px 66px; font-size:40px; font-weight:800;'>{{ctaText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showPrice}}",
+          "x": 540,
+          "y": 1400,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1.1,
+          "enterEnd": 1.5,
+          "enterAnimation": "fade",
+          "exitEnd": 4.6,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='text-align:center; color:#9C8E76; font-size:30px; font-weight:600; letter-spacing:1px;'>{{priceText}} · cancel anytime</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.15
+    }
+  ]
+}

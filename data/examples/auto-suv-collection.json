@@ -1,0 +1,248 @@
+{
+  "name": "auto-suv-collection",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#0F130F",
+  "outputFormat": "mp4",
+  "variables": {
+    "dealerName": "SUMMIT AUTO GROUP",
+    "introKicker": "THE SUV LINEUP",
+    "introTitle": "Built for wherever<br>you're headed.",
+    "introSub": "Family-ready. Trail-tested. In stock now.",
+    "ctaText": "See the full lineup",
+    "ctaHandle": "summitauto.com/suv",
+    "accentColor": "#E8A94B",
+    "suvs": [
+      {
+        "tag": "3-ROW · AWD",
+        "name": "Grand Highlander",
+        "spec": "8 seats · 36 mpg hwy · Panoramic roof",
+        "price": "$41,500",
+        "image": "https://images.pexels.com/photos/17624317/pexels-photo-17624317.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+      },
+      {
+        "tag": "OFF-ROAD · 4WD",
+        "name": "Trailblazer TRD",
+        "spec": "Locking diffs · Skid plates · 9.6\" clearance",
+        "price": "$38,900",
+        "image": "https://images.pexels.com/photos/15549900/pexels-photo-15549900.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+      },
+      {
+        "tag": "COMPACT · HYBRID",
+        "name": "Urban Cross",
+        "spec": "42 mpg city · Apple CarPlay · Lane assist",
+        "price": "$29,750",
+        "image": "https://images.pexels.com/photos/33192069/pexels-photo-33192069.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+      }
+    ],
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/04/21/audio_ed6f0ed574.mp3"
+  },
+  "scenes": [
+    {
+      "id": "intro",
+      "duration": 3.8,
+      "backgroundColor": "#0F130F",
+      "transition": "smoothleft",
+      "transitionId": "suv",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "https://images.unsplash.com/photo-1706908431782-8e781d614235?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDgwMTZ8MHwxfHNlYXJjaHw2fHxzdXYlMjBjYXIlMjByb2FkJTIwZHJpdmV8ZW58MHx8fHwxNzgzMjY4NjIxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "opacity": 0.55,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.8
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 3.8,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='suvIntro' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#0F130F' stop-opacity='0.9'/><stop offset='0.5' stop-color='#0F130F' stop-opacity='0.5'/><stop offset='1' stop-color='#0F130F' stop-opacity='0.96'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#suvIntro)'/><rect x='90' y='920' width='120' height='6' rx='3' fill='#E8A94B'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 200,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.6,
+          "enterAnimation": "fade",
+          "exitEnd": 3.8,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='color:#B9C2B4; font-size:26px; font-weight:800; letter-spacing:7px;'>{{dealerName}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 620,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.4,
+          "enterEnd": 0.9,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.8,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='color:{{accentColor}}; font-size:27px; font-weight:800; letter-spacing:6px;'>{{introKicker}}</div><div style='margin-top:20px; color:#FFFFFF; font-size:92px; line-height:1.02; font-weight:800; letter-spacing:-2px;'>{{introTitle}}</div><div style='margin-top:56px; color:#C4CCBF; font-size:32px; font-weight:500;'>{{introSub}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "suv",
+      "iterate": "suvs",
+      "iterateAs": "s",
+      "duration": 4,
+      "backgroundColor": "#0F130F",
+      "transition": "smoothleft",
+      "transitionId": "outro",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{s.image}}",
+          "x": 540,
+          "y": 620,
+          "width": 1080,
+          "height": 1160,
+          "anchor": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "track": 0,
+          "enterBegin": 0,
+          "enterEnd": 0.5,
+          "enterAnimation": "smoothright",
+          "exitEnd": 4
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='suvCard' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#0F130F' stop-opacity='0.2'/><stop offset='0.45' stop-color='#0F130F' stop-opacity='0.05'/><stop offset='0.7' stop-color='#0F130F' stop-opacity='0.8'/><stop offset='1' stop-color='#0F130F' stop-opacity='1'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#suvCard)'/><rect x='90' y='1150' width='6' height='560' rx='3' fill='#E8A94B'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 120,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.65,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 4,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='display:inline-block; background:rgba(232,169,75,0.15); border:1.5px solid rgba(232,169,75,0.55); color:{{accentColor}}; border-radius:999px; padding:12px 30px; font-size:24px; font-weight:800; letter-spacing:3px;'>{{s.tag}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 130,
+          "y": 1170,
+          "width": 820,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.45,
+          "enterEnd": 0.9,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='color:#FFFFFF; font-size:80px; line-height:1; font-weight:800; letter-spacing:-2px;'>{{s.name}}</div><div style='margin-top:22px; color:#C4CCBF; font-size:30px; line-height:1.45; font-weight:500;'>{{s.spec}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 130,
+          "y": 1520,
+          "anchor": "top-left",
+          "track": 11,
+          "enterBegin": 0.7,
+          "enterEnd": 1.15,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 4,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='color:#8B968A; font-size:26px; font-weight:700; letter-spacing:2px;'>STARTING AT</div><div style='margin-top:6px; color:{{accentColor}}; font-size:64px; line-height:1; font-weight:800; letter-spacing:-1px;'>{{s.price}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1810,
+          "anchor": "center-center",
+          "track": 11,
+          "enterBegin": 0,
+          "exitEnd": 4,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='color:rgba(255,255,255,0.5); font-size:22px; font-weight:700; letter-spacing:4px;'>{{dealerName}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "outro",
+      "duration": 3.6,
+      "backgroundColor": "#0F130F",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='suvEnd' cx='0.5' cy='0.4' r='0.95'><stop offset='0' stop-color='#1B2419'/><stop offset='1' stop-color='#0F130F'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#suvEnd)'/><rect x='56' y='56' width='968' height='1808' rx='30' fill='none' stroke='rgba(232,169,75,0.3)' stroke-width='1.5'/><path d='M430 640 L540 560 L650 640 M540 560 V820' stroke='#E8A94B' stroke-width='9' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 960,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.3,
+          "enterEnd": 0.75,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:72px; line-height:1.08; font-weight:800; letter-spacing:-2px;'>Your next<br>adventure vehicle.</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1300,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.75,
+          "enterEnd": 1.2,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='display:inline-block; background:{{accentColor}}; color:#0F130F; border-radius:999px; padding:26px 62px; font-size:36px; font-weight:800;'>{{ctaText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1470,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1.05,
+          "enterEnd": 1.45,
+          "enterAnimation": "fade",
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='text-align:center; color:#7C877A; font-size:27px; font-weight:700; letter-spacing:3px;'>{{ctaHandle}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    { "src": "{{musicUrl}}", "volume": 0.15 }
+  ]
+}

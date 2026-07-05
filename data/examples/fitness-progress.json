@@ -1,0 +1,213 @@
+{
+  "name": "fitness-progress",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#04120F",
+  "outputFormat": "mp4",
+  "variables": {
+    "appName": "PULSE · 12-week recap",
+    "userName": "Marcus",
+    "introLine": "12 weeks of showing up.<br>Here's what changed.",
+    "metrics": [
+      {
+        "label": "Body weight",
+        "value": "184 lb",
+        "delta": "▼ 11 lb",
+        "note": "down from 195 · lean phase on track"
+      },
+      {
+        "label": "Resting heart rate",
+        "value": "54 bpm",
+        "delta": "▼ 9 bpm",
+        "note": "your engine got noticeably more efficient"
+      },
+      {
+        "label": "Back squat 1RM",
+        "value": "315 lb",
+        "delta": "▲ 45 lb",
+        "note": "new lifetime best — legs are answering"
+      },
+      {
+        "label": "Sessions logged",
+        "value": "48",
+        "delta": "▲ 92% consistency",
+        "note": "the streak did most of the heavy lifting"
+      }
+    ],
+    "outroHeadline": "Progress isn't loud.<br>It's just consistent.",
+    "outroSub": "Next block starts Monday, {{userName}}.",
+    "accent": "#2EE6A6",
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/04/21/audio_ed6f0ed574.mp3"
+  },
+  "scenes": [
+    {
+      "id": "intro",
+      "duration": 3.8,
+      "backgroundColor": "#04120F",
+      "transition": "smoothup",
+      "transitionId": "metric",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.8,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='prIntro' cx='0.3' cy='0.3' r='1'><stop offset='0' stop-color='#0B241C'/><stop offset='1' stop-color='#04120F'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#prIntro)'/><path d='M90 1400 L250 1300 L410 1340 L570 1160 L730 1220 L890 980 L990 1040' fill='none' stroke='#2EE6A6' stroke-width='8' stroke-linecap='round' stroke-linejoin='round'/><circle cx='990' cy='1040' r='16' fill='#2EE6A6'/><path d='M90 1500 H990' stroke='rgba(255,255,255,0.15)' stroke-width='2'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 150,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.15,
+          "enterEnd": 0.6,
+          "enterAnimation": "smoothright",
+          "exitEnd": 3.8,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='display:inline-block; background:rgba(46,230,166,0.14); border:1.5px solid rgba(46,230,166,0.5); color:#2EE6A6; border-radius:999px; padding:12px 30px; font-size:24px; font-weight:700; letter-spacing:4px;'>{{appName}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 620,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.45,
+          "enterEnd": 0.95,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.8,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='color:#8FB5A8; font-size:34px; font-weight:600;'>Recap for</div><div style='margin-top:6px; color:#FFFFFF; font-size:120px; line-height:0.95; font-weight:700; letter-spacing:-3px;'>{{userName}}</div><div style='margin-top:36px; color:#C7E0D6; font-size:44px; line-height:1.18; font-weight:600;'>{{introLine}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "metric",
+      "iterate": "metrics",
+      "iterateAs": "m",
+      "duration": 3.2,
+      "backgroundColor": "#04120F",
+      "transition": "smoothup",
+      "transitionId": "outro",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.2,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='prMetric' cx='0.5' cy='0.34' r='0.95'><stop offset='0' stop-color='#0A2019'/><stop offset='1' stop-color='#04120F'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#prMetric)'/><rect x='80' y='560' width='920' height='800' rx='44' fill='rgba(46,230,166,0.05)' stroke='rgba(46,230,166,0.35)' stroke-width='1.5'/><path d='M150 1210 L300 1150 L450 1180 L600 1060 L750 1100 L900 960' fill='none' stroke='rgba(46,230,166,0.55)' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 96,
+          "anchor": "center-center",
+          "track": 10,
+          "enterBegin": 0,
+          "exitEnd": 3.2,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='color:rgba(143,181,168,0.8); font-size:22px; font-weight:700; letter-spacing:5px;'>{{userName}} · 12-WEEK RECAP</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 640,
+          "width": 820,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.15,
+          "enterEnd": 0.6,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.2,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='text-align:center; color:#8FB5A8; font-size:30px; font-weight:700; letter-spacing:4px;'>{{m.label}}</div><div style='margin-top:14px; text-align:center; color:#FFFFFF; font-size:150px; line-height:0.95; font-weight:700; letter-spacing:-4px;'>{{m.value}}</div><div style='margin-top:20px;'><span style='display:inline-block; background:rgba(46,230,166,0.16); border:1.5px solid rgba(46,230,166,0.55); color:#2EE6A6; border-radius:999px; padding:12px 32px; font-size:34px; font-weight:800;'>{{m.delta}}</span></div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1250,
+          "width": 780,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.5,
+          "enterEnd": 0.95,
+          "enterAnimation": "fade",
+          "exitEnd": 3.2,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='text-align:center; color:#95BFB0; font-size:30px; line-height:1.4; font-weight:500;'>{{m.note}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "outro",
+      "duration": 4.2,
+      "backgroundColor": "#04120F",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.2,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='prEnd' cx='0.5' cy='0.4' r='0.95'><stop offset='0' stop-color='#0D2A21'/><stop offset='1' stop-color='#04120F'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#prEnd)'/><circle cx='540' cy='560' r='210' fill='none' stroke='rgba(46,230,166,0.4)' stroke-width='2.5'/><path d='M440 560 L510 630 L660 480' fill='none' stroke='#2EE6A6' stroke-width='16' stroke-linecap='round' stroke-linejoin='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 880,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.3,
+          "enterEnd": 0.8,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.2,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:72px; line-height:1.12; font-weight:700; letter-spacing:-1px;'>{{outroHeadline}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1180,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.85,
+          "enterEnd": 1.25,
+          "enterAnimation": "circleopen",
+          "exitEnd": 4.2,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='display:inline-block; background:{{accent}}; color:#04120F; border-radius:999px; padding:24px 54px; font-size:32px; font-weight:800;'>{{outroSub}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.15
+    }
+  ]
+}

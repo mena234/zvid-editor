@@ -1,0 +1,224 @@
+{
+  "name": "travel-itinerary",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#0F2A22",
+  "outputFormat": "mp4",
+  "variables": {
+    "brandName": "TRAILNOTES",
+    "tripTitle": "3 days in the<br>Dolomites",
+    "tripSub": "A hut-to-hut route you can actually book.",
+    "ctaText": "Get the full itinerary",
+    "ctaHandle": "trailnotes.app",
+    "accentColor": "#8FD694",
+    "days": [
+      {
+        "label": "DAY 1",
+        "place": "Lago di Braies",
+        "plan": "Sunrise boardwalk, rent a rowboat, then hike up to Prato Piazza for lunch with a view.",
+        "photo": "https://images.unsplash.com/photo-1546421959-04f4f1c6ae94?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDgwMTZ8MHwxfHNlYXJjaHw1fHxtb3VudGFpbnMlMjBsYW5kc2NhcGUlMjBuYXR1cmUlMjB0cmF2ZWx8ZW58MHx8fHwxNzgzMjY4NTY0fDA&ixlib=rb-4.1.0&q=80&w=1080"
+      },
+      {
+        "label": "DAY 2",
+        "place": "Tre Cime di Lavaredo",
+        "plan": "The classic loop under the three peaks. Stop at Rifugio Locatelli for the postcard shot.",
+        "photo": "https://images.unsplash.com/photo-1576068036336-328de1be1f2f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDgwMTZ8MHwxfHNlYXJjaHw2fHxtb3VudGFpbnMlMjBsYW5kc2NhcGUlMjBuYXR1cmUlMjB0cmF2ZWx8ZW58MHx8fHwxNzgzMjY4NTY0fDA&ixlib=rb-4.1.0&q=80&w=1080"
+      },
+      {
+        "label": "DAY 3",
+        "place": "Seceda ridgeline",
+        "plan": "Cable car up, walk the tilted-earth ridge, then cocoa in Ortisei before the drive home.",
+        "photo": "https://images.pexels.com/photos/9166681/pexels-photo-9166681.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+      }
+    ],
+    "coverImage": "https://images.pexels.com/photos/32890614/pexels-photo-32890614.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/04/21/audio_ed6f0ed574.mp3"
+  },
+  "scenes": [
+    {
+      "id": "cover",
+      "duration": 3.6,
+      "backgroundColor": "#0F2A22",
+      "transition": "smoothup",
+      "transitionId": "day",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{coverImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.6
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 3.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='tinCover' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#0F2A22' stop-opacity='0.55'/><stop offset='0.45' stop-color='#0F2A22' stop-opacity='0.1'/><stop offset='1' stop-color='#0F2A22' stop-opacity='0.95'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#tinCover)'/><rect x='90' y='1180' width='130' height='6' rx='3' fill='#8FD694'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 150,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.65,
+          "enterAnimation": "fade",
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "Outfit" },
+          "html": "<div style='color:#8FD694; font-size:25px; font-weight:700; letter-spacing:7px;'>{{brandName}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 1230,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.45,
+          "enterEnd": 1,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "Playfair Display" },
+          "html": "<div style='color:#F2F7F0; font-size:104px; line-height:0.98; font-weight:600; letter-spacing:-2px;'>{{tripTitle}}</div><div style='margin-top:24px; color:#C4D8CC; font-size:35px; line-height:1.35; font-weight:400; font-style:italic;'>{{tripSub}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "day",
+      "iterate": "days",
+      "iterateAs": "d",
+      "duration": 4.2,
+      "backgroundColor": "#0F2A22",
+      "transition": "smoothup",
+      "transitionId": "cta",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.2,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='tinDay' cx='0.5' cy='0.7' r='0.95'><stop offset='0' stop-color='#153A2E'/><stop offset='1' stop-color='#0F2A22'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#tinDay)'/><circle cx='150' cy='1120' r='14' fill='#8FD694'/><path d='M150 1120 V1620' stroke='rgba(143,214,148,0.4)' stroke-width='3' stroke-dasharray='4 14'/></svg>"
+        },
+        {
+          "type": "IMAGE",
+          "src": "{{d.photo}}",
+          "x": 540,
+          "y": 470,
+          "width": 900,
+          "height": 780,
+          "anchor": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "radius": { "tl": 40, "tr": 40, "bl": 40, "br": 40 },
+          "track": 1,
+          "enterBegin": 0,
+          "enterEnd": 0.5,
+          "enterAnimation": "fade",
+          "exitEnd": 4.2
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 116,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.1,
+          "enterEnd": 0.5,
+          "enterAnimation": "fade",
+          "exitEnd": 4.2,
+          "style": { "fontFamily": "Outfit" },
+          "html": "<div style='color:rgba(196,216,204,0.7); font-size:23px; font-weight:700; letter-spacing:5px;'>{{brandName}} · ITINERARY</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 210,
+          "y": 1075,
+          "width": 810,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.4,
+          "enterEnd": 0.9,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 4.2,
+          "style": { "fontFamily": "Playfair Display" },
+          "html": "<div style='color:#8FD694; font-size:32px; font-weight:700; letter-spacing:4px; font-family:Outfit, sans-serif;'>{{d.label}}</div><div style='margin-top:8px; color:#F2F7F0; font-size:66px; line-height:1; font-weight:600; letter-spacing:-1px;'>{{d.place}}</div><div style='margin-top:22px; color:#C4D8CC; font-size:31px; line-height:1.45; font-weight:400; font-family:Outfit, sans-serif;'>{{d.plan}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "cta",
+      "duration": 4,
+      "backgroundColor": "#0F2A22",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='tinCta' cx='0.5' cy='0.4' r='0.9'><stop offset='0' stop-color='#173D30'/><stop offset='1' stop-color='#0F2A22'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#tinCta)'/><rect x='46' y='46' width='988' height='1828' rx='40' fill='none' stroke='rgba(143,214,148,0.3)' stroke-width='1.5'/><path d='M470 660 L520 720 L620 600' fill='none' stroke='#8FD694' stroke-width='12' stroke-linecap='round' stroke-linejoin='round'/><circle cx='540' cy='660' r='120' fill='none' stroke='rgba(143,214,148,0.55)' stroke-width='2.5'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 880,
+          "width": 920,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.3,
+          "enterEnd": 0.8,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4,
+          "style": { "fontFamily": "Playfair Display" },
+          "html": "<div style='text-align:center; color:#F2F7F0; font-size:76px; line-height:1.08; font-weight:600;'>Three days,<br>fully mapped.</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1200,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.75,
+          "enterEnd": 1.2,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4,
+          "style": { "fontFamily": "Outfit" },
+          "html": "<div style='display:inline-block; background:{{accentColor}}; color:#0F2A22; border-radius:999px; padding:26px 64px; font-size:39px; font-weight:700;'>{{ctaText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1360,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1.1,
+          "enterEnd": 1.5,
+          "enterAnimation": "fade",
+          "exitEnd": 4,
+          "style": { "fontFamily": "Outfit" },
+          "html": "<div style='text-align:center; color:#7C9C8C; font-size:27px; font-weight:500; letter-spacing:2px;'>{{ctaHandle}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.15
+    }
+  ]
+}

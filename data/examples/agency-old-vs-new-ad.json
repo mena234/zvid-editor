@@ -1,0 +1,190 @@
+{
+  "name": "agency-old-vs-new-ad",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#0A0A0E",
+  "outputFormat": "mp4",
+  "variables": {
+    "kicker": "THE OLD WAY IS DONE",
+    "topicLine": "How brands make<br>ads in 2026.",
+    "oldLabel": "THE OLD WAY",
+    "oldItems": "Brief the agency<br>Wait 3 weeks<br>Pay $4k per video<br>Ship one variant",
+    "newLabel": "THE NEW WAY",
+    "newItems": "Feed in your data<br>Render in minutes<br>Cents per video<br>Ship 50 variants",
+    "punchLine": "Same team. 40× the output.",
+    "ctaText": "See the new way",
+    "ctaUrl": "shiftlab.example/demo",
+    "oldColor": "#E8A24A",
+    "newColor": "#37E0A0",
+    "bgImage": "https://images.pexels.com/photos/9665181/pexels-photo-9665181.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "musicUrl": "https://cdn.pixabay.com/audio/2026/02/24/audio_3f375fdf97.mp3"
+  },
+  "scenes": [
+    {
+      "id": "hook",
+      "duration": 3.6,
+      "backgroundColor": "#0A0A0E",
+      "transition": "wipeleft",
+      "transitionId": "split",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{bgImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "opacity": 0.45,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.6
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 3.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='ovShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#0A0A0E' stop-opacity='0.7'/><stop offset='0.5' stop-color='#0A0A0E' stop-opacity='0.4'/><stop offset='1' stop-color='#0A0A0E' stop-opacity='0.95'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#ovShade)'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 780,
+          "width": 940,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.7,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='text-align:center; color:{{oldColor}}; font-size:25px; font-weight:800; letter-spacing:6px;'>{{kicker}}</div><div style='margin-top:22px; text-align:center; color:#FFFFFF; font-size:96px; line-height:1.0; font-weight:800; letter-spacing:-3px;'>{{topicLine}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "split",
+      "duration": 5,
+      "backgroundColor": "#0A0A0E",
+      "transition": "smoothup",
+      "transitionId": "cta",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 5,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><rect width='1080' height='1920' fill='#0A0A0E'/><rect x='0' y='0' width='540' height='1920' fill='rgba(232,162,74,0.06)'/><rect x='540' y='0' width='540' height='1920' fill='rgba(55,224,160,0.08)'/><rect x='60' y='300' width='420' height='1280' rx='34' fill='none' stroke='rgba(232,162,74,0.4)' stroke-width='1.5'/><rect x='600' y='300' width='420' height='1280' rx='34' fill='none' stroke='rgba(55,224,160,0.55)' stroke-width='2'/><line x1='540' y1='240' x2='540' y2='1640' stroke='rgba(255,255,255,0.12)' stroke-width='1.5'/><circle cx='540' cy='940' r='52' fill='#0A0A0E' stroke='rgba(255,255,255,0.2)' stroke-width='1.5'/><text x='540' y='958' text-anchor='middle' font-family='sans-serif' font-size='34' font-weight='700' fill='#FFFFFF'>vs</text></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 270,
+          "y": 360,
+          "width": 400,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.75,
+          "enterAnimation": "smoothright",
+          "exitEnd": 5,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='text-align:center; color:{{oldColor}}; font-size:32px; font-weight:800; letter-spacing:3px;'>{{oldLabel}}</div><div style='margin-top:34px; text-align:center; color:#C8C2B4; font-size:34px; line-height:2.0; font-weight:500;'>{{oldItems}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 810,
+          "y": 360,
+          "width": 400,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.45,
+          "enterEnd": 0.95,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 5,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='text-align:center; color:{{newColor}}; font-size:32px; font-weight:800; letter-spacing:3px;'>{{newLabel}}</div><div style='margin-top:34px; text-align:center; color:#EAFBF3; font-size:34px; line-height:2.0; font-weight:700;'>{{newItems}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1660,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1,
+          "enterEnd": 1.5,
+          "enterAnimation": "circleopen",
+          "exitEnd": 5,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='display:inline-block; background:rgba(55,224,160,0.12); border:1.5px solid rgba(55,224,160,0.5); color:{{newColor}}; border-radius:999px; padding:16px 40px; font-size:34px; font-weight:800;'>{{punchLine}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "cta",
+      "duration": 4.2,
+      "backgroundColor": "#0A0A0E",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.2,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='ovCta' cx='0.5' cy='0.4' r='0.95'><stop offset='0' stop-color='#0F1613'/><stop offset='1' stop-color='#0A0A0E'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#ovCta)'/><rect x='50' y='50' width='980' height='1820' rx='38' fill='none' stroke='rgba(55,224,160,0.3)' stroke-width='1.5'/><path d='M460 640 L560 540 L560 600 L640 600 L540 700 L540 640 Z' fill='#37E0A0'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 860,
+          "width": 920,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.3,
+          "enterEnd": 0.8,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.2,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:78px; line-height:1.06; font-weight:800; letter-spacing:-2px;'>Leave the old<br>way behind.</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1150,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.75,
+          "enterEnd": 1.2,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.2,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='display:inline-block; background:{{newColor}}; color:#0A0A0E; border-radius:999px; padding:26px 66px; font-size:40px; font-weight:800;'>{{ctaText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1320,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1.1,
+          "enterEnd": 1.5,
+          "enterAnimation": "fade",
+          "exitEnd": 4.2,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='text-align:center; color:#7E8A84; font-size:27px; font-weight:600; letter-spacing:2px;'>{{ctaUrl}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    { "src": "{{musicUrl}}", "volume": 0.16 }
+  ]
+}

@@ -1,0 +1,236 @@
+{
+  "name": "ai-agent-recap",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#050B10",
+  "outputFormat": "mp4",
+  "variables": {
+    "agentName": "ATLAS AGENT",
+    "kicker": "SESSION COMPLETE",
+    "hookLine1": "Here's what your",
+    "hookLine2": "agent shipped today.",
+    "hookSub": "12 tasks. Zero clicks from you.",
+    "showSummary": true,
+    "summaryLabel": "TOTAL TIME SAVED",
+    "summaryValue": "4h 20m",
+    "outroTitle": "Wake up to work already done.",
+    "ctaText": "Deploy your agent",
+    "ctaHandle": "atlas.ai/agents",
+    "accentColor": "#2CE6D0",
+    "hookImage": "https://images.pexels.com/photos/9665181/pexels-photo-9665181.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "tasks": [
+      {
+        "title": "Cleaned the inbox",
+        "detail": "Sorted 84 emails, drafted 9 replies, flagged 3 as urgent.",
+        "status": "DONE"
+      },
+      {
+        "title": "Updated the CRM",
+        "detail": "Logged every call and pushed 21 new leads to the pipeline.",
+        "status": "DONE"
+      },
+      {
+        "title": "Wrote the weekly report",
+        "detail": "Pulled metrics from 5 tools into one shareable summary.",
+        "status": "DONE"
+      }
+    ],
+    "musicUrl": "https://cdn.pixabay.com/audio/2026/02/24/audio_3f375fdf97.mp3"
+  },
+  "scenes": [
+    {
+      "id": "hook",
+      "duration": 4,
+      "backgroundColor": "#050B10",
+      "transition": "smoothleft",
+      "transitionId": "task",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{hookImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "opacity": 0.4,
+          "zoom": true,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='arShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#050B10' stop-opacity='0.75'/><stop offset='0.5' stop-color='#050B10' stop-opacity='0.4'/><stop offset='1' stop-color='#050B10' stop-opacity='0.96'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#arShade)'/><circle cx='540' cy='560' r='120' fill='none' stroke='rgba(44,230,208,0.55)' stroke-width='2'/><path d='M492 560 L524 592 L590 522' fill='none' stroke='#2CE6D0' stroke-width='9' stroke-linecap='round' stroke-linejoin='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 760,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.65,
+          "enterAnimation": "fade",
+          "exitEnd": 4,
+          "style": { "fontFamily": "Outfit" },
+          "html": "<div style='display:inline-block; border:1.5px solid rgba(44,230,208,0.6); color:#2CE6D0; border-radius:999px; padding:14px 34px; font-size:23px; font-weight:700; letter-spacing:6px;'>{{kicker}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 900,
+          "width": 920,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.5,
+          "enterEnd": 1,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4,
+          "style": { "fontFamily": "Outfit" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:82px; line-height:1.04; font-weight:800; letter-spacing:-2px;'>{{hookLine1}}<br>{{hookLine2}}</div><div style='margin-top:24px; text-align:center; color:#8FB6BA; font-size:32px; font-weight:500;'>{{hookSub}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "task",
+      "iterate": "tasks",
+      "iterateAs": "task",
+      "duration": 3.4,
+      "backgroundColor": "#050B10",
+      "transition": "smoothup",
+      "transitionId": "outro",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='taskBg' cx='0.5' cy='0.4' r='0.95'><stop offset='0' stop-color='#0A1620'/><stop offset='1' stop-color='#050B10'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#taskBg)'/><rect x='90' y='700' width='900' height='520' rx='36' fill='rgba(44,230,208,0.05)' stroke='rgba(44,230,208,0.35)' stroke-width='1.5'/><circle cx='210' cy='800' r='52' fill='rgba(44,230,208,0.12)' stroke='#2CE6D0' stroke-width='3'/><path d='M186 800 L204 818 L238 780' fill='none' stroke='#2CE6D0' stroke-width='7' stroke-linecap='round' stroke-linejoin='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 300,
+          "y": 762,
+          "anchor": "top-left",
+          "track": 11,
+          "enterBegin": 0.25,
+          "enterEnd": 0.65,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 3.4,
+          "style": { "fontFamily": "Outfit" },
+          "html": "<div style='display:inline-block; background:rgba(44,230,208,0.16); color:#2CE6D0; border-radius:8px; padding:8px 22px; font-size:22px; font-weight:800; letter-spacing:3px;'>{{task.status}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 150,
+          "y": 900,
+          "width": 800,
+          "anchor": "top-left",
+          "track": 11,
+          "enterBegin": 0.45,
+          "enterEnd": 0.9,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.4,
+          "style": { "fontFamily": "Outfit" },
+          "html": "<div style='color:#FFFFFF; font-size:66px; line-height:1.05; font-weight:800; letter-spacing:-1px;'>{{task.title}}</div><div style='margin-top:24px; color:#93B3B7; font-size:33px; line-height:1.45; font-weight:500;'>{{task.detail}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1780,
+          "anchor": "center-center",
+          "track": 10,
+          "enterBegin": 0,
+          "exitEnd": 3.4,
+          "style": { "fontFamily": "Outfit" },
+          "html": "<div style='color:rgba(255,255,255,0.5); font-size:23px; font-weight:700; letter-spacing:5px;'>{{agentName}} · DAILY RECAP</div>"
+        }
+      ]
+    },
+    {
+      "id": "outro",
+      "duration": 4.4,
+      "backgroundColor": "#050B10",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='arEnd' cx='0.5' cy='0.38' r='0.9'><stop offset='0' stop-color='#0A1B22'/><stop offset='1' stop-color='#050B10'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#arEnd)'/><circle cx='540' cy='520' r='110' fill='none' stroke='rgba(44,230,208,0.7)' stroke-width='2.5'/><path d='M492 520 L524 552 L590 482' fill='none' stroke='#2CE6D0' stroke-width='10' stroke-linecap='round' stroke-linejoin='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showSummary}}",
+          "x": 540,
+          "y": 720,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.3,
+          "enterEnd": 0.75,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.4,
+          "style": { "fontFamily": "Outfit" },
+          "html": "<div style='display:inline-block; background:rgba(44,230,208,0.1); border:1.5px solid rgba(44,230,208,0.5); border-radius:20px; padding:20px 40px; text-align:center;'><div style='color:#7FAFB3; font-size:22px; font-weight:700; letter-spacing:4px;'>{{summaryLabel}}</div><div style='margin-top:6px; color:#2CE6D0; font-size:64px; font-weight:800;'>{{summaryValue}}</div></div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 980,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.6,
+          "enterEnd": 1.05,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.4,
+          "style": { "fontFamily": "Outfit" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:64px; line-height:1.08; font-weight:800; letter-spacing:-1px;'>{{outroTitle}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1240,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.95,
+          "enterEnd": 1.4,
+          "enterAnimation": "circleopen",
+          "exitEnd": 4.4,
+          "style": { "fontFamily": "Outfit" },
+          "html": "<div style='display:inline-block; background:{{accentColor}}; color:#03110F; border-radius:999px; padding:26px 64px; font-size:38px; font-weight:800;'>{{ctaText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1400,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1.25,
+          "enterEnd": 1.65,
+          "enterAnimation": "fade",
+          "exitEnd": 4.4,
+          "style": { "fontFamily": "Outfit" },
+          "html": "<div style='text-align:center; color:#6E8E92; font-size:26px; font-weight:600; letter-spacing:2px;'>{{ctaHandle}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.16
+    }
+  ]
+}

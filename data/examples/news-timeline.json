@@ -1,0 +1,235 @@
+{
+  "name": "news-timeline",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#0A1020",
+  "outputFormat": "mp4",
+  "variables": {
+    "brand": "HOW WE GOT HERE",
+    "storyTag": "A TIMELINE",
+    "storyTitle": "The chip-shortage crisis, from spark to recovery",
+    "coverImage": "https://images.pexels.com/photos/18462155/pexels-photo-18462155.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "closingLine": "And that's how we got here.",
+    "handle": "@howwegothere",
+    "accentColor": "#F0B429",
+    "events": [
+      {
+        "date": "MAR 2020",
+        "title": "Factories shut worldwide",
+        "body": "Lockdowns halt semiconductor plants across Asia overnight."
+      },
+      {
+        "date": "JAN 2021",
+        "title": "Demand explodes",
+        "body": "Remote work sends laptop and console orders to record highs."
+      },
+      {
+        "date": "AUG 2022",
+        "title": "Automakers stall",
+        "body": "Carmakers idle assembly lines, missing millions of vehicles."
+      },
+      {
+        "date": "JUN 2024",
+        "title": "Supply rebalances",
+        "body": "New fabs come online and lead times finally normalize."
+      }
+    ],
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/04/21/audio_ed6f0ed574.mp3"
+  },
+  "scenes": [
+    {
+      "id": "cover",
+      "duration": 3.4,
+      "backgroundColor": "#0A1020",
+      "transition": "smoothleft",
+      "transitionId": "event",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{coverImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "opacity": 0.5,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.4
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 3.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='tlShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#0A1020' stop-opacity='0.75'/><stop offset='0.5' stop-color='#0A1020' stop-opacity='0.45'/><stop offset='1' stop-color='#0A1020' stop-opacity='0.96'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#tlShade)'/><rect x='90' y='1080' width='150' height='10' rx='5' fill='#F0B429'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 900,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.15,
+          "enterEnd": 0.55,
+          "enterAnimation": "smoothright",
+          "exitEnd": 3.4,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='color:#F0B429; font-size:30px; font-weight:700; letter-spacing:10px;'>{{brand}}</div><div style='margin-top:10px; color:rgba(255,255,255,0.6); font-size:26px; font-weight:600; letter-spacing:6px;'>{{storyTag}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 1140,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.45,
+          "enterEnd": 0.95,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.4,
+          "style": { "fontFamily": "Archivo" },
+          "html": "<div style='color:#FFFFFF; font-size:74px; line-height:1.08; font-weight:800; letter-spacing:-2px;'>{{storyTitle}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "event",
+      "iterate": "events",
+      "iterateAs": "e",
+      "duration": 3.2,
+      "backgroundColor": "#0A1020",
+      "transition": "smoothleft",
+      "transitionId": "close",
+      "transitionDuration": 0.45,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.2,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='tlBg' cx='0.3' cy='0.35' r='1'><stop offset='0' stop-color='#111C33'/><stop offset='1' stop-color='#0A1020'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#tlBg)'/><rect x='196' y='300' width='6' height='1400' fill='rgba(240,180,41,0.35)'/><circle cx='199' cy='780' r='28' fill='#0A1020' stroke='#F0B429' stroke-width='6'/><circle cx='199' cy='780' r='10' fill='#F0B429'/><rect x='260' y='620' width='720' height='560' rx='34' fill='rgba(255,255,255,0.04)' stroke='rgba(240,180,41,0.3)' stroke-width='1.5'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 199,
+          "y": 400,
+          "anchor": "center-center",
+          "track": 10,
+          "enterBegin": 0.1,
+          "enterEnd": 0.5,
+          "enterAnimation": "smoothdown",
+          "exitEnd": 3.2,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='color:rgba(240,180,41,0.55); font-size:26px; font-weight:700; letter-spacing:5px;'>TIMELINE</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 300,
+          "y": 680,
+          "anchor": "top-left",
+          "track": 11,
+          "enterBegin": 0.2,
+          "enterEnd": 0.6,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 3.2,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<span style='display:inline-block; background:#F0B429; color:#0A1020; border-radius:12px; padding:12px 30px; font-size:38px; font-weight:800; letter-spacing:2px;'>{{e.date}}</span>"
+        },
+        {
+          "type": "TEXT",
+          "x": 300,
+          "y": 800,
+          "width": 640,
+          "anchor": "top-left",
+          "track": 11,
+          "enterBegin": 0.4,
+          "enterEnd": 0.85,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.2,
+          "style": { "fontFamily": "Archivo" },
+          "html": "<div style='color:#FFFFFF; font-size:64px; line-height:1.05; font-weight:800; letter-spacing:-1px;'>{{e.title}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 300,
+          "y": 1000,
+          "width": 640,
+          "anchor": "top-left",
+          "track": 11,
+          "enterBegin": 0.7,
+          "enterEnd": 1.1,
+          "enterAnimation": "fade",
+          "exitEnd": 3.2,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='color:#A6B2C8; font-size:34px; line-height:1.42; font-weight:500;'>{{e.body}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1800,
+          "anchor": "center-center",
+          "track": 11,
+          "enterBegin": 0,
+          "exitEnd": 3.2,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='color:rgba(255,255,255,0.4); font-size:24px; font-weight:700; letter-spacing:5px;'>{{brand}} · {{storyTag}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "close",
+      "duration": 3,
+      "backgroundColor": "#0A1020",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='tlEnd' cx='0.5' cy='0.4' r='0.9'><stop offset='0' stop-color='#14203A'/><stop offset='1' stop-color='#0A1020'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#tlEnd)'/><circle cx='540' cy='740' r='30' fill='#F0B429'/><path d='M540 500 V680 M540 800 V960' stroke='rgba(240,180,41,0.4)' stroke-width='6'/><circle cx='540' cy='500' r='14' fill='none' stroke='#F0B429' stroke-width='5'/><circle cx='540' cy='960' r='14' fill='none' stroke='#F0B429' stroke-width='5'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1060,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.7,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3,
+          "style": { "fontFamily": "Archivo" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:76px; line-height:1.08; font-weight:800; letter-spacing:-1px;'>{{closingLine}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1320,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.7,
+          "enterEnd": 1.1,
+          "enterAnimation": "circleopen",
+          "exitEnd": 3,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='display:inline-block; background:{{accentColor}}; color:#0A1020; border-radius:999px; padding:22px 54px; font-size:32px; font-weight:800;'>{{handle}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.14
+    }
+  ]
+}

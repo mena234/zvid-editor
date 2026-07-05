@@ -1,0 +1,201 @@
+{
+  "name": "market-category-highlights",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#14102A",
+  "outputFormat": "mp4",
+  "variables": {
+    "marketName": "BAZAARLY",
+    "introKicker": "SHOP BY CATEGORY",
+    "introLine": "Fresh listings across every aisle",
+    "ctaText": "Explore categories",
+    "ctaHandle": "bazaarly.market/browse",
+    "accentColor": "#FFB020",
+    "categories": [
+      {
+        "name": "Cars & Motors",
+        "count": "2,140 live listings",
+        "tagline": "From daily drivers to weekend toys",
+        "image": "https://images.pexels.com/photos/20131971/pexels-photo-20131971.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+      },
+      {
+        "name": "Homes & Rentals",
+        "count": "860 live listings",
+        "tagline": "Move-in ready spaces near you",
+        "image": "https://images.pexels.com/photos/20296321/pexels-photo-20296321.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+      },
+      {
+        "name": "Electronics",
+        "count": "5,300 live listings",
+        "tagline": "Phones, laptops and gear that works",
+        "image": "https://images.pexels.com/photos/6331236/pexels-photo-6331236.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+      }
+    ],
+    "musicUrl": "https://cdn.pixabay.com/audio/2026/02/24/audio_3f375fdf97.mp3"
+  },
+  "scenes": [
+    {
+      "id": "intro",
+      "duration": 3.2,
+      "backgroundColor": "#14102A",
+      "transition": "smoothleft",
+      "transitionId": "cat",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.2,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='chBg' cx='0.5' cy='0.36' r='0.95'><stop offset='0' stop-color='#241C4E'/><stop offset='1' stop-color='#14102A'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#chBg)'/><rect x='140' y='560' width='120' height='120' rx='22' fill='rgba(255,176,32,0.18)' stroke='#FFB020' stroke-width='2'/><rect x='300' y='560' width='120' height='120' rx='22' fill='rgba(255,176,32,0.1)' stroke='rgba(255,176,32,0.5)' stroke-width='2'/><rect x='140' y='720' width='120' height='120' rx='22' fill='rgba(255,176,32,0.1)' stroke='rgba(255,176,32,0.5)' stroke-width='2'/><rect x='300' y='720' width='120' height='120' rx='22' fill='rgba(255,176,32,0.18)' stroke='#FFB020' stroke-width='2'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 130,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.15,
+          "enterEnd": 0.55,
+          "enterAnimation": "fade",
+          "exitEnd": 3.2,
+          "style": { "fontFamily": "Outfit" },
+          "html": "<div style='text-align:center; color:#A99CD6; font-size:26px; font-weight:700; letter-spacing:8px;'>{{marketName}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 940,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.3,
+          "enterEnd": 0.75,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.2,
+          "style": { "fontFamily": "Outfit" },
+          "html": "<div style='text-align:center; color:{{accentColor}}; font-size:28px; font-weight:700; letter-spacing:7px;'>{{introKicker}}</div><div style='margin-top:20px; text-align:center; color:#FFFFFF; font-size:82px; line-height:1.05; font-weight:700; letter-spacing:-2px;'>{{introLine}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "cat",
+      "iterate": "categories",
+      "iterateAs": "c",
+      "duration": 4,
+      "backgroundColor": "#14102A",
+      "transition": "smoothleft",
+      "transitionId": "outro",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{c.image}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='chShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#14102A' stop-opacity='0.65'/><stop offset='0.45' stop-color='#14102A' stop-opacity='0.15'/><stop offset='1' stop-color='#14102A' stop-opacity='0.95'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#chShade)'/><rect x='72' y='1240' width='8' height='420' rx='4' fill='#FFB020'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 118,
+          "y": 1260,
+          "width": 880,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.3,
+          "enterEnd": 0.8,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4,
+          "style": { "fontFamily": "Outfit" },
+          "html": "<div style='display:inline-block; background:{{accentColor}}; color:#14102A; border-radius:10px; padding:10px 24px; font-size:24px; font-weight:700; letter-spacing:2px;'>{{c.count}}</div><div style='margin-top:22px; color:#FFFFFF; font-size:88px; line-height:1; font-weight:700; letter-spacing:-2px;'>{{c.name}}</div><div style='margin-top:22px; color:#D6CEF2; font-size:34px; line-height:1.35; font-weight:500;'>{{c.tagline}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 118,
+          "y": 130,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0,
+          "exitEnd": 4,
+          "style": { "fontFamily": "Outfit" },
+          "html": "<div style='color:rgba(255,255,255,0.75); font-size:24px; font-weight:700; letter-spacing:6px;'>{{marketName}} · CATEGORIES</div>"
+        }
+      ]
+    },
+    {
+      "id": "outro",
+      "duration": 3.6,
+      "backgroundColor": "#14102A",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='chEnd' cx='0.5' cy='0.4' r='0.9'><stop offset='0' stop-color='#2A2158'/><stop offset='1' stop-color='#14102A'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#chEnd)'/><circle cx='540' cy='640' r='140' fill='none' stroke='rgba(255,176,32,0.7)' stroke-width='2.5'/><rect x='480' y='595' width='120' height='90' rx='14' fill='none' stroke='#FFB020' stroke-width='6'/><path d='M480 630 H600' stroke='#FFB020' stroke-width='6'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 880,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.7,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "Outfit" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:72px; line-height:1.1; font-weight:700; letter-spacing:-1px;'>Whatever you need,<br>it's listed here.</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1200,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.7,
+          "enterEnd": 1.15,
+          "enterAnimation": "circleopen",
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "Outfit" },
+          "html": "<div style='display:inline-block; background:{{accentColor}}; color:#14102A; border-radius:999px; padding:26px 62px; font-size:38px; font-weight:700;'>{{ctaText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1360,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1,
+          "enterEnd": 1.4,
+          "enterAnimation": "fade",
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "Outfit" },
+          "html": "<div style='text-align:center; color:#A99CD6; font-size:27px; font-weight:600; letter-spacing:1px;'>{{ctaHandle}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    { "src": "{{musicUrl}}", "volume": 0.16 }
+  ]
+}

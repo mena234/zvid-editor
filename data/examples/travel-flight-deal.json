@@ -1,0 +1,261 @@
+{
+  "name": "travel-flight-deal",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#05070F",
+  "outputFormat": "mp4",
+  "variables": {
+    "brandName": "FARE ALERT",
+    "alertLabel": "PRICE DROP DETECTED",
+    "fromCode": "LON",
+    "fromCity": "London",
+    "toCode": "TYO",
+    "toCity": "Tokyo",
+    "price": "$412",
+    "priceWas": "was $980",
+    "showBadge": true,
+    "badgeText": "−58% · MISTAKE FARE",
+    "deadline": "Book before Fri 11:59pm",
+    "airlineLine": "Return · direct · Aug–Oct dates",
+    "ctaText": "See the fare",
+    "ctaHandle": "farealert.io",
+    "accentColor": "#4DA3FF",
+    "heroImage": "https://images.unsplash.com/photo-1565444007614-6b38c78224df?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDgwMTZ8MHwxfHNlYXJjaHw0fHxhaXJwbGFuZSUyMHRyYXZlbCUyMGZsaWdodCUyMHNreXxlbnwwfHx8fDE3ODMyNjg1NzB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/03/19/audio_56ae1dae5f.mp3"
+  },
+  "scenes": [
+    {
+      "id": "alert",
+      "duration": 4,
+      "backgroundColor": "#05070F",
+      "transition": "smoothup",
+      "transitionId": "route",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{heroImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "opacity": 0.55,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='tfdAlert' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#05070F' stop-opacity='0.78'/><stop offset='0.5' stop-color='#05070F' stop-opacity='0.42'/><stop offset='1' stop-color='#05070F' stop-opacity='0.94'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#tfdAlert)'/><circle cx='540' cy='760' r='150' fill='none' stroke='rgba(77,163,255,0.7)' stroke-width='2'/><circle cx='540' cy='760' r='172' fill='none' stroke='rgba(77,163,255,0.2)' stroke-width='1'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 150,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.6,
+          "enterAnimation": "smoothdown",
+          "exitEnd": 4,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='display:inline-block; background:#4DA3FF; color:#05070F; border-radius:999px; padding:13px 34px; font-size:24px; font-weight:800; letter-spacing:4px;'>{{brandName}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 720,
+          "anchor": "center-center",
+          "track": 10,
+          "enterBegin": 0.35,
+          "enterEnd": 0.85,
+          "enterAnimation": "fade",
+          "exitEnd": 4,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='text-align:center; color:#4DA3FF; font-size:96px;'>✈</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 980,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.55,
+          "enterEnd": 1,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='text-align:center; color:#7FBFFF; font-size:27px; font-weight:800; letter-spacing:5px;'>{{alertLabel}}</div><div style='margin-top:20px; text-align:center; color:#FFFFFF; font-size:70px; line-height:1.05; font-weight:800; letter-spacing:-1px;'>Someone's about to<br>book this cheap.</div>"
+        }
+      ]
+    },
+    {
+      "id": "route",
+      "duration": 5.4,
+      "backgroundColor": "#05070F",
+      "transition": "fade",
+      "transitionId": "cta",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 5.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='tfdRoute' cx='0.5' cy='0.3' r='1'><stop offset='0' stop-color='#0B1122'/><stop offset='1' stop-color='#05070F'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#tfdRoute)'/><path d='M230 470 H850' stroke='rgba(77,163,255,0.5)' stroke-width='3' stroke-dasharray='6 12'/><circle cx='230' cy='470' r='12' fill='#4DA3FF'/><circle cx='850' cy='470' r='12' fill='#4DA3FF'/><rect x='80' y='760' width='920' height='980' rx='42' fill='rgba(77,163,255,0.05)' stroke='rgba(77,163,255,0.32)' stroke-width='1.5'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 230,
+          "y": 470,
+          "anchor": "center-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.6,
+          "enterAnimation": "smoothright",
+          "exitEnd": 5.4,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:88px; font-weight:800; letter-spacing:-2px;'>{{fromCode}}</div><div style='text-align:center; color:#7F93B8; font-size:26px; font-weight:600;'>{{fromCity}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 850,
+          "y": 470,
+          "anchor": "center-center",
+          "track": 10,
+          "enterBegin": 0.35,
+          "enterEnd": 0.75,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 5.4,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:88px; font-weight:800; letter-spacing:-2px;'>{{toCode}}</div><div style='text-align:center; color:#7F93B8; font-size:26px; font-weight:600;'>{{toCity}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showBadge}}",
+          "x": 540,
+          "y": 700,
+          "anchor": "center-center",
+          "track": 11,
+          "enterBegin": 0.5,
+          "enterEnd": 0.9,
+          "enterAnimation": "circleopen",
+          "exitEnd": 5.4,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='display:inline-block; background:#4DA3FF; color:#05070F; border-radius:999px; padding:14px 36px; font-size:28px; font-weight:800; letter-spacing:1px;'>{{badgeText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.7,
+          "enterEnd": 1.2,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5.4,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='text-align:center; color:#4DA3FF; font-size:172px; line-height:1; font-weight:800; letter-spacing:-6px;'>{{price}}</div><div style='margin-top:6px; text-align:center; color:#7F93B8; font-size:34px; font-weight:600; text-decoration:line-through;'>{{priceWas}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1340,
+          "width": 820,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.95,
+          "enterEnd": 1.4,
+          "enterAnimation": "fade",
+          "exitEnd": 5.4,
+          "style": { "fontFamily": "Outfit" },
+          "html": "<div style='text-align:center; color:#C6D4EC; font-size:32px; font-weight:500;'>{{airlineLine}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1470,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1.2,
+          "enterEnd": 1.6,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5.4,
+          "style": { "fontFamily": "Outfit" },
+          "html": "<div style='display:inline-block; background:rgba(77,163,255,0.14); border:1.5px solid rgba(77,163,255,0.5); color:#7FBFFF; border-radius:999px; padding:15px 36px; font-size:29px; font-weight:700;'>⏳ {{deadline}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "cta",
+      "duration": 3.6,
+      "backgroundColor": "#05070F",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='tfdCta' cx='0.5' cy='0.42' r='0.9'><stop offset='0' stop-color='#0C1428'/><stop offset='1' stop-color='#05070F'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#tfdCta)'/><path d='M340 720 L720 720 M650 655 L720 720 L650 785' fill='none' stroke='#4DA3FF' stroke-width='12' stroke-linecap='round' stroke-linejoin='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 900,
+          "width": 940,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.75,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:78px; line-height:1.05; font-weight:800; letter-spacing:-1px;'>Fares like this<br>vanish fast.</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1200,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.7,
+          "enterEnd": 1.1,
+          "enterAnimation": "circleopen",
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='display:inline-block; background:{{accentColor}}; color:#05070F; border-radius:999px; padding:27px 66px; font-size:40px; font-weight:800;'>{{ctaText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1370,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1.05,
+          "enterEnd": 1.45,
+          "enterAnimation": "fade",
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "Outfit" },
+          "html": "<div style='text-align:center; color:#6C80A4; font-size:27px; font-weight:500; letter-spacing:2px;'>{{ctaHandle}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.18
+    }
+  ]
+}

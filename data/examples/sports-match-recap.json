@@ -1,0 +1,193 @@
+{
+  "name": "sports-match-recap",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#100826",
+  "outputFormat": "mp4",
+  "variables": {
+    "kicker": "MATCH RECAP",
+    "matchTitle": "INTER 3 – 1 JUVENTUS",
+    "competition": "COPPA ITALIA · QUARTER-FINAL",
+    "accentColor": "#A970FF",
+    "moments": [
+      { "minute": "12'", "type": "GOAL", "detail": "Lautaro slots home after a slick one-two", "team": "INTER" },
+      { "minute": "34'", "type": "YELLOW", "detail": "Locatelli booked for a cynical foul", "team": "JUVE" },
+      { "minute": "58'", "type": "GOAL", "detail": "Thuram doubles the lead with a header", "team": "INTER" },
+      { "minute": "71'", "type": "RED", "detail": "Bremer sent off for the last-man tackle", "team": "JUVE" },
+      { "minute": "89'", "type": "GOAL", "detail": "Frattesi seals it on the counter", "team": "INTER" }
+    ],
+    "closingLine": "Inter cruise into the semi-finals.",
+    "channelLine": "@coppa.recaps",
+    "heroImage": "https://images.pexels.com/photos/10287246/pexels-photo-10287246.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/03/19/audio_56ae1dae5f.mp3"
+  },
+  "scenes": [
+    {
+      "id": "intro",
+      "duration": 3.8,
+      "backgroundColor": "#100826",
+      "transition": "smoothleft",
+      "transitionId": "moment",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{heroImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "opacity": 0.45,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.8
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 3.8,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='mrIntro' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#100826' stop-opacity='0.82'/><stop offset='0.5' stop-color='#100826' stop-opacity='0.4'/><stop offset='1' stop-color='#100826' stop-opacity='0.97'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#mrIntro)'/><path d='M120 1120 H420' stroke='#A970FF' stroke-width='6'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 120,
+          "y": 800,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.75,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.8,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='color:{{accentColor}}; font-size:30px; font-weight:700; letter-spacing:8px;'>{{kicker}}</div><div style='margin-top:18px; color:#FFFFFF; font-size:92px; line-height:0.98; font-weight:700; letter-spacing:-2px;'>{{matchTitle}}</div><div style='margin-top:32px; color:#B9A6E6; font-size:30px; font-weight:600; letter-spacing:3px;'>{{competition}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "moment",
+      "iterate": "moments",
+      "iterateAs": "m",
+      "duration": 2.8,
+      "backgroundColor": "#100826",
+      "transition": "slideup",
+      "transitionId": "outro",
+      "transitionDuration": 0.45,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 2.8,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='mrMoment' cx='0.5' cy='0.4' r='0.95'><stop offset='0' stop-color='#221149'/><stop offset='1' stop-color='#100826'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#mrMoment)'/><path d='M200 300 V1620' stroke='rgba(169,112,255,0.4)' stroke-width='3'/><circle cx='200' cy='760' r='26' fill='#A970FF'/><circle cx='200' cy='760' r='46' fill='none' stroke='rgba(169,112,255,0.4)' stroke-width='3'/><rect x='300' y='640' width='700' height='300' rx='32' fill='rgba(255,255,255,0.04)' stroke='rgba(169,112,255,0.4)' stroke-width='1.5'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 340,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.15,
+          "enterEnd": 0.55,
+          "enterAnimation": "circleopen",
+          "exitEnd": 2.8,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='display:inline-block; background:{{accentColor}}; color:#100826; border-radius:16px; padding:16px 40px; font-size:60px; font-weight:700; letter-spacing:2px;'>{{m.minute}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 340,
+          "y": 500,
+          "anchor": "top-left",
+          "track": 11,
+          "enterBegin": 0.35,
+          "enterEnd": 0.8,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 2.8,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='display:inline-block; background:rgba(169,112,255,0.16); border:1.5px solid rgba(169,112,255,0.55); color:#E7DBFF; border-radius:999px; padding:10px 30px; font-size:30px; font-weight:700; letter-spacing:4px;'>{{m.type}} · {{m.team}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 340,
+          "y": 700,
+          "width": 640,
+          "anchor": "top-left",
+          "track": 11,
+          "enterBegin": 0.55,
+          "enterEnd": 1.0,
+          "enterAnimation": "smoothup",
+          "exitEnd": 2.8,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='color:#FFFFFF; font-size:48px; line-height:1.3; font-weight:600;'>{{m.detail}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1620,
+          "anchor": "center-center",
+          "track": 10,
+          "enterBegin": 0,
+          "exitEnd": 2.8,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='color:rgba(255,255,255,0.55); font-size:26px; font-weight:700; letter-spacing:5px;'>{{matchTitle}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "outro",
+      "duration": 3.4,
+      "backgroundColor": "#100826",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='mrOut' cx='0.5' cy='0.4' r='0.9'><stop offset='0' stop-color='#221149'/><stop offset='1' stop-color='#100826'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#mrOut)'/><path d='M470 720 l50 50 l120 -130' fill='none' stroke='#A970FF' stroke-width='14' stroke-linecap='round' stroke-linejoin='round'/><circle cx='540' cy='700' r='150' fill='none' stroke='rgba(169,112,255,0.5)' stroke-width='3'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 940,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.7,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.4,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:62px; line-height:1.15; font-weight:700;'>{{closingLine}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1220,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.7,
+          "enterEnd": 1.1,
+          "enterAnimation": "circleopen",
+          "exitEnd": 3.4,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='display:inline-block; background:{{accentColor}}; color:#100826; border-radius:999px; padding:20px 52px; font-size:32px; font-weight:700; letter-spacing:2px;'>{{channelLine}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.16
+    }
+  ]
+}

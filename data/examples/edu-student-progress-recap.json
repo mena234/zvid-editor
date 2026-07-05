@@ -1,0 +1,249 @@
+{
+  "name": "edu-student-progress-recap",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#0C1A17",
+  "outputFormat": "mp4",
+  "variables": {
+    "platformName": "LEARNLOOP",
+    "kicker": "YOUR WEEK IN REVIEW",
+    "studentName": "Maya",
+    "periodLabel": "Week of July 1–7",
+    "headline": "You're on a roll, Maya.",
+    "stats": [
+      {
+        "value": "14",
+        "unit": "day streak",
+        "label": "Longest streak yet",
+        "delta": "▲ new record"
+      },
+      {
+        "value": "320",
+        "unit": "minutes",
+        "label": "Time focused this week",
+        "delta": "▲ 22% vs last week"
+      },
+      {
+        "value": "92%",
+        "unit": "accuracy",
+        "label": "Quiz average",
+        "delta": "▲ from 84%"
+      }
+    ],
+    "levelLine": "You reached Level 7 — Advanced Learner.",
+    "showBadge": true,
+    "badgeText": "🏅 Top 5% of learners",
+    "ctaText": "Keep the streak alive",
+    "accentColor": "#34E0A1",
+    "musicUrl": "https://cdn.pixabay.com/audio/2026/02/24/audio_3f375fdf97.mp3"
+  },
+  "scenes": [
+    {
+      "id": "intro",
+      "duration": 4,
+      "backgroundColor": "#0C1A17",
+      "transition": "smoothup",
+      "transitionId": "stat",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='sprIntro' cx='0.5' cy='0.34' r='0.95'><stop offset='0' stop-color='#123529'/><stop offset='1' stop-color='#081310'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#sprIntro)'/><circle cx='540' cy='620' r='230' fill='none' stroke='rgba(52,224,161,0.2)' stroke-width='26'/><path d='M540 390 A230 230 0 1 1 315 662' fill='none' stroke='#34E0A1' stroke-width='26' stroke-linecap='round'/><text x='540' y='650' text-anchor='middle' font-family='Space Grotesk, sans-serif' font-size='120' font-weight='700' fill='#FFFFFF'>85%</text><text x='540' y='730' text-anchor='middle' font-family='Space Grotesk, sans-serif' font-size='30' font-weight='700' fill='#7FB6A0' letter-spacing='3'>WEEKLY GOAL</text></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 220,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.6,
+          "enterAnimation": "fade",
+          "exitEnd": 4,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='color:{{accentColor}}; font-size:28px; font-weight:800; letter-spacing:8px;'>{{kicker}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showBadge}}",
+          "x": 540,
+          "y": 990,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.5,
+          "enterEnd": 0.9,
+          "enterAnimation": "circleopen",
+          "exitEnd": 4,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='display:inline-block; background:rgba(52,224,161,0.14); border:1.5px solid rgba(52,224,161,0.5); color:#34E0A1; border-radius:999px; padding:14px 36px; font-size:28px; font-weight:700;'>{{badgeText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1140,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.65,
+          "enterEnd": 1.15,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:82px; line-height:1.06; font-weight:700; letter-spacing:-1px;'>{{headline}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1420,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 1,
+          "enterEnd": 1.4,
+          "enterAnimation": "fade",
+          "exitEnd": 4,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='color:#7FB6A0; font-size:30px; font-weight:700; letter-spacing:2px;'>{{platformName}} · {{periodLabel}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "stat",
+      "iterate": "stats",
+      "iterateAs": "s",
+      "duration": 3.2,
+      "backgroundColor": "#0C1A17",
+      "transition": "smoothup",
+      "transitionId": "level",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.2,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='sprStat' cx='0.28' cy='0.34' r='0.95'><stop offset='0' stop-color='#10281F'/><stop offset='1' stop-color='#081310'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#sprStat)'/><rect x='80' y='520' width='920' height='880' rx='40' fill='rgba(255,255,255,0.03)' stroke='rgba(52,224,161,0.32)' stroke-width='1.5'/><rect x='150' y='1300' width='780' height='16' rx='8' fill='rgba(52,224,161,0.2)'/><rect x='150' y='1300' width='560' height='16' rx='8' fill='#34E0A1'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 96,
+          "anchor": "center-center",
+          "track": 10,
+          "enterBegin": 0,
+          "exitEnd": 3.2,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='color:rgba(127,182,160,0.75); font-size:24px; font-weight:700; letter-spacing:5px;'>{{studentName}} · {{periodLabel}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 600,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.15,
+          "enterEnd": 0.6,
+          "enterAnimation": "circleopen",
+          "exitEnd": 3.2,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:200px; line-height:1; font-weight:700; letter-spacing:-6px;'>{{s.value}}</div><div style='text-align:center; color:#34E0A1; font-size:44px; font-weight:700; letter-spacing:2px;'>{{s.unit}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1080,
+          "width": 780,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.45,
+          "enterEnd": 0.9,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.2,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='text-align:center; color:#C7D6CE; font-size:42px; font-weight:600;'>{{s.label}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1180,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.7,
+          "enterEnd": 1.1,
+          "enterAnimation": "fade",
+          "exitEnd": 3.2,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='display:inline-block; background:rgba(52,224,161,0.14); border:1.5px solid rgba(52,224,161,0.5); color:#34E0A1; border-radius:999px; padding:12px 30px; font-size:30px; font-weight:700;'>{{s.delta}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "level",
+      "duration": 4.2,
+      "backgroundColor": "#081310",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.2,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='sprEnd' cx='0.5' cy='0.4' r='0.95'><stop offset='0' stop-color='#123B2C'/><stop offset='1' stop-color='#081310'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#sprEnd)'/><path d='M540 480 L610 630 L775 652 L657 767 L686 930 L540 852 L394 930 L423 767 L305 652 L470 630 Z' fill='none' stroke='#34E0A1' stroke-width='5' stroke-linejoin='round'/><path d='M480 700 L525 745 L620 650' fill='none' stroke='#34E0A1' stroke-width='12' stroke-linecap='round' stroke-linejoin='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1060,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.3,
+          "enterEnd": 0.8,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.2,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:62px; line-height:1.18; font-weight:700;'>{{levelLine}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1360,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.8,
+          "enterEnd": 1.2,
+          "enterAnimation": "circleopen",
+          "exitEnd": 4.2,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='display:inline-block; background:{{accentColor}}; color:#081310; border-radius:999px; padding:26px 62px; font-size:34px; font-weight:800;'>{{ctaText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1540,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1.1,
+          "enterEnd": 1.5,
+          "enterAnimation": "fade",
+          "exitEnd": 4.2,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='color:#6FA391; font-size:26px; font-weight:700; letter-spacing:5px;'>{{platformName}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.16
+    }
+  ]
+}

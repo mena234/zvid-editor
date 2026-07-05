@@ -1,0 +1,207 @@
+{
+  "name": "sports-fixtures",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#0A1330",
+  "outputFormat": "mp4",
+  "variables": {
+    "kicker": "THIS WEEK'S FIXTURES",
+    "leagueName": "LA LIGA · MATCHWEEK 24",
+    "accentColor": "#FFC244",
+    "subLine": "Five ties that shape the top four.",
+    "fixtures": [
+      { "day": "FRI", "time": "20:00", "home": "Sevilla", "away": "Villarreal", "venue": "Sánchez-Pizjuán" },
+      { "day": "SAT", "time": "16:15", "home": "Barcelona", "away": "Real Sociedad", "venue": "Spotify Camp Nou" },
+      { "day": "SAT", "time": "21:00", "home": "Atlético", "away": "Valencia", "venue": "Metropolitano" },
+      { "day": "SUN", "time": "18:30", "home": "Real Betis", "away": "Girona", "venue": "Benito Villamarín" },
+      { "day": "SUN", "time": "21:00", "home": "Real Madrid", "away": "Sevilla", "venue": "Santiago Bernabéu" }
+    ],
+    "footerLine": "Set your reminders.",
+    "channelLine": "@laliga.weekly",
+    "bgImage": "https://images.pexels.com/photos/1657324/pexels-photo-1657324.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "musicUrl": "https://cdn.pixabay.com/audio/2026/02/24/audio_3f375fdf97.mp3"
+  },
+  "scenes": [
+    {
+      "id": "intro",
+      "duration": 3.6,
+      "backgroundColor": "#0A1330",
+      "transition": "smoothleft",
+      "transitionId": "fixture",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{bgImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "opacity": 0.35,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.6
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 3.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='fxIntro' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#0A1330' stop-opacity='0.82'/><stop offset='0.5' stop-color='#0A1330' stop-opacity='0.4'/><stop offset='1' stop-color='#0A1330' stop-opacity='0.96'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#fxIntro)'/><path d='M120 1060 H420' stroke='#FFC244' stroke-width='6'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 120,
+          "y": 780,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.75,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "Archivo" },
+          "html": "<div style='color:{{accentColor}}; font-size:30px; font-weight:900; letter-spacing:8px;'>{{leagueName}}</div><div style='margin-top:18px; color:#FFFFFF; font-size:96px; line-height:0.98; font-weight:900; letter-spacing:-3px;'>{{kicker}}</div><div style='margin-top:36px; color:#A9B6DA; font-size:34px; font-weight:600;'>{{subLine}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "fixture",
+      "iterate": "fixtures",
+      "iterateAs": "f",
+      "duration": 2.6,
+      "backgroundColor": "#0A1330",
+      "transition": "smoothup",
+      "transitionId": "outro",
+      "transitionDuration": 0.45,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 2.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='fxRow' cx='0.5' cy='0.4' r='0.9'><stop offset='0' stop-color='#131E48'/><stop offset='1' stop-color='#0A1330'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#fxRow)'/><rect x='80' y='640' width='920' height='640' rx='40' fill='rgba(255,255,255,0.04)' stroke='rgba(255,194,68,0.4)' stroke-width='1.5'/><rect x='80' y='640' width='920' height='12' rx='6' fill='#FFC244'/><path d='M540 820 V1120' stroke='rgba(255,255,255,0.14)' stroke-width='2'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 500,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.15,
+          "enterEnd": 0.55,
+          "enterAnimation": "fade",
+          "exitEnd": 2.6,
+          "style": { "fontFamily": "Archivo" },
+          "html": "<div style='display:inline-block; background:{{accentColor}}; color:#0A1330; border-radius:12px; padding:12px 32px; font-size:36px; font-weight:900; letter-spacing:3px;'>{{f.day}} · {{f.time}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 310,
+          "y": 780,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.3,
+          "enterEnd": 0.75,
+          "enterAnimation": "smoothright",
+          "exitEnd": 2.6,
+          "style": { "fontFamily": "Archivo" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:64px; line-height:1.1; font-weight:900; letter-spacing:-1px;'>{{f.home}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 860,
+          "anchor": "center-center",
+          "track": 11,
+          "enterBegin": 0.45,
+          "enterEnd": 0.85,
+          "enterAnimation": "circleopen",
+          "exitEnd": 2.6,
+          "style": { "fontFamily": "Archivo" },
+          "html": "<div style='color:#7C8AB8; font-size:40px; font-weight:900; letter-spacing:2px;'>VS</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 770,
+          "y": 780,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.4,
+          "enterEnd": 0.85,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 2.6,
+          "style": { "fontFamily": "Archivo" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:64px; line-height:1.1; font-weight:900; letter-spacing:-1px;'>{{f.away}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1150,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.65,
+          "enterEnd": 1.05,
+          "enterAnimation": "fade",
+          "exitEnd": 2.6,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='text-align:center; color:#A9B6DA; font-size:30px; font-weight:600; letter-spacing:2px;'>{{f.venue}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "outro",
+      "duration": 3.2,
+      "backgroundColor": "#0A1330",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.2,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='fxOut' cx='0.5' cy='0.42' r='0.9'><stop offset='0' stop-color='#131E48'/><stop offset='1' stop-color='#0A1330'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#fxOut)'/><rect x='420' y='560' width='240' height='300' rx='30' fill='none' stroke='#FFC244' stroke-width='5'/><path d='M420 660 H660 M500 560 V520 M580 560 V520' stroke='#FFC244' stroke-width='5' stroke-linecap='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 950,
+          "width": 880,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.7,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.2,
+          "style": { "fontFamily": "Archivo" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:80px; line-height:1.05; font-weight:900; letter-spacing:-2px;'>{{footerLine}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1200,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.7,
+          "enterEnd": 1.1,
+          "enterAnimation": "circleopen",
+          "exitEnd": 3.2,
+          "style": { "fontFamily": "Space Grotesk" },
+          "html": "<div style='display:inline-block; background:{{accentColor}}; color:#0A1330; border-radius:999px; padding:20px 52px; font-size:32px; font-weight:700; letter-spacing:2px;'>{{channelLine}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.16
+    }
+  ]
+}

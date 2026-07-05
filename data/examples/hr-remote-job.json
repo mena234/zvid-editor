@@ -1,0 +1,253 @@
+{
+  "name": "hr-remote-job",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#14102B",
+  "outputFormat": "mp4",
+  "variables": {
+    "companyName": "ORBIT",
+    "kicker": "REMOTE-FIRST",
+    "roleTitle": "Growth Marketer",
+    "hookLine": "Work from anywhere. Grow with everyone.",
+    "workModel": "100% Remote",
+    "timezone": "Overlap 4h with CET",
+    "perks": [
+      { "icon": "🌍", "text": "Work from any country" },
+      { "icon": "🕒", "text": "Async-first, flexible hours" },
+      { "icon": "✈️", "text": "2 team retreats a year" }
+    ],
+    "ctaText": "Join us remotely",
+    "ctaUrl": "orbit.work/remote",
+    "disclaimer": "Applicants must have valid work authorization in their country of residence.",
+    "showDisclaimer": true,
+    "accentColor": "#6EE7C7",
+    "bgVideo": "https://videos.pexels.com/video-files/7639980/7639980-hd_1080_1920_30fps.mp4",
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/03/19/audio_56ae1dae5f.mp3"
+  },
+  "scenes": [
+    {
+      "id": "hook",
+      "duration": 4.2,
+      "backgroundColor": "#14102B",
+      "transition": "smoothup",
+      "transitionId": "perks",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "VIDEO",
+          "src": "{{bgVideo}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "volume": 0,
+          "opacity": 0.55,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.2
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 4.2,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='rjShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#14102B' stop-opacity='0.82'/><stop offset='0.45' stop-color='#14102B' stop-opacity='0.4'/><stop offset='1' stop-color='#14102B' stop-opacity='0.95'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#rjShade)'/><circle cx='540' cy='560' r='250' fill='none' stroke='rgba(110,231,199,0.4)' stroke-width='2'/><circle cx='540' cy='560' r='250' fill='none' stroke='rgba(110,231,199,0.15)' stroke-width='1' stroke-dasharray='6 18'/><ellipse cx='540' cy='560' rx='250' ry='96' fill='none' stroke='rgba(110,231,199,0.3)' stroke-width='1.5'/><circle cx='790' cy='560' r='12' fill='#6EE7C7'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 130,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.6,
+          "enterAnimation": "fade",
+          "exitEnd": 4.2,
+          "style": { "fontFamily": "Manrope" },
+          "html": "<div style='color:#C9C2F0; font-size:27px; font-weight:800; letter-spacing:9px;'>{{companyName}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1080,
+          "width": 920,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.4,
+          "enterEnd": 0.9,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.2,
+          "style": { "fontFamily": "Manrope" },
+          "html": "<div style='text-align:center;'><span style='display:inline-block; background:rgba(110,231,199,0.16); border:1.5px solid rgba(110,231,199,0.5); color:{{accentColor}}; border-radius:999px; padding:12px 30px; font-size:26px; font-weight:800; letter-spacing:4px;'>{{kicker}}</span></div><div style='margin-top:26px; text-align:center; color:#FFFFFF; font-size:104px; line-height:1; font-weight:800; letter-spacing:-3px;'>{{hookLine}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1520,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.9,
+          "enterEnd": 1.35,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.2,
+          "style": { "fontFamily": "Manrope" },
+          "html": "<div style='text-align:center;'><span style='display:inline-block; background:rgba(255,255,255,0.1); border:1.5px solid rgba(255,255,255,0.28); color:#FFFFFF; border-radius:14px; padding:12px 28px; font-size:30px; font-weight:700; margin:0 8px;'>{{roleTitle}}</span><span style='display:inline-block; background:rgba(255,255,255,0.1); border:1.5px solid rgba(255,255,255,0.28); color:#FFFFFF; border-radius:14px; padding:12px 28px; font-size:30px; font-weight:700; margin:0 8px;'>{{workModel}}</span></div>"
+        }
+      ]
+    },
+    {
+      "id": "perks",
+      "duration": 5,
+      "backgroundColor": "#14102B",
+      "transition": "fade",
+      "transitionId": "cta",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 5,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='rjPerk' cx='0.3' cy='0.3' r='1'><stop offset='0' stop-color='#231A4D'/><stop offset='1' stop-color='#14102B'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#rjPerk)'/><rect x='90' y='620' width='900' height='200' rx='30' fill='rgba(255,255,255,0.05)' stroke='rgba(110,231,199,0.35)' stroke-width='1.5'/><rect x='90' y='860' width='900' height='200' rx='30' fill='rgba(255,255,255,0.05)' stroke='rgba(110,231,199,0.35)' stroke-width='1.5'/><rect x='90' y='1100' width='900' height='200' rx='30' fill='rgba(255,255,255,0.05)' stroke='rgba(110,231,199,0.35)' stroke-width='1.5'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 340,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.7,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5,
+          "style": { "fontFamily": "Manrope" },
+          "html": "<div style='color:{{accentColor}}; font-size:27px; font-weight:800; letter-spacing:5px;'>LIFE AT {{companyName}}</div><div style='margin-top:16px; color:#FFFFFF; font-size:74px; line-height:1; font-weight:800; letter-spacing:-2px;'>Remote done right.</div><div style='margin-top:18px; color:#B7AEE0; font-size:30px; font-weight:500;'>{{timezone}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 132,
+          "y": 662,
+          "width": 800,
+          "anchor": "top-left",
+          "track": 11,
+          "enterBegin": 0.6,
+          "enterEnd": 1.05,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 5,
+          "style": { "fontFamily": "Manrope" },
+          "html": "<div style='color:#FFFFFF; font-size:40px; font-weight:700;'><span style='margin-right:20px;'>{{perks.0.icon}}</span>{{perks.0.text}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 132,
+          "y": 902,
+          "width": 800,
+          "anchor": "top-left",
+          "track": 11,
+          "enterBegin": 0.85,
+          "enterEnd": 1.3,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 5,
+          "style": { "fontFamily": "Manrope" },
+          "html": "<div style='color:#FFFFFF; font-size:40px; font-weight:700;'><span style='margin-right:20px;'>{{perks.1.icon}}</span>{{perks.1.text}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 132,
+          "y": 1142,
+          "width": 800,
+          "anchor": "top-left",
+          "track": 11,
+          "enterBegin": 1.1,
+          "enterEnd": 1.55,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 5,
+          "style": { "fontFamily": "Manrope" },
+          "html": "<div style='color:#FFFFFF; font-size:40px; font-weight:700;'><span style='margin-right:20px;'>{{perks.2.icon}}</span>{{perks.2.text}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showDisclaimer}}",
+          "x": 540,
+          "y": 1420,
+          "width": 860,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1.4,
+          "enterEnd": 1.85,
+          "enterAnimation": "fade",
+          "exitEnd": 5,
+          "style": { "fontFamily": "Manrope" },
+          "html": "<div style='text-align:center; color:#8479B8; font-size:24px; line-height:1.4; font-weight:500;'>{{disclaimer}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "cta",
+      "duration": 4,
+      "backgroundColor": "#14102B",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='rjCta' cx='0.5' cy='0.42' r='0.9'><stop offset='0' stop-color='#241C52'/><stop offset='1' stop-color='#14102B'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#rjCta)'/><circle cx='540' cy='640' r='170' fill='none' stroke='rgba(110,231,199,0.7)' stroke-width='2.5'/><circle cx='540' cy='640' r='196' fill='none' stroke='rgba(110,231,199,0.22)' stroke-width='1.5' stroke-dasharray='4 16'/><path d='M540 570 V710 M470 640 H610' stroke='#6EE7C7' stroke-width='8' stroke-linecap='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 900,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.3,
+          "enterEnd": 0.75,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4,
+          "style": { "fontFamily": "Manrope" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:76px; line-height:1.06; font-weight:800; letter-spacing:-2px;'>Your desk,<br>your rules.</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1200,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.7,
+          "enterEnd": 1.15,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4,
+          "style": { "fontFamily": "Manrope" },
+          "html": "<div style='display:inline-block; background:{{accentColor}}; color:#0B1A16; border-radius:999px; padding:26px 66px; font-size:40px; font-weight:800;'>{{ctaText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1380,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1.1,
+          "enterEnd": 1.5,
+          "enterAnimation": "fade",
+          "exitEnd": 4,
+          "style": { "fontFamily": "Manrope" },
+          "html": "<div style='text-align:center; color:#9086C4; font-size:28px; font-weight:600; letter-spacing:2px;'>{{ctaUrl}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.16
+    }
+  ]
+}

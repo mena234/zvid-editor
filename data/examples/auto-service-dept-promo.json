@@ -1,0 +1,262 @@
+{
+  "name": "auto-service-dept-promo",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#0B1016",
+  "outputFormat": "mp4",
+  "variables": {
+    "dealerName": "IRONCLAD SERVICE CENTER",
+    "kicker": "SERVICE SPECIALS",
+    "introTitle": "Your car deserves<br>the dealer touch.",
+    "introSub": "Certified techs · OEM parts · Same-day slots.",
+    "offers": [
+      {
+        "icon": "OIL",
+        "name": "Synthetic Oil Change",
+        "detail": "Full synthetic + filter + 21-point check",
+        "price": "$49",
+        "was": "was $79"
+      },
+      {
+        "icon": "TIRE",
+        "name": "Tire Rotation & Align",
+        "detail": "Balance, rotate & 4-wheel alignment",
+        "price": "$89",
+        "was": "was $129"
+      },
+      {
+        "icon": "CHECK",
+        "name": "Multi-Point Inspection",
+        "detail": "Brakes, battery, fluids — full report",
+        "price": "FREE",
+        "was": "with any service"
+      }
+    ],
+    "disclaimer": "Offers valid through month-end. Most makes & models.",
+    "showDisclaimer": true,
+    "ctaText": "Book your service",
+    "ctaHandle": "ironcladservice.com/book",
+    "accentColor": "#FF7A29",
+    "heroImage": "https://images.unsplash.com/photo-1775687902964-dbe8ecd23485?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDgwMTZ8MHwxfHNlYXJjaHw3fHxjYXIlMjBpbnRlcmlvciUyMGRhc2hib2FyZCUyMGNvY2twaXR8ZW58MHx8fHwxNzgzMjY4NjI0fDA&ixlib=rb-4.1.0&q=80&w=1080",
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/04/21/audio_ed6f0ed574.mp3"
+  },
+  "scenes": [
+    {
+      "id": "intro",
+      "duration": 3.8,
+      "backgroundColor": "#0B1016",
+      "transition": "smoothleft",
+      "transitionId": "offer",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{heroImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "opacity": 0.6,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.8
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 3.8,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='svcIntro' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#0B1016' stop-opacity='0.85'/><stop offset='0.5' stop-color='#0B1016' stop-opacity='0.45'/><stop offset='1' stop-color='#0B1016' stop-opacity='0.96'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#svcIntro)'/><rect x='0' y='300' width='1080' height='60' fill='none'/><path d='M-40 340 H1120' stroke='rgba(255,122,41,0.5)' stroke-width='2' stroke-dasharray='24 16'/><rect x='90' y='980' width='120' height='6' rx='3' fill='#FF7A29'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 200,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.6,
+          "enterAnimation": "fade",
+          "exitEnd": 3.8,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='color:#B7C2CE; font-size:25px; font-weight:800; letter-spacing:6px;'>{{dealerName}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 640,
+          "width": 920,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.4,
+          "enterEnd": 0.9,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.8,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='color:{{accentColor}}; font-size:27px; font-weight:800; letter-spacing:6px;'>{{kicker}}</div><div style='margin-top:20px; color:#FFFFFF; font-size:92px; line-height:1.02; font-weight:800; letter-spacing:-2px;'>{{introTitle}}</div><div style='margin-top:56px; color:#B7C2CE; font-size:32px; font-weight:500;'>{{introSub}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "offer",
+      "iterate": "offers",
+      "iterateAs": "o",
+      "duration": 3.8,
+      "backgroundColor": "#0B1016",
+      "transition": "smoothleft",
+      "transitionId": "outro",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.8,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='svcOffer' cx='0.5' cy='0.35' r='0.95'><stop offset='0' stop-color='#141E2A'/><stop offset='1' stop-color='#0B1016'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#svcOffer)'/><path d='M0 0 H1080 V80 H0 Z' fill='none'/><path d='M-40 130 H1120' stroke='rgba(255,122,41,0.35)' stroke-width='2' stroke-dasharray='24 16'/><path d='M-40 1790 H1120' stroke='rgba(255,122,41,0.35)' stroke-width='2' stroke-dasharray='24 16'/><rect x='90' y='620' width='900' height='700' rx='38' fill='rgba(255,255,255,0.03)' stroke='rgba(255,122,41,0.4)' stroke-width='1.5'/><circle cx='540' cy='560' r='90' fill='#FF7A29'/><circle cx='540' cy='560' r='108' fill='none' stroke='rgba(255,122,41,0.35)' stroke-width='2'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 560,
+          "anchor": "center-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.6,
+          "enterAnimation": "circleopen",
+          "exitEnd": 3.8,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='text-align:center; color:#0B1016; font-size:34px; font-weight:900; letter-spacing:1px;'>{{o.icon}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 720,
+          "width": 820,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.35,
+          "enterEnd": 0.8,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.8,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:72px; line-height:1.05; font-weight:800; letter-spacing:-2px;'>{{o.name}}</div><div style='margin-top:24px; text-align:center; color:#AEB9C5; font-size:32px; line-height:1.4; font-weight:500;'>{{o.detail}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1040,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.6,
+          "enterEnd": 1.05,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.8,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='text-align:center; color:{{accentColor}}; font-size:150px; line-height:0.9; font-weight:800; letter-spacing:-4px;'>{{o.price}}</div><div style='margin-top:6px; text-align:center; color:#7A8797; font-size:30px; font-weight:600; text-decoration:line-through;'>{{o.was}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1820,
+          "anchor": "center-center",
+          "track": 11,
+          "enterBegin": 0,
+          "exitEnd": 3.8,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='color:rgba(255,255,255,0.5); font-size:22px; font-weight:700; letter-spacing:4px;'>{{dealerName}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "outro",
+      "duration": 4.2,
+      "backgroundColor": "#0B1016",
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "https://images.pexels.com/photos/9530906/pexels-photo-9530906.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "opacity": 0.28,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.2
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 4.2,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='svcEnd' cx='0.5' cy='0.42' r='0.95'><stop offset='0' stop-color='#0B1016' stop-opacity='0.6'/><stop offset='1' stop-color='#0B1016' stop-opacity='0.97'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#svcEnd)'/><rect x='56' y='56' width='968' height='1808' rx='30' fill='none' stroke='rgba(255,122,41,0.3)' stroke-width='1.5'/><circle cx='540' cy='620' r='120' fill='none' stroke='rgba(255,122,41,0.6)' stroke-width='3'/><path d='M540 560 V620 L582 648' stroke='#FF7A29' stroke-width='8' stroke-linecap='round' fill='none'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 840,
+          "width": 920,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.3,
+          "enterEnd": 0.75,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.2,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:74px; line-height:1.08; font-weight:800; letter-spacing:-2px;'>Slots fill fast.<br>Grab yours.</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1160,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.7,
+          "enterEnd": 1.15,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.2,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='display:inline-block; background:{{accentColor}}; color:#0B1016; border-radius:999px; padding:26px 62px; font-size:38px; font-weight:800;'>{{ctaText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1340,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1,
+          "enterEnd": 1.4,
+          "enterAnimation": "fade",
+          "exitEnd": 4.2,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='text-align:center; color:#7A8797; font-size:27px; font-weight:700; letter-spacing:3px;'>{{ctaHandle}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showDisclaimer}}",
+          "x": 540,
+          "y": 1760,
+          "width": 860,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1.3,
+          "enterEnd": 1.7,
+          "enterAnimation": "fade",
+          "exitEnd": 4.2,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='text-align:center; color:#566372; font-size:23px; line-height:1.5; font-weight:500;'>{{disclaimer}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    { "src": "{{musicUrl}}", "volume": 0.15 }
+  ]
+}

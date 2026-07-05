@@ -1,0 +1,205 @@
+{
+  "name": "ecom-specs-card",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#08090D",
+  "outputFormat": "mp4",
+  "variables": {
+    "brandName": "SONARA",
+    "productName": "Studio ANC Pro",
+    "tagline": "The numbers behind the silence.",
+    "heroImage": "https://images.pexels.com/photos/33481395/pexels-photo-33481395.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "accentColor": "#4C7DFF",
+    "priceLabel": "From",
+    "price": "$249",
+    "showPrice": true,
+    "ctaText": "See full spec sheet",
+    "specs": [
+      { "icon": "◍", "label": "Noise cancellation", "value": "42 dB", "note": "Hybrid active ANC" },
+      { "icon": "⌁", "label": "Battery life", "value": "60 hrs", "note": "10 min = 5 hr charge" },
+      { "icon": "◐", "label": "Drivers", "value": "40 mm", "note": "Titanium-coated" },
+      { "icon": "≋", "label": "Codec", "value": "LDAC", "note": "Hi-Res wireless audio" }
+    ],
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/03/19/audio_56ae1dae5f.mp3"
+  },
+  "scenes": [
+    {
+      "id": "intro",
+      "duration": 3.6,
+      "backgroundColor": "#08090D",
+      "transition": "smoothleft",
+      "transitionId": "spec",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{heroImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "opacity": 0.7,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.6
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 3.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='iShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#08090D' stop-opacity='0.55'/><stop offset='0.5' stop-color='#08090D' stop-opacity='0.25'/><stop offset='1' stop-color='#08090D' stop-opacity='0.96'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#iShade)'/><path d='M90 1400 H360' stroke='#4C7DFF' stroke-width='6'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 120,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.15,
+          "enterEnd": 0.6,
+          "enterAnimation": "fade",
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "Archivo" },
+          "html": "<div style='color:#F2F4F8; font-size:26px; font-weight:800; letter-spacing:8px;'>{{brandName}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 1470,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.4,
+          "enterEnd": 0.9,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "Archivo" },
+          "html": "<div style='color:#F2F4F8; font-size:96px; line-height:0.98; font-weight:800; letter-spacing:-3px;'>{{productName}}</div><div style='margin-top:24px; color:#9AA3B8; font-size:34px; font-weight:500;'>{{tagline}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "spec",
+      "iterate": "specs",
+      "iterateAs": "s",
+      "duration": 2.8,
+      "backgroundColor": "#08090D",
+      "transition": "smoothleft",
+      "transitionId": "cta",
+      "transitionDuration": 0.45,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 2.8,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='specBg' cx='0.5' cy='0.36' r='0.95'><stop offset='0' stop-color='#12141E'/><stop offset='1' stop-color='#08090D'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#specBg)'/><rect x='90' y='560' width='900' height='800' rx='44' fill='rgba(76,125,255,0.06)' stroke='rgba(76,125,255,0.35)' stroke-width='1.5'/><rect x='90' y='560' width='900' height='10' rx='5' fill='#4C7DFF'/><path d='M170 1120 H910' stroke='rgba(255,255,255,0.1)' stroke-width='1.5'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 660,
+          "anchor": "center-center",
+          "track": 10,
+          "enterBegin": 0.15,
+          "enterEnd": 0.55,
+          "enterAnimation": "fade",
+          "exitEnd": 2.8,
+          "style": { "fontFamily": "Archivo" },
+          "html": "<div style='text-align:center; color:{{accentColor}}; font-size:96px; line-height:1;'>{{s.icon}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 760,
+          "width": 800,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.3,
+          "enterEnd": 0.75,
+          "enterAnimation": "smoothup",
+          "exitEnd": 2.8,
+          "style": { "fontFamily": "Archivo" },
+          "html": "<div style='text-align:center; color:#9AA3B8; font-size:32px; font-weight:700; letter-spacing:5px; text-transform:uppercase;'>{{s.label}}</div><div style='margin-top:12px; text-align:center; color:#F2F4F8; font-size:170px; line-height:1; font-weight:800; letter-spacing:-6px;'>{{s.value}}</div><div style='margin-top:40px; text-align:center; color:#8A93A8; font-size:34px; font-weight:500;'>{{s.note}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1440,
+          "anchor": "center-center",
+          "track": 10,
+          "enterBegin": 0,
+          "exitEnd": 2.8,
+          "style": { "fontFamily": "Archivo" },
+          "html": "<div style='color:rgba(242,244,248,0.55); font-size:24px; font-weight:700; letter-spacing:6px;'>{{brandName}} · {{productName}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "cta",
+      "duration": 4.4,
+      "backgroundColor": "#08090D",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='specEnd' cx='0.5' cy='0.4' r='0.95'><stop offset='0' stop-color='#14192B'/><stop offset='1' stop-color='#08090D'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#specEnd)'/><rect x='48' y='48' width='984' height='1824' rx='40' fill='none' stroke='rgba(76,125,255,0.32)' stroke-width='1.5'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showPrice}}",
+          "x": 540,
+          "y": 640,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.3,
+          "enterEnd": 0.75,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.4,
+          "style": { "fontFamily": "Archivo" },
+          "html": "<div style='text-align:center; color:#9AA3B8; font-size:30px; font-weight:700; letter-spacing:4px;'>{{priceLabel}}</div><div style='margin-top:8px; text-align:center; color:{{accentColor}}; font-size:150px; line-height:1; font-weight:800; letter-spacing:-4px;'>{{price}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1040,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.55,
+          "enterEnd": 1,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.4,
+          "style": { "fontFamily": "Archivo" },
+          "html": "<div style='text-align:center; color:#F2F4F8; font-size:66px; line-height:1.08; font-weight:800; letter-spacing:-1px;'>Engineered to<br>disappear.</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1300,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.95,
+          "enterEnd": 1.4,
+          "enterAnimation": "circleopen",
+          "exitEnd": 4.4,
+          "style": { "fontFamily": "Archivo" },
+          "html": "<div style='display:inline-block; background:{{accentColor}}; color:#08090D; border-radius:16px; padding:26px 60px; font-size:38px; font-weight:800;'>{{ctaText}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    { "src": "{{musicUrl}}", "volume": 0.15 }
+  ]
+}

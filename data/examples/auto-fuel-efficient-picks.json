@@ -1,0 +1,262 @@
+{
+  "name": "auto-fuel-efficient-picks",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#07120F",
+  "outputFormat": "mp4",
+  "variables": {
+    "dealerName": "GREENLINE MOTORS",
+    "introKicker": "SPEND LESS AT THE PUMP",
+    "introTitle": "Fuel-efficient<br>picks for 2026.",
+    "introSub": "Hybrids & EVs that pay you back every mile.",
+    "ctaText": "Calculate your savings",
+    "ctaHandle": "greenline.com/save",
+    "accentColor": "#41E0A3",
+    "picks": [
+      {
+        "badge": "FULL EV",
+        "name": "Ioniq Electric",
+        "efficiency": "114 MPGe",
+        "range": "303 mi range · 18 min fast-charge",
+        "saves": "~$1,900/yr vs gas",
+        "image": "https://images.pexels.com/photos/35736783/pexels-photo-35736783.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+      },
+      {
+        "badge": "PLUG-IN HYBRID",
+        "name": "Prime PHEV",
+        "efficiency": "94 MPGe",
+        "range": "44 mi electric + 600 mi gas",
+        "saves": "~$1,400/yr vs gas",
+        "image": "https://images.pexels.com/photos/9799991/pexels-photo-9799991.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+      },
+      {
+        "badge": "ECO HYBRID",
+        "name": "Insight Eco",
+        "efficiency": "52 MPG",
+        "range": "Self-charging · No plug needed",
+        "saves": "~$1,100/yr vs gas",
+        "image": "https://images.pexels.com/photos/33508511/pexels-photo-33508511.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+      }
+    ],
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/04/21/audio_ed6f0ed574.mp3"
+  },
+  "scenes": [
+    {
+      "id": "intro",
+      "duration": 3.8,
+      "backgroundColor": "#07120F",
+      "transition": "smoothleft",
+      "transitionId": "pick",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "https://images.unsplash.com/photo-1615829386703-e2bb66a7cb7d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDgwMTZ8MHwxfHNlYXJjaHw0fHxlbGVjdHJpYyUyMGNhciUyMGNoYXJnaW5nJTIwbW9kZXJufGVufDB8fHx8MTc4MzI2ODYyNnww&ixlib=rb-4.1.0&q=80&w=1080",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "opacity": 0.5,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.8
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 3.8,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='fepIntro' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#07120F' stop-opacity='0.88'/><stop offset='0.5' stop-color='#07120F' stop-opacity='0.45'/><stop offset='1' stop-color='#07120F' stop-opacity='0.96'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#fepIntro)'/><rect x='90' y='980' width='120' height='6' rx='3' fill='#41E0A3'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 200,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.6,
+          "enterAnimation": "fade",
+          "exitEnd": 3.8,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='color:#A6C4B8; font-size:26px; font-weight:800; letter-spacing:7px;'>{{dealerName}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 660,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.4,
+          "enterEnd": 0.9,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.8,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='color:{{accentColor}}; font-size:27px; font-weight:800; letter-spacing:6px;'>{{introKicker}}</div><div style='margin-top:20px; color:#FFFFFF; font-size:94px; line-height:1.02; font-weight:800; letter-spacing:-2px;'>{{introTitle}}</div><div style='margin-top:56px; color:#B4CABF; font-size:32px; font-weight:500;'>{{introSub}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "pick",
+      "iterate": "picks",
+      "iterateAs": "p",
+      "duration": 4.2,
+      "backgroundColor": "#07120F",
+      "transition": "smoothleft",
+      "transitionId": "outro",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{p.image}}",
+          "x": 540,
+          "y": 540,
+          "width": 1080,
+          "height": 1000,
+          "anchor": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.2
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 4.2,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='fepCard' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#07120F' stop-opacity='0.3'/><stop offset='0.4' stop-color='#07120F' stop-opacity='0.06'/><stop offset='0.58' stop-color='#07120F' stop-opacity='0.8'/><stop offset='1' stop-color='#07120F' stop-opacity='1'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#fepCard)'/><rect x='90' y='1080' width='900' height='620' rx='34' fill='rgba(65,224,163,0.06)' stroke='rgba(65,224,163,0.35)' stroke-width='1.5'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 110,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.65,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 4.2,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='display:inline-block; background:rgba(65,224,163,0.16); border:1.5px solid rgba(65,224,163,0.6); color:{{accentColor}}; border-radius:999px; padding:12px 30px; font-size:24px; font-weight:800; letter-spacing:3px;'>{{p.badge}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 140,
+          "y": 1130,
+          "width": 800,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.45,
+          "enterEnd": 0.9,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.2,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='color:#FFFFFF; font-size:76px; line-height:1; font-weight:800; letter-spacing:-2px;'>{{p.name}}</div><div style='margin-top:20px; color:#B4CABF; font-size:29px; line-height:1.4; font-weight:500;'>{{p.range}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 140,
+          "y": 1400,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.6,
+          "enterEnd": 1.05,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.2,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='color:{{accentColor}}; font-size:88px; line-height:1; font-weight:800; letter-spacing:-2px;'>{{p.efficiency}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 940,
+          "y": 1418,
+          "anchor": "top-right",
+          "track": 11,
+          "enterBegin": 0.8,
+          "enterEnd": 1.25,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 4.2,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='display:inline-block; background:{{accentColor}}; color:#07120F; border-radius:12px; padding:16px 30px; font-size:32px; font-weight:800;'>{{p.saves}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1810,
+          "anchor": "center-center",
+          "track": 11,
+          "enterBegin": 0,
+          "exitEnd": 4.2,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='color:rgba(255,255,255,0.5); font-size:22px; font-weight:700; letter-spacing:4px;'>{{dealerName}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "outro",
+      "duration": 3.6,
+      "backgroundColor": "#07120F",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='fepEnd' cx='0.5' cy='0.4' r='0.95'><stop offset='0' stop-color='#0D2119'/><stop offset='1' stop-color='#07120F'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#fepEnd)'/><rect x='56' y='56' width='968' height='1808' rx='30' fill='none' stroke='rgba(65,224,163,0.3)' stroke-width='1.5'/><path d='M470 560 C470 620 610 620 610 680 C610 740 470 740 470 800 M540 520 V560 M540 800 V840' stroke='#41E0A3' stroke-width='11' stroke-linecap='round' fill='none'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 960,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.3,
+          "enterEnd": 0.75,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:72px; line-height:1.08; font-weight:800; letter-spacing:-2px;'>Drive more.<br>Fuel less.</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1260,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.75,
+          "enterEnd": 1.2,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='display:inline-block; background:{{accentColor}}; color:#07120F; border-radius:999px; padding:26px 62px; font-size:36px; font-weight:800;'>{{ctaText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1430,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1.05,
+          "enterEnd": 1.45,
+          "enterAnimation": "fade",
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='text-align:center; color:#6A897C; font-size:27px; font-weight:700; letter-spacing:3px;'>{{ctaHandle}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    { "src": "{{musicUrl}}", "volume": 0.15 }
+  ]
+}

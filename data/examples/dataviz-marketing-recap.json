@@ -1,0 +1,200 @@
+{
+  "name": "dataviz-marketing-recap",
+  "resolution": "full-hd",
+  "frameRate": 30,
+  "backgroundColor": "#141033",
+  "outputFormat": "mp4",
+  "variables": {
+    "brandName": "Aperture Growth",
+    "kicker": "MARKETING PERFORMANCE",
+    "period": "June 2026",
+    "headline": "Paid channels, decoded.",
+    "subLine": "One dashboard, three numbers that decide the budget. Here is how the funnel performed.",
+    "badgeText": "TOP CHANNEL: PAID SOCIAL",
+    "showBadge": true,
+    "closingTitle": "Reallocate to what converts.",
+    "closingLine": "Shifting 20% of search spend into paid social for July. Review deck attached.",
+    "musicUrl": "https://cdn.pixabay.com/audio/2026/02/24/audio_3f375fdf97.mp3",
+    "metrics": [
+      {
+        "label": "CLICK-THROUGH RATE",
+        "value": "3.9%",
+        "delta": "▲ 0.8 pts",
+        "note": "Creative refresh lifted engagement",
+        "fill": "78"
+      },
+      {
+        "label": "COST PER ACQUISITION",
+        "value": "$21.40",
+        "delta": "▼ 16% cheaper",
+        "note": "Lowest CPA in four quarters",
+        "fill": "42"
+      },
+      {
+        "label": "RETURN ON AD SPEND",
+        "value": "5.2×",
+        "delta": "▲ from 4.1×",
+        "note": "Every $1 returned $5.20",
+        "fill": "88"
+      }
+    ]
+  },
+  "scenes": [
+    {
+      "id": "intro",
+      "duration": 4.4,
+      "backgroundColor": "#141033",
+      "transition": "wipeleft",
+      "transitionId": "metric",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1920,
+          "height": 1080,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.4,
+          "svg": "<svg width='1920' height='1080' viewBox='0 0 1920 1080' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='mkIntro' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#1E1550'/><stop offset='1' stop-color='#141033'/></linearGradient><linearGradient id='mkBar' x1='0' y1='1' x2='0' y2='0'><stop offset='0' stop-color='#5B3FA8'/><stop offset='1' stop-color='#A78BFA'/></linearGradient></defs><rect width='1920' height='1080' fill='url(#mkIntro)'/><g opacity='0.5'><rect x='1180' y='720' width='90' height='200' rx='12' fill='url(#mkBar)'/><rect x='1300' y='620' width='90' height='300' rx='12' fill='url(#mkBar)'/><rect x='1420' y='500' width='90' height='420' rx='12' fill='url(#mkBar)'/><rect x='1540' y='560' width='90' height='360' rx='12' fill='url(#mkBar)'/><rect x='1660' y='420' width='90' height='500' rx='12' fill='url(#mkBar)'/></g><path d='M120 720 H360' stroke='#A78BFA' stroke-width='6' stroke-linecap='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 120,
+          "y": 300,
+          "width": 1050,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.75,
+          "enterAnimation": "smoothright",
+          "exitEnd": 4.4,
+          "style": {
+            "fontFamily": "Manrope"
+          },
+          "html": "<div style='color:#A78BFA; font-size:26px; font-weight:800; letter-spacing:6px;'>{{kicker}} · {{period}}</div><div style='margin-top:24px; color:#FFFFFF; font-size:110px; line-height:1; font-weight:800; letter-spacing:-3px;'>{{headline}}</div><div style='margin-top:40px; color:#B9B2E0; font-size:31px; line-height:1.45; font-weight:500;'>{{subLine}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "metric",
+      "iterate": "metrics",
+      "iterateAs": "m",
+      "duration": 3.6,
+      "backgroundColor": "#141033",
+      "transition": "wipeleft",
+      "transitionId": "outro",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1920,
+          "height": 1080,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.6,
+          "svg": "<svg width='1920' height='1080' viewBox='0 0 1920 1080' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='mkCard' cx='0.28' cy='0.35' r='1'><stop offset='0' stop-color='#221860'/><stop offset='1' stop-color='#141033'/></radialGradient></defs><rect width='1920' height='1080' fill='url(#mkCard)'/><rect x='120' y='180' width='1680' height='720' rx='44' fill='rgba(167,139,250,0.05)' stroke='rgba(167,139,250,0.3)' stroke-width='1.5'/><circle cx='1500' cy='540' r='210' fill='none' stroke='rgba(255,255,255,0.08)' stroke-width='26'/><circle cx='1500' cy='540' r='210' fill='none' stroke='#A78BFA' stroke-width='26' stroke-linecap='round' stroke-dasharray='1320' stroke-dashoffset='260' transform='rotate(-90 1500 540)'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 210,
+          "y": 320,
+          "width": 1000,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.7,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.6,
+          "style": {
+            "fontFamily": "Manrope"
+          },
+          "html": "<div style='color:#9E93D6; font-size:30px; font-weight:800; letter-spacing:4px;'>{{m.label}}</div><div style='margin-top:20px; color:#FFFFFF; font-size:168px; line-height:0.9; font-weight:800; letter-spacing:-5px;'>{{m.value}}</div><div style='margin-top:36px;'><span style='display:inline-block; background:rgba(167,139,250,0.16); border:1.5px solid rgba(167,139,250,0.5); color:#C4B5FD; border-radius:999px; padding:12px 32px; font-size:30px; font-weight:800;'>{{m.delta}}</span></div><div style='margin-top:30px; color:#8478B0; font-size:28px; font-weight:500;'>{{m.note}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 1500,
+          "y": 540,
+          "anchor": "center-center",
+          "track": 11,
+          "enterBegin": 0.5,
+          "enterEnd": 0.95,
+          "enterAnimation": "fade",
+          "exitEnd": 3.6,
+          "style": {
+            "fontFamily": "Manrope"
+          },
+          "html": "<div style='text-align:center; color:#C4B5FD; font-size:88px; font-weight:800; letter-spacing:-2px;'>{{m.fill}}<span style='font-size:44px;'>%</span></div><div style='margin-top:6px; text-align:center; color:#7E72AE; font-size:22px; font-weight:700; letter-spacing:3px;'>OF TARGET</div>"
+        }
+      ]
+    },
+    {
+      "id": "outro",
+      "duration": 5,
+      "backgroundColor": "#141033",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1920,
+          "height": 1080,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 5,
+          "svg": "<svg width='1920' height='1080' viewBox='0 0 1920 1080' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='mkEnd' cx='0.5' cy='0.4' r='0.9'><stop offset='0' stop-color='#241A66'/><stop offset='1' stop-color='#141033'/></radialGradient></defs><rect width='1920' height='1080' fill='url(#mkEnd)'/><rect x='60' y='60' width='1800' height='960' rx='40' fill='none' stroke='rgba(167,139,250,0.28)' stroke-width='1.5'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showBadge}}",
+          "x": 960,
+          "y": 300,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.25,
+          "enterEnd": 0.65,
+          "enterAnimation": "smoothdown",
+          "exitEnd": 5,
+          "style": {
+            "fontFamily": "Manrope"
+          },
+          "html": "<div style='display:inline-block; background:rgba(167,139,250,0.18); border:1.5px solid rgba(167,139,250,0.55); color:#C4B5FD; border-radius:999px; padding:14px 40px; font-size:26px; font-weight:800; letter-spacing:4px;'>{{badgeText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 960,
+          "y": 460,
+          "width": 1300,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.4,
+          "enterEnd": 0.9,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5,
+          "style": {
+            "fontFamily": "Manrope"
+          },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:80px; line-height:1.05; font-weight:800; letter-spacing:-2px;'>{{closingTitle}}</div><div style='margin-top:28px; text-align:center; color:#B9B2E0; font-size:32px; line-height:1.45; font-weight:500;'>{{closingLine}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 960,
+          "y": 880,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1,
+          "enterEnd": 1.4,
+          "enterAnimation": "fade",
+          "exitEnd": 5,
+          "style": {
+            "fontFamily": "Manrope"
+          },
+          "html": "<div style='text-align:center; color:#6C619A; font-size:24px; font-weight:800; letter-spacing:5px;'>{{brandName}} · {{period}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.16
+    }
+  ]
+}

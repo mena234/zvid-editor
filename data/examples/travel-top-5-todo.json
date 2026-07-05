@@ -1,0 +1,200 @@
+{
+  "name": "travel-top-5-todo",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#1B1024",
+  "outputFormat": "mp4",
+  "variables": {
+    "channelName": "@slow.travel.co",
+    "destination": "Kyoto",
+    "introTitle": "5 things to do<br>in Kyoto",
+    "introSub": "Save this before your trip 📌",
+    "ctaText": "Which one first? 👇",
+    "accentColor": "#FF8A4C",
+    "things": [
+      {
+        "n": "1",
+        "title": "Fushimi Inari at dawn",
+        "why": "Thousands of vermilion gates, zero crowds if you go before 7am."
+      },
+      {
+        "n": "2",
+        "title": "Arashiyama bamboo grove",
+        "why": "Walk it early, then take the little boat down the Hozu river."
+      },
+      {
+        "n": "3",
+        "title": "Nishiki Market crawl",
+        "why": "Five blocks of street food — try the tamago and yuba skewers."
+      },
+      {
+        "n": "4",
+        "title": "Tea in Gion",
+        "why": "Book a machiya teahouse; stay for the lantern-lit evening streets."
+      },
+      {
+        "n": "5",
+        "title": "Kiyomizu-dera sunset",
+        "why": "The wooden terrace over the valley glows gold right before dusk."
+      }
+    ],
+    "coverImage": "https://images.pexels.com/photos/28279109/pexels-photo-28279109.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/03/19/audio_56ae1dae5f.mp3"
+  },
+  "scenes": [
+    {
+      "id": "cover",
+      "duration": 3.4,
+      "backgroundColor": "#1B1024",
+      "transition": "slideleft",
+      "transitionId": "thing",
+      "transitionDuration": 0.45,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{coverImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "opacity": 0.5,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.4
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 3.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='tt5Cover' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#1B1024' stop-opacity='0.7'/><stop offset='0.5' stop-color='#1B1024' stop-opacity='0.4'/><stop offset='1' stop-color='#1B1024' stop-opacity='0.92'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#tt5Cover)'/><rect x='390' y='1010' width='300' height='6' rx='3' fill='#FF8A4C'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 780,
+          "width": 940,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.65,
+          "enterAnimation": "circleopen",
+          "exitEnd": 3.4,
+          "style": { "fontFamily": "Fraunces" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:112px; line-height:0.98; font-weight:600; letter-spacing:-3px;'>{{introTitle}}</div><div style='margin-top:34px; text-align:center; color:#C9B8D6; font-size:31px; font-weight:600; font-family:Sora, sans-serif;'>{{introSub}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "thing",
+      "iterate": "things",
+      "iterateAs": "t",
+      "duration": 3.4,
+      "backgroundColor": "#1B1024",
+      "transition": "slideleft",
+      "transitionId": "outro",
+      "transitionDuration": 0.45,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='tt5Thing' cx='0.5' cy='0.32' r='0.95'><stop offset='0' stop-color='#2A1738'/><stop offset='1' stop-color='#1B1024'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#tt5Thing)'/><rect x='88' y='820' width='904' height='520' rx='40' fill='rgba(255,255,255,0.035)' stroke='rgba(255,138,76,0.4)' stroke-width='1.5'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 470,
+          "anchor": "center-center",
+          "track": 10,
+          "enterBegin": 0.15,
+          "enterEnd": 0.55,
+          "enterAnimation": "circleopen",
+          "exitEnd": 3.4,
+          "style": { "fontFamily": "Fraunces" },
+          "html": "<div style='text-align:center; color:{{accentColor}}; font-size:280px; line-height:1; font-weight:600; letter-spacing:-10px;'>{{t.n}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 900,
+          "width": 820,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.4,
+          "enterEnd": 0.9,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.4,
+          "style": { "fontFamily": "Fraunces" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:66px; line-height:1.05; font-weight:600; letter-spacing:-1px;'>{{t.title}}</div><div style='margin-top:26px; text-align:center; color:#C9B8D6; font-size:32px; line-height:1.5; font-weight:400; font-family:Sora, sans-serif;'>{{t.why}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1790,
+          "anchor": "center-center",
+          "track": 10,
+          "enterBegin": 0,
+          "exitEnd": 3.4,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='color:rgba(255,255,255,0.55); font-size:23px; font-weight:700; letter-spacing:4px;'>{{channelName}} · {{destination}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "outro",
+      "duration": 3.4,
+      "backgroundColor": "#1B1024",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='tt5Out' cx='0.5' cy='0.4' r='0.9'><stop offset='0' stop-color='#2A1738'/><stop offset='1' stop-color='#1B1024'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#tt5Out)'/><path d='M470 640 L540 560 L610 640 M540 560 L540 780' fill='none' stroke='#FF8A4C' stroke-width='12' stroke-linecap='round' stroke-linejoin='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 900,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.7,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.4,
+          "style": { "fontFamily": "Fraunces" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:70px; line-height:1.1; font-weight:600;'>Save it. You'll<br>need it in {{destination}}.</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1230,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.7,
+          "enterEnd": 1.15,
+          "enterAnimation": "circleopen",
+          "exitEnd": 3.4,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='display:inline-block; background:{{accentColor}}; color:#1B1024; border-radius:999px; padding:24px 58px; font-size:33px; font-weight:800;'>{{ctaText}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.19
+    }
+  ]
+}

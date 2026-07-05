@@ -1,0 +1,210 @@
+{
+  "name": "travel-weekend-getaway",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#0A2540",
+  "outputFormat": "mp4",
+  "variables": {
+    "brandName": "48H TRIPS",
+    "hookTop": "Out of office",
+    "hookBottom": "by Friday 5pm.",
+    "place": "Lisbon",
+    "distanceLine": "2h 40m flight · no visa · pack light",
+    "perk1": "Fri night arrival",
+    "perk2": "Sun sunset return",
+    "perk3": "3 nights, one carry-on",
+    "ctaText": "Grab the weekend",
+    "ctaHandle": "48htrips.co",
+    "accentColor": "#39D3E0",
+    "heroImage": "https://images.pexels.com/photos/26851069/pexels-photo-26851069.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "placeImage": "https://images.pexels.com/photos/37474458/pexels-photo-37474458.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/03/19/audio_56ae1dae5f.mp3"
+  },
+  "scenes": [
+    {
+      "id": "hook",
+      "duration": 4,
+      "backgroundColor": "#0A2540",
+      "transition": "slideleft",
+      "transitionId": "place",
+      "transitionDuration": 0.45,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{heroImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "opacity": 0.6,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='twgHook' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#0A2540' stop-opacity='0.72'/><stop offset='0.5' stop-color='#0A2540' stop-opacity='0.4'/><stop offset='1' stop-color='#0A2540' stop-opacity='0.92'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#twgHook)'/><path d='M-40 560 L1120 500 L1120 528 L-40 588 Z' fill='#39D3E0' opacity='0.9'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 150,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.6,
+          "enterAnimation": "fade",
+          "exitEnd": 4,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='display:inline-block; background:#39D3E0; color:#0A2540; border-radius:999px; padding:13px 34px; font-size:25px; font-weight:800; letter-spacing:4px;'>{{brandName}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 760,
+          "width": 940,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.4,
+          "enterEnd": 0.95,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4,
+          "style": { "fontFamily": "Outfit" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:104px; line-height:1; font-weight:800; letter-spacing:-3px;'>{{hookTop}}<br><span style='color:{{accentColor}};'>{{hookBottom}}</span></div>"
+        }
+      ]
+    },
+    {
+      "id": "place",
+      "duration": 5.2,
+      "backgroundColor": "#0A2540",
+      "transition": "slideleft",
+      "transitionId": "cta",
+      "transitionDuration": 0.45,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{placeImage}}",
+          "x": 540,
+          "y": 620,
+          "width": 920,
+          "height": 900,
+          "anchor": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "radius": { "tl": 40, "tr": 40, "bl": 40, "br": 40 },
+          "track": 1,
+          "enterBegin": 0,
+          "enterEnd": 0.5,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 5.2
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 5.2,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><rect width='1080' height='1920' fill='#0A2540'/><rect x='80' y='1150' width='920' height='640' rx='40' fill='rgba(57,211,224,0.06)' stroke='rgba(57,211,224,0.35)' stroke-width='1.5'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1210,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.35,
+          "enterEnd": 0.85,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5.2,
+          "style": { "fontFamily": "Outfit" },
+          "html": "<div style='text-align:center; color:{{accentColor}}; font-size:27px; font-weight:700; letter-spacing:5px; font-family:Sora, sans-serif;'>THIS WEEKEND</div><div style='margin-top:10px; text-align:center; color:#FFFFFF; font-size:104px; line-height:1; font-weight:800; letter-spacing:-2px;'>{{place}}</div><div style='margin-top:18px; text-align:center; color:#9DBBD4; font-size:30px; font-weight:500;'>{{distanceLine}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1500,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.7,
+          "enterEnd": 1.2,
+          "enterAnimation": "fade",
+          "exitEnd": 5.2,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='text-align:center;'><span style='display:inline-block; margin:8px; background:rgba(57,211,224,0.14); color:#39D3E0; border-radius:14px; padding:14px 26px; font-size:27px; font-weight:700;'>{{perk1}}</span><span style='display:inline-block; margin:8px; background:rgba(57,211,224,0.14); color:#39D3E0; border-radius:14px; padding:14px 26px; font-size:27px; font-weight:700;'>{{perk2}}</span><span style='display:inline-block; margin:8px; background:rgba(57,211,224,0.14); color:#39D3E0; border-radius:14px; padding:14px 26px; font-size:27px; font-weight:700;'>{{perk3}}</span></div>"
+        }
+      ]
+    },
+    {
+      "id": "cta",
+      "duration": 3.8,
+      "backgroundColor": "#0A2540",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.8,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='twgCta' cx='0.5' cy='0.4' r='0.9'><stop offset='0' stop-color='#0E3355'/><stop offset='1' stop-color='#0A2540'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#twgCta)'/><path d='M360 700 L720 700 M660 640 L720 700 L660 760' fill='none' stroke='#39D3E0' stroke-width='12' stroke-linecap='round' stroke-linejoin='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 880,
+          "width": 940,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.75,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.8,
+          "style": { "fontFamily": "Outfit" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:78px; line-height:1.05; font-weight:800; letter-spacing:-1px;'>Two days.<br>Zero regrets.</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1180,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.7,
+          "enterEnd": 1.15,
+          "enterAnimation": "circleopen",
+          "exitEnd": 3.8,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='display:inline-block; background:{{accentColor}}; color:#0A2540; border-radius:999px; padding:27px 66px; font-size:40px; font-weight:800;'>{{ctaText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1350,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1.05,
+          "enterEnd": 1.45,
+          "enterAnimation": "fade",
+          "exitEnd": 3.8,
+          "style": { "fontFamily": "Sora" },
+          "html": "<div style='text-align:center; color:#7C9AB6; font-size:27px; font-weight:600; letter-spacing:2px;'>{{ctaHandle}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.18
+    }
+  ]
+}

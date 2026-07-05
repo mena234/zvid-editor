@@ -1,0 +1,209 @@
+{
+  "name": "ai-daily-tip",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#0E0A07",
+  "outputFormat": "mp4",
+  "variables": {
+    "seriesName": "DAILY AI TIP",
+    "dayLabel": "TIP #47",
+    "hookLine1": "Stop saying",
+    "hookLine2": "\"write me a post.\"",
+    "hookSub": "The fix takes 5 seconds.",
+    "tipLabel": "DO THIS INSTEAD",
+    "tipTitle": "Give it a role first.",
+    "tipBody": "Start every prompt with \"You are a senior copywriter…\". Assigning a role sharpens tone, vocabulary and structure instantly.",
+    "showPro": true,
+    "proText": "PRO: add the audience too — \"…writing for busy founders.\"",
+    "ctaText": "Follow for a tip every day",
+    "ctaHandle": "@promptlab",
+    "accentColor": "#F59E42",
+    "tipImage": "https://images.pexels.com/photos/6152745/pexels-photo-6152745.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/04/21/audio_ed6f0ed574.mp3"
+  },
+  "scenes": [
+    {
+      "id": "hook",
+      "duration": 3.4,
+      "backgroundColor": "#0E0A07",
+      "transition": "smoothup",
+      "transitionId": "tip",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{tipImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "opacity": 0.4,
+          "zoom": true,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.4
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 3.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='dtShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#0E0A07' stop-opacity='0.78'/><stop offset='0.5' stop-color='#0E0A07' stop-opacity='0.5'/><stop offset='1' stop-color='#0E0A07' stop-opacity='0.96'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#dtShade)'/><path d='M90 1250 H380' stroke='#F59E42' stroke-width='6' stroke-linecap='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 150,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.6,
+          "enterAnimation": "fade",
+          "exitEnd": 3.4,
+          "style": { "fontFamily": "Inter" },
+          "html": "<div style='display:inline-block; background:rgba(245,158,66,0.16); border:1.5px solid rgba(245,158,66,0.55); color:#F59E42; border-radius:999px; padding:12px 30px; font-size:23px; font-weight:800; letter-spacing:4px;'>{{seriesName}} · {{dayLabel}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 1310,
+          "width": 920,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.45,
+          "enterEnd": 0.95,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.4,
+          "style": { "fontFamily": "Bricolage Grotesque" },
+          "html": "<div style='color:#FFFFFF; font-size:82px; line-height:1.02; font-weight:800; letter-spacing:-2px;'>{{hookLine1}}<br>{{hookLine2}}</div><div style='margin-top:22px; color:#C4B29C; font-size:32px; font-weight:500; font-family:Inter, sans-serif;'>{{hookSub}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "tip",
+      "duration": 5,
+      "backgroundColor": "#0E0A07",
+      "transition": "fade",
+      "transitionId": "cta",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 5,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='dtBg' cx='0.5' cy='0.35' r='0.95'><stop offset='0' stop-color='#1A1109'/><stop offset='1' stop-color='#0E0A07'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#dtBg)'/><rect x='80' y='420' width='920' height='1080' rx='44' fill='rgba(255,255,255,0.03)' stroke='rgba(245,158,66,0.4)' stroke-width='1.5'/><rect x='80' y='420' width='920' height='14' rx='7' fill='#F59E42'/><path d='M160 980 H920' stroke='rgba(255,255,255,0.12)' stroke-width='1.5'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 520,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.65,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5,
+          "style": { "fontFamily": "Inter" },
+          "html": "<div style='text-align:center; color:#F59E42; font-size:26px; font-weight:800; letter-spacing:5px;'>{{tipLabel}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 600,
+          "width": 800,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.45,
+          "enterEnd": 0.9,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5,
+          "style": { "fontFamily": "Bricolage Grotesque" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:76px; line-height:1.05; font-weight:800; letter-spacing:-2px;'>{{tipTitle}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1040,
+          "width": 760,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.75,
+          "enterEnd": 1.25,
+          "enterAnimation": "fade",
+          "exitEnd": 5,
+          "style": { "fontFamily": "Inter" },
+          "html": "<div style='text-align:center; color:#D6C6B2; font-size:36px; line-height:1.5; font-weight:500;'>{{tipBody}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showPro}}",
+          "x": 540,
+          "y": 1360,
+          "width": 780,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1.1,
+          "enterEnd": 1.55,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5,
+          "style": { "fontFamily": "Inter" },
+          "html": "<div style='display:inline-block; background:rgba(245,158,66,0.1); border:1.5px solid rgba(245,158,66,0.4); border-radius:18px; padding:18px 32px; text-align:center; color:#F5C79A; font-size:28px; line-height:1.4; font-weight:600;'>{{proText}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "cta",
+      "duration": 3.4,
+      "backgroundColor": "#0E0A07",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='dtEnd' cx='0.5' cy='0.4' r='0.9'><stop offset='0' stop-color='#22160C'/><stop offset='1' stop-color='#0E0A07'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#dtEnd)'/><path d='M470 620 H610 M470 690 H590 M470 760 H620' stroke='rgba(245,158,66,0.35)' stroke-width='10' stroke-linecap='round'/><rect x='410' y='550' width='280' height='300' rx='24' fill='none' stroke='#F59E42' stroke-width='4'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 950,
+          "width": 880,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.7,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.4,
+          "style": { "fontFamily": "Bricolage Grotesque" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:64px; line-height:1.1; font-weight:800; letter-spacing:-1px;'>{{ctaText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1210,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.7,
+          "enterEnd": 1.1,
+          "enterAnimation": "circleopen",
+          "exitEnd": 3.4,
+          "style": { "fontFamily": "Inter" },
+          "html": "<div style='display:inline-block; background:{{accentColor}}; color:#0E0A07; border-radius:999px; padding:24px 58px; font-size:36px; font-weight:800;'>{{ctaHandle}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.15
+    }
+  ]
+}

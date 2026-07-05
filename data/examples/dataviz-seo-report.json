@@ -1,0 +1,217 @@
+{
+  "name": "dataviz-seo-report",
+  "resolution": "full-hd",
+  "frameRate": 30,
+  "backgroundColor": "#08201E",
+  "outputFormat": "mp4",
+  "variables": {
+    "siteName": "orbitworks.io",
+    "kicker": "ORGANIC SEARCH REPORT",
+    "period": "June 2026",
+    "headline": "Organic is compounding.",
+    "subLine": "Traffic, keyword footprint, and rankings all moved up together this month.",
+    "trafficLabel": "ORGANIC SESSIONS",
+    "trafficValue": "184,200",
+    "trafficDelta": "▲ 27% MoM",
+    "closingTitle": "Double down on the winners.",
+    "closingLine": "Refresh the top 10 rising pages and build 4 new cluster hubs in July.",
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/03/19/audio_56ae1dae5f.mp3",
+    "keywords": [
+      {
+        "term": "\"video api pricing\"",
+        "value": "#2",
+        "delta": "▲ 6 spots",
+        "note": "Page 1, position 2 — was #8"
+      },
+      {
+        "term": "\"render video from json\"",
+        "value": "#1",
+        "delta": "▲ 3 spots",
+        "note": "New featured snippet won"
+      },
+      {
+        "term": "\"automate video creation\"",
+        "value": "#4",
+        "delta": "▲ 11 spots",
+        "note": "Biggest single-keyword jump"
+      }
+    ]
+  },
+  "scenes": [
+    {
+      "id": "intro",
+      "duration": 4.6,
+      "backgroundColor": "#08201E",
+      "transition": "smoothup",
+      "transitionId": "traffic",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1920,
+          "height": 1080,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.6,
+          "svg": "<svg width='1920' height='1080' viewBox='0 0 1920 1080' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='seoIntro' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#0C2C28'/><stop offset='1' stop-color='#08201E'/></linearGradient><linearGradient id='seoFill' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#A3E635' stop-opacity='0.35'/><stop offset='1' stop-color='#A3E635' stop-opacity='0'/></linearGradient></defs><rect width='1920' height='1080' fill='url(#seoIntro)'/><path d='M120 860 L400 800 L640 700 L900 720 L1180 560 L1460 500 L1800 320' fill='none' stroke='#A3E635' stroke-width='6' stroke-linecap='round' stroke-linejoin='round' opacity='0.85'/><path d='M120 860 L400 800 L640 700 L900 720 L1180 560 L1460 500 L1800 320 L1800 940 L120 940 Z' fill='url(#seoFill)'/><circle cx='1800' cy='320' r='12' fill='#A3E635'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 120,
+          "y": 220,
+          "width": 1200,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.75,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.6,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='color:#A3E635; font-size:26px; font-weight:700; letter-spacing:6px;'>{{kicker}} · {{period}}</div><div style='margin-top:22px; color:#F2FBEA; font-size:114px; line-height:0.98; font-weight:700; letter-spacing:-3px;'>{{headline}}</div><div style='margin-top:36px; color:#8FB89F; font-size:31px; line-height:1.4; font-weight:500;'>{{subLine}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "traffic",
+      "duration": 4,
+      "backgroundColor": "#08201E",
+      "transition": "smoothleft",
+      "transitionId": "keyword",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1920,
+          "height": 1080,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4,
+          "svg": "<svg width='1920' height='1080' viewBox='0 0 1920 1080' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='seoTraffic' cx='0.5' cy='0.4' r='0.9'><stop offset='0' stop-color='#0E332E'/><stop offset='1' stop-color='#08201E'/></radialGradient></defs><rect width='1920' height='1080' fill='url(#seoTraffic)'/><rect x='360' y='240' width='1200' height='600' rx='40' fill='rgba(163,230,53,0.05)' stroke='rgba(163,230,53,0.3)' stroke-width='1.5'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 960,
+          "y": 360,
+          "width": 1100,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.3,
+          "enterEnd": 0.75,
+          "enterAnimation": "fade",
+          "exitEnd": 4,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='text-align:center; color:#A3E635; font-size:28px; font-weight:700; letter-spacing:6px;'>{{trafficLabel}}</div><div style='margin-top:24px; text-align:center; color:#F2FBEA; font-size:170px; line-height:0.9; font-weight:700; letter-spacing:-6px;'>{{trafficValue}}</div><div style='margin-top:36px; text-align:center;'><span style='display:inline-block; background:rgba(163,230,53,0.16); border:1.5px solid rgba(163,230,53,0.5); color:#A3E635; border-radius:999px; padding:12px 34px; font-size:30px; font-weight:700;'>{{trafficDelta}}</span></div>"
+        }
+      ]
+    },
+    {
+      "id": "keyword",
+      "iterate": "keywords",
+      "iterateAs": "k",
+      "duration": 3.4,
+      "backgroundColor": "#08201E",
+      "transition": "smoothup",
+      "transitionId": "outro",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1920,
+          "height": 1080,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.4,
+          "svg": "<svg width='1920' height='1080' viewBox='0 0 1920 1080' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='seoKw' x1='0' y1='0' x2='1' y2='0'><stop offset='0' stop-color='#0D302B'/><stop offset='1' stop-color='#08201E'/></linearGradient></defs><rect width='1920' height='1080' fill='url(#seoKw)'/><rect x='120' y='340' width='1680' height='400' rx='40' fill='rgba(255,255,255,0.03)' stroke='rgba(163,230,53,0.3)' stroke-width='1.5'/><rect x='120' y='340' width='10' height='400' rx='5' fill='#A3E635'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 200,
+          "y": 400,
+          "width": 1100,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.7,
+          "enterAnimation": "smoothright",
+          "exitEnd": 3.4,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='color:#7FA891; font-size:28px; font-weight:700; letter-spacing:2px;'>RANKING KEYWORD</div><div style='margin-top:16px; color:#F2FBEA; font-size:64px; line-height:1.05; font-weight:700; letter-spacing:-1px;'>{{k.term}}</div><div style='margin-top:24px; color:#8FB89F; font-size:28px; font-weight:500;'>{{k.note}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 1660,
+          "y": 540,
+          "anchor": "center-right",
+          "track": 11,
+          "enterBegin": 0.4,
+          "enterEnd": 0.85,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 3.4,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='text-align:right; color:#A3E635; font-size:150px; line-height:0.9; font-weight:700; letter-spacing:-4px;'>{{k.value}}</div><div style='margin-top:12px; text-align:right;'><span style='display:inline-block; background:rgba(163,230,53,0.16); color:#A3E635; border-radius:999px; padding:8px 22px; font-size:26px; font-weight:700;'>{{k.delta}}</span></div>"
+        }
+      ]
+    },
+    {
+      "id": "outro",
+      "duration": 4.8,
+      "backgroundColor": "#08201E",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1920,
+          "height": 1080,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.8,
+          "svg": "<svg width='1920' height='1080' viewBox='0 0 1920 1080' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='seoEnd' cx='0.5' cy='0.42' r='0.85'><stop offset='0' stop-color='#123B33'/><stop offset='1' stop-color='#08201E'/></radialGradient></defs><rect width='1920' height='1080' fill='url(#seoEnd)'/><path d='M820 360 H1100' stroke='#A3E635' stroke-width='5' stroke-linecap='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 960,
+          "y": 440,
+          "width": 1300,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.3,
+          "enterEnd": 0.8,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.8,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='text-align:center; color:#F2FBEA; font-size:80px; line-height:1.05; font-weight:700; letter-spacing:-2px;'>{{closingTitle}}</div><div style='margin-top:28px; text-align:center; color:#8FB89F; font-size:32px; line-height:1.4; font-weight:500;'>{{closingLine}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 960,
+          "y": 850,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.9,
+          "enterEnd": 1.3,
+          "enterAnimation": "fade",
+          "exitEnd": 4.8,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='text-align:center; color:#5A7A67; font-size:24px; font-weight:700; letter-spacing:5px;'>{{siteName}} · {{period}} SEO</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.16
+    }
+  ]
+}
