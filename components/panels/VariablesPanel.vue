@@ -17,6 +17,21 @@ const editor = useEditorStore()
 const variables = computed(() => project.variables)
 const names = computed(() => Object.keys(variables.value))
 
+/** Field names the project references through dot-path placeholders
+ *  ({{item.price}}, {{brand.color}}) — offered as key completions in the
+ *  object/array variable editors, whose own shape has no schema. */
+const fieldHints = computed(() => {
+  const text = JSON.stringify(project.exportRaw())
+  const out = new Set<string>()
+  const re = /\{\{\s*([a-zA-Z_$][\w$]*(?:\.[\w$]+)+)\s*\}\}/g
+  let m: RegExpExecArray | null
+  while ((m = re.exec(text))) {
+    const segs = m[1].split('.')
+    for (let i = 1; i < segs.length; i++) if (!/^\d+$/.test(segs[i])) out.add(segs[i])
+  }
+  return [...out]
+})
+
 /** Placeholder + iterate usage across the exported document (per root). */
 const usage = computed(() => {
   const exported = project.exportRaw()
@@ -111,7 +126,31 @@ function jsonValid(name: string): boolean {
   }
 }
 
+/** Live edit: keep the raw draft, and (debounced) commit the parsed value
+ *  whenever it's valid and actually changed — so the variable never goes
+ *  stale even if the editor never blurs. Invalid drafts show an error and
+ *  keep the last good value. */
+const commitTimers: Record<string, ReturnType<typeof setTimeout>> = {}
+function onJsonInput(name: string, value: string) {
+  jsonDrafts.value[name] = value
+  clearTimeout(commitTimers[name])
+  commitTimers[name] = setTimeout(() => {
+    try {
+      const parsed = parseTemplateJson(value)
+      jsonErrors.value[name] = ''
+      if (JSON.stringify(parsed) !== JSON.stringify(variables.value[name])) {
+        project.setVariable(name, parsed)
+      }
+    } catch (e: any) {
+      jsonErrors.value[name] = e.message
+    }
+  }, 350)
+}
+
+/** Blur/format flush: commit immediately and drop the draft so the text
+ *  reflows to the canonical serialization. */
 function commitJson(name: string) {
+  clearTimeout(commitTimers[name])
   const draft = jsonDrafts.value[name]
   if (draft === undefined) return
   try {
@@ -270,11 +309,12 @@ async function copyPlaceholder(name: string) {
                   format
                 </button>
               </div>
-              <UiCodeEditor
+              <UiJsonEditor
                 :model-value="jsonDraftFor(name)"
                 :rows="6"
-                @update:model-value="jsonDrafts[name] = $event"
-                @change="commitJson(name)"
+                :schema-keys="fieldHints"
+                @update:model-value="onJsonInput(name, $event)"
+                @blur="commitJson(name)"
               />
               <p v-if="jsonErrors[name]" class="err">{{ jsonErrors[name] }}</p>
               <p v-else-if="typeOf(name) === 'array'" class="hint">
