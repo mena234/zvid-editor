@@ -40,17 +40,21 @@ export async function fetchLibraryList(kind: string): Promise<LibraryItem[]> {
   return res.items
 }
 
-/** One page of a kind's items (?limit=&offset=) for scroll pagination. */
+/**
+ * One page of a kind's items (?limit=&offset=) for scroll pagination, with an
+ * optional case-insensitive search filter on title/slug/description.
+ */
 export async function fetchLibraryPage(
   kind: string,
   limit: number,
-  offset: number
+  offset: number,
+  q = ''
 ): Promise<LibraryPage> {
-  const key = `${kind}:${limit}:${offset}`
+  const key = `${kind}:${limit}:${offset}:${q}`
   const hit = pageCache.get(key)
   if (hit) return hit
   const res = await $fetch<LibraryPage>(`/api/library/${kind}`, {
-    query: { limit, offset },
+    query: q ? { limit, offset, q } : { limit, offset },
   })
   pageCache.set(key, res)
   return res

@@ -3,7 +3,6 @@ import { ref, computed, watch, onBeforeUnmount } from 'vue'
 import { useEditorContext } from '~/composables/useEditorContext'
 import {
   fetchLibraryContent,
-  fetchLibraryList,
   fetchLibraryPage,
   libraryErrorMessage,
   type LibraryItem,
@@ -61,37 +60,131 @@ function addText() {
 }
 
 /* ---------------- SVG shapes ----------------
-   Served by the orch content library ("shapes" kind) — the SVG markup
-   comes from the CDN, so shapes can be added without an editor deploy. */
-const svgShapes = ref<
-  { slug: string; title: string; svg: string; width: number; height: number }[]
->([])
+   Served by the orch content library ("shapes" kind) with scroll pagination
+   and search — the 1000-shape catalog would be far too heavy to load eagerly.
+   Grid previews come from meta.svg in the list response (backfilled for the
+   original shapes; fetchLibraryContent stays as a fallback), so a page render
+   costs one metadata request, not one CDN fetch per tile. */
+const SHAPE_PAGE_SIZE = 24
+/* Categories map to slug/description prefixes baked into the catalog
+   (orch scripts/lib/shapesCatalog.js) — the chip token ANDs with the text
+   search on the server. */
+const SHAPE_CATEGORIES = [
+  { key: '', label: 'All' },
+  { key: 'core-', label: 'Basic' },
+  { key: 'txt-', label: 'Text' },
+  { key: 'callout-', label: 'Callouts' },
+  { key: 'bg-', label: 'Backgrounds' },
+  { key: 'promo-', label: 'Marketing' },
+  { key: 'chart-', label: 'Charts' },
+  { key: 'frame-', label: 'Frames' },
+  { key: 'motion-', label: 'Motion' },
+  { key: 'ui-', label: 'UI' },
+  { key: 'deco-', label: 'Accents' },
+] as const
+const shapeCategory = ref('')
+type ShapeTile = { slug: string; title: string; svg: string; width: number; height: number }
+const svgShapes = ref<ShapeTile[]>([])
+const shapesTotal = ref(0)
+const shapesHasMore = ref(false)
 const shapesPending = ref(false)
+const shapesMorePending = ref(false)
 const shapesError = ref('')
+const shapeQuery = ref('')
+const shapeSentinel = ref<HTMLElement | null>(null)
+let shapeObserver: IntersectionObserver | null = null
+let shapeQueryTimer: ReturnType<typeof setTimeout> | null = null
+let shapeLoadId = 0
+
+async function resolveShapeTile(it: LibraryItem): Promise<ShapeTile> {
+  if (it.meta?.svg) {
+    return {
+      slug: it.slug,
+      title: it.title,
+      svg: it.meta.svg,
+      width: it.meta.width ?? 300,
+      height: it.meta.height ?? 300,
+    }
+  }
+  const content = await fetchLibraryContent('shapes', it.slug)
+  return {
+    slug: it.slug,
+    title: it.title,
+    svg: content.svg,
+    width: content.width,
+    height: content.height,
+  }
+}
+
+function shapeSearchQ() {
+  return [shapeCategory.value, shapeQuery.value.trim()].filter(Boolean).join(' ')
+}
 
 async function loadShapes() {
+  const id = ++shapeLoadId
   shapesPending.value = true
   shapesError.value = ''
   try {
-    const items = await fetchLibraryList('shapes')
-    svgShapes.value = await Promise.all(
-      items.map(async (it) => {
-        const content = await fetchLibraryContent('shapes', it.slug)
-        return {
-          slug: it.slug,
-          title: it.title,
-          svg: content.svg,
-          width: content.width,
-          height: content.height,
-        }
-      })
-    )
+    const page = await fetchLibraryPage('shapes', SHAPE_PAGE_SIZE, 0, shapeSearchQ())
+    const tiles = await Promise.all(page.items.map(resolveShapeTile))
+    if (id !== shapeLoadId) return // a newer search superseded this load
+    svgShapes.value = tiles
+    shapesTotal.value = page.total
+    shapesHasMore.value = page.hasMore
   } catch (e) {
-    shapesError.value = libraryErrorMessage(e)
+    if (id === shapeLoadId) shapesError.value = libraryErrorMessage(e)
   } finally {
-    shapesPending.value = false
+    if (id === shapeLoadId) shapesPending.value = false
   }
 }
+
+async function loadMoreShapes() {
+  if (shapesMorePending.value || shapesPending.value || !shapesHasMore.value) return
+  const id = shapeLoadId
+  shapesMorePending.value = true
+  try {
+    const page = await fetchLibraryPage(
+      'shapes',
+      SHAPE_PAGE_SIZE,
+      svgShapes.value.length,
+      shapeSearchQ()
+    )
+    const tiles = await Promise.all(page.items.map(resolveShapeTile))
+    if (id !== shapeLoadId) return
+    svgShapes.value = [...svgShapes.value, ...tiles]
+    shapesTotal.value = page.total
+    shapesHasMore.value = page.hasMore
+  } catch (e) {
+    if (id === shapeLoadId) shapesError.value = libraryErrorMessage(e)
+  } finally {
+    shapesMorePending.value = false
+  }
+}
+
+// Debounced search: reload the first page whenever the query settles.
+watch(shapeQuery, () => {
+  if (shapeQueryTimer) clearTimeout(shapeQueryTimer)
+  shapeQueryTimer = setTimeout(() => loadShapes(), 250)
+})
+function pickShapeCategory(key: string) {
+  if (shapeCategory.value === key) return
+  shapeCategory.value = key
+  loadShapes()
+}
+
+// Infinite scroll for the shape grid (same pattern as the canvas presets).
+watch(shapeSentinel, (el) => {
+  shapeObserver?.disconnect()
+  shapeObserver = null
+  if (!el) return
+  shapeObserver = new IntersectionObserver(
+    (entries) => {
+      if (entries.some((entry) => entry.isIntersecting)) loadMoreShapes()
+    },
+    { rootMargin: '160px' }
+  )
+  shapeObserver.observe(el)
+})
 
 function addSvg(shape: { svg: string; width: number; height: number }) {
   const added = project.addVisual(editor.context, {
@@ -187,7 +280,11 @@ watch(canvasSentinel, (el) => {
   )
   canvasObserver.observe(el)
 })
-onBeforeUnmount(() => canvasObserver?.disconnect())
+onBeforeUnmount(() => {
+  canvasObserver?.disconnect()
+  shapeObserver?.disconnect()
+  if (shapeQueryTimer) clearTimeout(shapeQueryTimer)
+})
 
 function onCanvasEnter(slug: string) {
   hoverCanvasSlug.value = slug
@@ -346,22 +443,53 @@ const kindLabel = computed(
         </p>
       </form>
 
-      <div v-if="showShapes" class="shape-grid">
-        <p v-if="shapesPending" class="hint grid-span">Loading shapes…</p>
-        <template v-else-if="shapesError">
-          <p class="hint grid-span">⚠ {{ shapesError }}</p>
-          <button class="btn sm" @click="loadShapes()">Retry</button>
-        </template>
-        <button
-          v-for="s in svgShapes"
-          :key="s.slug"
-          class="shape-card"
-          :title="s.title"
-          @click="addSvg(s)"
-        >
-          <span class="shape-preview" v-html="s.svg" />
-          <span>{{ s.title }}</span>
-        </button>
+      <div v-if="showShapes" class="shape-list">
+        <input
+          v-model="shapeQuery"
+          class="ctl shape-search"
+          type="search"
+          placeholder="Search shapes… (arrow, badge, wave)"
+          spellcheck="false"
+        />
+        <div class="shape-cats">
+          <button
+            v-for="c in SHAPE_CATEGORIES"
+            :key="c.key"
+            class="shape-cat"
+            :class="{ active: shapeCategory === c.key }"
+            @click="pickShapeCategory(c.key)"
+          >
+            {{ c.label }}
+          </button>
+        </div>
+        <div class="shape-grid">
+          <p v-if="shapesPending" class="hint grid-span">Loading shapes…</p>
+          <template v-else-if="shapesError && !svgShapes.length">
+            <p class="hint grid-span">⚠ {{ shapesError }}</p>
+            <button class="btn sm" @click="loadShapes()">Retry</button>
+          </template>
+          <p v-else-if="!svgShapes.length" class="hint grid-span">
+            No shapes match “{{ shapeQuery }}”
+          </p>
+          <button
+            v-for="s in svgShapes"
+            :key="s.slug"
+            class="shape-card"
+            :title="s.title"
+            @click="addSvg(s)"
+          >
+            <span class="shape-preview" v-html="s.svg" />
+            <span>{{ s.title }}</span>
+          </button>
+        </div>
+        <div ref="shapeSentinel" class="canvas-sentinel" aria-hidden="true" />
+        <p v-if="shapesMorePending" class="hint canvas-status">Loading more…</p>
+        <p v-else-if="shapesError && svgShapes.length" class="hint canvas-status">
+          ⚠ {{ shapesError }}
+        </p>
+        <p v-else-if="!shapesHasMore && svgShapes.length" class="hint canvas-status">
+          All {{ shapesTotal }} shapes loaded
+        </p>
       </div>
 
       <div v-if="showCanvases" class="canvas-list">
@@ -504,11 +632,42 @@ const kindLabel = computed(
   display: flex;
   gap: 6px;
 }
+.shape-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 10px;
+}
+.shape-search {
+  width: 100%;
+}
+.shape-cats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.shape-cat {
+  padding: 3px 8px;
+  border: 1px solid var(--border-1);
+  border-radius: 999px;
+  background: var(--bg-2);
+  color: var(--text-2);
+  font-size: 10px;
+  font-weight: 600;
+}
+.shape-cat:hover {
+  border-color: var(--accent);
+  color: var(--text-0);
+}
+.shape-cat.active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+}
 .shape-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 6px;
-  margin-top: 10px;
 }
 .shape-grid .grid-span {
   grid-column: 1 / -1;
