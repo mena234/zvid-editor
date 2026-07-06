@@ -284,6 +284,9 @@ export const sceneSchema = z
 
 export const projectSchema = z
   .object({
+    /** 'video' (default) | 'image' — still-image renders (D1). Kept loose so
+     *  the validation report flags bad values instead of failing the import. */
+    type: strOpt,
     name: strOpt,
     resolution: z.enum(RESOLUTION_PRESET_NAMES as [string, ...string[]]).optional(),
     width: numOpt,
@@ -293,6 +296,12 @@ export const projectSchema = z
     backgroundColor: strOpt,
     outputFormat: strOpt,
     thumbnail: strOpt,
+    /** image-only: capture time (s) for animated presets; omit = settled end state */
+    snapshotTime: numOpt,
+    /** image-only: jpg/webp encode quality 1–100 */
+    quality: numOpt,
+    /** image-only: alpha background instead of backgroundColor (png/webp) */
+    transparent: boolOpt,
     visuals: z.array(visualItemSchema).optional(),
     audios: z.array(audioItemSchema).optional(),
     subtitle: subtitleSchema.optional(),
@@ -331,6 +340,8 @@ export type SceneDoc = Omit<RawScene, 'visuals' | 'audios'> & {
 }
 
 export interface ProjectDoc {
+  /** 'video' (default) | 'image' — drives the editor's image mode */
+  type?: string
   name?: string
   resolution?: string
   width?: number
@@ -340,6 +351,10 @@ export interface ProjectDoc {
   backgroundColor?: string
   outputFormat?: string
   thumbnail?: string
+  /** image-only fields (see projectSchema) */
+  snapshotTime?: number
+  quality?: number
+  transparent?: boolean
   visuals: VisualDoc[]
   audios: AudioDoc[]
   subtitle?: RawSubtitle

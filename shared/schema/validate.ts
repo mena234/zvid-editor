@@ -1,6 +1,7 @@
 import {
   XFADE_EFFECTS,
   SUPPORTED_FORMATS,
+  SUPPORTED_IMAGE_FORMATS,
   MAX_CUSTOM_CODE_ANIMATION_DURATION,
 } from './constants'
 import { canonicalVisualType } from './types'
@@ -255,21 +256,155 @@ function checkScene(
   }
 }
 
+/** Image projects reject all time-domain fields (plan D1/D2) — mirror of
+ *  orch's validation branch so errors surface before submission. */
+function checkImageProject(doc: ProjectDoc, issues: ValidationIssue[]) {
+  const fmt = (doc.outputFormat ?? 'png').toLowerCase()
+  if (!SUPPORTED_IMAGE_FORMATS.includes(fmt as any)) {
+    issues.push({
+      level: 'error',
+      path: 'outputFormat',
+      message: `Unsupported image format "${doc.outputFormat}". Allowed: ${SUPPORTED_IMAGE_FORMATS.join(', ')}.`,
+    })
+  }
+  const forbidden: [string, unknown][] = [
+    ['duration', doc.duration],
+    ['frameRate', doc.frameRate],
+    ['thumbnail', doc.thumbnail || undefined],
+  ]
+  for (const [key, value] of forbidden) {
+    if (value !== undefined) {
+      issues.push({
+        level: 'error',
+        path: key,
+        message: `"${key}" is not applicable to image renders — remove it.`,
+      })
+    }
+  }
+  if (doc.audios.length) {
+    issues.push({
+      level: 'error',
+      path: 'audios',
+      message: 'Audio tracks are not applicable to image renders.',
+    })
+  }
+  if (doc.scenes?.length) {
+    issues.push({
+      level: 'error',
+      path: 'scenes',
+      message: 'Scenes are not applicable to image renders.',
+    })
+  }
+  if (doc.subtitle?.captions?.length || doc.subtitle?.styles) {
+    issues.push({
+      level: 'error',
+      path: 'subtitle',
+      message: 'Subtitles are not applicable to image renders.',
+    })
+  }
+  if (doc.transparent === true && (fmt === 'jpg' || fmt === 'jpeg')) {
+    issues.push({
+      level: 'error',
+      path: 'transparent',
+      message: 'transparent is not supported with jpg output (no alpha channel) — use png or webp.',
+    })
+  }
+  if (doc.quality !== undefined) {
+    if (fmt === 'png') {
+      issues.push({
+        level: 'error',
+        path: 'quality',
+        message: 'quality applies to jpg/webp outputs only (png is lossless).',
+      })
+    } else if (doc.quality < 1 || doc.quality > 100) {
+      issues.push({
+        level: 'error',
+        path: 'quality',
+        message: `quality must be between 1 and 100 (got ${doc.quality}).`,
+      })
+    }
+  }
+  if (doc.snapshotTime !== undefined && doc.snapshotTime < 0) {
+    issues.push({
+      level: 'error',
+      path: 'snapshotTime',
+      message: 'snapshotTime cannot be negative.',
+    })
+  }
+
+  doc.visuals.forEach((v, i) => {
+    const path = `visuals[${i}]`
+    const type = canonicalVisualType(v.type)
+    if (type === 'VIDEO' || type === 'GIF') {
+      issues.push({
+        level: 'error',
+        path,
+        message: `${type} elements are not allowed in image projects — static sources only (image/text/svg/shape/design).`,
+      })
+    }
+    for (const key of [
+      'enterBegin',
+      'enterEnd',
+      'exitBegin',
+      'exitEnd',
+      'enterAnimation',
+      'exitAnimation',
+      'transition',
+      'transitionId',
+      'transitionDuration',
+    ]) {
+      const val = (v as any)[key]
+      if (val !== undefined && val !== null) {
+        issues.push({
+          level: 'error',
+          path: `${path}.${key}`,
+          message: `"${key}" is a timing field — not applicable to image renders (everything is always on).`,
+        })
+      }
+    }
+  })
+}
+
 export function validateProjectDoc(doc: ProjectDoc): ValidationIssue[] {
   const issues: ValidationIssue[] = []
   const defaults = resolveProjectDefaults(doc)
+  const isImage = doc.type === 'image'
 
-  if (doc.outputFormat && !SUPPORTED_FORMATS.includes(doc.outputFormat.toLowerCase() as any)) {
+  if (doc.type !== undefined && doc.type !== 'video' && doc.type !== 'image') {
+    issues.push({
+      level: 'error',
+      path: 'type',
+      message: `Project type must be "video" or "image" (got "${doc.type}").`,
+    })
+  }
+  if (isImage) checkImageProject(doc, issues)
+
+  if (
+    !isImage &&
+    doc.outputFormat &&
+    !SUPPORTED_FORMATS.includes(doc.outputFormat.toLowerCase() as any)
+  ) {
     issues.push({
       level: 'error',
       path: 'outputFormat',
       message: `Unsupported format "${doc.outputFormat}". Allowed: ${SUPPORTED_FORMATS.join(', ')}.`,
     })
   }
-  if (doc.duration !== undefined && doc.duration <= 0) {
+  if (!isImage) {
+    for (const key of ['snapshotTime', 'quality', 'transparent'] as const) {
+      if (doc[key] !== undefined) {
+        issues.push({
+          level: 'error',
+          path: key,
+          message: `"${key}" is only applicable to image renders (type: "image").`,
+        })
+      }
+    }
+  }
+  if (!isImage && doc.duration !== undefined && doc.duration <= 0) {
     issues.push({ level: 'error', path: 'duration', message: 'duration must be > 0.' })
   }
-  if (doc.frameRate !== undefined && (doc.frameRate <= 0 || doc.frameRate > 120)) {
+  if (!isImage && doc.frameRate !== undefined && (doc.frameRate <= 0 || doc.frameRate > 120)) {
     issues.push({
       level: 'error',
       path: 'frameRate',

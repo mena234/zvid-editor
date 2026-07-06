@@ -20,6 +20,26 @@ const errors = computed(() =>
   validateProjectDoc(project.doc).filter((i) => i.level === 'error')
 )
 
+/* image projects: format/quality/transparency knobs live on the doc so they
+   round-trip through save/export like every other project setting */
+const isImage = computed(() => project.isImage)
+const imageFormat = computed(() => (project.doc.outputFormat ?? 'png').toLowerCase())
+const supportsQuality = computed(
+  () => isImage.value && ['jpg', 'jpeg', 'webp'].includes(imageFormat.value)
+)
+const supportsTransparent = computed(
+  () => isImage.value && ['png', 'webp'].includes(imageFormat.value)
+)
+
+function setImageFormat(e: Event) {
+  const outputFormat = (e.target as HTMLSelectElement).value
+  const patch: Record<string, any> = { outputFormat }
+  // drop knobs the new format doesn't support (orch rejects them)
+  if (outputFormat === 'png') patch.quality = undefined
+  if (outputFormat === 'jpg') patch.transparent = undefined
+  project.patchProject(patch)
+}
+
 type Status = 'idle' | 'connecting' | 'queued' | 'rendering' | 'done' | 'error'
 const status = ref<Status>('idle')
 const progress = ref(0)
@@ -145,12 +165,13 @@ async function start() {
 }
 
 const fileName = computed(() => {
-  if (!videoUrl.value) return 'render.mp4'
+  const fallback = isImage.value ? `render.${imageFormat.value}` : 'render.mp4'
+  if (!videoUrl.value) return fallback
   try {
     const last = new URL(videoUrl.value).pathname.split('/').pop()
-    return last || 'render.mp4'
+    return last || fallback
   } catch {
-    return 'render.mp4'
+    return fallback
   }
 })
 
@@ -158,9 +179,9 @@ onBeforeUnmount(unbindAll)
 </script>
 
 <template>
-  <UiModal title="Render video" width="640px" @close="editor.closeModal()">
+  <UiModal :title="isImage ? 'Render image' : 'Render video'" width="640px" @close="editor.closeModal()">
     <p class="hint">
-      Renders in the Zvid cloud — the finished video lands in
+      Renders in the Zvid cloud — the finished {{ isImage ? 'image' : 'video' }} lands in
       <a :href="`${dashUrl}/videos`" target="_blank" rel="noopener">your dashboard</a>
       and stays available on the CDN.
     </p>
@@ -181,16 +202,56 @@ onBeforeUnmount(unbindAll)
 
     <template v-else>
       <div v-if="status === 'idle'" class="center">
+        <div v-if="isImage" class="img-opts">
+          <label class="opt">
+            <span class="opt-label">Format</span>
+            <select class="ctl" :value="imageFormat" @change="setImageFormat">
+              <option value="png">png</option>
+              <option value="jpg">jpg</option>
+              <option value="webp">webp</option>
+            </select>
+          </label>
+          <label class="opt" :class="{ disabled: !supportsQuality }">
+            <span class="opt-label">
+              Quality <b v-if="supportsQuality" class="mono">{{ project.doc.quality ?? 90 }}</b>
+            </span>
+            <input
+              type="range"
+              min="1"
+              max="100"
+              :value="project.doc.quality ?? 90"
+              :disabled="!supportsQuality"
+              :title="supportsQuality ? 'Encode quality (jpg/webp)' : 'png is lossless — quality applies to jpg/webp'"
+              @change="project.patchProject({ quality: Number(($event.target as HTMLInputElement).value) })"
+            />
+          </label>
+          <label
+            class="opt check"
+            :class="{ disabled: !supportsTransparent }"
+            :title="supportsTransparent ? 'Alpha background instead of the canvas color' : 'jpg has no alpha channel — use png or webp'"
+          >
+            <input
+              type="checkbox"
+              :checked="project.doc.transparent === true"
+              :disabled="!supportsTransparent"
+              @change="project.patchProject({ transparent: ($event.target as HTMLInputElement).checked || undefined })"
+            />
+            <span>Transparent background</span>
+          </label>
+        </div>
         <button class="btn primary lg" @click="start">
           <UiIcon name="render" :size="15" /> Start render
         </button>
         <p class="hint">
-          Output: {{ project.defaults.name }}.{{ project.defaults.outputFormat }} ·
-          {{ project.defaults.width }}×{{ project.defaults.height }} ·
-          {{ project.defaults.duration }}s
+          Output: {{ project.defaults.name }}.{{ isImage ? imageFormat : project.defaults.outputFormat }} ·
+          {{ project.defaults.width }}×{{ project.defaults.height
+          }}<template v-if="!isImage"> · {{ project.defaults.duration }}s</template>
           <template v-if="auth.credits?.balance != null">
             · {{ auth.credits.balance }} credits available
           </template>
+        </p>
+        <p v-if="isImage" class="hint">
+          1 credit per image render — tip: bulk renders bill 10 images per credit.
         </p>
       </div>
 
@@ -215,7 +276,9 @@ onBeforeUnmount(unbindAll)
       </div>
 
       <div v-else-if="status === 'done'" class="done">
-        <video :src="videoUrl" controls autoplay class="result" />
+        <!-- checkerboard behind transparent pngs/webps -->
+        <img v-if="isImage" :src="videoUrl" class="result checker" alt="rendered image" />
+        <video v-else :src="videoUrl" controls autoplay class="result" />
         <div class="row">
           <a class="btn primary" :href="videoUrl" :download="fileName" target="_blank" rel="noopener">
             <UiIcon name="download" :size="13" /> Download
@@ -276,6 +339,42 @@ onBeforeUnmount(unbindAll)
   max-height: 46vh;
   background: #000;
   border-radius: var(--radius-m);
+}
+img.result {
+  object-fit: contain;
+}
+.result.checker {
+  background:
+    conic-gradient(var(--bg-3) 25%, var(--bg-1) 0 50%, var(--bg-3) 0 75%, var(--bg-1) 0)
+    0 0 / 20px 20px;
+}
+.img-opts {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 10px 14px;
+  border: 1px solid var(--border-1);
+  border-radius: var(--radius-m);
+  background: var(--bg-2);
+}
+.opt {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--text-2);
+}
+.opt-label {
+  font-weight: 600;
+}
+.opt.check {
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+}
+.opt.disabled {
+  opacity: 0.45;
 }
 .row {
   display: flex;

@@ -21,6 +21,24 @@ import { useEditorStore } from '~/stores/editor'
 const STORAGE_KEY = 'zvid-editor:autosave'
 const HISTORY_LIMIT = 100
 
+/** Time-domain item fields never allowed in image projects (plan D2). */
+const IMAGE_STRIPPED_ITEM_FIELDS = [
+  'enterBegin',
+  'enterEnd',
+  'exitBegin',
+  'exitEnd',
+  'enterAnimation',
+  'exitAnimation',
+  'transition',
+  'transitionId',
+  'transitionDuration',
+  'videoBegin',
+  'videoEnd',
+  'videoDuration',
+  'volume',
+  'speed',
+] as const
+
 interface HistoryState {
   stack: string[]
   index: number
@@ -42,6 +60,10 @@ export const useProjectStore = defineStore('project', {
   getters: {
     defaults(state) {
       return resolveProjectDefaults(state.doc)
+    },
+    /** Still-image project (D6): timeline/audio/subtitle UI collapses away. */
+    isImage(state): boolean {
+      return state.doc.type === 'image'
     },
     hasScenes(state): boolean {
       return !!state.doc.scenes?.length
@@ -162,8 +184,8 @@ export const useProjectStore = defineStore('project', {
     },
 
     /* ---------------- project lifecycle ---------------- */
-    newProject() {
-      this.doc = newProjectDoc()
+    newProject(type: 'video' | 'image' = 'video') {
+      this.doc = newProjectDoc(type)
       this.importWarnings = []
       this.resetHistory()
       this.autosaveNow()
@@ -233,12 +255,20 @@ export const useProjectStore = defineStore('project', {
 
     addVisual(context: string, item: Record<string, any>): VisualDoc {
       const doc: VisualDoc = { ...item, _id: makeId('vis') } as VisualDoc
+      if (this.isImage) {
+        // image projects: everything is "always on" — timing/transition
+        // fields are rejected by orch/package, so never let them in
+        for (const k of IMAGE_STRIPPED_ITEM_FIELDS) delete (doc as any)[k]
+      }
       this.visualsOf(context).push(doc)
       this.commit()
       return doc
     },
     addAudio(context: string, item: Record<string, any>): AudioDoc {
       const doc: AudioDoc = { ...item, _id: makeId('aud') } as AudioDoc
+      // image projects have no audio — the panels are hidden, this is the
+      // backstop (returned doc is simply not attached to the document)
+      if (this.isImage) return doc
       this.audiosOf(context).push(doc)
       this.commit()
       return doc

@@ -22,6 +22,13 @@ const stats = computed(() => {
     captions: doc.subtitle?.captions?.length ?? 0,
   }
 })
+
+/** animated presets (customCode) make snapshotTime meaningful for images */
+const hasAnimatedContent = computed(() =>
+  project.doc.visuals.some(
+    (v) => v.customCode?.js || v.customCode?.css || v.customCode?.animationDuration
+  )
+)
 </script>
 
 <template>
@@ -47,7 +54,13 @@ const stats = computed(() => {
       </p>
     </UiSection>
 
-    <UiSection title="Thumbnail" collapsible :start-open="!!project.doc.thumbnail">
+    <!-- an image is its own thumbnail; the field is video-only -->
+    <UiSection
+      v-if="!project.isImage"
+      title="Thumbnail"
+      collapsible
+      :start-open="!!project.doc.thumbnail"
+    >
       <UiField label="Image URL" hint="Embedded as the video's cover/thumbnail stream">
         <input
           class="ctl mono"
@@ -61,6 +74,25 @@ const stats = computed(() => {
           "
         />
       </UiField>
+    </UiSection>
+
+    <UiSection v-if="project.isImage && hasAnimatedContent" title="Snapshot time">
+      <UiField
+        label="Capture at (seconds)"
+        hint="This canvas contains animated presets. Leave empty to capture the settled end state (intro animations completed); set a time to capture that exact animation frame."
+      >
+        <UiNumberInput
+          :model-value="project.doc.snapshotTime"
+          :min="0"
+          :step="0.1"
+          placeholder="settled (default)"
+          @update:model-value="project.patchProject({ snapshotTime: $event })"
+        />
+      </UiField>
+      <p class="hint">
+        The stage preview plays animations live — the capture time applies to
+        the rendered image.
+      </p>
     </UiSection>
 
     <UiSection title="Validation">

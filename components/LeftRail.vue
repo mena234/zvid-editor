@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useEditorStore } from '~/stores/editor'
 import { useProjectStore } from '~/stores/project'
-import { computed } from 'vue'
+import { computed, watch } from 'vue'
 
 const editor = useEditorStore()
 const project = useProjectStore()
@@ -19,6 +19,19 @@ const TABS = [
   { id: 'subtitles', icon: 'subtitles', label: 'Subtitles' },
   { id: 'variables', icon: 'json', label: 'Variables' },
 ] as const
+
+/** image projects compose static sources only (D2) — no time-domain tabs */
+const HIDDEN_IN_IMAGE_MODE = new Set(['videos', 'audio', 'gifs', 'scenes', 'subtitles'])
+const tabs = computed(() =>
+  project.isImage ? TABS.filter((t) => !HIDDEN_IN_IMAGE_MODE.has(t.id)) : TABS
+)
+watch(
+  () => project.isImage,
+  (isImage) => {
+    if (isImage && HIDDEN_IN_IMAGE_MODE.has(editor.leftPanel)) editor.leftPanel = 'images'
+  },
+  { immediate: true }
+)
 
 /** media tab id → upload/stock kind */
 const MEDIA_KIND = {
@@ -40,7 +53,7 @@ const variableCount = computed(() => Object.keys(project.variables).length)
   <aside class="left-rail">
     <nav class="rail-tabs">
       <button
-        v-for="tab in TABS"
+        v-for="tab in tabs"
         :key="tab.id"
         class="rail-tab"
         :class="{ active: editor.leftPanel === tab.id }"

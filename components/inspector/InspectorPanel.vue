@@ -24,9 +24,11 @@ const type = computed(() =>
 
 const TABS = computed(() => {
   if (!visual.value) return []
+  // image mode: no Timing tab — everything is "always on" (template
+  // bindings move under Design so they stay reachable)
   return [
     { id: 'design', label: 'Design' },
-    { id: 'timing', label: 'Timing' },
+    ...(project.isImage ? [] : [{ id: 'timing', label: 'Timing' }]),
     { id: 'effects', label: 'Effects' },
     { id: 'json', label: 'JSON' },
   ]
@@ -76,13 +78,14 @@ const activeTab = computed({
           <InspectorSvgSection v-else-if="type === 'SVG'" :item="visual" />
           <InspectorMediaSection v-else :item="visual" />
           <InspectorLayoutSection :item="visual" />
+          <InspectorTemplateSection v-if="project.isImage" :item="visual" />
         </template>
         <template v-else-if="activeTab === 'timing'">
           <InspectorTimingSection :item="visual" />
           <InspectorTemplateSection :item="visual" />
         </template>
         <template v-else-if="activeTab === 'effects'">
-          <InspectorAnimationSection :item="visual" />
+          <InspectorAnimationSection v-if="!project.isImage" :item="visual" />
           <InspectorFilterSection
             v-if="type === 'VIDEO' || type === 'IMAGE' || type === 'SVG'"
             :item="visual"

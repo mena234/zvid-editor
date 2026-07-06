@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
 import { useProjectStore } from '~/stores/project'
 import { useEditorStore } from '~/stores/editor'
 import { useCloud } from '~/composables/useCloud'
@@ -14,6 +14,32 @@ const editor = useEditorStore()
 const cloud = useCloud()
 
 const dims = computed(() => project.defaults)
+const isImage = computed(() => project.isImage)
+
+/** image projects encode to png/jpg/webp (jpeg normalizes to jpg upstream) */
+const IMAGE_FORMATS = ['png', 'jpg', 'webp'] as const
+const formatOptions = computed(() =>
+  isImage.value ? IMAGE_FORMATS : SUPPORTED_FORMATS
+)
+
+/* "New" chooser: video or image project */
+const newMenuOpen = ref(false)
+const newMenuRoot = ref<HTMLElement | null>(null)
+function onDocClick(e: MouseEvent) {
+  if (newMenuOpen.value && newMenuRoot.value && !newMenuRoot.value.contains(e.target as Node)) {
+    newMenuOpen.value = false
+  }
+}
+onMounted(() => document.addEventListener('mousedown', onDocClick))
+onBeforeUnmount(() => document.removeEventListener('mousedown', onDocClick))
+
+function startNew(type: 'video' | 'image') {
+  newMenuOpen.value = false
+  project.newProject(type)
+  editor.clearSelection()
+  editor.setContext('root')
+  editor.setCloudProject(null)
+}
 
 const resolutionLabel = (r: string) => {
   const p = RESOLUTION_PRESETS[r as keyof typeof RESOLUTION_PRESETS]
@@ -95,31 +121,35 @@ function setResolution(e: Event) {
 
       <span class="sep" />
 
-      <label class="mini-field" title="Timeline duration (seconds)">
-        <UiIcon name="clock" :size="13" />
-        <UiNumberInput
-          class="w-56"
-          :model-value="project.doc.duration"
-          :min="0.1"
-          :step="0.5"
-          placeholder="10"
-          @update:model-value="project.patchProject({ duration: $event })"
-        />
-        <span class="suffix">s</span>
-      </label>
+      <span v-if="isImage" class="dim-badge mode-badge" title="Still-image project">IMAGE</span>
 
-      <label class="mini-field" title="Frame rate">
-        <UiIcon name="film" :size="13" />
-        <UiNumberInput
-          class="w-48"
-          :model-value="project.doc.frameRate"
-          :min="1"
-          :max="120"
-          placeholder="30"
-          @update:model-value="project.patchProject({ frameRate: $event })"
-        />
-        <span class="suffix">fps</span>
-      </label>
+      <template v-if="!isImage">
+        <label class="mini-field" title="Timeline duration (seconds)">
+          <UiIcon name="clock" :size="13" />
+          <UiNumberInput
+            class="w-56"
+            :model-value="project.doc.duration"
+            :min="0.1"
+            :step="0.5"
+            placeholder="10"
+            @update:model-value="project.patchProject({ duration: $event })"
+          />
+          <span class="suffix">s</span>
+        </label>
+
+        <label class="mini-field" title="Frame rate">
+          <UiIcon name="film" :size="13" />
+          <UiNumberInput
+            class="w-48"
+            :model-value="project.doc.frameRate"
+            :min="1"
+            :max="120"
+            placeholder="30"
+            @update:model-value="project.patchProject({ frameRate: $event })"
+          />
+          <span class="suffix">fps</span>
+        </label>
+      </template>
 
       <label class="mini-field" title="Background color">
         <input
@@ -132,11 +162,11 @@ function setResolution(e: Event) {
 
       <select
         class="ctl"
-        :value="project.doc.outputFormat ?? 'mp4'"
+        :value="project.doc.outputFormat ?? (isImage ? 'png' : 'mp4')"
         title="Output format"
         @change="project.patchProject({ outputFormat: ($event.target as HTMLSelectElement).value })"
       >
-        <option v-for="f in SUPPORTED_FORMATS" :key="f" :value="f">{{ f }}</option>
+        <option v-for="f in formatOptions" :key="f" :value="f">{{ f }}</option>
       </select>
     </div>
 
@@ -176,9 +206,19 @@ function setResolution(e: Event) {
     <button class="btn ghost" title="Load an example project" @click="editor.openModal('examples')">
       <UiIcon name="folder" :size="14" /> Examples
     </button>
-    <button class="btn ghost" title="New empty project" @click="project.newProject(); editor.clearSelection()">
-      New
-    </button>
+    <div ref="newMenuRoot" class="new-wrap">
+      <button class="btn ghost" title="New empty project" @click="newMenuOpen = !newMenuOpen">
+        New <UiIcon name="chevron_down" :size="12" />
+      </button>
+      <div v-if="newMenuOpen" class="new-menu">
+        <button class="item" @click="startNew('video')">
+          <UiIcon name="video" :size="14" /> Video project
+        </button>
+        <button class="item" @click="startNew('image')">
+          <UiIcon name="image" :size="14" /> Image project
+        </button>
+      </div>
+    </div>
     <button class="btn" @click="editor.openModal('import')">
       <UiIcon name="upload" :size="14" /> Import
     </button>
@@ -195,7 +235,7 @@ function setResolution(e: Event) {
     </button>
     <button
       class="btn"
-      title="Render this project to a video in the Zvid cloud"
+      :title="`Render this project to ${isImage ? 'an image' : 'a video'} in the Zvid cloud`"
       @click="editor.openModal('render')"
     >
       <UiIcon name="render" :size="14" /> Render
@@ -326,6 +366,47 @@ function setResolution(e: Event) {
   align-items: center;
   gap: 5px;
   color: var(--text-2);
+}
+.mode-badge {
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
+}
+.new-wrap {
+  position: relative;
+}
+.new-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  min-width: 160px;
+  padding: 5px;
+  background: var(--bg-2);
+  border: 1px solid var(--border-1);
+  border-radius: var(--radius-m);
+  box-shadow: var(--shadow-2);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.new-menu .item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 9px;
+  border: none;
+  border-radius: var(--radius-s);
+  background: none;
+  color: var(--text-1);
+  font-size: 12px;
+  font-weight: 600;
+  text-align: left;
+}
+.new-menu .item:hover {
+  background: var(--bg-3);
+  color: var(--text-0);
 }
 .suffix {
   font-size: 10px;

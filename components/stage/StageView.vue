@@ -326,6 +326,13 @@ function onStockDrop(e: DragEvent) {
   stockDropActive.value = false
   const payload = parseStockDragData(e)
   if (!payload || !frameEl.value) return
+  if (project.isImage && payload.kind !== 'IMAGE') {
+    editor.notify(
+      `${payload.kind === 'GIF' ? 'GIFs' : 'Videos'} can't be used in an image project — static sources only`,
+      'error'
+    )
+    return
+  }
   const rect = frameEl.value.getBoundingClientRect()
   const at = {
     x: clamp((e.clientX - rect.left) / scale.value, 0, projW.value),
@@ -340,7 +347,10 @@ function onStockDrop(e: DragEvent) {
   })
   const added = project.addVisual(editor.context, visual)
   editor.selectVisual(added._id)
-  editor.notify(`${payload.kind === 'GIF' ? 'GIF' : payload.kind.toLowerCase()} added at the playhead`, 'success')
+  editor.notify(
+    `${payload.kind === 'GIF' ? 'GIF' : payload.kind.toLowerCase()} added${project.isImage ? '' : ' at the playhead'}`,
+    'success'
+  )
 }
 
 /* ---------------- context menu ---------------- */

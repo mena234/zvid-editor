@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, computed } from 'vue'
+import { onMounted, computed, watch } from 'vue'
 import { useEditorContext } from '~/composables/useEditorContext'
 import { usePlayback } from '~/composables/usePlayback'
 import { useCloud } from '~/composables/useCloud'
@@ -9,9 +9,29 @@ const cloud = useCloud()
 
 usePlayback(() => contextDuration.value)
 
+const isImage = computed(() => project.isImage)
+
+// entering image mode (new project / deep link / import) freezes the clock —
+// the stage shows the always-on composition at t=0
+watch(isImage, (on) => {
+  if (on) {
+    editor.playing = false
+    editor.playhead = 0
+  }
+})
+
 onMounted(() => {
   editor.initTheme()
-  if (!project.loadAutosave()) {
+  // ?type=image|video starts a fresh project in that mode (dash "Create
+  // image" CTA); ?project=/?template= links infer mode from the payload.
+  const params = new URLSearchParams(window.location.search)
+  const qType = params.get('type')
+  if ((qType === 'image' || qType === 'video') && !params.get('project') && !params.get('template')) {
+    project.newProject(qType)
+    const url = new URL(window.location.href)
+    url.searchParams.delete('type')
+    history.replaceState(history.state, '', url.pathname + url.search + url.hash)
+  } else if (!project.loadAutosave()) {
     project.newProject()
   }
   // Dashboard deep links (?project= / ?template=) override the restored doc.
@@ -84,16 +104,16 @@ function onKeyDown(e: KeyboardEvent) {
   switch (e.key) {
     case ' ':
       e.preventDefault()
-      editor.togglePlay()
+      if (!isImage.value) editor.togglePlay()
       break
     case 'ArrowLeft':
       e.preventDefault()
-      if (!nudge(-1, 0))
+      if (!nudge(-1, 0) && !isImage.value)
         editor.seek(editor.playhead - (e.shiftKey ? 1 : frame), contextDuration.value)
       break
     case 'ArrowRight':
       e.preventDefault()
-      if (!nudge(1, 0))
+      if (!nudge(1, 0) && !isImage.value)
         editor.seek(editor.playhead + (e.shiftKey ? 1 : frame), contextDuration.value)
       break
     case 'ArrowUp':
@@ -121,7 +141,7 @@ function onKeyDown(e: KeyboardEvent) {
       break
     case 's':
     case 'S':
-      if (!mod) {
+      if (!mod && !isImage.value) {
         if (editor.selectionKind === 'visual' && editor.selectedId)
           project.splitVisualAt(editor.selectedId, editor.playhead)
         else if (editor.selectionKind === 'audio' && editor.selectedId)
@@ -184,8 +204,9 @@ const toastIcon = computed(() =>
       <StageView />
       <InspectorPanel />
     </div>
-    <TimelinePanel />
-    <AudioEngine />
+    <!-- image mode: no timeline/audio — the stage takes the full height -->
+    <TimelinePanel v-if="!isImage" />
+    <AudioEngine v-if="!isImage" />
 
     <ModalsExportModal v-if="editor.modal === 'export'" />
     <ModalsImportModal v-if="editor.modal === 'import'" />

@@ -130,6 +130,13 @@ export const SUPPORTED_FORMATS = [
 
 export type SupportedFormat = (typeof SUPPORTED_FORMATS)[number]
 
+/** Still-image output formats (package formatValidator SUPPORTED_IMAGE_FORMATS). */
+export const SUPPORTED_IMAGE_FORMATS = ['png', 'jpg', 'jpeg', 'webp'] as const
+
+export type SupportedImageFormat = (typeof SUPPORTED_IMAGE_FORMATS)[number]
+
+export type ProjectType = 'video' | 'image'
+
 export const POSITION_PRESETS = [
   'top-left',
   'top-center',

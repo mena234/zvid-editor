@@ -1,4 +1,5 @@
 import { projectSchema, canonicalVisualType } from './types'
+import { SUPPORTED_IMAGE_FORMATS } from './constants'
 import type {
   ProjectDoc,
   VisualDoc,
@@ -21,6 +22,7 @@ export interface ImportResult {
 }
 
 const PROJECT_KEYS = new Set([
+  'type',
   'name',
   'resolution',
   'width',
@@ -30,6 +32,9 @@ const PROJECT_KEYS = new Set([
   'backgroundColor',
   'outputFormat',
   'thumbnail',
+  'snapshotTime',
+  'quality',
+  'transparent',
   'visuals',
   'audios',
   'subtitle',
@@ -86,7 +91,30 @@ export function importProject(raw: unknown): ImportResult {
     if (!PROJECT_KEYS.has(k)) extra[k] = v
   }
 
+  // A payload with an image-only output format and no explicit type is an
+  // image project in practice (the /api/render/image alias injects the type
+  // server-side, so JSONs written for it often omit it). Only infer when
+  // nothing time-domain contradicts it — otherwise leave it a video and let
+  // validation flag the format.
+  let projectType = p.type
+  if (
+    projectType === undefined &&
+    typeof p.outputFormat === 'string' &&
+    SUPPORTED_IMAGE_FORMATS.includes(p.outputFormat.toLowerCase() as any) &&
+    p.duration === undefined &&
+    p.frameRate === undefined &&
+    !p.audios?.length &&
+    !p.scenes?.length &&
+    !p.subtitle
+  ) {
+    projectType = 'image'
+    warnings.push(
+      `no "type" field — opened as an image project (inferred from outputFormat "${p.outputFormat}")`
+    )
+  }
+
   const doc: ProjectDoc = {
+    type: projectType,
     name: p.name,
     resolution: p.resolution,
     width: p.width,
@@ -96,6 +124,9 @@ export function importProject(raw: unknown): ImportResult {
     backgroundColor: p.backgroundColor,
     outputFormat: p.outputFormat,
     thumbnail: p.thumbnail,
+    snapshotTime: p.snapshotTime,
+    quality: p.quality,
+    transparent: p.transparent,
     visuals: (p.visuals ?? []).map((v: any, i: number) =>
       importVisual(v, `visuals[${i}]`)
     ),
@@ -168,6 +199,7 @@ const AUDIO_KEY_ORDER = [
 ]
 
 const PROJECT_KEY_ORDER = [
+  'type',
   'name',
   'resolution',
   'width',
@@ -177,6 +209,9 @@ const PROJECT_KEY_ORDER = [
   'backgroundColor',
   'outputFormat',
   'thumbnail',
+  'snapshotTime',
+  'quality',
+  'transparent',
   'scenes',
   'visuals',
   'audios',
@@ -284,6 +319,9 @@ function cleanCaption(c: Record<string, any>) {
  */
 export function exportProject(doc: ProjectDoc): Record<string, any> {
   const out: Record<string, any> = {}
+  // 'video' is the wire default — only image projects carry an explicit type,
+  // keeping existing video exports byte-identical.
+  if (doc.type === 'image') out.type = 'image'
   if (doc.name !== undefined) out.name = doc.name
   if (doc.resolution !== undefined) out.resolution = doc.resolution
   if (doc.resolution === 'custom' || !doc.resolution) {
@@ -300,6 +338,11 @@ export function exportProject(doc: ProjectDoc): Record<string, any> {
   if (doc.outputFormat !== undefined) out.outputFormat = doc.outputFormat
   if (doc.thumbnail !== undefined && doc.thumbnail !== '')
     out.thumbnail = doc.thumbnail
+  if (doc.type === 'image') {
+    if (doc.snapshotTime !== undefined) out.snapshotTime = doc.snapshotTime
+    if (doc.quality !== undefined) out.quality = doc.quality
+    if (doc.transparent === true) out.transparent = true
+  }
 
   if (doc.scenes?.length) {
     out.scenes = doc.scenes.map((s) => {
@@ -340,7 +383,20 @@ export function exportProjectString(doc: ProjectDoc): string {
 }
 
 /** A fresh empty document for "New project". */
-export function newProjectDoc(): ProjectDoc {
+export function newProjectDoc(type: 'video' | 'image' = 'video'): ProjectDoc {
+  if (type === 'image') {
+    // no duration/frameRate/audios — time-domain fields are rejected for
+    // image renders (orch validation branch / package validateImageProject)
+    return {
+      type: 'image',
+      name: 'untitled-image',
+      resolution: 'instagram-post',
+      backgroundColor: '#ffffff',
+      outputFormat: 'png',
+      visuals: [],
+      audios: [],
+    }
+  }
   return {
     name: 'untitled-video',
     resolution: 'full-hd',
