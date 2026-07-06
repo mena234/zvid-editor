@@ -8,14 +8,13 @@ import {
   type StockDragPayload,
 } from '~/utils/stockDrag'
 
+// The rail owns the media kind now — each Images/Videos/GIFs tab mounts this
+// panel with a fixed `kind` (the store keeps per-kind search state either way).
+const props = defineProps<{ kind: StockKind }>()
+
 const { project, editor, contextDuration } = useEditorContext()
 const stock = useStockStore()
-
-const KINDS: { id: StockKind; label: string; icon: string }[] = [
-  { id: 'image', label: 'Images', icon: 'image' },
-  { id: 'video', label: 'Videos', icon: 'video' },
-  { id: 'gif', label: 'GIFs', icon: 'gif' },
-]
+stock.setKind(props.kind)
 
 const PROVIDER_LABELS: Record<string, string> = {
   pexels: 'Pexels',
@@ -36,12 +35,6 @@ watch(searchText, (q) => {
 function searchNow() {
   clearTimeout(debounceTimer)
   stock.search(searchText.value.trim())
-}
-
-function setKind(kind: StockKind) {
-  clearTimeout(debounceTimer)
-  stock.setKind(kind)
-  searchText.value = stock.byKind[kind].query
 }
 
 /* ---------------- infinite scroll ----------------
@@ -152,18 +145,7 @@ const skeletons = 8
 
 <template>
   <div ref="panelEl" class="stock-panel">
-    <div class="kind-tabs">
-      <button
-        v-for="k in KINDS"
-        :key="k.id"
-        class="kind-tab"
-        :class="{ active: stock.kind === k.id }"
-        @click="setKind(k.id)"
-      >
-        <UiIcon :name="k.icon" :size="13" />
-        {{ k.label }}
-      </button>
-    </div>
+    <h3 class="title">Stock</h3>
 
     <div class="searchbar">
       <UiIcon name="zoom" :size="14" />
@@ -264,32 +246,13 @@ const skeletons = 8
   gap: 8px;
   min-height: 0;
 }
-.kind-tabs {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 4px;
-}
-.kind-tab {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  padding: 7px 4px;
-  border: 1px solid var(--border-1);
-  border-radius: var(--radius-m);
-  background: var(--bg-2);
-  color: var(--text-2);
-  font-size: 10.5px;
-  font-weight: 600;
-}
-.kind-tab:hover {
-  color: var(--text-0);
-  border-color: var(--accent);
-}
-.kind-tab.active {
-  background: var(--accent-soft);
-  border-color: var(--accent);
-  color: var(--accent-strong);
+.title {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-1);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
 }
 .searchbar {
   display: flex;

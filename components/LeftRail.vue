@@ -8,11 +8,25 @@ const project = useProjectStore()
 
 const TABS = [
   { id: 'add', icon: 'plus', label: 'Add' },
-  { id: 'assets', icon: 'film', label: 'Stock' },
+  { id: 'images', icon: 'image', label: 'Images' },
+  { id: 'videos', icon: 'video', label: 'Videos' },
+  { id: 'audio', icon: 'audio', label: 'Audio' },
+  { id: 'gifs', icon: 'gif', label: 'GIFs' },
   { id: 'scenes', icon: 'scene', label: 'Scenes' },
   { id: 'subtitles', icon: 'subtitles', label: 'Subtitles' },
   { id: 'variables', icon: 'json', label: 'Variables' },
 ] as const
+
+/** media tab id → upload/stock kind */
+const MEDIA_KIND = {
+  images: 'image',
+  videos: 'video',
+  audio: 'audio',
+  gifs: 'gif',
+} as const
+const mediaKind = computed(
+  () => MEDIA_KIND[editor.leftPanel as keyof typeof MEDIA_KIND] ?? null
+)
 
 const captionCount = computed(() => project.doc.subtitle?.captions?.length ?? 0)
 const sceneCount = computed(() => project.doc.scenes?.length ?? 0)
@@ -43,7 +57,7 @@ const variableCount = computed(() => Object.keys(project.variables).length)
     </nav>
     <div class="rail-panel">
       <PanelsAddPanel v-if="editor.leftPanel === 'add'" />
-      <PanelsStockPanel v-else-if="editor.leftPanel === 'assets'" />
+      <PanelsMediaPanel v-else-if="mediaKind" :key="mediaKind" :kind="mediaKind" />
       <PanelsScenesPanel v-else-if="editor.leftPanel === 'scenes'" />
       <PanelsSubtitlesPanel v-else-if="editor.leftPanel === 'subtitles'" />
       <PanelsVariablesPanel v-else-if="editor.leftPanel === 'variables'" />

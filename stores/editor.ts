@@ -1,7 +1,15 @@
 import { defineStore } from 'pinia'
 
 export type SelectionKind = 'visual' | 'audio' | 'caption' | 'scene' | null
-export type LeftPanel = 'add' | 'assets' | 'subtitles' | 'scenes' | 'variables'
+export type LeftPanel =
+  | 'add'
+  | 'images'
+  | 'videos'
+  | 'audio'
+  | 'gifs'
+  | 'subtitles'
+  | 'scenes'
+  | 'variables'
 export type ModalKind =
   | null
   | 'export'
