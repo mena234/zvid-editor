@@ -6,6 +6,7 @@ import { parseSubtitleFile, distributeWords } from '~/utils/subtitleRuntime'
 import {
   SUBTITLE_MODES,
   SUBTITLE_POSITIONS,
+  SUBTITLE_SLIDE_DIRECTIONS,
 } from '~/shared/schema/constants'
 import { POPULAR_GOOGLE_FONTS } from '~/utils/fonts'
 import { round3 } from '~/utils/time'
@@ -133,6 +134,16 @@ function patchStyles(patch: Record<string, any>) {
   project.patchSubtitleStyles(patch)
 }
 
+/** Merge one activeWord field, dropping the object when both fields clear. */
+function patchActiveWord(patch: Record<string, string | undefined>) {
+  const next: Record<string, any> = { ...(styles.value.activeWord ?? {}) }
+  for (const [k, v] of Object.entries(patch)) {
+    if (v === undefined) delete next[k]
+    else next[k] = v
+  }
+  patchStyles({ activeWord: Object.keys(next).length ? next : undefined })
+}
+
 function fmtT(v: number) {
   return Math.round(v * 100) / 100
 }
@@ -159,8 +170,9 @@ function fmtT(v: number) {
       </template>
 
       <p v-if="!captions.length" class="hint">
-        Word-timed captions burned into the video (karaoke, one-word and
-        progressive modes). Import an SRT, VTT, ASS or Whisper JSON file —
+        Word-timed captions burned into the video (karaoke, highlight, fill,
+        pop, bounce, fade, typewriter, slide and more). Import an SRT, VTT,
+        ASS or Whisper JSON file —
         SRT/VTT formatting and ASS styles/karaoke timing are converted into
         the caption model — or add captions manually.
       </p>
@@ -278,6 +290,32 @@ function fmtT(v: number) {
           <option v-for="m in SUBTITLE_MODES" :key="m" :value="m">{{ m }}</option>
         </select>
       </UiField>
+      <UiField
+        v-if="styles.mode === 'slide'"
+        label="Slide direction"
+        hint="Direction the caption moves in"
+      >
+        <select
+          class="ctl"
+          :value="styles.slideDirection ?? 'up'"
+          @change="
+            patchStyles({
+              slideDirection:
+                ($event.target as HTMLSelectElement).value === 'up'
+                  ? undefined
+                  : ($event.target as HTMLSelectElement).value,
+            })
+          "
+        >
+          <option
+            v-for="d in SUBTITLE_SLIDE_DIRECTIONS"
+            :key="d"
+            :value="d"
+          >
+            {{ d }}{{ d === 'up' ? ' (default)' : '' }}
+          </option>
+        </select>
+      </UiField>
       <div class="grid-2">
         <UiField label="Font family">
           <select
@@ -308,17 +346,26 @@ function fmtT(v: number) {
             @update:model-value="patchStyles({ color: $event })"
           />
         </UiField>
-        <UiField label="Active word color" hint="karaoke/one-word highlight">
+        <UiField label="Active word color" hint="karaoke/highlight/fill/pop/bounce">
           <UiColorInput
             :model-value="styles.activeWord?.color"
             clearable
             placeholder="none"
-            @update:model-value="
-              patchStyles({ activeWord: $event ? { color: $event } : undefined })
-            "
+            @update:model-value="patchActiveWord({ color: $event })"
           />
         </UiField>
       </div>
+      <UiField
+        label="Active word background"
+        hint="Box behind the spoken word (highlight/karaoke/pop/bounce)"
+      >
+        <UiColorInput
+          :model-value="styles.activeWord?.background"
+          clearable
+          placeholder="none"
+          @update:model-value="patchActiveWord({ background: $event })"
+        />
+      </UiField>
       <div class="grid-2">
         <UiField label="Bold">
           <input

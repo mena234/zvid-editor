@@ -6,6 +6,7 @@ import {
   ANCHORS,
   SUBTITLE_POSITIONS,
   SUBTITLE_MODES,
+  SUBTITLE_SLIDE_DIRECTIONS,
   RESOLUTION_PRESET_NAMES,
 } from './constants'
 
@@ -258,7 +259,11 @@ export const subtitleStylesSchema = z
     marginV: numOpt,
     marginH: numOpt,
     mode: z.enum(SUBTITLE_MODES).optional(),
-    activeWord: z.object({ color: z.string() }).passthrough().optional(),
+    slideDirection: z.enum(SUBTITLE_SLIDE_DIRECTIONS).optional(),
+    activeWord: z
+      .object({ color: z.string().optional(), background: z.string().optional() })
+      .passthrough()
+      .optional(),
   })
   .passthrough()
 

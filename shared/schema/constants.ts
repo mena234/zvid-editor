@@ -184,10 +184,20 @@ export const SUBTITLE_POSITIONS = [
 
 export const SUBTITLE_MODES = [
   'normal',
+  'none',
   'one-word',
   'karaoke',
+  'highlight',
   'progressive',
+  'fill',
+  'pop',
+  'bounce',
+  'fade',
+  'typewriter',
+  'slide',
 ] as const
+
+export const SUBTITLE_SLIDE_DIRECTIONS = ['up', 'down', 'left', 'right'] as const
 
 export const VISUAL_TYPES = ['VIDEO', 'IMAGE', 'GIF', 'TEXT', 'SVG'] as const
 export type VisualType = (typeof VISUAL_TYPES)[number]

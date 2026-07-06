@@ -6,6 +6,7 @@ import {
   renderCaptionWords,
   subtitleContainerStyle,
   subtitleTextStyle,
+  type RenderedWord,
 } from '~/utils/subtitleRuntime'
 import { loadGoogleFont } from '~/utils/fonts'
 
@@ -28,7 +29,7 @@ const active = computed(() => activeCaptionAt(subtitle.value, props.time))
 
 const words = computed(() => {
   if (!active.value) return []
-  return renderCaptionWords(active.value.caption, props.time, mode.value)
+  return renderCaptionWords(active.value.caption, props.time, mode.value, styles.value)
 })
 
 const containerStyle = computed(() =>
@@ -36,6 +37,40 @@ const containerStyle = computed(() =>
 )
 const textStyle = computed(() => subtitleTextStyle(styles.value))
 const activeColor = computed(() => styles.value.activeWord?.color)
+// The renderer's Highlight ASS style carries the activeWord.background box in
+// every mode that restyles the active word via {\rHighlight}.
+const activeBackground = computed(() =>
+  ['progressive', 'karaoke', 'highlight', 'pop', 'bounce'].includes(mode.value)
+    ? styles.value.activeWord?.background
+    : undefined
+)
+
+function wordStyle(w: RenderedWord): Record<string, string> | undefined {
+  const s: Record<string, string> = {}
+  if (w.active && activeColor.value) s.color = activeColor.value
+  if (w.active && activeBackground.value) {
+    s.background = activeBackground.value
+    s.borderRadius = '0.12em'
+    s.padding = '0 0.14em'
+  }
+  if (w.opacity !== undefined) s.opacity = String(w.opacity)
+  if (w.scale !== undefined) {
+    s.display = 'inline-block'
+    s.transform = `scale(${w.scale})`
+  }
+  if (w.translate !== undefined) {
+    s.display = 'inline-block'
+    s.transform = `translate(${w.translate[0]}px, ${w.translate[1]}px)`
+  }
+  return Object.keys(s).length ? s : undefined
+}
+
+function typedPart(w: RenderedWord): string {
+  return [...w.text].slice(0, w.revealedChars ?? 0).join('')
+}
+function untypedPart(w: RenderedWord): string {
+  return [...w.text].slice(w.revealedChars ?? 0).join('')
+}
 </script>
 
 <template>
@@ -43,10 +78,22 @@ const activeColor = computed(() => styles.value.activeWord?.color)
     <div class="subtitle-text" :style="textStyle">
       <template v-for="(w, i) in words" :key="i">
         <span
-          v-if="w.visible"
-          class="w"
-          :style="w.active && activeColor ? { color: activeColor } : undefined"
+          v-if="w.visible && w.fillProgress !== undefined"
+          class="w fill-w"
+          ><span
+            class="fill-top"
+            aria-hidden="true"
+            :style="{
+              width: `${w.fillProgress * 100}%`,
+              color: activeColor ?? 'inherit',
+            }"
+            >{{ w.text }}</span
           >{{ w.text }}</span
+        ><span v-else-if="w.visible && w.revealedChars !== undefined" class="w"
+          >{{ typedPart(w) }}<span class="untyped">{{ untypedPart(w) }}</span></span
+        ><span v-else-if="w.visible" class="w" :style="wordStyle(w)">{{
+          w.text
+        }}</span
         >{{ ' ' }}
       </template>
     </div>
@@ -62,5 +109,20 @@ const activeColor = computed(() => styles.value.activeWord?.color)
 }
 .w {
   transition: color 0.05s linear;
+}
+.fill-w {
+  position: relative;
+}
+.fill-top {
+  position: absolute;
+  left: 0;
+  top: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  pointer-events: none;
+}
+/* typewriter: untyped characters keep their space (matches ASS \k reveal) */
+.untyped {
+  visibility: hidden;
 }
 </style>

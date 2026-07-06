@@ -27,21 +27,82 @@ export function activeWordIndex(caption: RawCaption, t: number): number {
 
 export interface RenderedWord {
   text: string
+  /** rendered with the Highlight style (activeWord color/background) */
   active: boolean
   visible: boolean
+  /** fade/slide: word rendered transparent so the layout stays stable */
+  opacity?: number
+  /** pop/bounce: scale of the active word at time t */
+  scale?: number
+  /** fill: fraction of the word swept to the active color (0..1) */
+  fillProgress?: number
+  /** typewriter: characters of this word typed on so far */
+  revealedChars?: number
+  /** slide: entrance offset of this word in px */
+  translate?: [number, number]
+}
+
+const clamp01 = (v: number) => Math.min(1, Math.max(0, v))
+
+/** Linear keyframe chains mirroring the package's ASS \t scale animations. */
+const SCALE_KEYFRAMES: Record<string, [number, number][]> = {
+  // [time s, scale] — pop: punch up then settle; bounce: overshoot spring
+  pop: [
+    [0, 1],
+    [0.12, 1.3],
+    [0.24, 1.18],
+  ],
+  bounce: [
+    [0, 1],
+    [0.09, 1.35],
+    [0.18, 0.92],
+    [0.27, 1.08],
+    [0.36, 1],
+  ],
+}
+
+function scaleAt(animation: string, elapsed: number): number {
+  const frames = SCALE_KEYFRAMES[animation]
+  let [prevT, prevV] = frames[0]
+  for (const [ft, fv] of frames) {
+    if (elapsed <= ft) {
+      const span = ft - prevT
+      return span > 0 ? prevV + ((fv - prevV) * (elapsed - prevT)) / span : fv
+    }
+    prevT = ft
+    prevV = fv
+  }
+  return frames[frames.length - 1][1]
+}
+
+const SLIDE_VECTORS: Record<string, [number, number]> = {
+  up: [0, -1],
+  down: [0, 1],
+  left: [-1, 0],
+  right: [1, 0],
 }
 
 /**
  * mode semantics (lib/subtitles/modes):
- *  - normal: full caption text, no per-word treatment
- *  - karaoke: full text, the word being spoken is highlighted
+ *  - normal/none: full caption text, no per-word treatment
+ *  - karaoke/highlight: full text, the word being spoken is highlighted
+ *    (highlight additionally boxes it via activeWord.background)
  *  - one-word: only the word being spoken is shown
  *  - progressive: words appear as they are spoken and stay
+ *  - fill: karaoke sweep — each word fills base → active color while spoken
+ *  - pop/bounce: full text, the active word scales while spoken
+ *  - fade: words fade in (150ms) as spoken; future words keep their space
+ *  - typewriter: characters type on at the spoken pace; future keep space
+ *  - slide: each word slides into its slot (300ms move + 150ms fade) as
+ *    spoken, towards styles.slideDirection; future words keep their space
+ *
+ * `styles` is only needed by slide (slideDirection + fontSize distance).
  */
 export function renderCaptionWords(
   caption: RawCaption,
   t: number,
-  mode: string
+  mode: string,
+  styles?: Record<string, any>
 ): RenderedWord[] {
   const words: RawWord[] =
     caption.words?.length > 0
@@ -52,6 +113,7 @@ export function renderCaptionWords(
           .map((w) => ({ start: caption.start, end: caption.end, text: w }))
 
   const idx = activeWordIndex(caption, t)
+  const groupEnd = words[words.length - 1]?.end ?? caption.end
 
   return words.map((w, i) => {
     switch (mode) {
@@ -60,8 +122,62 @@ export function renderCaptionWords(
       case 'progressive':
         return { text: w.text, active: i === idx, visible: i <= idx }
       case 'karaoke':
+      case 'highlight':
         return { text: w.text, active: i === idx, visible: true }
+      case 'pop':
+      case 'bounce':
+        return {
+          text: w.text,
+          active: i === idx,
+          visible: true,
+          scale: i === idx ? scaleAt(mode, t - w.start) : undefined,
+        }
+      case 'fill': {
+        // the sweep runs until the next word starts so it is continuous
+        const sweepEnd = i < words.length - 1 ? words[i + 1].start : groupEnd
+        const fillProgress =
+          i < idx
+            ? 1
+            : i > idx
+              ? 0
+              : clamp01((t - w.start) / Math.max(0.01, sweepEnd - w.start))
+        return { text: w.text, active: false, visible: true, fillProgress }
+      }
+      case 'fade':
+        return {
+          text: w.text,
+          active: false,
+          visible: true,
+          opacity: i < idx ? 1 : i === idx ? clamp01((t - w.start) / 0.15) : 0,
+        }
+      case 'typewriter': {
+        // chars type on across the window until the next word starts
+        const sweepEnd = i < words.length - 1 ? words[i + 1].start : groupEnd
+        const len = [...w.text].length
+        const progress = clamp01((t - w.start) / Math.max(0.01, sweepEnd - w.start))
+        const revealedChars =
+          i < idx ? len : i > idx ? 0 : Math.min(len, Math.floor(progress * len) + 1)
+        return { text: w.text, active: false, visible: true, revealedChars }
+      }
+      case 'slide': {
+        // each word slides into its slot over 300ms with a 150ms fade
+        const [dx, dy] = SLIDE_VECTORS[styles?.slideDirection ?? 'up'] ?? SLIDE_VECTORS.up
+        const distance = Math.max(48, styles?.fontSize ?? 50)
+        const elapsed = t - w.start
+        const remaining = 1 - clamp01(elapsed / 0.3)
+        return {
+          text: w.text,
+          active: false,
+          visible: true,
+          opacity: elapsed < 0 ? 0 : clamp01(elapsed / 0.15),
+          translate:
+            remaining > 0
+              ? [-dx * distance * remaining, -dy * distance * remaining]
+              : undefined,
+        }
+      }
       default:
+        // 'normal', 'none', or unset: static captions
         return { text: w.text, active: false, visible: true }
     }
   })
