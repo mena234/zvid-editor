@@ -7,11 +7,14 @@ const editor = useEditorStore()
 const project = useProjectStore()
 
 const TABS = [
-  { id: 'add', icon: 'plus', label: 'Add' },
   { id: 'images', icon: 'image', label: 'Images' },
   { id: 'videos', icon: 'video', label: 'Videos' },
   { id: 'audio', icon: 'audio', label: 'Audio' },
   { id: 'gifs', icon: 'gif', label: 'GIFs' },
+  { id: 'text', icon: 'text', label: 'Text' },
+  { id: 'design', icon: 'magic', label: 'Design' },
+  { id: 'shape', icon: 'svg', label: 'Shape' },
+  { id: 'canvas', icon: 'code', label: 'Canvas' },
   { id: 'scenes', icon: 'scene', label: 'Scenes' },
   { id: 'subtitles', icon: 'subtitles', label: 'Subtitles' },
   { id: 'variables', icon: 'json', label: 'Variables' },
@@ -56,8 +59,11 @@ const variableCount = computed(() => Object.keys(project.variables).length)
       </button>
     </nav>
     <div class="rail-panel">
-      <PanelsAddPanel v-if="editor.leftPanel === 'add'" />
-      <PanelsMediaPanel v-else-if="mediaKind" :key="mediaKind" :kind="mediaKind" />
+      <PanelsMediaPanel v-if="mediaKind" :key="mediaKind" :kind="mediaKind" />
+      <PanelsTextPanel v-else-if="editor.leftPanel === 'text'" />
+      <PanelsDesignPanel v-else-if="editor.leftPanel === 'design'" />
+      <PanelsShapePanel v-else-if="editor.leftPanel === 'shape'" />
+      <PanelsCanvasPanel v-else-if="editor.leftPanel === 'canvas'" />
       <PanelsScenesPanel v-else-if="editor.leftPanel === 'scenes'" />
       <PanelsSubtitlesPanel v-else-if="editor.leftPanel === 'subtitles'" />
       <PanelsVariablesPanel v-else-if="editor.leftPanel === 'variables'" />

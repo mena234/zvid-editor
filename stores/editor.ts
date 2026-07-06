@@ -2,11 +2,14 @@ import { defineStore } from 'pinia'
 
 export type SelectionKind = 'visual' | 'audio' | 'caption' | 'scene' | null
 export type LeftPanel =
-  | 'add'
   | 'images'
   | 'videos'
   | 'audio'
   | 'gifs'
+  | 'text'
+  | 'design'
+  | 'shape'
+  | 'canvas'
   | 'subtitles'
   | 'scenes'
   | 'variables'
@@ -61,7 +64,7 @@ export const useEditorStore = defineStore('editor', {
     theme: 'light' as 'light' | 'dark',
 
     /* panels */
-    leftPanel: 'add' as LeftPanel,
+    leftPanel: 'images' as LeftPanel,
     modal: null as ModalKind,
     /** modal to reopen after a successful sign-in (save gating) */
     postAuthModal: null as ModalKind,

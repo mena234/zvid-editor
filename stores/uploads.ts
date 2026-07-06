@@ -68,6 +68,14 @@ async function probeFile(
   }
 }
 
+function safeParse(text: string): any {
+  try {
+    return JSON.parse(text)
+  } catch {
+    return null
+  }
+}
+
 function errMessage(e: any, fallback: string): string {
   return (
     e?.data?.data?.error || // orch error body forwarded by the proxy
@@ -88,8 +96,13 @@ export const useUploadsStore = defineStore('uploads', {
     /** the list endpoint answered 401 — show the sign-in hint */
     authRequired: false,
     error: null as string | null,
-    /** in-flight uploads, newest first (skeleton cells) */
-    pending: [] as { key: number; name: string; kind: UploadKind }[],
+    /** in-flight uploads, newest first (skeleton cells), 0–100 progress */
+    pending: [] as {
+      key: number
+      name: string
+      kind: UploadKind
+      progress: number
+    }[],
   }),
 
   getters: {
@@ -133,10 +146,14 @@ export const useUploadsStore = defineStore('uploads', {
      * Upload one file; resolves with the stored item. The caller picks the
      * expected kind from the active tab, but the server classifies by mime —
      * a GIF picked from the Images tab still lands under GIFs.
+     *
+     * Uses XMLHttpRequest (not $fetch) so `upload.onprogress` can drive the
+     * per-file percentage shown in the grid.
      */
     async upload(file: File, expectedKind: UploadKind): Promise<UploadItem> {
       const key = Date.now() + Math.random()
-      this.pending.unshift({ key, name: file.name, kind: expectedKind })
+      const entry = { key, name: file.name, kind: expectedKind, progress: 0 }
+      this.pending.unshift(entry)
       try {
         const meta = await probeFile(file)
         const form = new FormData()
@@ -144,15 +161,43 @@ export const useUploadsStore = defineStore('uploads', {
         if (meta.width) form.append('width', String(meta.width))
         if (meta.height) form.append('height', String(meta.height))
         if (meta.duration) form.append('duration', String(meta.duration))
-        const res = await $fetch<{ upload: UploadItem }>('/api/uploads', {
-          method: 'POST',
-          body: form,
+
+        const upload = await new Promise<UploadItem>((resolve, reject) => {
+          const xhr = new XMLHttpRequest()
+          xhr.open('POST', '/api/uploads')
+          xhr.responseType = 'json'
+          xhr.upload.onprogress = (ev) => {
+            if (ev.lengthComputable) {
+              // cap at 99 until the server responds — 100 means "stored"
+              entry.progress = Math.min(99, Math.round((ev.loaded / ev.total) * 100))
+            }
+          }
+          xhr.onload = () => {
+            const body = xhr.response || safeParse(xhr.responseText)
+            if (xhr.status >= 200 && xhr.status < 300 && body?.upload) {
+              entry.progress = 100
+              resolve(body.upload as UploadItem)
+            } else {
+              const err: any = new Error(
+                body?.data?.error ||
+                  body?.error ||
+                  body?.message ||
+                  `Upload failed (${xhr.status})`
+              )
+              err.status = xhr.status
+              reject(err)
+            }
+          }
+          xhr.onerror = () => reject(new Error('Network error during upload'))
+          xhr.onabort = () => reject(new Error('Upload cancelled'))
+          xhr.send(form)
         })
-        if (this.items) this.items.unshift(res.upload)
-        else this.items = [res.upload]
-        return res.upload
+
+        if (this.items) this.items.unshift(upload)
+        else this.items = [upload]
+        return upload
       } catch (e: any) {
-        if ((e?.statusCode ?? e?.status) === 401) this.authRequired = true
+        if ((e?.status ?? e?.statusCode) === 401) this.authRequired = true
         throw new Error(errMessage(e, `Failed to upload ${file.name}`))
       } finally {
         this.pending = this.pending.filter((p) => p.key !== key)

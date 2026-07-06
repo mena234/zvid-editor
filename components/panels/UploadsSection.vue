@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from 'vue'
+import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
 import { useEditorContext } from '~/composables/useEditorContext'
 import { useAuthStore } from '~/stores/auth'
 import { useUploadsStore, type UploadKind, type UploadItem } from '~/stores/uploads'
@@ -116,6 +116,61 @@ function fmtDuration(s?: number | null) {
   const ss = Math.round(s % 60)
   return `${m}:${String(ss).padStart(2, '0')}`
 }
+
+/* ---------------- video/GIF hover preview (#1) ----------------
+   Videos show their first frame at rest and play muted while hovered; the
+   cell's <video> is found via the hovered element so no per-item refs. */
+function playHover(e: Event) {
+  const el = (e.currentTarget as HTMLElement).querySelector('video')
+  if (el) {
+    el.currentTime = 0
+    void el.play().catch(() => {})
+  }
+}
+function stopHover(e: Event) {
+  const el = (e.currentTarget as HTMLElement).querySelector('video')
+  if (el) {
+    el.pause()
+    el.currentTime = 0
+  }
+}
+
+/* ---------------- audio preview player (#2) ----------------
+   One shared <audio> element; clicking a row's play button toggles it. */
+const audioEl = ref<HTMLAudioElement | null>(null)
+const playingId = ref<string | null>(null)
+
+function toggleAudio(item: UploadItem) {
+  if (!import.meta.client) return
+  let el = audioEl.value
+  if (!el) {
+    el = new Audio()
+    el.addEventListener('ended', () => (playingId.value = null))
+    el.addEventListener('pause', () => {
+      if (el && el.currentTime === 0) playingId.value = null
+    })
+    audioEl.value = el
+  }
+  if (playingId.value === item.id) {
+    el.pause()
+    playingId.value = null
+    return
+  }
+  el.src = item.url
+  playingId.value = item.id
+  void el.play().catch(() => {
+    editor.notify('Could not play this audio file', 'error')
+    playingId.value = null
+  })
+}
+
+onBeforeUnmount(() => {
+  if (audioEl.value) {
+    audioEl.value.pause()
+    audioEl.value.src = ''
+    audioEl.value = null
+  }
+})
 </script>
 
 <template>
@@ -161,6 +216,7 @@ function fmtDuration(s?: number | null) {
         <div v-for="p in pending" :key="p.key" class="audio-row pending">
           <span class="spinner" />
           <span class="name">{{ p.name }}</span>
+          <span class="pct">{{ p.progress }}%</span>
         </div>
         <div
           v-for="item in items"
@@ -169,7 +225,13 @@ function fmtDuration(s?: number | null) {
           :title="`${item.fileName} — click to add at the playhead`"
           @click="addItem(item)"
         >
-          <UiIcon name="audio" :size="14" />
+          <button
+            class="play"
+            :title="playingId === item.id ? 'Pause preview' : 'Play preview'"
+            @click.stop="toggleAudio(item)"
+          >
+            <UiIcon :name="playingId === item.id ? 'pause' : 'play'" :size="13" />
+          </button>
           <span class="name">{{ item.fileName }}</span>
           <span v-if="item.duration" class="dur">{{ fmtDuration(item.duration) }}</span>
           <button class="del" title="Delete upload" @click.stop="removeItem(item)">
@@ -179,7 +241,17 @@ function fmtDuration(s?: number | null) {
       </div>
 
       <div v-else-if="items.length || pending.length" class="grid" :class="{ gifs: kind === 'gif' }">
-        <div v-for="p in pending" :key="p.key" class="cell skeleton" :title="`Uploading ${p.name}…`" />
+        <div
+          v-for="p in pending"
+          :key="p.key"
+          class="cell skeleton"
+          :title="`Uploading ${p.name}…`"
+        >
+          <div class="progress">
+            <div class="progress-bar" :style="{ width: p.progress + '%' }" />
+          </div>
+          <span class="pct-badge">{{ p.progress }}%</span>
+        </div>
         <div
           v-for="item in items"
           :key="item.id"
@@ -188,17 +260,21 @@ function fmtDuration(s?: number | null) {
           :title="`${item.fileName} — click to add, or drag onto the canvas`"
           @dragstart="onDragStart($event, item)"
           @click="addItem(item)"
+          @mouseenter="item.kind === 'video' && playHover($event)"
+          @mouseleave="item.kind === 'video' && stopHover($event)"
         >
           <video
             v-if="item.kind === 'video'"
             :src="item.url"
             preload="metadata"
             muted
+            loop
             playsinline
             disablepictureinpicture
           />
           <img v-else :src="item.url" loading="lazy" draggable="false" alt="" />
           <span v-if="item.duration" class="badge duration">{{ fmtDuration(item.duration) }}</span>
+          <span v-if="item.kind === 'video'" class="play-hint"><UiIcon name="play" :size="14" /></span>
           <button class="del" title="Delete upload" @click.stop="removeItem(item)">
             <UiIcon name="trash" :size="12" />
           </button>
@@ -302,6 +378,50 @@ function fmtDuration(s?: number | null) {
   font-variant-numeric: tabular-nums;
   pointer-events: none;
 }
+.play-hint {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.9);
+  background: rgba(0, 0, 0, 0.22);
+  opacity: 1;
+  transition: opacity 0.12s;
+  pointer-events: none;
+}
+/* hide the play glyph while the clip is actually playing on hover */
+.cell:hover .play-hint {
+  opacity: 0;
+}
+.progress {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: 10px;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+.progress-bar {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: width 0.15s ease;
+}
+.pct-badge {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  padding: 1px 5px;
+  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
 .del {
   position: absolute;
   top: 4px;
@@ -365,9 +485,34 @@ function fmtDuration(s?: number | null) {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.audio-row .play {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 1px solid var(--border-1);
+  border-radius: 50%;
+  background: var(--bg-3);
+  color: var(--accent);
+}
+.audio-row .play:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+}
 .audio-row .dur {
   color: var(--text-3);
   font-size: 10px;
+  font-variant-numeric: tabular-nums;
+}
+.audio-row .pct {
+  margin-left: auto;
+  color: var(--accent);
+  font-size: 10px;
+  font-weight: 700;
   font-variant-numeric: tabular-nums;
 }
 .audio-row .del {

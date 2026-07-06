@@ -20,9 +20,11 @@ import {
 import { loadGoogleFont } from '~/utils/fonts'
 import { round3 } from '~/utils/time'
 import { useTemplateVars } from '~/composables/useTemplateVars'
+import { useDesignsStore } from '~/stores/designs'
 
 const { project, editor, contextDuration, activeScene } = useEditorContext()
 const tvars = useTemplateVars()
+const designs = useDesignsStore()
 
 /* ---------------- source design ---------------- */
 const targetId = editor.designerTargetId
@@ -266,6 +268,29 @@ function invalidVarMessage(): string | null {
   return null
 }
 
+/** A human-readable name for the design stock, from its first text layer. */
+function designName(doc: DesignDoc): string {
+  const t = doc.layers.find(
+    (l) => l.kind === 'text' && !l.hidden && (l as any).text?.trim()
+  ) as any
+  const name = t?.text?.trim()
+  return name ? name.slice(0, 60) : 'Untitled design'
+}
+
+/** Persist a freshly created design to the user's stock (best-effort). */
+async function saveToStock(snapshot: DesignDoc) {
+  try {
+    const saved = await designs.save(snapshot, designName(snapshot))
+    if (saved) editor.notify('Design added — also saved to your designs', 'success')
+    else editor.notify('Design added — sign in to save it to your designs', 'info')
+  } catch (e: any) {
+    editor.notify(
+      `Design added (couldn't save to your designs: ${e?.message || 'error'})`,
+      'info'
+    )
+  }
+}
+
 function apply() {
   const invalid = invalidVarMessage()
   if (invalid) {
@@ -276,6 +301,7 @@ function apply() {
   if (targetId && targetItem) {
     project.patchVisual(targetId, patch)
     editor.notify('Design updated', 'success')
+    editor.closeModal()
   } else {
     const added = project.addVisual(editor.context, {
       type: 'TEXT',
@@ -284,9 +310,12 @@ function apply() {
       ...defaultTiming(),
     })
     editor.selectVisual(added._id)
-    editor.notify('Design added to the stage', 'success')
+    // snapshot before the modal (and its reactive `design`) unmounts, then
+    // save to the user's design stock in the background
+    const snapshot = JSON.parse(JSON.stringify(design)) as DesignDoc
+    editor.closeModal()
+    void saveToStock(snapshot)
   }
-  editor.closeModal()
 }
 
 /* delete selected layer with the keyboard (unless typing) */

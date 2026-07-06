@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 
-export type StockKind = 'image' | 'video' | 'gif'
+export type StockKind = 'image' | 'video' | 'gif' | 'audio'
 
 export interface StockItem {
   id: string
@@ -47,6 +47,7 @@ const FALLBACK_PROVIDERS: Record<StockKind, string[]> = {
   image: ['pexels', 'pixabay', 'unsplash'],
   video: ['pexels', 'pixabay'],
   gif: ['giphy'],
+  audio: ['jamendo'],
 }
 
 function emptyKindState(): KindState {
@@ -71,6 +72,7 @@ export const useStockStore = defineStore('stock', {
       image: emptyKindState(),
       video: emptyKindState(),
       gif: emptyKindState(),
+      audio: emptyKindState(),
     } as Record<StockKind, KindState>,
     /** providers with configured keys, per type (from orch); null until loaded */
     providers: null as Record<StockKind, string[]> | null,
