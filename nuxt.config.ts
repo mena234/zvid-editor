@@ -51,5 +51,18 @@ export default defineNuxtConfig({
     define: {
       __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: 'false',
     },
+    optimizeDeps: {
+      // jassub resolves its worker/wasm via `new URL(..., import.meta.url)`;
+      // pre-bundling would break those relative asset URLs.
+      exclude: ['jassub'],
+      // …but its CommonJS deps still need the ESM interop pre-bundle
+      // ("excluded parent > cjs child" form).
+      include: [
+        'jassub > throughput',
+        'jassub > rvfc-polyfill',
+        'jassub > abslink',
+        'jassub > abslink/w3c',
+      ],
+    },
   },
 })
