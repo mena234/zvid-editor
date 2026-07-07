@@ -1,4 +1,5 @@
 import type { RawSubtitle, RawCaption, RawWord } from '~/shared/schema/types'
+import { distributeWords } from '../shared/schema/subtitle'
 
 /**
  * Runtime helpers approximating the package's ASS subtitle output
@@ -229,24 +230,40 @@ export function subtitleTextStyle(
   if (styles?.textTransform) s.textTransform = styles.textTransform
   if (styles?.background) {
     s.background = styles.background
-    s.padding = `${Math.round(fontSize * 0.12)}px ${Math.round(fontSize * 0.3)}px`
-    s.borderRadius = '6px'
-  } else if (outline?.width) {
-    const w = outline.width
-    const c = outline.color ?? '#000'
-    // ASS outline ≈ stroke; approximate with multi-direction text shadow
-    s.textShadow = [
-      `-${w}px -${w}px 0 ${c}`,
-      `${w}px -${w}px 0 ${c}`,
-      `-${w}px ${w}px 0 ${c}`,
-      `${w}px ${w}px 0 ${c}`,
-      `0 ${w}px 0 ${c}`,
-      `0 -${w}px 0 ${c}`,
-      `${w}px 0 0 ${c}`,
-      `-${w}px 0 0 ${c}`,
-    ].join(', ')
+    // backgroundPadding mirrors the ASS box padding; without it keep the old
+    // font-proportional approximation
+    s.padding =
+      styles.backgroundPadding != null
+        ? `${styles.backgroundPadding}px`
+        : `${Math.round(fontSize * 0.12)}px ${Math.round(fontSize * 0.3)}px`
+    // renderer boxes are square unless backgroundRadius is set (roundedBoxes.ts)
+    s.borderRadius = `${Number(styles.backgroundRadius) || 0}px`
   }
+  // NOTE: the outline is NOT drawn here. libass paints all outlines behind
+  // all glyph fills; SubtitleOverlay mirrors that with a dedicated stroke
+  // layer (see subtitleStrokeStyle) — per-span text-shadow would paint over
+  // neighbouring words and falls apart at large widths.
   return s
+}
+
+/**
+ * Style for the stroke layer that sits behind the fill layer, approximating
+ * the libass/FFmpeg outline (a smooth dilation of the glyphs by `width` px,
+ * always painted behind every fill). A centered text-stroke of 2×width with
+ * the fill layer on top leaves exactly `width` px visible outside the glyph.
+ * Outline and background box can combine — same as the renderer.
+ */
+export function subtitleStrokeStyle(
+  styles: Record<string, any> | undefined
+): Record<string, string> | null {
+  const outline = styles?.outline
+  const w = Number(outline?.width) || 0
+  if (!outline || w <= 0) return null
+  const c = outline.color ?? '#000000'
+  return {
+    color: c,
+    '-webkit-text-stroke': `${2 * w}px ${c}`,
+  }
 }
 
 /* ---------------- SRT / VTT import ---------------- */
@@ -290,23 +307,8 @@ export function parseSrtVtt(content: string): RawCaption[] {
   return captions
 }
 
-export function distributeWords(text: string, start: number, end: number): RawWord[] {
-  const parts = text.split(/\s+/).filter(Boolean)
-  if (!parts.length) return []
-  const total = end - start
-  const weightSum = parts.reduce((s, w) => s + w.length + 1, 0)
-  let t = start
-  return parts.map((w) => {
-    const dur = ((w.length + 1) / weightSum) * total
-    const word = {
-      start: Math.round(t * 1000) / 1000,
-      end: Math.round((t + dur) * 1000) / 1000,
-      text: w,
-    }
-    t += dur
-    return word
-  })
-}
+export { chunkCaptions } from '../shared/schema/subtitle'
+export { distributeWords }
 
 /* ---------------- unified subtitle import (SRT / VTT / ASS / JSON) ------- */
 

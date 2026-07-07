@@ -6,6 +6,7 @@ import {
   renderCaptionWords,
   subtitleContainerStyle,
   subtitleTextStyle,
+  subtitleStrokeStyle,
   type RenderedWord,
 } from '~/utils/subtitleRuntime'
 import { loadGoogleFont } from '~/utils/fonts'
@@ -36,6 +37,8 @@ const containerStyle = computed(() =>
   subtitleContainerStyle(styles.value, project.defaults.width, project.defaults.height)
 )
 const textStyle = computed(() => subtitleTextStyle(styles.value))
+// stroke layer behind the fills — mirrors libass outline rendering order
+const strokeStyle = computed(() => subtitleStrokeStyle(styles.value))
 const activeColor = computed(() => styles.value.activeWord?.color)
 // The renderer's Highlight ASS style carries the activeWord.background box in
 // every mode that restyles the active word via {\rHighlight}.
@@ -50,9 +53,30 @@ function wordStyle(w: RenderedWord): Record<string, string> | undefined {
   if (w.active && activeColor.value) s.color = activeColor.value
   if (w.active && activeBackground.value) {
     s.background = activeBackground.value
-    s.borderRadius = '0.12em'
+    // renderer active-word boxes are square unless activeWord.radius is set
+    s.borderRadius = `${Number(styles.value.activeWord?.radius) || 0}px`
     s.padding = '0 0.14em'
   }
+  if (w.opacity !== undefined) s.opacity = String(w.opacity)
+  if (w.scale !== undefined) {
+    s.display = 'inline-block'
+    s.transform = `scale(${w.scale})`
+  }
+  if (w.translate !== undefined) {
+    s.display = 'inline-block'
+    s.transform = `translate(${w.translate[0]}px, ${w.translate[1]}px)`
+  }
+  return Object.keys(s).length ? s : undefined
+}
+
+/**
+ * Word style for the stroke layer: keeps every layout-affecting property of
+ * the fill layer (opacity, transforms, active-word padding) so both layers
+ * wrap and align identically, but never any color/box.
+ */
+function strokeWordStyle(w: RenderedWord): Record<string, string> | undefined {
+  const s: Record<string, string> = {}
+  if (w.active && activeBackground.value) s.padding = '0 0.14em'
   if (w.opacity !== undefined) s.opacity = String(w.opacity)
   if (w.scale !== undefined) {
     s.display = 'inline-block'
@@ -76,26 +100,41 @@ function untypedPart(w: RenderedWord): string {
 <template>
   <div v-if="active" class="subtitle-overlay" :style="containerStyle">
     <div class="subtitle-text" :style="textStyle">
-      <template v-for="(w, i) in words" :key="i">
-        <span
-          v-if="w.visible && w.fillProgress !== undefined"
-          class="w fill-w"
-          ><span
-            class="fill-top"
-            aria-hidden="true"
-            :style="{
-              width: `${w.fillProgress * 100}%`,
-              color: activeColor ?? 'inherit',
-            }"
-            >{{ w.text }}</span
-          >{{ w.text }}</span
-        ><span v-else-if="w.visible && w.revealedChars !== undefined" class="w"
-          >{{ typedPart(w) }}<span class="untyped">{{ untypedPart(w) }}</span></span
-        ><span v-else-if="w.visible" class="w" :style="wordStyle(w)">{{
-          w.text
-        }}</span
-        >{{ ' ' }}
-      </template>
+      <div class="line-stack">
+        <!-- stroke layer: whole line dilated behind every fill, like libass -->
+        <div v-if="strokeStyle" class="stroke-layer" aria-hidden="true" :style="strokeStyle">
+          <template v-for="(w, i) in words" :key="`s${i}`">
+            <span v-if="w.visible && w.revealedChars !== undefined" class="w"
+              >{{ typedPart(w) }}<span class="untyped">{{ untypedPart(w) }}</span></span
+            ><span v-else-if="w.visible" class="w" :style="strokeWordStyle(w)">{{
+              w.text
+            }}</span
+            >{{ ' ' }}
+          </template>
+        </div>
+        <div class="fill-layer">
+          <template v-for="(w, i) in words" :key="i">
+            <span
+              v-if="w.visible && w.fillProgress !== undefined"
+              class="w fill-w"
+              ><span
+                class="fill-top"
+                aria-hidden="true"
+                :style="{
+                  width: `${w.fillProgress * 100}%`,
+                  color: activeColor ?? 'inherit',
+                }"
+                >{{ w.text }}</span
+              >{{ w.text }}</span
+            ><span v-else-if="w.visible && w.revealedChars !== undefined" class="w"
+              >{{ typedPart(w) }}<span class="untyped">{{ untypedPart(w) }}</span></span
+            ><span v-else-if="w.visible" class="w" :style="wordStyle(w)">{{
+              w.text
+            }}</span
+            >{{ ' ' }}
+          </template>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -106,6 +145,17 @@ function untypedPart(w: RenderedWord): string {
 }
 .subtitle-text {
   max-width: 100%;
+}
+.line-stack {
+  position: relative;
+}
+.stroke-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.fill-layer {
+  position: relative;
 }
 .w {
   transition: color 0.05s linear;

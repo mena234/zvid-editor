@@ -2,7 +2,7 @@
 import { computed, ref } from 'vue'
 import { useProjectStore } from '~/stores/project'
 import { useEditorStore } from '~/stores/editor'
-import { parseSubtitleFile, distributeWords } from '~/utils/subtitleRuntime'
+import { parseSubtitleFile, distributeWords, chunkCaptions } from '~/utils/subtitleRuntime'
 import {
   SUBTITLE_MODES,
   SUBTITLE_POSITIONS,
@@ -134,8 +134,47 @@ function patchStyles(patch: Record<string, any>) {
   project.patchSubtitleStyles(patch)
 }
 
-/** Merge one activeWord field, dropping the object when both fields clear. */
-function patchActiveWord(patch: Record<string, string | undefined>) {
+/* ---------------- v2 extras: src URL + max words per line ---------------- */
+const subtitleSrc = computed(() => (project.doc.subtitle as any)?.src as string | undefined)
+
+/** Captions referenced by URL resolve at render time; optionally pull them in. */
+async function loadFromSrc() {
+  const url = subtitleSrc.value
+  if (!url) return
+  try {
+    const res = await fetch(url)
+    if (!res.ok) throw new Error(`HTTP ${res.status}`)
+    const content = await res.text()
+    const fileName = new URL(url).pathname.split('/').pop() || 'captions.srt'
+    const { captions: imported, format } = parseSubtitleFile(fileName, content)
+    if (!imported.length) throw new Error('no captions found')
+    const sub = project.ensureSubtitle()
+    sub.captions = imported
+    delete (sub as any).src
+    project.commit()
+    editor.notify(
+      `Loaded ${imported.length} captions from URL (${format.toUpperCase()})`,
+      'success'
+    )
+  } catch (err: any) {
+    editor.notify(`Couldn't load captions from URL: ${err.message}`, 'error')
+  }
+}
+
+const maxWordsInput = ref<number | undefined>(undefined)
+
+function applyMaxWords() {
+  const n = maxWordsInput.value
+  if (!n || n < 1) return
+  const sub = project.ensureSubtitle()
+  sub.captions = chunkCaptions(sub.captions, n)
+  project.commit()
+  editor.clearSelection()
+  editor.notify(`Captions split into lines of at most ${n} word${n > 1 ? 's' : ''}`, 'success')
+}
+
+/** Merge one activeWord field, dropping the object when all fields clear. */
+function patchActiveWord(patch: Record<string, string | number | undefined>) {
   const next: Record<string, any> = { ...(styles.value.activeWord ?? {}) }
   for (const [k, v] of Object.entries(patch)) {
     if (v === undefined) delete next[k]
@@ -169,7 +208,15 @@ function fmtT(v: number) {
         />
       </template>
 
-      <p v-if="!captions.length" class="hint">
+      <div v-if="subtitleSrc" class="src-note">
+        <p class="hint">
+          Captions are loaded from a URL at render time:<br />
+          <span class="mono src-url">{{ subtitleSrc }}</span>
+        </p>
+        <button class="btn sm" @click="loadFromSrc">Load into editor</button>
+      </div>
+
+      <p v-else-if="!captions.length" class="hint">
         Word-timed captions burned into the video (karaoke, highlight, fill,
         pop, bounce, fade, typewriter, slide and more). Import an SRT, VTT,
         ASS or Whisper JSON file —
@@ -202,6 +249,26 @@ function fmtT(v: number) {
       <button class="btn sm" @click="addCaption">
         <UiIcon name="plus" :size="12" /> Add caption at playhead
       </button>
+
+      <div v-if="captions.length" class="max-words-row">
+        <UiField
+          label="Max words per line"
+          hint="Splits long captions into shorter lines (like Shotstack/Creatomate)"
+        >
+          <UiNumberInput
+            :model-value="maxWordsInput"
+            :min="1"
+            :max="20"
+            clearable
+            placeholder="e.g. 4"
+            :allow-var="false"
+            @update:model-value="maxWordsInput = typeof $event === 'number' ? $event : undefined"
+          />
+        </UiField>
+        <button class="btn sm" :disabled="!maxWordsInput" @click="applyMaxWords">
+          Split captions
+        </button>
+      </div>
     </UiSection>
 
     <UiSection v-if="selected" :title="`Caption ${selectedIndex + 1}`">
@@ -355,17 +422,31 @@ function fmtT(v: number) {
           />
         </UiField>
       </div>
-      <UiField
-        label="Active word background"
-        hint="Box behind the spoken word (highlight/karaoke/pop/bounce)"
-      >
-        <UiColorInput
-          :model-value="styles.activeWord?.background"
-          clearable
-          placeholder="none"
-          @update:model-value="patchActiveWord({ background: $event })"
-        />
-      </UiField>
+      <div class="grid-2">
+        <UiField
+          label="Active word background"
+          hint="Box behind the spoken word (highlight/karaoke/pop/bounce)"
+        >
+          <UiColorInput
+            :model-value="styles.activeWord?.background"
+            clearable
+            placeholder="none"
+            @update:model-value="patchActiveWord({ background: $event })"
+          />
+        </UiField>
+        <UiField v-if="styles.activeWord?.background" label="Word box radius">
+          <UiNumberInput
+            :model-value="styles.activeWord?.radius"
+            :min="0"
+            :max="200"
+            clearable
+            placeholder="0"
+            unit="px"
+            :allow-var="false"
+            @update:model-value="patchActiveWord({ radius: $event })"
+          />
+        </UiField>
+      </div>
       <div class="grid-2">
         <UiField label="Bold">
           <input
@@ -382,12 +463,38 @@ function fmtT(v: number) {
           />
         </UiField>
       </div>
-      <UiField label="Background" hint="Opaque caption box (disables outline)">
-        <UiColorInput
-          :model-value="styles.background"
+      <div class="grid-2">
+        <UiField label="Background" hint="Caption box — combines with outline">
+          <UiColorInput
+            :model-value="styles.background"
+            clearable
+            placeholder="none"
+            @update:model-value="patchStyles({ background: $event })"
+          />
+        </UiField>
+        <UiField v-if="styles.background" label="Box padding">
+          <UiNumberInput
+            :model-value="styles.backgroundPadding"
+            :min="0"
+            :max="200"
+            clearable
+            placeholder="auto"
+            unit="px"
+            :allow-var="false"
+            @update:model-value="patchStyles({ backgroundPadding: $event })"
+          />
+        </UiField>
+      </div>
+      <UiField v-if="styles.background" label="Box radius" hint="Rounded caption box corners">
+        <UiNumberInput
+          :model-value="styles.backgroundRadius"
+          :min="0"
+          :max="200"
           clearable
-          placeholder="none"
-          @update:model-value="patchStyles({ background: $event })"
+          placeholder="0"
+          unit="px"
+          :allow-var="false"
+          @update:model-value="patchStyles({ backgroundRadius: $event })"
         />
       </UiField>
       <div class="grid-2">
@@ -544,5 +651,25 @@ function fmtT(v: number) {
 }
 .w-text {
   font-size: 11px;
+}
+.src-note {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 8px;
+  padding: 7px;
+  border: 1px dashed var(--border-1, #444);
+  border-radius: var(--radius-s);
+}
+.src-url {
+  font-size: 10px;
+  word-break: break-all;
+}
+.max-words-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  align-items: end;
+  margin-top: 8px;
 }
 </style>

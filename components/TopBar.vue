@@ -55,6 +55,20 @@ function setResolution(e: Event) {
   }
   project.patchProject(patch)
 }
+
+/** Uniform background corner radius; per-corner editing lives in the Project
+ *  panel — typing here writes all four corners. */
+const bgRadius = computed(() => {
+  const r = project.doc.backgroundRadius
+  if (!r) return undefined
+  return Math.max(r.tl ?? 0, r.tr ?? 0, r.br ?? 0, r.bl ?? 0) || undefined
+})
+function setBgRadius(v: number | string | undefined) {
+  const n = Number(v ?? 0)
+  project.patchProject({
+    backgroundRadius: n > 0 ? { tl: n, tr: n, br: n, bl: n } : undefined,
+  })
+}
 </script>
 
 <template>
@@ -157,6 +171,22 @@ function setResolution(e: Event) {
           type="color"
           :value="dims.backgroundColor.slice(0, 7)"
           @input="project.patchProject({ backgroundColor: ($event.target as HTMLInputElement).value })"
+        />
+      </label>
+
+      <label
+        class="mini-field"
+        title="Rounded background corners (px) — per-corner control in the Project panel"
+      >
+        <UiIcon name="radius" :size="13" />
+        <UiNumberInput
+          class="w-48"
+          :model-value="bgRadius"
+          :min="0"
+          :allow-var="false"
+          clearable
+          placeholder="0"
+          @update:model-value="setBgRadius($event)"
         />
       </label>
 

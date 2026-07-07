@@ -23,6 +23,19 @@ const stats = computed(() => {
   }
 })
 
+/* ---------------- rounded background ---------------- */
+function patchRadiusCorner(
+  corner: 'tl' | 'tr' | 'br' | 'bl',
+  value: number | string | undefined
+) {
+  project.patchProject({
+    backgroundRadius: {
+      ...project.doc.backgroundRadius,
+      [corner]: Number(value ?? 0),
+    },
+  })
+}
+
 /** animated presets (customCode) make snapshotTime meaningful for images */
 const hasAnimatedContent = computed(() =>
   project.doc.visuals.some(
@@ -52,6 +65,70 @@ const hasAnimatedContent = computed(() =>
         Select an element on the canvas or timeline to edit its properties.
         Project settings live in the top bar.
       </p>
+    </UiSection>
+
+    <UiSection
+      title="Rounded background"
+      collapsible
+      :start-open="!!project.doc.backgroundRadius"
+    >
+      <UiField
+        label="Enable"
+        :hint="
+          project.isImage
+            ? 'Rounds the background rectangle — corners are transparent in png/webp outputs (black in jpg)'
+            : 'Rounds the background rectangle — corners render black in the video; scenes can override per-scene'
+        "
+      >
+        <label class="check">
+          <input
+            type="checkbox"
+            :checked="!!project.doc.backgroundRadius"
+            @change="
+              project.patchProject({
+                backgroundRadius: ($event.target as HTMLInputElement).checked
+                  ? { tl: 48, tr: 48, br: 48, bl: 48 }
+                  : undefined,
+              })
+            "
+          />
+          round the corners
+        </label>
+      </UiField>
+      <div v-if="project.doc.backgroundRadius" class="grid-2">
+        <UiField label="Top-left">
+          <UiNumberInput
+            :model-value="project.doc.backgroundRadius.tl ?? 0"
+            :min="0"
+            unit="px"
+            @update:model-value="patchRadiusCorner('tl', $event)"
+          />
+        </UiField>
+        <UiField label="Top-right">
+          <UiNumberInput
+            :model-value="project.doc.backgroundRadius.tr ?? 0"
+            :min="0"
+            unit="px"
+            @update:model-value="patchRadiusCorner('tr', $event)"
+          />
+        </UiField>
+        <UiField label="Bottom-left">
+          <UiNumberInput
+            :model-value="project.doc.backgroundRadius.bl ?? 0"
+            :min="0"
+            unit="px"
+            @update:model-value="patchRadiusCorner('bl', $event)"
+          />
+        </UiField>
+        <UiField label="Bottom-right">
+          <UiNumberInput
+            :model-value="project.doc.backgroundRadius.br ?? 0"
+            :min="0"
+            unit="px"
+            @update:model-value="patchRadiusCorner('br', $event)"
+          />
+        </UiField>
+      </div>
     </UiSection>
 
     <!-- an image is its own thumbnail; the field is video-only -->
@@ -130,6 +207,19 @@ const hasAnimatedContent = computed(() =>
   grid-template-columns: repeat(4, 1fr);
   gap: 6px;
   margin-bottom: 8px;
+}
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.check {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11.5px;
+  color: var(--text-1);
+  white-space: nowrap;
 }
 .stat {
   display: flex;

@@ -58,6 +58,17 @@ export const radiusSchema = z
   .object({ tl: num, tr: num, bl: num, br: num })
   .passthrough()
 
+/** like radiusSchema but every corner optional (package treats missing as 0);
+ *  plain numbers — template placeholders are not supported for radii */
+export const backgroundRadiusSchema = z
+  .object({
+    tl: z.number().optional(),
+    tr: z.number().optional(),
+    bl: z.number().optional(),
+    br: z.number().optional(),
+  })
+  .passthrough()
+
 export const filterSchema = z
   .object({
     brightness: numOpt,
@@ -249,6 +260,10 @@ export const subtitleStylesSchema = z
   .object({
     color: strOpt,
     background: strOpt,
+    /** px padding of the caption background box (v2 background.padding) */
+    backgroundPadding: numOpt,
+    /** corner radius (px) of the caption background box (v2 background.radius) */
+    backgroundRadius: z.number().optional(),
     isBold: boolOpt,
     isItalic: boolOpt,
     fontSize: numOpt,
@@ -261,7 +276,12 @@ export const subtitleStylesSchema = z
     mode: z.enum(SUBTITLE_MODES).optional(),
     slideDirection: z.enum(SUBTITLE_SLIDE_DIRECTIONS).optional(),
     activeWord: z
-      .object({ color: z.string().optional(), background: z.string().optional() })
+      .object({
+        color: z.string().optional(),
+        background: z.string().optional(),
+        /** corner radius (px) of the active-word box */
+        radius: z.number().optional(),
+      })
       .passthrough()
       .optional(),
   })
@@ -269,6 +289,8 @@ export const subtitleStylesSchema = z
 
 export const subtitleSchema = z
   .object({
+    /** v2: SRT/VTT URL, resolved by the renderer (alternative to captions) */
+    src: strOpt,
     captions: z.array(captionSchema).default([]),
     styles: subtitleStylesSchema.optional(),
   })
@@ -284,6 +306,8 @@ export const sceneSchema = z
     transitionId: z.string().nullable().optional(),
     transitionDuration: numOpt,
     backgroundColor: strOpt,
+    /** rounds the scene background; falls back to the project backgroundRadius */
+    backgroundRadius: backgroundRadiusSchema.optional(),
   })
   .passthrough()
 
@@ -299,6 +323,8 @@ export const projectSchema = z
     duration: numOpt,
     frameRate: numOpt,
     backgroundColor: strOpt,
+    /** rounds the background rectangle; corners are transparent on png/webp, black on mp4/jpg */
+    backgroundRadius: backgroundRadiusSchema.optional(),
     outputFormat: strOpt,
     thumbnail: strOpt,
     /** image-only: capture time (s) for animated presets; omit = settled end state */
@@ -354,6 +380,7 @@ export interface ProjectDoc {
   duration?: number
   frameRate?: number
   backgroundColor?: string
+  backgroundRadius?: { tl?: number; tr?: number; br?: number; bl?: number }
   outputFormat?: string
   thumbnail?: string
   /** image-only fields (see projectSchema) */

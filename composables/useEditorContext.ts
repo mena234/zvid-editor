@@ -77,6 +77,12 @@ export function useEditorContext() {
     return project.doc.backgroundColor ?? '#ffffff'
   })
 
+  const contextBackgroundRadius = computed(() => {
+    if (activeScene.value)
+      return activeScene.value.backgroundRadius ?? project.doc.backgroundRadius
+    return project.doc.backgroundRadius
+  })
+
   return {
     project,
     editor,
@@ -88,6 +94,7 @@ export function useEditorContext() {
     contextVisuals,
     contextAudios,
     contextBackgroundColor,
+    contextBackgroundRadius,
     displayDefaults,
   }
 }

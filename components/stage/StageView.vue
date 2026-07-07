@@ -14,6 +14,7 @@ const {
   contextVisuals,
   contextDuration,
   contextBackgroundColor,
+  contextBackgroundRadius,
   scenePlan,
   activeScene,
   displayDefaults,
@@ -141,6 +142,25 @@ const overlayVisuals = computed(() =>
 const displayContextBg = computed(
   () => tvars.displayString(contextBackgroundColor.value, contextScope.value) ?? '#ffffff'
 )
+
+/* ---------------- rounded background ---------------- */
+function radiusCss(r?: { tl?: number; tr?: number; br?: number; bl?: number }) {
+  if (!r) return undefined
+  const { tl = 0, tr = 0, br = 0, bl = 0 } = r
+  if (!(tl || tr || br || bl)) return undefined
+  return `${tl}px ${tr}px ${br}px ${bl}px`
+}
+
+const contextBgRadiusCss = computed(() => radiusCss(contextBackgroundRadius.value))
+
+/** what the render shows outside the rounded background: transparent
+ *  (checkerboard) for alpha-capable image outputs, black otherwise */
+const cornerBackdrop = computed(() => {
+  const fmt = String(project.doc.outputFormat ?? 'png').toLowerCase()
+  return project.isImage && fmt !== 'jpg' && fmt !== 'jpeg'
+    ? 'transparent'
+    : '#000000'
+})
 
 /* ---------------- selection / gestures ---------------- */
 interface GuideLine {
@@ -409,10 +429,21 @@ const contextLabel = computed(() => {
             width: `${projW}px`,
             height: `${projH}px`,
             transform: `scale(${scale})`,
-            background: isFullPreview ? 'transparent' : displayContextBg,
+            background: isFullPreview
+              ? 'transparent'
+              : contextBgRadiusCss
+                ? cornerBackdrop
+                : displayContextBg,
           }"
           @pointerdown="onFramePointerDown"
         >
+          <!-- rounded background layer (items are NOT clipped by it) -->
+          <div
+            v-if="!isFullPreview && contextBgRadiusCss"
+            class="stage-bg"
+            :style="{ background: displayContextBg, borderRadius: contextBgRadiusCss }"
+          />
+
           <!-- full movie preview: scene groups + global overlays -->
           <template v-if="isFullPreview">
             <div
@@ -420,13 +451,23 @@ const contextLabel = computed(() => {
               :key="fe.key"
               class="scene-group"
               :style="{
-                background: fe.entry.backgroundColor,
+                background: radiusCss(fe.entry.backgroundRadius)
+                  ? '#000000'
+                  : fe.entry.backgroundColor,
                 opacity: fe.animStyle.opacity,
                 clipPath: fe.animStyle.clipPath,
                 transform: fe.animStyle.transform,
                 filter: fe.animStyle.filter,
               }"
             >
+              <div
+                v-if="radiusCss(fe.entry.backgroundRadius)"
+                class="stage-bg"
+                :style="{
+                  background: fe.entry.backgroundColor,
+                  borderRadius: radiusCss(fe.entry.backgroundRadius),
+                }"
+              />
               <StageItem
                 v-for="item in sortByTrack(fe.entry.scene.visuals)"
                 :key="item._id"
@@ -593,6 +634,11 @@ const contextLabel = computed(() => {
 .scene-group {
   position: absolute;
   inset: 0;
+}
+.stage-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
 }
 /* guides sit over arbitrary video content — pair light dashes with a dark
    halo so they read on any footage, in either app theme */

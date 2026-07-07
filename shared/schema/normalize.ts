@@ -1,5 +1,6 @@
 import { projectSchema, canonicalVisualType } from './types'
 import { SUPPORTED_IMAGE_FORMATS } from './constants'
+import { importSubtitle, exportSubtitle } from './subtitle'
 import type {
   ProjectDoc,
   VisualDoc,
@@ -30,6 +31,7 @@ const PROJECT_KEYS = new Set([
   'duration',
   'frameRate',
   'backgroundColor',
+  'backgroundRadius',
   'outputFormat',
   'thumbnail',
   'snapshotTime',
@@ -122,6 +124,7 @@ export function importProject(raw: unknown): ImportResult {
     duration: p.duration,
     frameRate: p.frameRate,
     backgroundColor: p.backgroundColor,
+    backgroundRadius: p.backgroundRadius as ProjectDoc['backgroundRadius'],
     outputFormat: p.outputFormat,
     thumbnail: p.thumbnail,
     snapshotTime: p.snapshotTime,
@@ -131,7 +134,9 @@ export function importProject(raw: unknown): ImportResult {
       importVisual(v, `visuals[${i}]`)
     ),
     audios: (p.audios ?? []).map(importAudio),
-    subtitle: p.subtitle,
+    // legacy {captions, styles} and the flat v2 shape both normalize to the
+    // internal model the panel/preview work on
+    subtitle: importSubtitle(p.subtitle),
     scenes,
     extra: Object.keys(extra).length ? extra : undefined,
   }
@@ -207,6 +212,7 @@ const PROJECT_KEY_ORDER = [
   'duration',
   'frameRate',
   'backgroundColor',
+  'backgroundRadius',
   'outputFormat',
   'thumbnail',
   'snapshotTime',
@@ -222,6 +228,7 @@ const SCENE_KEY_ORDER = [
   'id',
   'duration',
   'backgroundColor',
+  'backgroundRadius',
   'transition',
   'transitionId',
   'transitionDuration',
@@ -299,19 +306,6 @@ function cleanAudio(a: AudioDoc): Record<string, any> {
   return orderKeys(out, AUDIO_KEY_ORDER)
 }
 
-function cleanCaption(c: Record<string, any>) {
-  const out: Record<string, any> = { start: c.start, end: c.end }
-  if (c.text !== undefined) out.text = c.text
-  out.words = (c.words ?? []).map((w: any) => ({
-    start: w.start,
-    end: w.end,
-    text: w.text,
-  }))
-  for (const k of Object.keys(c))
-    if (!(k in out) && k !== 'words') out[k] = c[k]
-  return out
-}
-
 /**
  * Serialize the editor document to the minimal package JSON. Values that
  * merely restate package defaults are omitted so exports stay diffable, like
@@ -335,6 +329,7 @@ export function exportProject(doc: ProjectDoc): Record<string, any> {
   if (doc.duration !== undefined) out.duration = doc.duration
   if (doc.frameRate !== undefined) out.frameRate = doc.frameRate
   if (doc.backgroundColor !== undefined) out.backgroundColor = doc.backgroundColor
+  if (doc.backgroundRadius !== undefined) out.backgroundRadius = doc.backgroundRadius
   if (doc.outputFormat !== undefined) out.outputFormat = doc.outputFormat
   if (doc.thumbnail !== undefined && doc.thumbnail !== '')
     out.thumbnail = doc.thumbnail
@@ -366,12 +361,10 @@ export function exportProject(doc: ProjectDoc): Record<string, any> {
   if (doc.visuals.length) out.visuals = doc.visuals.map(cleanVisual)
   if (doc.audios.length) out.audios = doc.audios.map(cleanAudio)
 
-  if (doc.subtitle && (doc.subtitle.captions?.length || doc.subtitle.styles)) {
-    const sub: Record<string, any> = {}
-    if (doc.subtitle.styles && Object.keys(doc.subtitle.styles).length)
-      sub.styles = doc.subtitle.styles
-    sub.captions = (doc.subtitle.captions ?? []).map(cleanCaption)
-    out.subtitle = sub
+  // Serialize to the simplified v2 wire shape. A subtitle without content
+  // (no captions, no src) is dropped — the API requires one of the two.
+  if (doc.subtitle && (doc.subtitle.captions?.length || (doc.subtitle as any).src)) {
+    out.subtitle = exportSubtitle(doc.subtitle)
   }
 
   if (doc.extra) Object.assign(out, doc.extra)
