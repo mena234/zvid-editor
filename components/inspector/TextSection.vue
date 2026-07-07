@@ -94,31 +94,6 @@ const fontSizePx = computed(() => {
 })
 
 const FONT_WEIGHTS = ['300', '400', '500', '600', '700', '800', '900', 'bold', 'normal']
-
-/* free-form extra CSS properties */
-const extraKey = ref('')
-const extraVal = ref('')
-const KNOWN = new Set([
-  'fontFamily',
-  'fontSize',
-  'fontWeight',
-  'color',
-  'textAlign',
-  'letterSpacing',
-  'lineHeight',
-  'textTransform',
-  'textDecoration',
-  'margin',
-])
-const extraProps = computed(() =>
-  Object.entries(style.value).filter(([k]) => !KNOWN.has(k))
-)
-function addExtra() {
-  if (!extraKey.value.trim()) return
-  setStyle(extraKey.value.trim(), extraVal.value)
-  extraKey.value = ''
-  extraVal.value = ''
-}
 </script>
 
 <template>
@@ -301,27 +276,6 @@ function addExtra() {
       </div>
     </UiSection>
 
-    <UiSection title="More CSS properties" collapsible :start-open="extraProps.length > 0">
-      <div v-for="[k, v] in extraProps" :key="k" class="extra-row">
-        <span class="mono extra-key">{{ k }}</span>
-        <input
-          class="ctl"
-          :value="v"
-          @change="setStyle(k, ($event.target as HTMLInputElement).value)"
-        />
-        <button class="icon-btn xs" title="Remove" @click="setStyle(k, undefined)">
-          <UiIcon name="close" :size="11" />
-        </button>
-      </div>
-      <div class="extra-row">
-        <input v-model="extraKey" class="ctl" placeholder="property (camelCase)" />
-        <input v-model="extraVal" class="ctl" placeholder="value" @keydown.enter="addExtra" />
-        <button class="icon-btn xs" title="Add property" @click="addExtra">
-          <UiIcon name="plus" :size="12" />
-        </button>
-      </div>
-      <p class="hint">Any CSS property is allowed (padding, background, borderRadius, textShadow…).</p>
-    </UiSection>
   </div>
 </template>
 
@@ -420,17 +374,5 @@ function addExtra() {
 .font-item.custom {
   color: var(--accent-strong);
   font-size: 11px;
-}
-.extra-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr 24px;
-  gap: 5px;
-  align-items: center;
-}
-.extra-key {
-  font-size: 10.5px;
-  color: var(--text-1);
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 </style>

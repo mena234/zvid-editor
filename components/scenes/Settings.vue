@@ -31,23 +31,6 @@ function patch(patchObj: Record<string, any>) {
   if (scene.value) project.patchScene(scene.value._id, patchObj)
 }
 
-/* ---------------- rounded background ---------------- */
-const sceneRadius = computed(
-  () =>
-    scene.value?.backgroundRadius as
-      | { tl?: number; tr?: number; br?: number; bl?: number }
-      | undefined
-)
-
-function patchRadiusCorner(
-  corner: 'tl' | 'tr' | 'br' | 'bl',
-  value: number | string | undefined
-) {
-  patch({
-    backgroundRadius: { ...sceneRadius.value, [corner]: Number(value ?? 0) },
-  })
-}
-
 /* ---------------- template: condition + iterate ---------------- */
 const arrayVariables = computed(() =>
   Object.entries(tvars.variables.value)
@@ -152,60 +135,6 @@ function commitCondition(e: Event) {
         @update:model-value="patch({ backgroundColor: $event })"
       />
     </UiField>
-
-    <UiField
-      label="Rounded background"
-      hint="Falls back to the project setting; the corners render black in the video"
-    >
-      <label class="check">
-        <input
-          type="checkbox"
-          :checked="!!sceneRadius"
-          @change="
-            patch({
-              backgroundRadius: ($event.target as HTMLInputElement).checked
-                ? { tl: 48, tr: 48, br: 48, bl: 48 }
-                : undefined,
-            })
-          "
-        />
-        round the corners
-      </label>
-    </UiField>
-    <div v-if="sceneRadius" class="grid-2">
-      <UiField label="Top-left">
-        <UiNumberInput
-          :model-value="sceneRadius.tl ?? 0"
-          :min="0"
-          unit="px"
-          @update:model-value="patchRadiusCorner('tl', $event)"
-        />
-      </UiField>
-      <UiField label="Top-right">
-        <UiNumberInput
-          :model-value="sceneRadius.tr ?? 0"
-          :min="0"
-          unit="px"
-          @update:model-value="patchRadiusCorner('tr', $event)"
-        />
-      </UiField>
-      <UiField label="Bottom-left">
-        <UiNumberInput
-          :model-value="sceneRadius.bl ?? 0"
-          :min="0"
-          unit="px"
-          @update:model-value="patchRadiusCorner('bl', $event)"
-        />
-      </UiField>
-      <UiField label="Bottom-right">
-        <UiNumberInput
-          :model-value="sceneRadius.br ?? 0"
-          :min="0"
-          unit="px"
-          @update:model-value="patchRadiusCorner('br', $event)"
-        />
-      </UiField>
-    </div>
 
     <template v-if="!isLast">
       <UiField label="Transition to next scene">

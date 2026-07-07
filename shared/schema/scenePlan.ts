@@ -23,7 +23,6 @@ export interface ScenePlanEntry {
   /** global start offset */
   start: number
   backgroundColor: string
-  backgroundRadius?: { tl?: number; tr?: number; br?: number; bl?: number }
 }
 
 export interface ScenePlan {
@@ -106,7 +105,6 @@ export function buildScenePlan(
       start: 0,
       backgroundColor:
         scene.backgroundColor ?? doc.backgroundColor ?? '#ffffff',
-      backgroundRadius: scene.backgroundRadius ?? doc.backgroundRadius,
     })
   })
 

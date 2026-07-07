@@ -31,7 +31,6 @@ const PROJECT_KEYS = new Set([
   'duration',
   'frameRate',
   'backgroundColor',
-  'backgroundRadius',
   'outputFormat',
   'thumbnail',
   'snapshotTime',
@@ -75,10 +74,20 @@ export function importProject(raw: unknown): ImportResult {
     _id: makeId('aud'),
   })
 
+  // backgroundRadius (project/scene rounded background) was removed from the
+  // renderer; drop it on import so old drafts don't re-export a field the
+  // validation now rejects.
+  const dropBackgroundRadius = (obj: Record<string, any>, where: string) => {
+    if (obj.backgroundRadius === undefined) return obj
+    warnings.push(`${where}: "backgroundRadius" is no longer supported — removed`)
+    const { backgroundRadius: _bg, ...rest } = obj
+    return rest
+  }
+
   const scenes: SceneDoc[] | undefined = p.scenes?.map((s, i) => {
     const { visuals, audios, ...rest } = s as Record<string, any>
     return {
-      ...(rest as any),
+      ...(dropBackgroundRadius(rest, `scenes[${i}]`) as any),
       _id: makeId('scn'),
       id: (s.id as string) ?? `scene-${i}`,
       visuals: (visuals ?? []).map((v: any, j: number) =>
@@ -89,7 +98,7 @@ export function importProject(raw: unknown): ImportResult {
   })
 
   const extra: Record<string, any> = {}
-  for (const [k, v] of Object.entries(p)) {
+  for (const [k, v] of Object.entries(dropBackgroundRadius(p, '(root)'))) {
     if (!PROJECT_KEYS.has(k)) extra[k] = v
   }
 
@@ -124,7 +133,6 @@ export function importProject(raw: unknown): ImportResult {
     duration: p.duration,
     frameRate: p.frameRate,
     backgroundColor: p.backgroundColor,
-    backgroundRadius: p.backgroundRadius as ProjectDoc['backgroundRadius'],
     outputFormat: p.outputFormat,
     thumbnail: p.thumbnail,
     snapshotTime: p.snapshotTime,
@@ -212,7 +220,6 @@ const PROJECT_KEY_ORDER = [
   'duration',
   'frameRate',
   'backgroundColor',
-  'backgroundRadius',
   'outputFormat',
   'thumbnail',
   'snapshotTime',
@@ -228,7 +235,6 @@ const SCENE_KEY_ORDER = [
   'id',
   'duration',
   'backgroundColor',
-  'backgroundRadius',
   'transition',
   'transitionId',
   'transitionDuration',
@@ -329,7 +335,6 @@ export function exportProject(doc: ProjectDoc): Record<string, any> {
   if (doc.duration !== undefined) out.duration = doc.duration
   if (doc.frameRate !== undefined) out.frameRate = doc.frameRate
   if (doc.backgroundColor !== undefined) out.backgroundColor = doc.backgroundColor
-  if (doc.backgroundRadius !== undefined) out.backgroundRadius = doc.backgroundRadius
   if (doc.outputFormat !== undefined) out.outputFormat = doc.outputFormat
   if (doc.thumbnail !== undefined && doc.thumbnail !== '')
     out.thumbnail = doc.thumbnail

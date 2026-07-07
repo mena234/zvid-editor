@@ -54,19 +54,9 @@ export const chromaKeySchema = z
   .object({ color: z.string(), similarity: numOpt, blend: numOpt })
   .passthrough()
 
+/** per-corner element rounding; every corner optional (missing = 0) */
 export const radiusSchema = z
-  .object({ tl: num, tr: num, bl: num, br: num })
-  .passthrough()
-
-/** like radiusSchema but every corner optional (package treats missing as 0);
- *  plain numbers — template placeholders are not supported for radii */
-export const backgroundRadiusSchema = z
-  .object({
-    tl: z.number().optional(),
-    tr: z.number().optional(),
-    bl: z.number().optional(),
-    br: z.number().optional(),
-  })
+  .object({ tl: numOpt, tr: numOpt, bl: numOpt, br: numOpt })
   .passthrough()
 
 export const filterSchema = z
@@ -81,7 +71,7 @@ export const filterSchema = z
   })
   .passthrough()
 
-/** zoom is `boolean` in the type but the filter reads `{ depth }` too. */
+/** Ken Burns zoom: `true` = default 1.2× depth, or `{ depth: 1..10 }`. */
 export const zoomSchema = z.union([
   z.boolean(),
   z.object({ depth: numOpt }).passthrough(),
@@ -144,6 +134,7 @@ export const gifItemSchema = z
     src: z.string().optional().default(''),
     ...commonVisualFields,
     cropParams: cropParamsSchema.optional(),
+    radius: radiusSchema.optional(),
     resize: resizeModeSchema.optional(),
     zoom: zoomSchema.optional(),
     speed: numOpt,
@@ -306,8 +297,6 @@ export const sceneSchema = z
     transitionId: z.string().nullable().optional(),
     transitionDuration: numOpt,
     backgroundColor: strOpt,
-    /** rounds the scene background; falls back to the project backgroundRadius */
-    backgroundRadius: backgroundRadiusSchema.optional(),
   })
   .passthrough()
 
@@ -323,8 +312,6 @@ export const projectSchema = z
     duration: numOpt,
     frameRate: numOpt,
     backgroundColor: strOpt,
-    /** rounds the background rectangle; corners are transparent on png/webp, black on mp4/jpg */
-    backgroundRadius: backgroundRadiusSchema.optional(),
     outputFormat: strOpt,
     thumbnail: strOpt,
     /** image-only: capture time (s) for animated presets; omit = settled end state */
@@ -380,7 +367,6 @@ export interface ProjectDoc {
   duration?: number
   frameRate?: number
   backgroundColor?: string
-  backgroundRadius?: { tl?: number; tr?: number; br?: number; bl?: number }
   outputFormat?: string
   thumbnail?: string
   /** image-only fields (see projectSchema) */

@@ -225,12 +225,7 @@ const chromaEnabled = computed(() => !!props.item.chromaKey)
       </template>
     </UiSection>
 
-    <UiSection
-      v-if="type === 'IMAGE'"
-      title="Rounded corners"
-      collapsible
-      :start-open="radiusEnabled"
-    >
+    <UiSection title="Rounded corners" collapsible :start-open="radiusEnabled">
       <UiField label="Enable">
         <input
           type="checkbox"
