@@ -64,6 +64,8 @@ function seedDesign(): DesignDoc {
 }
 
 const design = reactive<DesignDoc>(seedDesign())
+/** master preview clock — ticked by DesignerPreview, scrubbed by the timeline */
+const clock = reactive({ t: 0, playing: true })
 const selectedId = ref<string | null>(design.layers.length ? design.layers[design.layers.length - 1].id : null)
 const selectedLayer = computed(
   () => design.layers.find((l) => l.id === selectedId.value) ?? null
@@ -427,6 +429,7 @@ function onKeydown(e: KeyboardEvent) {
         <DesignerPreview
           :design="design"
           :selected-id="selectedId"
+          :clock="clock"
           @update:selected-id="selectedId = $event"
           @move="moveLayer"
         />
@@ -441,6 +444,16 @@ function onKeydown(e: KeyboardEvent) {
           />
         </aside>
       </div>
+
+      <DesignerTimeline
+        :design="design"
+        :selected-id="selectedId"
+        :duration="compiled.duration"
+        :animated="compiled.animated"
+        :clock="clock"
+        @update:selected-id="selectedId = $event"
+        @patch-layer="patchLayer"
+      />
 
       <p v-for="w in compiled.warnings" :key="w" class="hint warn">⚠ {{ w }}</p>
     </div>
@@ -460,7 +473,7 @@ function onKeydown(e: KeyboardEvent) {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  height: min(72vh, 680px);
+  height: min(80vh, 800px);
 }
 .toolbar {
   display: flex;

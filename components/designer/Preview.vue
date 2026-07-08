@@ -18,6 +18,8 @@ import { useTemplateVars } from '~/composables/useTemplateVars'
 const props = defineProps<{
   design: DesignDoc
   selectedId: string | null
+  /** shared master clock — the timeline scrubs it, this component ticks it */
+  clock: { t: number; playing: boolean }
 }>()
 
 const emit = defineEmits<{
@@ -87,14 +89,13 @@ function grabAnimations() {
 }
 
 /* ---------------- playback (master clock, WAAPI-driven) ---------------- */
-const playing = ref(true)
-const t = ref(0)
+const clock = props.clock
 const duration = computed(() => compiled.value.duration)
 let raf = 0
 let last = 0
 
 function applyTime() {
-  const ms = t.value * 1000
+  const ms = clock.t * 1000
   for (const a of anims) {
     try {
       a.currentTime = ms
@@ -104,26 +105,26 @@ function applyTime() {
   }
 }
 
+// external scrubs (the timeline ruler) must reach the WAAPI immediately
+watch(() => clock.t, applyTime, { flush: 'sync' })
+
 function tick(now: number) {
   raf = requestAnimationFrame(tick)
   const dt = (now - last) / 1000
   last = now
-  if (playing.value && compiled.value.animated) {
-    t.value = (t.value + dt) % duration.value
-    applyTime()
+  if (clock.playing && compiled.value.animated) {
+    clock.t = (clock.t + dt) % duration.value
   }
 }
 
 function scrub(v: number) {
-  playing.value = false
-  t.value = v
-  applyTime()
+  clock.playing = false
+  clock.t = v
 }
 
 function replay() {
-  t.value = 0
-  playing.value = true
-  applyTime()
+  clock.t = 0
+  clock.playing = true
 }
 
 /* ---------------- selection overlay ---------------- */
@@ -249,7 +250,7 @@ onBeforeUnmount(() => {
 watch(
   () => [compiled.value.css, displayHtml.value],
   () => {
-    if (t.value > duration.value) t.value = 0
+    if (clock.t > duration.value) clock.t = 0
     build()
   }
 )
@@ -300,8 +301,8 @@ watch(() => props.selectedId, () => requestAnimationFrame(measureBoxes))
     </div>
 
     <div class="controls">
-      <button class="icon-btn" :title="playing ? 'Pause' : 'Play'" @click="playing = !playing">
-        <UiIcon :name="playing ? 'pause' : 'play'" :size="14" />
+      <button class="icon-btn" :title="clock.playing ? 'Pause' : 'Play'" @click="clock.playing = !clock.playing">
+        <UiIcon :name="clock.playing ? 'pause' : 'play'" :size="14" />
       </button>
       <button class="icon-btn" title="Replay from start" @click="replay">
         <UiIcon name="loop" :size="13" />
@@ -312,11 +313,11 @@ watch(() => props.selectedId, () => requestAnimationFrame(measureBoxes))
         min="0"
         :max="duration"
         step="0.01"
-        :value="t"
+        :value="clock.t"
         :disabled="!compiled.animated"
         @input="scrub(Number(($event.target as HTMLInputElement).value))"
       />
-      <span class="time mono">{{ t.toFixed(2) }} / {{ duration.toFixed(2) }}s</span>
+      <span class="time mono">{{ clock.t.toFixed(2) }} / {{ duration.toFixed(2) }}s</span>
       <span class="bg-picker">
         <button
           v-for="b in ['checker', 'dark', 'light'] as const"
