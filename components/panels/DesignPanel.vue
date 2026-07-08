@@ -238,7 +238,10 @@ function openSignIn() {
 }
 .design-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  /* minmax(0, 1fr) — not the default minmax(auto, 1fr) — so a card whose
+     content (long name / preview intrinsic width) can't shrink doesn't blow
+     the track past its share and push the grid outside the sidebar. */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 8px;
 }
 .design-card {
@@ -246,6 +249,7 @@ function openSignIn() {
   display: flex;
   flex-direction: column;
   gap: 5px;
+  min-width: 0;
   padding: 6px;
   border: 1px solid var(--border-1);
   border-radius: var(--radius-m);
@@ -256,6 +260,7 @@ function openSignIn() {
   border-color: var(--accent);
 }
 .design-name {
+  min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

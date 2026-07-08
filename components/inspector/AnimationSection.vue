@@ -152,7 +152,7 @@ function linkTransition(targetEditorId: string) {
         </select>
       </UiField>
       <template v-if="item.transition && item.transitionId">
-        <UiField label="Effect">
+        <UiField label="Effect" as="div">
           <UiEffectPicker
             :model-value="item.transition"
             direction="transition"

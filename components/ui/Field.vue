@@ -1,12 +1,23 @@
 <script setup lang="ts">
-defineProps<{ label: string; hint?: string; inline?: boolean }>()
+/**
+ * `as` defaults to a <label> (correct for a single labelable control). Pass
+ * as="div" when the slot holds a composite widget with many controls (e.g. a
+ * search input + a grid of buttons) — a <label> may wrap only one labelable
+ * control, and would otherwise steal clicks into the first descendant input.
+ */
+defineProps<{
+  label: string
+  hint?: string
+  inline?: boolean
+  as?: 'label' | 'div'
+}>()
 </script>
 
 <template>
-  <label class="field" :class="{ inline }">
+  <component :is="as ?? 'label'" class="field" :class="{ inline }">
     <span class="field-label" :title="hint">{{ label }}</span>
     <span class="field-ctl"><slot /></span>
-  </label>
+  </component>
 </template>
 
 <style scoped>

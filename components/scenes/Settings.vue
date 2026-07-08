@@ -145,7 +145,7 @@ function commitCondition(e: Event) {
     </UiField>
 
     <template v-if="!isLast">
-      <UiField label="Transition to next scene">
+      <UiField label="Transition to next scene" as="div">
         <UiEffectPicker
           :model-value="scene.transition ? String(scene.transition) : undefined"
           direction="transition"

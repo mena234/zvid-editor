@@ -28,8 +28,9 @@ export const EXAMPLE_CATEGORIES: ExampleCategory[] = [
     label: 'E-commerce',
     blurb: 'Product promos, sales and drops for online stores',
     keywords: [
-      'shop', 'store', 'product', 'retail', 'dtc', 'dropshipping', 'sale',
-      'discount', 'promo', 'checkout', 'brand', 'online store', 'shopify',
+      'ecommerce', 'e-commerce', 'shop', 'store', 'product', 'retail', 'dtc',
+      'dropshipping', 'sale', 'discount', 'promo', 'checkout', 'brand',
+      'online store', 'shopify',
     ],
   },
   {
@@ -172,8 +173,9 @@ export const EXAMPLE_CATEGORIES: ExampleCategory[] = [
     label: 'Data viz / reports',
     blurb: 'Charts, dashboards and report videos',
     keywords: [
-      'data', 'visualization', 'chart', 'graph', 'report', 'dashboard',
-      'analytics', 'metrics', 'kpi', 'stats', 'infographic', 'insights',
+      'dataviz', 'data', 'visualization', 'chart', 'graph', 'report',
+      'dashboard', 'analytics', 'metrics', 'kpi', 'stats', 'infographic',
+      'insights',
     ],
   },
   {

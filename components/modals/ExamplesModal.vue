@@ -66,21 +66,31 @@ const haystacks = computed(() => {
   return map
 })
 
+/** Escape a raw user term so it stays literal inside the word-boundary regex. */
+function escapeRegExp(s: string): string {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+}
+
 const queryTerms = computed(() =>
   query.value.toLowerCase().split(/\s+/).filter(Boolean).slice(0, 6)
 )
+/** One \b-anchored regex per term, compiled once per query (not per item). */
+const queryRes = computed(() =>
+  queryTerms.value.map((t) => new RegExp('\\b' + escapeRegExp(t)))
+)
 
 /**
- * AND search: every term must prefix-match a whitespace token of the item's
- * haystack. Prefix-on-token (not bare substring) keeps "crypto" → Finance and
- * "crypt" → Finance working while avoiding fragment hits — e.g. "art" no longer
- * matches the keyword "chart" and drags in every Data-viz template.
+ * AND search: every term must match at a word boundary in the item's haystack.
+ * Word-boundary (not bare substring) keeps "crypto"/"crypt" → Finance while a
+ * short query like "art" matches "article"/"artificial" but NOT the middle of
+ * "chart" — so it no longer drags in every Data-viz template. Punctuation is
+ * handled naturally too: "wrapped" matches "(Wrapped)", "commerce" → e-commerce.
  */
 function matchesQuery(item: LibraryItem): boolean {
-  const terms = queryTerms.value
-  if (!terms.length) return true
-  const tokens = (haystacks.value.get(item.slug) ?? '').split(/\s+/)
-  return terms.every((t) => tokens.some((tok) => tok.startsWith(t)))
+  const res = queryRes.value
+  if (!res.length) return true
+  const hay = haystacks.value.get(item.slug) ?? ''
+  return res.every((re) => re.test(hay))
 }
 
 /** Items matching the search box, ignoring the category chip (drives chip counts). */

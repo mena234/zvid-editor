@@ -259,7 +259,10 @@ function addSvg(shape: { svg: string; width: number; height: number }) {
 }
 .shape-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  /* minmax(0, 1fr) — not the default minmax(auto, 1fr) — so a card whose
+     content (long title / intrinsic SVG) can't shrink doesn't blow the track
+     past its share and push the grid outside the sidebar. */
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 6px;
 }
 .shape-grid .grid-span {
@@ -270,12 +273,14 @@ function addSvg(shape: { svg: string; width: number; height: number }) {
   flex-direction: column;
   align-items: center;
   gap: 4px;
+  min-width: 0;
   padding: 8px 4px;
   border: 1px solid var(--border-1);
   border-radius: var(--radius-m);
   background: var(--bg-2);
   color: var(--text-2);
   font-size: 10px;
+  overflow: hidden;
 }
 .shape-card:hover {
   border-color: var(--accent);
@@ -293,6 +298,7 @@ function addSvg(shape: { svg: string; width: number; height: number }) {
 }
 .shape-name {
   max-width: 100%;
+  min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

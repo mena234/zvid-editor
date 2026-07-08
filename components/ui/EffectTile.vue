@@ -32,11 +32,25 @@ const size = ref({ w: 120, h: 72 })
 const hovered = ref(false)
 let ro: ResizeObserver | null = null
 
-/** frozen frame for tiles at rest — a legible half-way point */
-const FROZEN = 0.5
+/**
+ * Progress shown at rest (not hovered). 0.5 is a legible mid-transition still
+ * for almost every effect — but it is the exact fully-collapsed, all-black
+ * midpoint of circlecrop / rectcrop. There the visible stream flips at 0.5 and
+ * each mode only renders one of the two streams, so bias the crop family off
+ * the midpoint toward the side its rendered stream is open on.
+ */
+const restP = computed(() => {
+  if (props.effect === 'circlecrop' || props.effect === 'rectcrop') {
+    // near the ends the keyhole is wide open (legible); at 0.5 it is fully
+    // collapsed to black. enter renders stream B, exit/transition stream A —
+    // pick the side where that stream is the one showing through the hole.
+    return props.mode === 'enter' ? 0.85 : 0.15
+  }
+  return 0.5
+})
 
 const frame = computed<XfadeFrameCss>(() => {
-  const p = hovered.value ? clock.value : FROZEN
+  const p = hovered.value ? clock.value : restP.value
   // pixelize's block size scales with min(canvas); at thumbnail size the
   // faithful peak is only a few px. Boost the virtual canvas so the mosaic
   // reads (block size is the only canvas-dependent term pixelize uses).
