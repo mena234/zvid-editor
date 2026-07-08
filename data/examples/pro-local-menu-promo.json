@@ -1,0 +1,365 @@
+{
+  "name": "pro-local-menu-promo",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#1E5A3C",
+  "outputFormat": "mp4",
+  "variables": {
+    "restaurantName": "FICO & SALT",
+    "monogram": "FS",
+    "kicker": "STRAIGHT FROM THE GRILL",
+    "hookLine": "Tonight, we're",
+    "hookAccent": "firing up.",
+    "dishKicker": "THE SIGNATURE",
+    "dishName": "Charred Tomato Basil Tagliata",
+    "dishDescription": "Grass-fed sirloin, blistered heirloom tomatoes, basil oil, shaved pecorino.",
+    "price": "$24",
+    "badgeText": "CHEF'S FAVORITE",
+    "showBadge": true,
+    "ctaKicker": "HUNGRY ALREADY?",
+    "ctaBold": "Get it",
+    "ctaAccent": "delivered hot.",
+    "ctaText": "Order now",
+    "deliveryA": "UberEats",
+    "deliveryB": "DoorDash",
+    "website": "ficoandsalt.com",
+    "basilColor": "#1E5A3C",
+    "basilDeep": "#123B27",
+    "tomatoColor": "#E6452F",
+    "creamColor": "#FFF6E9",
+    "sizzleVideo": "https://videos.pexels.com/video-files/4253720/4253720-uhd_1440_2732_25fps.mp4",
+    "dishImage": "https://images.unsplash.com/photo-1564759296729-771e78c26df7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDgwMTZ8MHwxfHNlYXJjaHwyfHxnb3VybWV0JTIwZm9vZCUyMHBsYXRlZCUyMHJlc3RhdXJhbnR8ZW58MHx8fHwxNzgzMjY4NTczfDA&ixlib=rb-4.1.0&q=80&w=1080",
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/03/19/audio_56ae1dae5f.mp3"
+  },
+  "scenes": [
+    {
+      "id": "hook",
+      "duration": 4.2,
+      "backgroundColor": "#1E5A3C",
+      "transition": "smoothup",
+      "transitionId": "dish",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "VIDEO",
+          "src": "{{sizzleVideo}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "volume": 0,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.2
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 4.2,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='mpWash' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#1E5A3C' stop-opacity='0.5'/><stop offset='0.4' stop-color='#123B27' stop-opacity='0.16'/><stop offset='0.66' stop-color='#123B27' stop-opacity='0.5'/><stop offset='1' stop-color='#123B27' stop-opacity='0.94'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#mpWash)'/><path d='M84 300 L84 116 L268 116' fill='none' stroke='#FFF6E9' stroke-width='9' stroke-opacity='0.9'/><path d='M996 1624 L996 1808 L812 1808' fill='none' stroke='#E6452F' stroke-width='9'/><path d='M96 1470 q28 -36 56 0 q28 36 56 0 q28 -36 56 0' fill='none' stroke='#E6452F' stroke-width='7' stroke-linecap='round'/><circle cx='940' cy='300' r='7' fill='#E6452F'/><circle cx='150' cy='860' r='6' fill='rgba(255,246,233,0.55)'/><path d='M900 460 L900 504 M878 482 L922 482' stroke='rgba(255,246,233,0.7)' stroke-width='6' stroke-linecap='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 130,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.15,
+          "enterEnd": 0.55,
+          "enterAnimation": "fade",
+          "exitEnd": 4.2,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div style='color:#FFF6E9; font-size:28px; font-weight:800; letter-spacing:9px;'>{{restaurantName}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 1120,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.35,
+          "enterEnd": 0.8,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.2,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div style='color:#E6452F; font-size:26px; font-weight:800; letter-spacing:6px;'>{{kicker}}</div><div style='margin-top:20px; color:#FFF6E9; font-size:96px; line-height:1; font-weight:900; letter-spacing:-2px;'>{{hookLine}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 1330,
+          "width": 920,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.55,
+          "enterEnd": 1,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.2,
+          "style": {
+            "fontFamily": "Fraunces"
+          },
+          "html": "<div style='color:#FFC89E; font-size:112px; line-height:1.05; font-style:italic; font-weight:500; letter-spacing:-1px;'>{{hookAccent}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "dish",
+      "duration": 5.4,
+      "backgroundColor": "#FFF6E9",
+      "transition": "fade",
+      "transitionId": "endcard",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 5.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><rect width='1080' height='1920' fill='#FFF6E9'/><path d='M184 1198 L184 648 A356 356 0 0 1 896 648 L896 1198' fill='none' stroke='#E6452F' stroke-width='3'/><path d='M120 1198 L960 1198' stroke='rgba(30,90,60,0.22)' stroke-width='2'/><circle cx='770' cy='168' r='4' fill='rgba(230,69,47,0.35)'/><circle cx='830' cy='168' r='4' fill='rgba(230,69,47,0.35)'/><circle cx='890' cy='168' r='4' fill='rgba(230,69,47,0.35)'/><circle cx='950' cy='168' r='4' fill='rgba(230,69,47,0.35)'/><circle cx='770' cy='228' r='4' fill='rgba(230,69,47,0.35)'/><circle cx='830' cy='228' r='4' fill='rgba(230,69,47,0.35)'/><circle cx='890' cy='228' r='4' fill='rgba(230,69,47,0.35)'/><circle cx='950' cy='228' r='4' fill='rgba(230,69,47,0.35)'/><path d='M98 196 q26 -34 52 0 q26 34 52 0' fill='none' stroke='#1E5A3C' stroke-width='6' stroke-linecap='round'/><path d='M968 470 L968 514 M946 492 L990 492' stroke='rgba(30,90,60,0.55)' stroke-width='6' stroke-linecap='round'/><polygon points='118,556 158,556 138,520' fill='#1E5A3C'/></svg>"
+        },
+        {
+          "type": "IMAGE",
+          "src": "{{dishImage}}",
+          "x": 208,
+          "y": 318,
+          "width": 664,
+          "height": 862,
+          "anchor": "top-left",
+          "zoom": true,
+          "radius": {
+            "tl": 332,
+            "tr": 332,
+            "bl": 0,
+            "br": 0
+          },
+          "track": 1,
+          "enterBegin": 0,
+          "enterEnd": 0.55,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5.4
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showBadge}}",
+          "x": 90,
+          "y": 150,
+          "anchor": "top-left",
+          "track": 11,
+          "enterBegin": 0.2,
+          "enterEnd": 0.55,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 5.4,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div style='display:inline-block; background:#1E5A3C; color:#FFF6E9; border-radius:999px; padding:14px 34px; font-size:25px; font-weight:800; letter-spacing:3px;'>{{badgeText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showBadge}}",
+          "x": 872,
+          "y": 396,
+          "anchor": "center-center",
+          "angle": -8,
+          "track": 11,
+          "enterBegin": 0.85,
+          "enterEnd": 1.2,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5.4,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div style='display:inline-block; background:#E6452F; color:#FFF6E9; border-radius:999px; padding:18px 36px; font-size:38px; font-weight:800;'>{{price}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 1270,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.45,
+          "enterEnd": 0.85,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5.4,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div style='color:#E6452F; font-size:26px; font-weight:800; letter-spacing:6px;'>{{dishKicker}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 1332,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.6,
+          "enterEnd": 1.05,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5.4,
+          "style": {
+            "fontFamily": "Fraunces"
+          },
+          "html": "<div style='color:#1E5A3C; font-size:70px; line-height:1.05; font-weight:600;'>{{dishName}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 1560,
+          "width": 880,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.85,
+          "enterEnd": 1.25,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5.4,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div style='color:rgba(30,90,60,0.72); font-size:29px; line-height:1.45; font-weight:500;'>{{dishDescription}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "endcard",
+      "duration": 4.2,
+      "backgroundColor": "#1E5A3C",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.2,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='mpEnd' cx='0.5' cy='0.38' r='0.9'><stop offset='0' stop-color='#256B47'/><stop offset='1' stop-color='#123B27'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#mpEnd)'/><path d='M84 296 L84 116 L264 116' fill='none' stroke='#FFF6E9' stroke-width='9' stroke-opacity='0.9'/><path d='M996 1624 L996 1804 L816 1804' fill='none' stroke='#E6452F' stroke-width='9'/><circle cx='540' cy='560' r='150' fill='none' stroke='rgba(255,246,233,0.35)' stroke-width='2'/><circle cx='540' cy='560' r='126' fill='#E6452F'/><path d='M480 1500 q30 -38 60 0 q30 38 60 0' fill='none' stroke='rgba(255,246,233,0.8)' stroke-width='6' stroke-linecap='round'/><circle cx='170' cy='1400' r='6' fill='rgba(255,246,233,0.45)'/><circle cx='230' cy='1400' r='6' fill='rgba(255,246,233,0.45)'/><circle cx='290' cy='1400' r='6' fill='rgba(255,246,233,0.45)'/><path d='M900 300 L900 344 M878 322 L922 322' stroke='rgba(255,246,233,0.6)' stroke-width='6' stroke-linecap='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 560,
+          "anchor": "center-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.6,
+          "enterAnimation": "fade",
+          "exitEnd": 4.2,
+          "style": {
+            "fontFamily": "Fraunces"
+          },
+          "html": "<div style='text-align:center; color:#FFF6E9; font-size:104px; font-style:italic; font-weight:600;'>{{monogram}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 780,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.4,
+          "enterEnd": 0.8,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.2,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div style='text-align:center; color:#FFC89E; font-size:26px; font-weight:800; letter-spacing:6px;'>{{ctaKicker}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 850,
+          "width": 920,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.55,
+          "enterEnd": 0.95,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.2,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div style='text-align:center; color:#FFF6E9; font-size:78px; line-height:1.05; font-weight:900; letter-spacing:-1px;'>{{ctaBold}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 990,
+          "width": 920,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.7,
+          "enterEnd": 1.1,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.2,
+          "style": {
+            "fontFamily": "Fraunces"
+          },
+          "html": "<div style='text-align:center; color:#FFC89E; font-size:88px; line-height:1.05; font-style:italic; font-weight:500;'>{{ctaAccent}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1230,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.95,
+          "enterEnd": 1.35,
+          "enterAnimation": "circleopen",
+          "exitEnd": 4.2,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div style='display:inline-block; background:#E6452F; color:#FFF6E9; border-radius:999px; padding:26px 62px; font-size:36px; font-weight:800;'>{{ctaText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1400,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1.1,
+          "enterEnd": 1.5,
+          "enterAnimation": "fade",
+          "exitEnd": 4.2,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div style='text-align:center;'><span style='display:inline-block; background:rgba(255,246,233,0.12); border:1.5px solid rgba(255,246,233,0.4); color:#FFF6E9; border-radius:999px; padding:12px 28px; font-size:24px; font-weight:700;'>{{deliveryA}}</span><span style='display:inline-block; margin-left:14px; background:rgba(255,246,233,0.12); border:1.5px solid rgba(255,246,233,0.4); color:#FFF6E9; border-radius:999px; padding:12px 28px; font-size:24px; font-weight:700;'>{{deliveryB}}</span></div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1500,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1.2,
+          "enterEnd": 1.6,
+          "enterAnimation": "fade",
+          "exitEnd": 4.2,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div style='text-align:center; color:rgba(255,246,233,0.6); font-size:26px; font-weight:600; letter-spacing:1px;'>{{website}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.16
+    }
+  ]
+}

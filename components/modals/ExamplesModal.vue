@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useProjectStore } from '~/stores/project'
 import { useEditorStore } from '~/stores/editor'
+import { useAuthStore } from '~/stores/auth'
 import {
   fetchLibraryContent,
   fetchLibraryList,
@@ -11,6 +12,8 @@ import {
 
 const project = useProjectStore()
 const editor = useEditorStore()
+const auth = useAuthStore()
+const dashUrl = useRuntimeConfig().public.dashUrl as string
 
 const items = ref<LibraryItem[]>([])
 const pending = ref(true)
@@ -18,6 +21,12 @@ const error = ref('')
 const loadingSlug = ref('')
 /** Card the pointer is over — that card swaps its thumbnail for the preview video. */
 const hoverSlug = ref('')
+
+/** Premium templates need a paid plan; everyone can still hover-preview them. */
+function isLocked(item: LibraryItem): boolean {
+  return !!item.meta?.premium && !auth.isPaid
+}
+const hasLocked = computed(() => items.value.some(isLocked))
 
 async function loadList() {
   pending.value = true
@@ -34,6 +43,19 @@ onMounted(loadList)
 
 async function load(item: LibraryItem) {
   if (loadingSlug.value) return
+  if (isLocked(item)) {
+    if (!auth.user) {
+      // Sign in first — the session may reveal a paid plan; reopen after.
+      editor.postAuthModal = 'examples'
+      editor.openModal('auth')
+    } else {
+      editor.notify(
+        'This is a PRO template — upgrade to a paid plan to use it.',
+        'error'
+      )
+    }
+    return
+  }
   loadingSlug.value = item.slug
   try {
     const config = await fetchLibraryContent('examples', item.slug)
@@ -62,6 +84,12 @@ function onLeave(slug: string) {
     <p class="hint">
       Curated example projects — hover a card to preview, click to load it into
       the editor. Loading replaces the current project.
+      <template v-if="hasLocked">
+        <span class="pro-chip">PRO</span> templates need a paid plan —
+        <a class="upgrade-link" :href="`${dashUrl}/subscription`" target="_blank"
+          >upgrade</a
+        >.
+      </template>
     </p>
     <p v-if="pending" class="hint">Loading examples…</p>
     <div v-else-if="error" class="error-box">
@@ -73,7 +101,7 @@ function onLeave(slug: string) {
         v-for="ex in items"
         :key="ex.slug"
         class="card"
-        :class="{ busy: loadingSlug === ex.slug }"
+        :class="{ busy: loadingSlug === ex.slug, locked: isLocked(ex) }"
         @click="load(ex)"
         @mouseenter="onEnter(ex.slug)"
         @mouseleave="onLeave(ex.slug)"
@@ -103,6 +131,9 @@ function onLeave(slug: string) {
             loop
             playsinline
           />
+          <span v-if="ex.meta?.premium" class="pro-badge">
+            <template v-if="isLocked(ex)">🔒 </template>PRO
+          </span>
           <span v-if="ex.meta?.duration" class="shot-badge mono">
             {{ ex.meta.duration }}s
           </span>
@@ -186,6 +217,37 @@ function onLeave(slug: string) {
   background: rgba(10, 10, 16, 0.72);
   color: #fff;
   font-size: 9.5px;
+}
+.pro-badge {
+  position: absolute;
+  left: 6px;
+  top: 6px;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: linear-gradient(120deg, #d4af37, #f0d98c);
+  color: #241c04;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+.pro-chip {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: linear-gradient(120deg, #d4af37, #f0d98c);
+  color: #241c04;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  vertical-align: 1px;
+}
+.upgrade-link {
+  color: var(--accent);
+  text-decoration: underline;
+}
+.card.locked .thumb,
+.card.locked .shot-video {
+  filter: saturate(0.85);
 }
 .card-head {
   display: flex;

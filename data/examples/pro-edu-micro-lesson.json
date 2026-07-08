@@ -1,0 +1,266 @@
+{
+  "name": "pro-edu-micro-lesson",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#0F7A6E",
+  "outputFormat": "mp4",
+  "variables": {
+    "courseName": "MICRO MASTERY",
+    "lessonTitle": "The 3-step feedback loop",
+    "kicker": "60-SECOND LESSON",
+    "points": [
+      {
+        "label": "Notice",
+        "num": "01",
+        "body": "Catch the moment before you react — name what's actually happening.",
+        "bg": "#0F7A6E",
+        "accent": "#FFD166"
+      },
+      {
+        "label": "Name",
+        "num": "02",
+        "body": "Put it in one plain sentence. Vague feelings shrink once they're words.",
+        "bg": "#E0A100",
+        "accent": "#0F1E1C"
+      },
+      {
+        "label": "Navigate",
+        "num": "03",
+        "body": "Pick the smallest next action. Momentum beats a perfect plan.",
+        "bg": "#E6452F",
+        "accent": "#FFF6E9"
+      }
+    ],
+    "takeaway": "Notice it. Name it. Navigate forward.",
+    "instructorName": "Coach Marisol Ibe",
+    "instructorImage": "https://images.pexels.com/photos/4260481/pexels-photo-4260481.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "ctaText": "Save this lesson",
+    "inkColor": "#0F1E1C",
+    "creamColor": "#FFF6E9",
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/04/21/audio_ed6f0ed574.mp3"
+  },
+  "scenes": [
+    {
+      "id": "cover",
+      "duration": 3.6,
+      "backgroundColor": "#0F7A6E",
+      "transition": "wipeup",
+      "transitionId": "points",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><rect width='1080' height='1920' fill='#0F7A6E'/><circle cx='120' cy='210' r='7' fill='rgba(255,246,233,0.35)'/><circle cx='220' cy='210' r='7' fill='rgba(255,246,233,0.35)'/><circle cx='320' cy='210' r='7' fill='rgba(255,246,233,0.35)'/><circle cx='420' cy='210' r='7' fill='rgba(255,246,233,0.35)'/><circle cx='120' cy='310' r='7' fill='rgba(255,246,233,0.35)'/><circle cx='220' cy='310' r='7' fill='rgba(255,246,233,0.35)'/><circle cx='320' cy='310' r='7' fill='rgba(255,246,233,0.35)'/><circle cx='420' cy='310' r='7' fill='rgba(255,246,233,0.35)'/><path d='M84 1720 L84 1560 L264 1560' fill='none' stroke='#FFD166' stroke-width='9'/><path d='M996 1720 L996 1560 L816 1560' fill='none' stroke='#FFD166' stroke-width='9'/><path d='M900 1520 q26 -34 52 0 q26 34 52 0' fill='none' stroke='rgba(255,246,233,0.6)' stroke-width='6' stroke-linecap='round'/><polygon points='150,470 190,470 170,434' fill='#FFD166'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 620,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.15,
+          "enterEnd": 0.5,
+          "enterAnimation": "smoothdown",
+          "exitEnd": 3.6,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div style='text-align:center; color:#FFD166; font-size:28px; font-weight:800; letter-spacing:8px;'>{{kicker}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 720,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.35,
+          "enterEnd": 0.8,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.6,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div style='text-align:center; color:#FFF6E9; font-size:88px; line-height:1.04; font-weight:900; letter-spacing:-2px;'>{{lessonTitle}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1050,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.7,
+          "enterEnd": 1.05,
+          "enterAnimation": "circleopen",
+          "exitEnd": 3.6,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div style='color:#0F7A6E; background:#FFF6E9; display:inline-block; border-radius:999px; padding:16px 40px; font-size:26px; font-weight:800; letter-spacing:2px;'>{{courseName}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "points",
+      "iterate": "points",
+      "iterateAs": "item",
+      "duration": 4.4,
+      "backgroundColor": "{{item.bg}}",
+      "transition": "wipeup",
+      "transitionId": "takeaway",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><rect width='1080' height='1920' fill='{{item.bg}}'/><circle cx='120' cy='210' r='7' fill='rgba(255,255,255,0.28)'/><circle cx='220' cy='210' r='7' fill='rgba(255,255,255,0.28)'/><circle cx='320' cy='210' r='7' fill='rgba(255,255,255,0.28)'/><circle cx='420' cy='210' r='7' fill='rgba(255,255,255,0.28)'/><path d='M84 1720 L84 1560 L264 1560' fill='none' stroke='{{item.accent}}' stroke-width='9'/><path d='M996 1720 L996 1560 L816 1560' fill='none' stroke='{{item.accent}}' stroke-width='9'/><circle cx='920' cy='420' r='150' fill='none' stroke='rgba(255,255,255,0.18)' stroke-width='3'/><polygon points='930,1500 968,1500 949,1466' fill='rgba(255,255,255,0.25)'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 320,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.15,
+          "enterEnd": 0.5,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.4,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div style='color:{{item.accent}}; font-size:220px; font-weight:900; line-height:1; letter-spacing:-6px;'>{{item.num}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 800,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.4,
+          "enterEnd": 0.8,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 4.4,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div style='color:#FFF6E9; font-size:30px; font-weight:800; letter-spacing:5px;'>STEP {{index}}</div><div style='margin-top:16px; color:#FFF6E9; font-size:78px; line-height:1.02; font-weight:900; letter-spacing:-2px;'>{{item.label}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 1120,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.7,
+          "enterEnd": 1.1,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 4.4,
+          "style": {
+            "fontFamily": "Manrope"
+          },
+          "html": "<div style='color:rgba(255,246,233,0.92); font-size:36px; line-height:1.45; font-weight:600; padding-left:22px; border-left:4px solid {{item.accent}};'>{{item.body}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "takeaway",
+      "duration": 5.8,
+      "backgroundColor": "#0F1E1C",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 5.8,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='emlEnd' cx='0.5' cy='0.36' r='0.9'><stop offset='0' stop-color='#173B34'/><stop offset='1' stop-color='#0F1E1C'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#emlEnd)'/><path d='M84 296 L84 116 L264 116' fill='none' stroke='#FFD166' stroke-width='9'/><path d='M996 1624 L996 1804 L816 1804' fill='none' stroke='#FFD166' stroke-width='9'/><circle cx='150' cy='860' r='7' fill='rgba(255,246,233,0.4)'/><circle cx='950' cy='1200' r='9' fill='#FFD166'/><path d='M900 340 q26 -34 52 0 q26 34 52 0' fill='none' stroke='rgba(255,246,233,0.5)' stroke-width='6' stroke-linecap='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 560,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.65,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5.8,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div style='text-align:center; color:#FFD166; font-size:26px; font-weight:800; letter-spacing:6px;'>REMEMBER THIS</div><div style='margin-top:22px; text-align:center; color:#FFF6E9; font-size:66px; line-height:1.2; font-weight:900; letter-spacing:-1px;'>{{takeaway}}</div>"
+        },
+        {
+          "type": "IMAGE",
+          "src": "{{instructorImage}}",
+          "x": 540,
+          "y": 1020,
+          "width": 190,
+          "height": 190,
+          "anchor": "top-center",
+          "radius": {
+            "tl": 95,
+            "tr": 95,
+            "bl": 95,
+            "br": 95
+          },
+          "track": 9,
+          "enterBegin": 0.6,
+          "enterEnd": 1,
+          "enterAnimation": "fade",
+          "exitEnd": 5.8
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1250,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.8,
+          "enterEnd": 1.2,
+          "enterAnimation": "fade",
+          "exitEnd": 5.8,
+          "style": {
+            "fontFamily": "Manrope"
+          },
+          "html": "<div style='text-align:center; color:#FFF6E9; font-size:28px; font-weight:700;'>{{instructorName}}</div><div style='margin-top:8px; text-align:center; color:rgba(255,246,233,0.55); font-size:22px; font-weight:600; letter-spacing:2px;'>{{courseName}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1470,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 1.1,
+          "enterEnd": 1.5,
+          "enterAnimation": "circleopen",
+          "exitEnd": 5.8,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div style='display:inline-block; background:#FFD166; color:#0F1E1C; border-radius:999px; padding:24px 56px; font-size:32px; font-weight:800;'>{{ctaText}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.16
+    }
+  ]
+}

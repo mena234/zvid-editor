@@ -1,0 +1,323 @@
+{
+  "name": "pro-auto-price-drop",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#FFFFFF",
+  "outputFormat": "mp4",
+  "variables": {
+    "dealerName": "Harborview Auto Group",
+    "dealerPhone": "(555) 402-7710",
+    "monogram": "HA",
+    "vehicle": "2023 Sedan Touring",
+    "vehicleDetail": "18,400 mi · One owner · Clean title",
+    "oldPrice": "$31,900",
+    "newPrice": "$27,450",
+    "savings": "SAVE $4,450",
+    "showTradeIn": true,
+    "tradeInLine": "Trade-ins welcome — same-day appraisal",
+    "urgencyLine": "Priced to move this weekend only",
+    "ctaLine": "Book a test drive today",
+    "carImage": "https://images.unsplash.com/photo-1621252792374-2b79e3fcf295?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDgwMTZ8MHwxfHNlYXJjaHw0fHxsdXh1cnklMjBjYXIlMjBzcG9ydHMlMjB2ZWhpY2xlfGVufDB8fHx8MTc4MzI2ODYxOHww&ixlib=rb-4.1.0&q=80&w=1080",
+    "showroomImage": "https://images.pexels.com/photos/17624317/pexels-photo-17624317.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/03/19/audio_56ae1dae5f.mp3"
+  },
+  "scenes": [
+    {
+      "id": "was",
+      "duration": 3.6,
+      "backgroundColor": "#FFFFFF",
+      "transition": "smoothup",
+      "transitionId": "now",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><rect width='1080' height='1920' fill='#FFFFFF'/><rect x='0' y='0' width='1080' height='760' fill='#1D6FE0'/><path d='M0 760 L1080 700 L1080 800 L0 860 Z' fill='#1D6FE0'/><circle cx='940' cy='170' r='120' fill='none' stroke='rgba(255,255,255,0.16)' stroke-width='2'/><circle cx='940' cy='170' r='168' fill='none' stroke='rgba(255,255,255,0.1)' stroke-width='2'/><path d='M70 90 V190 H170' stroke='#FFB01F' stroke-width='6' fill='none'/><path d='M1010 90 V190 H910' stroke='#FFB01F' stroke-width='6' fill='none'/></svg>"
+        },
+        {
+          "type": "IMAGE",
+          "src": "{{carImage}}",
+          "width": 900,
+          "height": 620,
+          "x": 90,
+          "y": 900,
+          "anchor": "top-left",
+          "radius": {
+            "tl": 24,
+            "tr": 24,
+            "bl": 24,
+            "br": 24
+          },
+          "track": 3,
+          "enterBegin": 0.15,
+          "enterEnd": 0.55,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.6
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 4,
+          "enterBegin": 0.15,
+          "exitEnd": 3.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><path d='M70 860 V960 H170' stroke='#1D6FE0' stroke-width='6' fill='none'/><path d='M1010 1560 V1460 H910' stroke='#1D6FE0' stroke-width='6' fill='none'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 250,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0,
+          "enterEnd": 0.4,
+          "enterAnimation": "smoothdown",
+          "exitEnd": 3.6,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='color:#FFB01F; font-size:27px; font-weight:800; letter-spacing:9px;'>PRICE UPDATE</div><div style='margin-top:16px; color:#FFFFFF; font-size:64px; line-height:1.05; font-weight:700;'>{{vehicle}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 90,
+          "y": 560,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.3,
+          "enterEnd": 0.7,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 3.6,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='color:rgba(255,255,255,0.85); font-size:26px; font-weight:600; letter-spacing:2px;'>{{vehicleDetail}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1580,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.55,
+          "enterEnd": 1,
+          "enterAnimation": "circleopen",
+          "exitEnd": 3.6,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='text-align:center; color:#8A93A0; font-size:28px; font-weight:700; letter-spacing:6px;'>WAS</div><div style='margin-top:6px; text-align:center; color:#20242B;'><s style='font-size:108px; font-weight:900; letter-spacing:-3px;'>{{oldPrice}}</s></div>"
+        }
+      ]
+    },
+    {
+      "id": "now",
+      "duration": 4.4,
+      "backgroundColor": "#0E2A52",
+      "transition": "wipeup",
+      "transitionId": "endcard",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='padNowG' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#123566'/><stop offset='1' stop-color='#0A1E3D'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#padNowG)'/><circle cx='120' cy='1750' r='260' fill='none' stroke='rgba(255,255,255,0.06)' stroke-width='2'/><circle cx='980' cy='260' r='200' fill='none' stroke='rgba(255,176,31,0.14)' stroke-width='2'/><polygon points='860,1360 878,1378 860,1396 842,1378' fill='rgba(255,176,31,0.55)'/><polygon points='920,1430 932,1442 920,1454 908,1442' fill='rgba(255,255,255,0.3)'/><circle cx='190' cy='420' r='6' fill='rgba(255,255,255,0.25)'/><circle cx='230' cy='470' r='4' fill='rgba(255,255,255,0.18)'/></svg>"
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 4.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><path d='M120 340 V180 H280' stroke='#FFB01F' stroke-width='10' fill='none'/><path d='M960 340 V180 H800' stroke='#FFB01F' stroke-width='10' fill='none'/><path d='M120 1200 V1360 H280' stroke='#FFB01F' stroke-width='10' fill='none'/><path d='M960 1200 V1360 H800' stroke='#FFB01F' stroke-width='10' fill='none'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 300,
+          "anchor": "center-center",
+          "track": 10,
+          "enterBegin": 0.15,
+          "enterEnd": 0.5,
+          "enterAnimation": "smoothdown",
+          "exitEnd": 4.4,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='text-align:center; color:#FF5C5C; font-size:30px; font-weight:800; letter-spacing:9px;'>NOW</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 620,
+          "width": 1000,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.35,
+          "enterEnd": 0.8,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.4,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:196px; font-weight:900; letter-spacing:-6px;'>{{newPrice}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1000,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.65,
+          "enterEnd": 1.05,
+          "enterAnimation": "circleopen",
+          "exitEnd": 4.4,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='display:inline-block; background:#FFB01F; color:#0E2A52; border-radius:14px; padding:22px 52px; font-size:38px; font-weight:900; letter-spacing:2px;'>{{savings}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showTradeIn}}",
+          "x": 540,
+          "y": 1130,
+          "width": 820,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.9,
+          "enterEnd": 1.3,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.4,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='text-align:center; color:rgba(255,255,255,0.82); font-size:27px; font-weight:600; letter-spacing:1px;'>{{tradeInLine}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "endcard",
+      "duration": 4.8,
+      "backgroundColor": "#FFFFFF",
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{showroomImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "opacity": 0.16,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.8
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 1,
+          "enterBegin": 0,
+          "exitEnd": 4.8,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='padEndG' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#FFFFFF' stop-opacity='0.9'/><stop offset='0.5' stop-color='#FFFFFF' stop-opacity='0.6'/><stop offset='1' stop-color='#FFFFFF' stop-opacity='0.95'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#padEndG)'/><path d='M70 130 V270 H210' stroke='#1D6FE0' stroke-width='7' fill='none'/><path d='M1010 1790 V1650 H870' stroke='#1D6FE0' stroke-width='7' fill='none'/><path d='M420 1010 H660' stroke='#FFB01F' stroke-width='2'/><polygon points='540,1002 550,1010 540,1018 530,1010' fill='#FF5C5C'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 340,
+          "anchor": "center-center",
+          "track": 10,
+          "enterBegin": 0.15,
+          "enterEnd": 0.55,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.8,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='display:flex; align-items:center; justify-content:center; width:148px; height:148px; border-radius:50%; background:#1D6FE0; color:#FFFFFF; font-size:56px; font-weight:800;'>{{monogram}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 560,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.35,
+          "enterEnd": 0.75,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.8,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='text-align:center; color:#FF5C5C; font-size:26px; font-weight:800; letter-spacing:6px;'>{{urgencyLine}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 680,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.55,
+          "enterEnd": 1,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.8,
+          "style": {
+            "fontFamily": "Instrument Serif"
+          },
+          "html": "<div style='text-align:center; color:#0E2A52; font-size:78px; font-style:italic; line-height:1.05;'>{{ctaLine}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1200,
+          "anchor": "center-center",
+          "track": 11,
+          "enterBegin": 0.85,
+          "enterEnd": 1.25,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.8,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='display:inline-block; background:#1D6FE0; color:#FFFFFF; border-radius:60px; padding:26px 66px; font-size:42px; font-weight:800; letter-spacing:1px;'>{{dealerPhone}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1350,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 1.05,
+          "enterEnd": 1.45,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.8,
+          "style": {
+            "fontFamily": "Space Grotesk"
+          },
+          "html": "<div style='text-align:center; color:#5A6472; font-size:25px; font-weight:700; letter-spacing:5px;'>{{dealerName}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.16
+    }
+  ]
+}

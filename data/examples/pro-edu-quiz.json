@@ -1,0 +1,263 @@
+{
+  "name": "pro-edu-quiz",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#FFFFFF",
+  "outputFormat": "mp4",
+  "variables": {
+    "quizName": "BRAIN BREAK QUIZ",
+    "question": "Which planet has the shortest day?",
+    "optionA": "Earth",
+    "optionB": "Jupiter",
+    "optionC": "Mars",
+    "optionD": "Venus",
+    "correctLetter": "B",
+    "correctAnswer": "Jupiter",
+    "explanation": "Jupiter spins once every 10 hours despite being the largest planet — its clouds blur past in a blink.",
+    "showExplanation": true,
+    "ctaText": "Follow for tomorrow's question",
+    "brandBlue": "#1D6FE0",
+    "yellowColor": "#FFB01F",
+    "coralColor": "#FF5C5C",
+    "inkColor": "#101418",
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/03/19/audio_56ae1dae5f.mp3"
+  },
+  "scenes": [
+    {
+      "id": "question",
+      "duration": 5.6,
+      "backgroundColor": "#FFFFFF",
+      "transition": "wipeup",
+      "transitionId": "countdown",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 5.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><rect width='1080' height='1920' fill='#FFFFFF'/><circle cx='80' cy='120' r='5' fill='rgba(29,111,224,0.25)'/><circle cx='160' cy='120' r='5' fill='rgba(29,111,224,0.25)'/><circle cx='240' cy='120' r='5' fill='rgba(29,111,224,0.25)'/><circle cx='320' cy='120' r='5' fill='rgba(29,111,224,0.25)'/><circle cx='80' cy='200' r='5' fill='rgba(29,111,224,0.25)'/><circle cx='160' cy='200' r='5' fill='rgba(29,111,224,0.25)'/><circle cx='240' cy='200' r='5' fill='rgba(29,111,224,0.25)'/><circle cx='320' cy='200' r='5' fill='rgba(29,111,224,0.25)'/><circle cx='800' cy='1780' r='5' fill='rgba(255,176,31,0.35)'/><circle cx='880' cy='1780' r='5' fill='rgba(255,176,31,0.35)'/><circle cx='960' cy='1780' r='5' fill='rgba(255,176,31,0.35)'/><circle cx='800' cy='1850' r='5' fill='rgba(255,176,31,0.35)'/><circle cx='880' cy='1850' r='5' fill='rgba(255,176,31,0.35)'/><circle cx='960' cy='1850' r='5' fill='rgba(255,176,31,0.35)'/><rect x='80' y='700' width='920' height='420' rx='36' fill='#1D6FE0'/><path d='M84 300 L84 140 L244 140' fill='none' stroke='#FF5C5C' stroke-width='8'/><path d='M996 640 L996 800 L836 800' fill='none' stroke='#FFB01F' stroke-width='8'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 200,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.15,
+          "enterEnd": 0.5,
+          "enterAnimation": "smoothdown",
+          "exitEnd": 5.6,
+          "style": { "fontFamily": "Poppins" },
+          "html": "<div style='display:inline-block; background:#FFB01F; color:#101418; border-radius:999px; padding:14px 40px; font-size:26px; font-weight:700; letter-spacing:3px;'>{{quizName}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 780,
+          "width": 800,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.35,
+          "enterEnd": 0.75,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5.6,
+          "style": { "fontFamily": "Poppins" },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:56px; line-height:1.2; font-weight:700;'>{{question}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 100,
+          "y": 1200,
+          "width": 400,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.7,
+          "enterEnd": 1.05,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 5.6,
+          "style": { "fontFamily": "Poppins" },
+          "html": "<div style='background:#F5F8FF; border:2px solid rgba(29,111,224,0.25); border-radius:22px; padding:26px 30px; color:#101418; font-size:34px; font-weight:600;'><b style='color:#1D6FE0;'>A</b>&nbsp; {{optionA}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 580,
+          "y": 1200,
+          "width": 400,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.85,
+          "enterEnd": 1.2,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 5.6,
+          "style": { "fontFamily": "Poppins" },
+          "html": "<div style='background:#F5F8FF; border:2px solid rgba(29,111,224,0.25); border-radius:22px; padding:26px 30px; color:#101418; font-size:34px; font-weight:600;'><b style='color:#1D6FE0;'>B</b>&nbsp; {{optionB}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 100,
+          "y": 1360,
+          "width": 400,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 1,
+          "enterEnd": 1.35,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 5.6,
+          "style": { "fontFamily": "Poppins" },
+          "html": "<div style='background:#F5F8FF; border:2px solid rgba(29,111,224,0.25); border-radius:22px; padding:26px 30px; color:#101418; font-size:34px; font-weight:600;'><b style='color:#1D6FE0;'>C</b>&nbsp; {{optionC}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 580,
+          "y": 1360,
+          "width": 400,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 1.15,
+          "enterEnd": 1.5,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 5.6,
+          "style": { "fontFamily": "Poppins" },
+          "html": "<div style='background:#F5F8FF; border:2px solid rgba(29,111,224,0.25); border-radius:22px; padding:26px 30px; color:#101418; font-size:34px; font-weight:600;'><b style='color:#1D6FE0;'>D</b>&nbsp; {{optionD}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "countdown",
+      "duration": 3.6,
+      "backgroundColor": "#101418",
+      "transition": "circleopen",
+      "transitionId": "answer",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='eqzCnt' cx='0.5' cy='0.42' r='0.9'><stop offset='0' stop-color='#182233'/><stop offset='1' stop-color='#101418'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#eqzCnt)'/><circle cx='540' cy='860' r='330' fill='none' stroke='rgba(29,111,224,0.35)' stroke-width='3'/><circle cx='540' cy='860' r='260' fill='none' stroke='rgba(255,176,31,0.4)' stroke-width='3'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 340,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0,
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "Poppins" },
+          "html": "<div style='text-align:center; color:#FFB01F; font-size:28px; font-weight:700; letter-spacing:5px;'>TIME'S TICKING</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 700,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0,
+          "enterEnd": 0.25,
+          "enterAnimation": "circleopen",
+          "exitBegin": 1.05,
+          "exitEnd": 1.2,
+          "exitAnimation": "fade",
+          "style": { "fontFamily": "Poppins" },
+          "html": "<div style='text-align:center; color:#1D6FE0; font-size:280px; font-weight:700;'>3</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 700,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1.2,
+          "enterEnd": 1.45,
+          "enterAnimation": "circleopen",
+          "exitBegin": 2.25,
+          "exitEnd": 2.4,
+          "exitAnimation": "fade",
+          "style": { "fontFamily": "Poppins" },
+          "html": "<div style='text-align:center; color:#FFB01F; font-size:280px; font-weight:700;'>2</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 700,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 2.4,
+          "enterEnd": 2.65,
+          "enterAnimation": "circleopen",
+          "exitEnd": 3.6,
+          "style": { "fontFamily": "Poppins" },
+          "html": "<div style='text-align:center; color:#FF5C5C; font-size:280px; font-weight:700;'>1</div>"
+        }
+      ]
+    },
+    {
+      "id": "answer",
+      "duration": 7,
+      "backgroundColor": "#FFFFFF",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 7,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><rect width='1080' height='1920' fill='#FFFFFF'/><path d='M84 300 L84 140 L244 140' fill='none' stroke='#1D6FE0' stroke-width='8'/><path d='M996 1780 L996 1620 L836 1620' fill='none' stroke='#FFB01F' stroke-width='8'/><circle cx='540' cy='540' r='140' fill='rgba(29,111,224,0.08)' stroke='#1D6FE0' stroke-width='4'/><path d='M480 540 L520 582 L604 486' stroke='#1D6FE0' stroke-width='16' fill='none' stroke-linecap='round' stroke-linejoin='round'/><polygon points='150,900 178,900 164,872' fill='#FFB01F'/><polygon points='930,880 958,880 944,852' fill='#FF5C5C'/><circle cx='140' cy='1180' r='8' fill='#1D6FE0'/><circle cx='940' cy='1160' r='8' fill='#FFB01F'/><path d='M100 1500 q26 -34 52 0 q26 34 52 0' fill='none' stroke='#FF5C5C' stroke-width='6' stroke-linecap='round'/><path d='M900 1480 q26 -34 52 0 q26 34 52 0' fill='none' stroke='#1D6FE0' stroke-width='6' stroke-linecap='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 810,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.3,
+          "enterEnd": 0.7,
+          "enterAnimation": "circleopen",
+          "exitEnd": 7,
+          "style": { "fontFamily": "Poppins" },
+          "html": "<div style='text-align:center; color:#1D6FE0; font-size:28px; font-weight:700; letter-spacing:4px;'>THE ANSWER IS</div><div style='margin-top:16px; text-align:center; color:#101418; font-size:92px; font-weight:700;'>{{correctLetter}}. {{correctAnswer}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showExplanation}}",
+          "x": 540,
+          "y": 1130,
+          "width": 860,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 1,
+          "enterEnd": 1.5,
+          "enterAnimation": "smoothup",
+          "exitEnd": 7,
+          "style": { "fontFamily": "Manrope" },
+          "html": "<div style='text-align:center; color:rgba(16,20,24,0.68); font-size:32px; line-height:1.5; font-weight:500;'>{{explanation}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1550,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 1.7,
+          "enterEnd": 2.1,
+          "enterAnimation": "circleopen",
+          "exitEnd": 7,
+          "style": { "fontFamily": "Poppins" },
+          "html": "<div style='display:inline-block; background:#1D6FE0; color:#FFFFFF; border-radius:999px; padding:24px 58px; font-size:32px; font-weight:700;'>{{ctaText}}</div><div style='margin-top:16px; text-align:center; color:rgba(16,20,24,0.45); font-size:24px; font-weight:600; letter-spacing:3px;'>{{quizName}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    { "src": "{{musicUrl}}", "volume": 0.18 }
+  ]
+}

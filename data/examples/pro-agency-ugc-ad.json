@@ -1,0 +1,235 @@
+{
+  "name": "pro-agency-ugc-ad",
+  "resolution": "tiktok",
+  "frameRate": 30,
+  "backgroundColor": "#0A0A0C",
+  "outputFormat": "mp4",
+  "variables": {
+    "creatorHandle": "@mia.tries.stuff",
+    "caption1": "I was NOT ready for this",
+    "caption2": "no filter. no edit. just the serum.",
+    "caption3": "week two and my skin is glowing",
+    "productName": "Glow Serum · Lumière",
+    "showDiscount": true,
+    "discount": "MIA15 = 15% off",
+    "ctaText": "Get yours",
+    "accentColor": "#FFD234",
+    "ugcVideo": "https://videos.pexels.com/video-files/4994156/4994156-uhd_1440_2560_25fps.mp4",
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/03/19/audio_56ae1dae5f.mp3"
+  },
+  "scenes": [
+    {
+      "id": "ugc",
+      "duration": 11,
+      "backgroundColor": "#0A0A0C",
+      "transition": "fade",
+      "transitionId": "endcard",
+      "transitionDuration": 0.5,
+      "visuals": [
+        {
+          "type": "VIDEO",
+          "src": "{{ugcVideo}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "volume": 0,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 11
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 11,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='ugcAdShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#000000' stop-opacity='0.45'/><stop offset='0.3' stop-color='#000000' stop-opacity='0.02'/><stop offset='0.7' stop-color='#000000' stop-opacity='0.05'/><stop offset='1' stop-color='#000000' stop-opacity='0.7'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#ugcAdShade)'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 76,
+          "y": 150,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.5,
+          "enterAnimation": "smoothdown",
+          "exitEnd": 11,
+          "style": {
+            "fontFamily": "Poppins"
+          },
+          "html": "<div style='display:inline-block; background:rgba(0,0,0,0.55); color:#FFFFFF; border-radius:999px; padding:12px 28px; font-size:26px; font-weight:700;'>{{creatorHandle}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 620,
+          "width": 940,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.35,
+          "enterEnd": 0.65,
+          "enterAnimation": "circleopen",
+          "exitBegin": 3.4,
+          "exitEnd": 3.7,
+          "exitAnimation": "fade",
+          "style": {
+            "fontFamily": "Poppins"
+          },
+          "html": "<div style='text-align:center; line-height:1.18;'><span style='background:rgba(0,0,0,0.72); color:#FFFFFF; font-size:80px; font-weight:800; padding:4px 14px; box-decoration-break:clone;'>I was <span style='color:{{accentColor}};'>NOT</span> ready</span></div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 620,
+          "width": 940,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 3.9,
+          "enterEnd": 4.2,
+          "enterAnimation": "circleopen",
+          "exitBegin": 7.1,
+          "exitEnd": 7.4,
+          "exitAnimation": "fade",
+          "style": {
+            "fontFamily": "Poppins"
+          },
+          "html": "<div style='text-align:center; line-height:1.18;'><span style='background:rgba(0,0,0,0.72); color:#FFFFFF; font-size:72px; font-weight:800; padding:4px 14px; box-decoration-break:clone;'>no filter. <span style='color:{{accentColor}};'>no edit.</span><br>just the serum.</span></div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 620,
+          "width": 940,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 7.6,
+          "enterEnd": 7.9,
+          "enterAnimation": "circleopen",
+          "exitEnd": 11,
+          "style": {
+            "fontFamily": "Poppins"
+          },
+          "html": "<div style='text-align:center; line-height:1.18;'><span style='background:rgba(0,0,0,0.72); color:#FFFFFF; font-size:76px; font-weight:800; padding:4px 14px; box-decoration-break:clone;'>week two and my skin is <span style='color:{{accentColor}};'>glowing</span></span></div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1580,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 8.1,
+          "enterEnd": 8.5,
+          "enterAnimation": "smoothup",
+          "exitEnd": 11,
+          "style": {
+            "fontFamily": "Poppins"
+          },
+          "html": "<div style='display:inline-block; background:#FFFFFF; color:#0A0A0C; border-radius:999px; padding:18px 46px; font-size:32px; font-weight:800;'>{{productName}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showDiscount}}",
+          "x": 540,
+          "y": 1706,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 8.4,
+          "enterEnd": 8.8,
+          "enterAnimation": "fade",
+          "exitEnd": 11,
+          "style": {
+            "fontFamily": "Poppins"
+          },
+          "html": "<div style='display:inline-block; background:rgba(0,0,0,0.6); border:1.5px dashed {{accentColor}}; color:{{accentColor}}; border-radius:14px; padding:12px 30px; font-size:28px; font-weight:800; letter-spacing:2px;'>{{discount}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "endcard",
+      "duration": 3.2,
+      "backgroundColor": "#0A0A0C",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.2,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='ugcEnd' cx='0.5' cy='0.4' r='0.9'><stop offset='0' stop-color='#17171B'/><stop offset='1' stop-color='#0A0A0C'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#ugcEnd)'/><circle cx='540' cy='700' r='150' fill='none' stroke='{{accentColor}}' stroke-opacity='0.55' stroke-width='2.5'/><path d='M84 296 L84 116 L264 116' fill='none' stroke='{{accentColor}}' stroke-width='8' stroke-opacity='0.8'/><path d='M996 1624 L996 1804 L816 1804' fill='none' stroke='{{accentColor}}' stroke-width='8' stroke-opacity='0.5'/><circle cx='170' cy='1420' r='6' fill='{{accentColor}}'/><circle cx='230' cy='1420' r='6' fill='rgba(255,255,255,0.4)'/><circle cx='290' cy='1420' r='6' fill='{{accentColor}}'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 640,
+          "anchor": "center-center",
+          "track": 10,
+          "enterBegin": 0.15,
+          "enterEnd": 0.5,
+          "enterAnimation": "fade",
+          "exitEnd": 3.2,
+          "style": {
+            "fontFamily": "Poppins"
+          },
+          "html": "<div style='text-align:center; color:{{accentColor}}; font-size:120px; font-weight:800;'>✓</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 880,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.3,
+          "enterEnd": 0.65,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.2,
+          "style": {
+            "fontFamily": "Poppins"
+          },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:56px; line-height:1.1; font-weight:800;'>{{productName}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1020,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.55,
+          "enterEnd": 0.9,
+          "enterAnimation": "circleopen",
+          "exitEnd": 3.2,
+          "style": {
+            "fontFamily": "Poppins"
+          },
+          "html": "<div style='display:inline-block; background:{{accentColor}}; color:#0A0A0C; border-radius:999px; padding:26px 62px; font-size:36px; font-weight:800;'>{{ctaText}} →</div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showDiscount}}",
+          "x": 540,
+          "y": 1150,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.85,
+          "enterEnd": 1.2,
+          "enterAnimation": "fade",
+          "exitEnd": 3.2,
+          "style": {
+            "fontFamily": "Poppins"
+          },
+          "html": "<div style='text-align:center; color:rgba(255,255,255,0.6); font-size:28px; font-weight:600; letter-spacing:1px;'>{{discount}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.16
+    }
+  ]
+}

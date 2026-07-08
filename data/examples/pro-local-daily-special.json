@@ -1,0 +1,410 @@
+{
+  "name": "pro-local-daily-special",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#B4552D",
+  "outputFormat": "mp4",
+  "variables": {
+    "restaurantName": "Trattoria Lume",
+    "weekday": "SATURDAY",
+    "dayKicker": "TODAY ONLY",
+    "specialKicker": "TONIGHT'S SPECIAL",
+    "specialName": "Braised Short Rib Pappardelle",
+    "specialDescription": "Six-hour braise, wide ribbon pasta, gremolata, aged parmigiano shavings.",
+    "price": "$22",
+    "comparePrice": "$31",
+    "showComparePrice": true,
+    "showDessert": true,
+    "dessertLine": "Includes a complimentary tiramisu tasting",
+    "reserveKicker": "TABLES ARE LIMITED",
+    "reserveBold": "Reserve",
+    "reserveAccent": "your evening.",
+    "ctaText": "Reserve a table",
+    "phone": "(555) 890-2211",
+    "hours": "5 PM – 10 PM",
+    "terracotta": "#B4552D",
+    "terracottaDeep": "#7A3A1E",
+    "cream": "#F6EFE7",
+    "ink": "#2A1E16",
+    "dishImage": "https://images.pexels.com/photos/17302499/pexels-photo-17302499.jpeg?auto=compress&cs=tinysrgb&w=1620",
+    "interiorImage": "https://images.pexels.com/photos/14590688/pexels-photo-14590688.jpeg?auto=compress&cs=tinysrgb&w=1620",
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/04/21/audio_ed6f0ed574.mp3"
+  },
+  "scenes": [
+    {
+      "id": "cover",
+      "duration": 4,
+      "backgroundColor": "#F6EFE7",
+      "transition": "smoothleft",
+      "transitionId": "special",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><rect width='1080' height='1920' fill='#F6EFE7'/><rect x='0' y='0' width='1080' height='420' fill='#B4552D'/><path d='M84 296 L84 96 L284 96' fill='none' stroke='#F6EFE7' stroke-width='9' stroke-opacity='0.9'/><path d='M996 1624 L996 1824 L796 1824' fill='none' stroke='#B4552D' stroke-width='9'/><rect x='90' y='1730' width='38' height='38' fill='#B4552D'/><rect x='138' y='1730' width='38' height='38' fill='none' stroke='#B4552D' stroke-width='3'/><rect x='186' y='1730' width='38' height='38' fill='#B4552D'/><rect x='234' y='1730' width='38' height='38' fill='none' stroke='#B4552D' stroke-width='3'/><rect x='282' y='1730' width='38' height='38' fill='#B4552D'/><rect x='330' y='1730' width='38' height='38' fill='none' stroke='#B4552D' stroke-width='3'/><rect x='378' y='1730' width='38' height='38' fill='#B4552D'/><rect x='426' y='1730' width='38' height='38' fill='none' stroke='#B4552D' stroke-width='3'/><path d='M96 620 q26 -34 52 0 q26 34 52 0' fill='none' stroke='#B4552D' stroke-width='6' stroke-linecap='round'/><path d='M960 560 L960 604 M938 582 L982 582' stroke='rgba(180,85,45,0.55)' stroke-width='6' stroke-linecap='round'/><circle cx='920' cy='680' r='6' fill='rgba(180,85,45,0.45)'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 150,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.15,
+          "enterEnd": 0.55,
+          "enterAnimation": "fade",
+          "exitEnd": 4,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div style='text-align:center; color:#F6EFE7; font-size:28px; font-weight:800; letter-spacing:8px;'>{{restaurantName}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 235,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.3,
+          "enterEnd": 0.7,
+          "enterAnimation": "smoothdown",
+          "exitEnd": 4,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div style='text-align:center;'><span style='display:inline-block; border:1.5px solid rgba(246,239,231,0.7); color:#F6EFE7; border-radius:999px; padding:14px 38px; font-size:26px; font-weight:800; letter-spacing:5px;'>{{dayKicker}} · {{weekday}}</span></div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 900,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.55,
+          "enterEnd": 1,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4,
+          "style": {
+            "fontFamily": "Playfair Display"
+          },
+          "html": "<div style='text-align:center; color:#2A1E16; font-size:96px; line-height:1.05; font-style:italic; font-weight:600;'>What's on<br>the chalkboard.</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1230,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.85,
+          "enterEnd": 1.25,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div style='text-align:center; color:rgba(42,30,22,0.6); font-size:28px; font-weight:600; letter-spacing:2px;'>ONE NIGHT. ONE DISH. NO REPEATS.</div>"
+        }
+      ]
+    },
+    {
+      "id": "special",
+      "duration": 6.2,
+      "backgroundColor": "#2A1E16",
+      "transition": "smoothup",
+      "transitionId": "reserve",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 6.2,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><rect width='1080' height='1920' fill='#2A1E16'/></svg>"
+        },
+        {
+          "type": "IMAGE",
+          "src": "{{dishImage}}",
+          "x": 0,
+          "y": 0,
+          "width": 1080,
+          "height": 1060,
+          "anchor": "top-left",
+          "zoom": true,
+          "track": 1,
+          "enterBegin": 0,
+          "exitEnd": 6.2
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 6.2,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='dsShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#2A1E16' stop-opacity='0.35'/><stop offset='0.62' stop-color='#2A1E16' stop-opacity='0.55'/><stop offset='0.66' stop-color='#2A1E16' stop-opacity='1'/><stop offset='1' stop-color='#2A1E16' stop-opacity='1'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#dsShade)'/><path d='M84 296 L84 116 L264 116' fill='none' stroke='#F6EFE7' stroke-width='8' stroke-opacity='0.85'/><path d='M996 1074 L996 1254 L816 1254' fill='none' stroke='#B4552D' stroke-width='8'/><circle cx='940' cy='210' r='6' fill='rgba(246,239,231,0.5)'/><path d='M900 260 L900 300 M880 280 L920 280' stroke='rgba(246,239,231,0.6)' stroke-width='5' stroke-linecap='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 150,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.6,
+          "enterAnimation": "smoothdown",
+          "exitEnd": 6.2,
+          "style": {
+            "fontFamily": "Playfair Display"
+          },
+          "html": "<div style='text-align:center;'><span style='display:inline-block; background:rgba(42,30,22,0.85); border:1.5px solid rgba(180,85,45,0.7); color:#F6EFE7; border-radius:999px; padding:14px 40px; font-size:25px; letter-spacing:5px;'>{{dayKicker}} · {{weekday}}</span></div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 80,
+          "y": 1160,
+          "width": 920,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.5,
+          "enterEnd": 1,
+          "enterAnimation": "smoothup",
+          "exitEnd": 6.2,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div style='color:#B4552D; font-size:26px; letter-spacing:5px; font-weight:800;'>{{specialKicker}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 80,
+          "y": 1220,
+          "width": 920,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.65,
+          "enterEnd": 1.1,
+          "enterAnimation": "smoothup",
+          "exitEnd": 6.2,
+          "style": {
+            "fontFamily": "Playfair Display"
+          },
+          "html": "<div style='color:#F6EFE7; font-size:76px; line-height:1.08; font-weight:700;'>{{specialName}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 80,
+          "y": 1450,
+          "width": 900,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.9,
+          "enterEnd": 1.3,
+          "enterAnimation": "smoothup",
+          "exitEnd": 6.2,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div style='color:rgba(246,239,231,0.72); font-size:29px; line-height:1.45; font-weight:500;'>{{specialDescription}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 80,
+          "y": 1670,
+          "anchor": "top-left",
+          "track": 11,
+          "enterBegin": 1.15,
+          "enterEnd": 1.55,
+          "enterAnimation": "circleopen",
+          "exitEnd": 6.2,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div><span style='display:inline-block; background:#B4552D; color:#F6EFE7; border-radius:16px; padding:14px 34px; font-size:44px; font-weight:800;'>{{price}}</span></div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showComparePrice}}",
+          "x": 330,
+          "y": 1698,
+          "anchor": "top-left",
+          "track": 12,
+          "enterBegin": 1.3,
+          "enterEnd": 1.7,
+          "enterAnimation": "fade",
+          "exitEnd": 6.2,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div style='color:rgba(246,239,231,0.55); font-size:32px; font-weight:600;'>{{comparePrice}}</div>"
+        },
+        {
+          "type": "SVG",
+          "condition": "{{showComparePrice}}",
+          "x": 330,
+          "y": 1698,
+          "width": 130,
+          "height": 40,
+          "anchor": "top-left",
+          "track": 13,
+          "enterBegin": 1.35,
+          "enterEnd": 1.7,
+          "enterAnimation": "fade",
+          "exitEnd": 6.2,
+          "svg": "<svg width='130' height='40' viewBox='0 0 130 40' xmlns='http://www.w3.org/2000/svg'><line x1='4' y1='20' x2='126' y2='20' stroke='#B4552D' stroke-width='4' stroke-linecap='round'/></svg>"
+        }
+      ]
+    },
+    {
+      "id": "reserve",
+      "duration": 5,
+      "backgroundColor": "#2A1E16",
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{interiorImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "opacity": 0.4,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 5
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 5,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='drShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#2A1E16' stop-opacity='0.7'/><stop offset='1' stop-color='#2A1E16' stop-opacity='0.94'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#drShade)'/><path d='M84 296 L84 116 L264 116' fill='none' stroke='#B4552D' stroke-width='9'/><path d='M996 1624 L996 1804 L816 1804' fill='none' stroke='#F6EFE7' stroke-width='9' stroke-opacity='0.85'/><rect x='470' y='560' width='30' height='30' fill='#B4552D'/><rect x='510' y='560' width='30' height='30' fill='none' stroke='#B4552D' stroke-width='3'/><rect x='550' y='560' width='30' height='30' fill='#B4552D'/><rect x='590' y='560' width='30' height='30' fill='none' stroke='#B4552D' stroke-width='3'/><path d='M470 640 q26 -34 52 0 q26 34 52 0' fill='none' stroke='rgba(246,239,231,0.7)' stroke-width='6' stroke-linecap='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showDessert}}",
+          "x": 540,
+          "y": 700,
+          "width": 880,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.25,
+          "enterEnd": 0.7,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div style='text-align:center;'><span style='display:inline-block; background:rgba(180,85,45,0.18); border:1.5px dashed rgba(180,85,45,0.7); color:#F6EFE7; border-radius:16px; padding:16px 36px; font-size:27px; font-weight:700;'>{{dessertLine}}</span></div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 900,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.5,
+          "enterEnd": 0.9,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div style='text-align:center; color:#B4552D; font-size:26px; font-weight:800; letter-spacing:6px;'>{{reserveKicker}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 970,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.65,
+          "enterEnd": 1.05,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5,
+          "style": {
+            "fontFamily": "Playfair Display"
+          },
+          "html": "<div style='text-align:center; color:#F6EFE7; font-size:80px; line-height:1.05; font-weight:700;'>{{reserveBold}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1110,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.8,
+          "enterEnd": 1.2,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5,
+          "style": {
+            "fontFamily": "Playfair Display"
+          },
+          "html": "<div style='text-align:center; color:#B4552D; font-size:80px; line-height:1.05; font-style:italic; font-weight:500;'>{{reserveAccent}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1360,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1.1,
+          "enterEnd": 1.5,
+          "enterAnimation": "circleopen",
+          "exitEnd": 5,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div style='display:inline-block; background:#B4552D; color:#F6EFE7; border-radius:999px; padding:26px 62px; font-size:36px; font-weight:800;'>{{ctaText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1530,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1.25,
+          "enterEnd": 1.65,
+          "enterAnimation": "fade",
+          "exitEnd": 5,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div style='text-align:center; color:rgba(246,239,231,0.7); font-size:28px; font-weight:600; letter-spacing:1px;'>{{phone}} · {{hours}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1600,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1.35,
+          "enterEnd": 1.75,
+          "enterAnimation": "fade",
+          "exitEnd": 5,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div style='text-align:center; color:rgba(246,239,231,0.45); font-size:24px; letter-spacing:4px;'>{{restaurantName}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.14
+    }
+  ]
+}

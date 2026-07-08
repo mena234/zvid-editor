@@ -14,6 +14,11 @@ export interface SessionCredits {
   [key: string]: unknown
 }
 
+export interface SessionPlan {
+  name?: string
+  isPaid?: boolean
+}
+
 /**
  * Account session for the editor. Anyone can use the editor logged-out;
  * the session only gates cloud saves (projects / templates).
@@ -24,10 +29,16 @@ export const useAuthStore = defineStore('auth', {
   state: () => ({
     user: null as SessionUser | null,
     credits: null as SessionCredits | null,
+    plan: null as SessionPlan | null,
     loaded: false,
   }),
 
   getters: {
+    /** Paid-plan session — unlocks premium library templates. */
+    isPaid(state): boolean {
+      return !!state.plan?.isPaid
+    },
+
     initials(state): string {
       const u = state.user
       if (!u) return ''
@@ -44,12 +55,15 @@ export const useAuthStore = defineStore('auth', {
         const data = await $fetch<{
           user: SessionUser | null
           credits: SessionCredits | null
+          plan: SessionPlan | null
         }>('/api/session')
         this.user = data?.user || null
         this.credits = data?.credits || null
+        this.plan = data?.plan || null
       } catch {
         this.user = null
         this.credits = null
+        this.plan = null
       }
       this.loaded = true
     },
@@ -72,6 +86,7 @@ export const useAuthStore = defineStore('auth', {
       }
       this.user = null
       this.credits = null
+      this.plan = null
       disconnectRenderSocket()
     },
 
@@ -79,6 +94,7 @@ export const useAuthStore = defineStore('auth', {
     sessionExpired() {
       this.user = null
       this.credits = null
+      this.plan = null
       disconnectRenderSocket()
     },
   },

@@ -1,0 +1,329 @@
+{
+  "name": "pro-social-fact-of-day",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#1D6FE0",
+  "outputFormat": "mp4",
+  "variables": {
+    "channelName": "BRAIN BYTES",
+    "factNumber": "Fact #058",
+    "hookQuestion": "How many hearts does an octopus have?",
+    "statNumeral": "3",
+    "statLabel": "HEARTS",
+    "fact": "Two pump blood to the gills. One pumps it to the rest of the body.",
+    "explainer": "When an octopus swims, the heart that serves its body actually stops beating — which is why they prefer crawling to swimming.",
+    "sourceNote": "Source: Smithsonian Ocean",
+    "showSource": true,
+    "ctaText": "Follow for daily facts",
+    "handle": "@brainbytes",
+    "brandBlue": "#1D6FE0",
+    "yellowColor": "#FFB01F",
+    "coralColor": "#FF5C5C",
+    "whiteColor": "#FFFFFF",
+    "inkColor": "#0E1E3A",
+    "bgImage": "https://images.pexels.com/photos/3222255/pexels-photo-3222255.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "musicUrl": "https://cdn.pixabay.com/audio/2026/02/24/audio_3f375fdf97.mp3"
+  },
+  "scenes": [
+    {
+      "id": "hook",
+      "duration": 3.6,
+      "backgroundColor": "#1D6FE0",
+      "transition": "circleopen",
+      "transitionId": "reveal",
+      "transitionDuration": 0.6,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><rect width='1080' height='1920' fill='#1D6FE0'/><circle cx='120' cy='180' r='4' fill='rgba(255,255,255,0.35)'/><circle cx='220' cy='180' r='4' fill='rgba(255,255,255,0.35)'/><circle cx='320' cy='180' r='4' fill='rgba(255,255,255,0.35)'/><circle cx='420' cy='180' r='4' fill='rgba(255,255,255,0.35)'/><circle cx='520' cy='180' r='4' fill='rgba(255,255,255,0.35)'/><circle cx='620' cy='180' r='4' fill='rgba(255,255,255,0.35)'/><circle cx='720' cy='180' r='4' fill='rgba(255,255,255,0.35)'/><circle cx='820' cy='180' r='4' fill='rgba(255,255,255,0.35)'/><circle cx='120' cy='280' r='4' fill='rgba(255,255,255,0.25)'/><circle cx='220' cy='280' r='4' fill='rgba(255,255,255,0.25)'/><circle cx='320' cy='280' r='4' fill='rgba(255,255,255,0.25)'/><circle cx='420' cy='280' r='4' fill='rgba(255,255,255,0.25)'/><circle cx='520' cy='280' r='4' fill='rgba(255,255,255,0.25)'/><circle cx='620' cy='280' r='4' fill='rgba(255,255,255,0.25)'/><circle cx='720' cy='280' r='4' fill='rgba(255,255,255,0.25)'/><circle cx='820' cy='280' r='4' fill='rgba(255,255,255,0.25)'/><circle cx='120' cy='1740' r='4' fill='rgba(255,255,255,0.3)'/><circle cx='220' cy='1740' r='4' fill='rgba(255,255,255,0.3)'/><circle cx='320' cy='1740' r='4' fill='rgba(255,255,255,0.3)'/><circle cx='420' cy='1740' r='4' fill='rgba(255,255,255,0.3)'/><circle cx='520' cy='1740' r='4' fill='rgba(255,255,255,0.3)'/><circle cx='620' cy='1740' r='4' fill='rgba(255,255,255,0.3)'/><circle cx='720' cy='1740' r='4' fill='rgba(255,255,255,0.3)'/><circle cx='820' cy='1740' r='4' fill='rgba(255,255,255,0.3)'/><path d='M76 240 L76 96 L220 96' fill='none' stroke='#FFB01F' stroke-width='9'/><path d='M1004 1680 L1004 1824 L860 1824' fill='none' stroke='#FF5C5C' stroke-width='9'/><circle cx='540' cy='740' r='168' fill='none' stroke='rgba(255,255,255,0.55)' stroke-width='2.5'/><text x='540' y='800' text-anchor='middle' font-family='Georgia' font-size='180' fill='#FFFFFF'>?</text></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 170,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.15,
+          "enterEnd": 0.55,
+          "enterAnimation": "smoothdown",
+          "exitEnd": 3.6,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div style='display:inline-block; background:rgba(14,30,58,0.28); border:1.5px solid rgba(255,255,255,0.65); color:#FFFFFF; border-radius:999px; padding:14px 34px; font-size:25px; font-weight:800; letter-spacing:4px;'>{{channelName}} &middot; {{factNumber}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1120,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.4,
+          "enterEnd": 0.9,
+          "enterAnimation": "smoothup",
+          "exitEnd": 3.6,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:78px; line-height:1.08; font-weight:900; letter-spacing:-1px;'>{{hookQuestion}}</div><div style='margin-top:22px; text-align:center; color:rgba(255,255,255,0.75); font-size:29px; font-weight:600;'>Guess before the reveal…</div>"
+        }
+      ]
+    },
+    {
+      "id": "reveal",
+      "duration": 5.6,
+      "backgroundColor": "#1D6FE0",
+      "transition": "fade",
+      "transitionId": "explain",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 5.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><rect width='1080' height='1920' fill='#1D6FE0'/><path d='M76 240 L76 96 L220 96' fill='none' stroke='#FFB01F' stroke-width='9'/><path d='M1004 1680 L1004 1824 L860 1824' fill='none' stroke='#FF5C5C' stroke-width='9'/><circle cx='150' cy='1500' r='4' fill='rgba(255,255,255,0.3)'/><circle cx='210' cy='1500' r='4' fill='rgba(255,255,255,0.3)'/><circle cx='270' cy='1500' r='4' fill='rgba(255,255,255,0.3)'/><circle cx='940' cy='420' r='4' fill='rgba(255,255,255,0.3)'/><circle cx='880' cy='420' r='4' fill='rgba(255,255,255,0.3)'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 260,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.15,
+          "enterEnd": 0.55,
+          "enterAnimation": "fade",
+          "exitEnd": 5.6,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div style='text-align:center; color:rgba(255,255,255,0.85); font-size:28px; font-weight:800; letter-spacing:6px;'>THE ANSWER IS</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 380,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.3,
+          "enterEnd": 0.85,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5.6,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div style='text-align:center; color:#FFB01F; font-size:240px; line-height:1; font-weight:900;'>{{statNumeral}}</div><div style='margin-top:-10px; text-align:center; color:#FFFFFF; font-size:34px; font-weight:800; letter-spacing:8px;'>{{statLabel}}</div>"
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 1,
+          "enterBegin": 0.9,
+          "exitEnd": 5.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><rect x='80' y='980' width='920' height='620' rx='28' fill='#FFFFFF'/><rect x='80' y='980' width='920' height='10' rx='5' fill='#FF5C5C'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1060,
+          "width": 800,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1.1,
+          "enterEnd": 1.55,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5.6,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div style='text-align:center; color:#0E1E3A; font-size:42px; line-height:1.35; font-weight:800;'>{{fact}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1420,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1.4,
+          "enterEnd": 1.8,
+          "enterAnimation": "fade",
+          "exitEnd": 5.6,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div style='display:inline-block; background:#1D6FE0; color:#FFFFFF; border-radius:999px; padding:12px 30px; font-size:24px; font-weight:800; letter-spacing:2px;'>MIND = BLOWN</div>"
+        }
+      ]
+    },
+    {
+      "id": "explain",
+      "duration": 5.4,
+      "backgroundColor": "#0E1E3A",
+      "transition": "smoothup",
+      "transitionId": "endcard",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{bgImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "opacity": 0.4,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 5.4
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 5.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='fodShade' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#0E1E3A' stop-opacity='0.55'/><stop offset='0.5' stop-color='#0E1E3A' stop-opacity='0.72'/><stop offset='1' stop-color='#0E1E3A' stop-opacity='0.94'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#fodShade)'/><path d='M76 240 L76 96 L220 96' fill='none' stroke='#FFB01F' stroke-width='9'/><path d='M1004 1680 L1004 1824 L860 1824' fill='none' stroke='#FF5C5C' stroke-width='9'/><path d='M150 1000 H930' stroke='rgba(255,255,255,0.25)' stroke-width='1'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 700,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.6,
+          "enterAnimation": "fade",
+          "exitEnd": 5.4,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div style='text-align:center; color:#FFB01F; font-size:28px; font-weight:800; letter-spacing:6px;'>WHY THOUGH?</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 800,
+          "width": 860,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.45,
+          "enterEnd": 0.95,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5.4,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:40px; line-height:1.5; font-weight:600;'>{{explainer}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showSource}}",
+          "x": 540,
+          "y": 1250,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.9,
+          "enterEnd": 1.3,
+          "enterAnimation": "fade",
+          "exitEnd": 5.4,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div style='display:inline-block; border:1.5px solid rgba(255,255,255,0.4); color:rgba(255,255,255,0.75); border-radius:999px; padding:12px 30px; font-size:22px; font-weight:600;'>{{sourceNote}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "endcard",
+      "duration": 4.2,
+      "backgroundColor": "#1D6FE0",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.2,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><rect width='1080' height='1920' fill='#1D6FE0'/><path d='M76 240 L76 96 L220 96' fill='none' stroke='#FFB01F' stroke-width='9'/><path d='M1004 1680 L1004 1824 L860 1824' fill='none' stroke='#FF5C5C' stroke-width='9'/><circle cx='540' cy='640' r='150' fill='none' stroke='rgba(255,255,255,0.4)' stroke-width='2'/><circle cx='540' cy='640' r='126' fill='#FFFFFF'/><circle cx='150' cy='1440' r='4' fill='rgba(255,255,255,0.35)'/><circle cx='210' cy='1440' r='4' fill='rgba(255,255,255,0.35)'/><circle cx='270' cy='1440' r='4' fill='rgba(255,255,255,0.35)'/><circle cx='330' cy='1440' r='4' fill='rgba(255,255,255,0.35)'/><circle cx='930' cy='300' r='4' fill='rgba(255,255,255,0.3)'/><circle cx='870' cy='300' r='4' fill='rgba(255,255,255,0.3)'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 640,
+          "anchor": "center-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.6,
+          "enterAnimation": "fade",
+          "exitEnd": 4.2,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div style='text-align:center; color:#1D6FE0; font-size:96px; font-weight:900;'>?</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 840,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.4,
+          "enterEnd": 0.75,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.2,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div style='text-align:center; color:#FFFFFF; font-size:38px; font-weight:900; letter-spacing:6px;'>{{channelName}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 960,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.6,
+          "enterEnd": 0.95,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.2,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div style='display:inline-block; background:#FFB01F; color:#0E1E3A; border-radius:999px; padding:26px 60px; font-size:38px; font-weight:800;'>{{ctaText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1130,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 0.85,
+          "enterEnd": 1.15,
+          "enterAnimation": "fade",
+          "exitEnd": 4.2,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div style='text-align:center; color:rgba(255,255,255,0.7); font-size:27px; font-weight:600; letter-spacing:1px;'>{{handle}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.16
+    }
+  ]
+}

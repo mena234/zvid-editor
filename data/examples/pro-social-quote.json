@@ -1,0 +1,218 @@
+{
+  "name": "pro-social-quote",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#101418",
+  "outputFormat": "mp4",
+  "variables": {
+    "channelName": "@midnight.mind",
+    "kicker": "WORDS TO SIT WITH",
+    "quote": "The wound is the place where the light enters you.",
+    "author": "Rumi",
+    "authorNote": "Poet & mystic",
+    "showAuthorNote": true,
+    "avatarImage": "https://images.unsplash.com/photo-1560250097-0b93528c311a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDgwMTZ8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjBwb3J0cmFpdCUyMGJ1c2luZXNzJTIwcGVyc29ufGVufDB8fHx8MTc4MzI2ODYyOHww&ixlib=rb-4.1.0&q=80&w=1080",
+    "ctaText": "Follow for daily wisdom",
+    "website": "@midnight.mind",
+    "goldColor": "#D4AF37",
+    "champagneColor": "#E8D5B0",
+    "inkColor": "#101418",
+    "charcoalColor": "#1A2026",
+    "bgVideo": "https://videos.pexels.com/video-files/15168374/15168374-hd_1080_1920_24fps.mp4",
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/03/19/audio_56ae1dae5f.mp3"
+  },
+  "scenes": [
+    {
+      "id": "quote",
+      "duration": 8.4,
+      "backgroundColor": "#101418",
+      "transition": "fade",
+      "transitionId": "author",
+      "transitionDuration": 0.6,
+      "visuals": [
+        {
+          "type": "VIDEO",
+          "src": "{{bgVideo}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "volume": 0,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 8.4
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 8.4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='qWash' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#101418' stop-opacity='0.55'/><stop offset='0.4' stop-color='#101418' stop-opacity='0.35'/><stop offset='0.65' stop-color='#101418' stop-opacity='0.72'/><stop offset='1' stop-color='#101418' stop-opacity='0.94'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#qWash)'/><rect x='64' y='64' width='952' height='1792' fill='none' stroke='rgba(212,175,55,0.55)' stroke-width='1.5'/><rect x='84' y='84' width='912' height='1752' fill='none' stroke='rgba(212,175,55,0.25)' stroke-width='1'/><text x='150' y='560' font-family='Georgia' font-size='260' fill='rgba(212,175,55,0.5)'>&#8220;</text><path d='M150 1560 H430' stroke='rgba(212,175,55,0.6)' stroke-width='1.5'/><circle cx='930' cy='250' r='4' fill='rgba(232,213,176,0.55)'/><circle cx='150' cy='1720' r='4' fill='rgba(232,213,176,0.4)'/><path d='M900 1700 q22 -28 44 0 q22 28 44 0' fill='none' stroke='rgba(212,175,55,0.5)' stroke-width='4' stroke-linecap='round'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 150,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.15,
+          "enterEnd": 0.55,
+          "enterAnimation": "fade",
+          "exitEnd": 8.4,
+          "style": {
+            "fontFamily": "Sora"
+          },
+          "html": "<div style='display:inline-block; border:1px solid rgba(212,175,55,0.6); color:{{goldColor}}; border-radius:999px; padding:12px 34px; font-size:23px; font-weight:700; letter-spacing:6px;'>{{kicker}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 640,
+          "width": 860,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.5,
+          "enterEnd": 1.1,
+          "enterAnimation": "smoothup",
+          "exitEnd": 8.4,
+          "style": {
+            "fontFamily": "Instrument Serif"
+          },
+          "html": "<div style='text-align:center; color:{{champagneColor}}; font-size:74px; line-height:1.28; font-style:italic;'>{{quote}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1620,
+          "width": 800,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 1.4,
+          "enterEnd": 1.9,
+          "enterAnimation": "fade",
+          "exitEnd": 8.4,
+          "style": {
+            "fontFamily": "Sora"
+          },
+          "html": "<div style='text-align:center; color:{{goldColor}}; font-size:34px; font-weight:700; letter-spacing:2px;'>&mdash; {{author}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "author",
+      "duration": 5,
+      "backgroundColor": "#1A2026",
+      "visuals": [
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 5,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='qGlow' cx='0.5' cy='0.34' r='0.55'><stop offset='0' stop-color='#D4AF37' stop-opacity='0.22'/><stop offset='1' stop-color='#1A2026' stop-opacity='0'/></radialGradient></defs><rect width='1080' height='1920' fill='#1A2026'/><rect width='1080' height='1920' fill='url(#qGlow)'/><rect x='64' y='64' width='952' height='1792' fill='none' stroke='rgba(212,175,55,0.4)' stroke-width='1.5'/><path d='M120 1720 q22 -28 44 0 q22 28 44 0 q22 -28 44 0' fill='none' stroke='rgba(212,175,55,0.55)' stroke-width='4' stroke-linecap='round'/><circle cx='960' cy='1740' r='4' fill='rgba(232,213,176,0.5)'/><circle cx='920' cy='1740' r='4' fill='rgba(232,213,176,0.35)'/></svg>"
+        },
+        {
+          "type": "IMAGE",
+          "src": "{{avatarImage}}",
+          "x": 540,
+          "y": 560,
+          "width": 260,
+          "height": 260,
+          "anchor": "center-center",
+          "radius": {
+            "tl": 130,
+            "tr": 130,
+            "bl": 130,
+            "br": 130
+          },
+          "track": 1,
+          "enterBegin": 0.15,
+          "enterEnd": 0.6,
+          "enterAnimation": "circleopen",
+          "exitEnd": 5
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 3,
+          "enterBegin": 0.15,
+          "exitEnd": 5,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><circle cx='540' cy='560' r='140' fill='none' stroke='#D4AF37' stroke-width='3'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 780,
+          "width": 860,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.4,
+          "enterEnd": 0.85,
+          "enterAnimation": "smoothup",
+          "exitEnd": 5,
+          "style": {
+            "fontFamily": "Instrument Serif"
+          },
+          "html": "<div style='text-align:center; color:{{champagneColor}}; font-size:64px; font-style:italic;'>{{author}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showAuthorNote}}",
+          "x": 540,
+          "y": 900,
+          "width": 800,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.6,
+          "enterEnd": 1.05,
+          "enterAnimation": "fade",
+          "exitEnd": 5,
+          "style": {
+            "fontFamily": "Sora"
+          },
+          "html": "<div style='text-align:center; color:rgba(232,213,176,0.65); font-size:26px; font-weight:600; letter-spacing:3px;'>{{authorNote}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1180,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1,
+          "enterEnd": 1.4,
+          "enterAnimation": "circleopen",
+          "exitEnd": 5,
+          "style": {
+            "fontFamily": "Sora"
+          },
+          "html": "<div style='display:inline-block; background:{{goldColor}}; color:{{inkColor}}; border-radius:999px; padding:24px 58px; font-size:31px; font-weight:800;'>{{ctaText}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1330,
+          "anchor": "top-center",
+          "track": 11,
+          "enterBegin": 1.25,
+          "enterEnd": 1.6,
+          "enterAnimation": "fade",
+          "exitEnd": 5,
+          "style": {
+            "fontFamily": "Sora"
+          },
+          "html": "<div style='text-align:center; color:rgba(232,213,176,0.55); font-size:24px; letter-spacing:4px;'>{{website}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.15
+    }
+  ]
+}

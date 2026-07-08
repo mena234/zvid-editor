@@ -1,0 +1,443 @@
+{
+  "name": "pro-auto-listing-reel",
+  "resolution": "instagram-reel",
+  "frameRate": 30,
+  "backgroundColor": "#0C0F13",
+  "outputFormat": "mp4",
+  "variables": {
+    "dealerName": "Meridian Motors",
+    "dealerPhone": "(555) 214-8800",
+    "location": "Marina District",
+    "monogram": "MM",
+    "year": "2024",
+    "make": "Porsche",
+    "model": "911 Carrera S",
+    "price": "$128,500",
+    "showPrice": true,
+    "mileage": "6,120 mi",
+    "fuel": "Petrol",
+    "transmission": "8-sp PDK",
+    "tagline": "Certified pre-owned · Full service history",
+    "hookVideo": "https://cdn.pixabay.com/video/2026/01/15/327855_medium.mp4",
+    "photos": [
+      {
+        "num": "01",
+        "label": "Exterior",
+        "detail": "Midnight silver metallic",
+        "image": "https://images.unsplash.com/photo-1621252792374-2b79e3fcf295?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDgwMTZ8MHwxfHNlYXJjaHw0fHxsdXh1cnklMjBjYXIlMjBzcG9ydHMlMjB2ZWhpY2xlfGVufDB8fHx8MTc4MzI2ODYxOHww&ixlib=rb-4.1.0&q=80&w=1080"
+      },
+      {
+        "num": "02",
+        "label": "Cockpit",
+        "detail": "Nappa leather · Carbon trim",
+        "image": "https://images.pexels.com/photos/9530906/pexels-photo-9530906.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+      },
+      {
+        "num": "03",
+        "label": "Stance",
+        "detail": "Forged alloys · Sport chassis",
+        "image": "https://images.pexels.com/photos/20131971/pexels-photo-20131971.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+      }
+    ],
+    "specsImage": "https://images.unsplash.com/photo-1580881647059-923632b8fd75?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDgwMTZ8MHwxfHNlYXJjaHwzfHxsdXh1cnklMjBjYXIlMjBzcG9ydHMlMjB2ZWhpY2xlfGVufDB8fHx8MTc4MzI2ODYxOHww&ixlib=rb-4.1.0&q=80&w=1080",
+    "finalImage": "https://images.unsplash.com/photo-1519078313888-5a8068170f8f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDgwMTZ8MHwxfHNlYXJjaHw1fHxsdXh1cnklMjBjYXIlMjBzcG9ydHMlMjB2ZWhpY2xlfGVufDB8fHx8MTc4MzI2ODYxOHww&ixlib=rb-4.1.0&q=80&w=1080",
+    "musicUrl": "https://cdn.pixabay.com/audio/2025/04/21/audio_ed6f0ed574.mp3"
+  },
+  "scenes": [
+    {
+      "id": "hook",
+      "duration": 4,
+      "backgroundColor": "#0C0F13",
+      "transition": "fadeblack",
+      "transitionId": "gallery",
+      "transitionDuration": 0.6,
+      "visuals": [
+        {
+          "type": "VIDEO",
+          "src": "{{hookVideo}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "volume": 0,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 4,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='plrHookG' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#0C0F13' stop-opacity='0.6'/><stop offset='0.42' stop-color='#0C0F13' stop-opacity='0.08'/><stop offset='1' stop-color='#0C0F13' stop-opacity='0.94'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#plrHookG)'/><path d='M64 226 V96 H194' stroke='#D4AF37' stroke-width='3' fill='none'/><path d='M1016 1694 V1824 H886' stroke='#D4AF37' stroke-width='3' fill='none'/><path d='M64 1268 H236' stroke='#D4AF37' stroke-width='2'/><polygon points='948,150 958,160 948,170 938,160' fill='#D4AF37'/><polygon points='1000,178 1007,185 1000,192 993,185' fill='rgba(232,213,176,0.55)'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 130,
+          "anchor": "center-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.7,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div style='text-align:center; color:#E8D5B0; font-size:26px; font-weight:700; letter-spacing:10px;'>{{dealerName}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 64,
+          "y": 1310,
+          "width": 940,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.45,
+          "enterEnd": 0.95,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div style='color:#D4AF37; font-size:27px; font-weight:800; letter-spacing:7px;'>JUST LISTED</div><div style='margin-top:16px; color:#F4F1EA; font-size:100px; line-height:0.96; font-weight:900; letter-spacing:-3px;'>{{year}} {{make}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 64,
+          "y": 1478,
+          "width": 940,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.7,
+          "enterEnd": 1.2,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4,
+          "style": {
+            "fontFamily": "Instrument Serif"
+          },
+          "html": "<div style='color:#E8D5B0; font-size:84px; line-height:1.02; font-style:italic;'>{{model}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "gallery",
+      "iterate": "photos",
+      "iterateAs": "photo",
+      "duration": 3,
+      "backgroundColor": "#0C0F13",
+      "transition": "smoothleft",
+      "transitionId": "specs",
+      "transitionDuration": 0.55,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{photo.image}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 3
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 3,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='plrGalG' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#0C0F13' stop-opacity='0.42'/><stop offset='0.5' stop-color='#0C0F13' stop-opacity='0.02'/><stop offset='1' stop-color='#0C0F13' stop-opacity='0.1'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#plrGalG)'/><polygon points='0,1430 1080,1580 1080,1920 0,1920' fill='#0C0F13'/><path d='M0 1430 L1080 1580' stroke='#D4AF37' stroke-width='3'/><path d='M886 96 H1016 V226' stroke='#D4AF37' stroke-width='3' fill='none'/><rect x='80' y='1618' width='56' height='4' fill='#D4AF37'/><polygon points='150,180 159,189 150,198 141,189' fill='rgba(232,213,176,0.5)'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 130,
+          "anchor": "center-center",
+          "track": 10,
+          "enterBegin": 0,
+          "exitEnd": 3,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div style='text-align:center; color:rgba(244,241,234,0.8); font-size:23px; font-weight:700; letter-spacing:7px;'>{{make}} {{model}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 700,
+          "y": 1310,
+          "anchor": "top-left",
+          "track": 11,
+          "enterBegin": 0.2,
+          "enterEnd": 0.6,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 3,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div style='color:rgba(232,213,176,0.92); font-size:230px; line-height:1; font-weight:900; letter-spacing:-6px;'>{{photo.num}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 80,
+          "y": 1650,
+          "width": 620,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.35,
+          "enterEnd": 0.75,
+          "enterAnimation": "smoothleft",
+          "exitEnd": 3,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div style='color:#F4F1EA; font-size:56px; font-weight:900; letter-spacing:-1px;'>{{photo.label}}</div><div style='margin-top:10px; color:#8A93A0; font-size:26px; font-weight:600; letter-spacing:2px;'>{{photo.detail}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "specs",
+      "duration": 4.2,
+      "backgroundColor": "#0C0F13",
+      "transition": "fadeblack",
+      "transitionId": "endcard",
+      "transitionDuration": 0.6,
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{specsImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "opacity": 0.22,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.2
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 4.2,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><rect width='1080' height='1920' fill='rgba(12,15,19,0.55)'/><rect x='90' y='430' width='900' height='1060' fill='rgba(12,15,19,0.85)' stroke='rgba(232,213,176,0.3)' stroke-width='1.5'/><rect x='106' y='446' width='868' height='1028' fill='none' stroke='rgba(232,213,176,0.1)' stroke-width='1'/><path d='M150 646 H930' stroke='#D4AF37' stroke-width='2'/><path d='M150 806 H930' stroke='rgba(232,213,176,0.16)' stroke-width='1.5'/><path d='M150 966 H930' stroke='rgba(232,213,176,0.16)' stroke-width='1.5'/><path d='M150 1126 H930' stroke='rgba(232,213,176,0.16)' stroke-width='1.5'/><path d='M150 1286 H930' stroke='rgba(232,213,176,0.16)' stroke-width='1.5'/><rect x='150' y='680' width='6' height='44' fill='#D4AF37'/><rect x='150' y='840' width='6' height='44' fill='#D4AF37'/><rect x='150' y='1000' width='6' height='44' fill='#D4AF37'/><rect x='150' y='1160' width='6' height='44' fill='#D4AF37'/><path d='M64 356 V296 H124' stroke='#D4AF37' stroke-width='3' fill='none'/><path d='M1016 1564 V1624 H956' stroke='#D4AF37' stroke-width='3' fill='none'/><polygon points='980,340 989,349 980,358 971,349' fill='rgba(232,213,176,0.5)'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 150,
+          "y": 496,
+          "width": 780,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.6,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.2,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div style='color:#D4AF37; font-size:24px; font-weight:800; letter-spacing:7px;'>SPECIFICATION SHEET</div><div style='margin-top:12px; color:#F4F1EA; font-size:50px; font-weight:900; letter-spacing:-1px;'>{{make}} {{model}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 186,
+          "y": 682,
+          "width": 744,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.55,
+          "enterEnd": 0.9,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.2,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div style='display:flex; justify-content:space-between; align-items:center;'><span style='color:#8A93A0; font-size:25px; font-weight:700; letter-spacing:5px;'>YEAR</span><span style='color:#F4F1EA; font-size:40px; font-weight:800;'>{{year}}</span></div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 186,
+          "y": 842,
+          "width": 744,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.75,
+          "enterEnd": 1.1,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.2,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div style='display:flex; justify-content:space-between; align-items:center;'><span style='color:#8A93A0; font-size:25px; font-weight:700; letter-spacing:5px;'>MILEAGE</span><span style='color:#F4F1EA; font-size:40px; font-weight:800;'>{{mileage}}</span></div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 186,
+          "y": 1002,
+          "width": 744,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 0.95,
+          "enterEnd": 1.3,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.2,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div style='display:flex; justify-content:space-between; align-items:center;'><span style='color:#8A93A0; font-size:25px; font-weight:700; letter-spacing:5px;'>FUEL</span><span style='color:#F4F1EA; font-size:40px; font-weight:800;'>{{fuel}}</span></div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 186,
+          "y": 1162,
+          "width": 744,
+          "anchor": "top-left",
+          "track": 10,
+          "enterBegin": 1.15,
+          "enterEnd": 1.5,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.2,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div style='display:flex; justify-content:space-between; align-items:center;'><span style='color:#8A93A0; font-size:25px; font-weight:700; letter-spacing:5px;'>GEARBOX</span><span style='color:#F4F1EA; font-size:40px; font-weight:800;'>{{transmission}}</span></div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1370,
+          "width": 760,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 1.4,
+          "enterEnd": 1.8,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.2,
+          "style": {
+            "fontFamily": "Instrument Serif"
+          },
+          "html": "<div style='text-align:center; color:#E8D5B0; font-size:33px; font-style:italic;'>{{tagline}}</div>"
+        }
+      ]
+    },
+    {
+      "id": "endcard",
+      "duration": 4.6,
+      "backgroundColor": "#0C0F13",
+      "visuals": [
+        {
+          "type": "IMAGE",
+          "src": "{{finalImage}}",
+          "width": 1080,
+          "height": 1920,
+          "position": "center-center",
+          "resize": "cover",
+          "zoom": true,
+          "opacity": 0.45,
+          "track": 0,
+          "enterBegin": 0,
+          "exitEnd": 4.6
+        },
+        {
+          "type": "SVG",
+          "width": 1080,
+          "height": 1920,
+          "track": 2,
+          "enterBegin": 0,
+          "exitEnd": 4.6,
+          "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='plrEndG' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#0C0F13' stop-opacity='0.82'/><stop offset='0.5' stop-color='#0C0F13' stop-opacity='0.6'/><stop offset='1' stop-color='#0C0F13' stop-opacity='0.96'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#plrEndG)'/><circle cx='540' cy='500' r='88' fill='none' stroke='#D4AF37' stroke-width='2'/><circle cx='540' cy='500' r='74' fill='none' stroke='rgba(232,213,176,0.35)' stroke-width='1'/><path d='M64 226 V96 H194' stroke='#D4AF37' stroke-width='3' fill='none'/><path d='M1016 1694 V1824 H886' stroke='#D4AF37' stroke-width='3' fill='none'/><path d='M470 1052 H610' stroke='rgba(232,213,176,0.4)' stroke-width='1.5'/><polygon points='540,1046 546,1052 540,1058 534,1052' fill='#D4AF37'/></svg>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 500,
+          "anchor": "center-center",
+          "track": 10,
+          "enterBegin": 0.2,
+          "enterEnd": 0.6,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.6,
+          "style": {
+            "fontFamily": "Instrument Serif"
+          },
+          "html": "<div style='text-align:center; color:#E8D5B0; font-size:62px; letter-spacing:4px;'>{{monogram}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "condition": "{{showPrice}}",
+          "x": 540,
+          "y": 680,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.45,
+          "enterEnd": 0.9,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.6,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div style='text-align:center; color:#D4AF37; font-size:25px; font-weight:800; letter-spacing:8px;'>YOUR PRICE</div><div style='margin-top:14px; text-align:center; color:#F4F1EA; font-size:118px; font-weight:900; letter-spacing:-3px;'>{{price}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1090,
+          "width": 900,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 0.75,
+          "enterEnd": 1.2,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.6,
+          "style": {
+            "fontFamily": "Instrument Serif"
+          },
+          "html": "<div style='text-align:center; color:#E8D5B0; font-size:56px; font-style:italic;'>Book your test drive</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1270,
+          "anchor": "center-center",
+          "track": 11,
+          "enterBegin": 1,
+          "enterEnd": 1.4,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.6,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div style='display:inline-block; background:#D4AF37; color:#0C0F13; border-radius:60px; padding:24px 64px; font-size:42px; font-weight:900; letter-spacing:1px;'>{{dealerPhone}}</div>"
+        },
+        {
+          "type": "TEXT",
+          "x": 540,
+          "y": 1420,
+          "anchor": "top-center",
+          "track": 10,
+          "enterBegin": 1.25,
+          "enterEnd": 1.65,
+          "enterAnimation": "smoothup",
+          "exitEnd": 4.6,
+          "style": {
+            "fontFamily": "Archivo"
+          },
+          "html": "<div style='text-align:center; color:#8A93A0; font-size:24px; font-weight:700; letter-spacing:5px;'>{{dealerName}} · {{location}}</div>"
+        }
+      ]
+    }
+  ],
+  "audios": [
+    {
+      "src": "{{musicUrl}}",
+      "volume": 0.16
+    }
+  ]
+}

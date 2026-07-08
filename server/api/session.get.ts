@@ -4,12 +4,16 @@
  */
 export default defineEventHandler(async (event) => {
   const token = getCookie(event, 'auth_token')
-  if (!token) return { user: null, credits: null }
+  if (!token) return { user: null, credits: null, plan: null }
 
   try {
     const r = await orchApi(event, '/user/profile')
-    return { user: r.user || null, credits: r.credits || null }
+    return {
+      user: r.user || null,
+      credits: r.credits || null,
+      plan: r.plan || null,
+    }
   } catch {
-    return { user: null, credits: null }
+    return { user: null, credits: null, plan: null }
   }
 })
