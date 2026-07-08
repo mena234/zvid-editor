@@ -1,0 +1,136 @@
+{
+  "type": "image",
+  "name": "img-ecom-product-card",
+  "resolution": "instagram-post",
+  "outputFormat": "png",
+  "backgroundColor": "#F6F2EA",
+  "variables": {
+    "brand": "Aurora Goods",
+    "monogram": "A",
+    "statusLabel": "IN STOCK",
+    "category": "CERAMIC COLLECTION",
+    "productName": "Aurora Pour-Over Kettle",
+    "currency": "$",
+    "price": "128",
+    "cents": ".00",
+    "ctaLabel": "View product",
+    "paperColor": "#F6F2EA",
+    "inkColor": "#17140F",
+    "mutedColor": "#8A8474",
+    "accentColor": "#1F3D2F",
+    "productImage": "https://images.unsplash.com/photo-1551499779-ee50f1aa4d25?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&ixid=M3w3MDgwMTZ8MHwxfHNlYXJjaHwxfHxwcm9kdWN0JTIwb24lMjBwaW5rJTIwYmFja2dyb3VuZHxlbnwwfHx8fDE3ODM1MjY5MTN8MA&ixlib=rb-4.1.0&q=80&w=1600"
+  },
+  "visuals": [
+    {
+      "type": "SVG",
+      "width": 1080,
+      "height": 1080,
+      "position": "center-center",
+      "track": 0,
+      "svg": "<svg width='1080' height='1080' viewBox='0 0 1080 1080' xmlns='http://www.w3.org/2000/svg'><rect x='40' y='40' width='1000' height='1000' rx='40' fill='none' stroke='{{inkColor}}' stroke-opacity='0.09' stroke-width='1.5'/></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 90,
+      "y": 74,
+      "width": 56,
+      "height": 56,
+      "anchor": "top-left",
+      "track": 4,
+      "svg": "<svg width='56' height='56' viewBox='0 0 56 56' xmlns='http://www.w3.org/2000/svg'><rect width='56' height='56' rx='16' fill='{{accentColor}}'/><text x='28' y='37' font-family='Fraunces, Georgia' font-size='28' font-weight='600' fill='{{paperColor}}' text-anchor='middle'>{{monogram}}</text></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 162,
+      "y": 88,
+      "width": 400,
+      "anchor": "top-left",
+      "track": 4,
+      "text": "{{brand}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "25px",
+        "fontWeight": "600",
+        "letterSpacing": "0.01em",
+        "color": "#17140F"
+      }
+    },
+    {
+      "type": "SVG",
+      "x": 826,
+      "y": 78,
+      "width": 164,
+      "height": 44,
+      "anchor": "top-left",
+      "track": 4,
+      "svg": "<svg width='164' height='44' viewBox='0 0 164 44' xmlns='http://www.w3.org/2000/svg'><rect x='0.75' y='0.75' width='162.5' height='42.5' rx='21.25' fill='none' stroke='{{inkColor}}' stroke-opacity='0.16' stroke-width='1.5'/><circle cx='30' cy='22' r='5' fill='{{accentColor}}'/><text x='46' y='28' font-family='Space Grotesk, Arial' font-size='16' font-weight='600' fill='{{inkColor}}' letter-spacing='0.06em'>{{statusLabel}}</text></svg>"
+    },
+    {
+      "type": "IMAGE",
+      "src": "{{productImage}}",
+      "x": 90,
+      "y": 168,
+      "width": 900,
+      "height": 548,
+      "anchor": "top-left",
+      "radius": { "tl": 36, "tr": 36, "bl": 36, "br": 36 },
+      "track": 2
+    },
+    {
+      "type": "TEXT",
+      "x": 92,
+      "y": 748,
+      "width": 620,
+      "anchor": "top-left",
+      "track": 4,
+      "text": "{{category}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "22px",
+        "fontWeight": "600",
+        "letterSpacing": "0.28em",
+        "color": "#1F3D2F"
+      }
+    },
+    {
+      "type": "TEXT",
+      "x": 90,
+      "y": 784,
+      "width": 660,
+      "anchor": "top-left",
+      "track": 4,
+      "style": { "fontFamily": "Fraunces" },
+      "html": "<div style='font-size:52px; font-weight:600; line-height:1.02; letter-spacing:-0.015em; color:{{inkColor}};'>{{productName}}</div>"
+    },
+    {
+      "type": "SVG",
+      "x": 90,
+      "y": 902,
+      "width": 900,
+      "height": 2,
+      "anchor": "top-left",
+      "track": 4,
+      "svg": "<svg width='900' height='2' viewBox='0 0 900 2' xmlns='http://www.w3.org/2000/svg'><rect width='900' height='1' fill='{{inkColor}}' fill-opacity='0.12'/></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 90,
+      "y": 922,
+      "width": 420,
+      "anchor": "top-left",
+      "track": 4,
+      "style": { "fontFamily": "Space Grotesk" },
+      "html": "<div style='color:{{inkColor}}; font-weight:700;'><span style='font-size:34px; vertical-align:top; letter-spacing:-0.01em;'>{{currency}}</span><span style='font-size:84px; letter-spacing:-0.03em;'>{{price}}</span><span style='font-size:30px; color:{{mutedColor}};'>{{cents}}</span></div>"
+    },
+    {
+      "type": "SVG",
+      "x": 734,
+      "y": 924,
+      "width": 256,
+      "height": 64,
+      "anchor": "top-left",
+      "track": 4,
+      "svg": "<svg width='256' height='64' viewBox='0 0 256 64' xmlns='http://www.w3.org/2000/svg'><rect width='256' height='64' rx='32' fill='{{accentColor}}'/><text x='34' y='40' font-family='Space Grotesk, Arial' font-size='20' font-weight='600' fill='{{paperColor}}' letter-spacing='0.02em'>{{ctaLabel}}</text><path d='M212 32 L230 32 M223 25 L230 32 L223 39' fill='none' stroke='{{paperColor}}' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/></svg>"
+    }
+  ]
+}

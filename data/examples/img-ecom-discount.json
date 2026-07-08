@@ -1,0 +1,127 @@
+{
+  "type": "image",
+  "name": "img-ecom-discount",
+  "resolution": "instagram-post",
+  "outputFormat": "png",
+  "backgroundColor": "#0C0C11",
+  "variables": {
+    "eyebrow": "LIMITED-TIME OFFER",
+    "productName": "Nova Wireless Headphones",
+    "oldPrice": "$249",
+    "currency": "$",
+    "newPrice": "149",
+    "cents": ".00",
+    "discountPct": "40%",
+    "discountWord": "OFF",
+    "saveNote": "YOU SAVE $100",
+    "ctaLabel": "Shop the deal",
+    "bgColor": "#0C0C11",
+    "accentColor": "#FF6B5E",
+    "textColor": "#F4F2FB",
+    "mutedColor": "#8F8CA3",
+    "productImage": "https://images.unsplash.com/photo-1664959784227-aa7178f85b20?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&ixid=M3w3MDgwMTZ8MHwxfHNlYXJjaHwyfHxwcm9kdWN0JTIwb24lMjBwaW5rJTIwYmFja2dyb3VuZHxlbnwwfHx8fDE3ODM1MjY5MTN8MA&ixlib=rb-4.1.0&q=80&w=1600"
+  },
+  "visuals": [
+    {
+      "type": "SVG",
+      "width": 1080,
+      "height": 1080,
+      "position": "center-center",
+      "track": 0,
+      "svg": "<svg width='1080' height='1080' viewBox='0 0 1080 1080' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='g' cx='0.86' cy='0.1' r='0.7'><stop offset='0' stop-color='#FF6B5E' stop-opacity='0.28'/><stop offset='1' stop-color='#FF6B5E' stop-opacity='0'/></radialGradient></defs><rect width='1080' height='1080' fill='{{bgColor}}'/><rect width='1080' height='1080' fill='url(#g)'/><rect x='40' y='40' width='1000' height='1000' rx='40' fill='none' stroke='#FFFFFF' stroke-opacity='0.09' stroke-width='1.5'/></svg>"
+    },
+    {
+      "type": "IMAGE",
+      "src": "{{productImage}}",
+      "x": 552,
+      "y": 176,
+      "width": 440,
+      "height": 620,
+      "anchor": "top-left",
+      "radius": { "tl": 36, "tr": 36, "bl": 36, "br": 36 },
+      "track": 2
+    },
+    {
+      "type": "SVG",
+      "x": 470,
+      "y": 150,
+      "width": 176,
+      "height": 176,
+      "anchor": "top-left",
+      "track": 5,
+      "svg": "<svg width='176' height='176' viewBox='0 0 176 176' xmlns='http://www.w3.org/2000/svg'><circle cx='88' cy='88' r='88' fill='{{accentColor}}'/><text x='88' y='92' font-family='Archivo, Arial' font-size='62' font-weight='800' fill='#0C0C11' text-anchor='middle' letter-spacing='-2'>{{discountPct}}</text><text x='88' y='128' font-family='Space Grotesk, Arial' font-size='24' font-weight='700' fill='#0C0C11' text-anchor='middle' letter-spacing='6'>{{discountWord}}</text></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 88,
+      "y": 300,
+      "width": 400,
+      "anchor": "top-left",
+      "track": 4,
+      "text": "{{eyebrow}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "22px",
+        "fontWeight": "600",
+        "letterSpacing": "0.26em",
+        "color": "#FF6B5E"
+      }
+    },
+    {
+      "type": "TEXT",
+      "x": 88,
+      "y": 338,
+      "width": 420,
+      "anchor": "top-left",
+      "track": 4,
+      "style": { "fontFamily": "Archivo" },
+      "html": "<div style='font-size:52px; font-weight:800; line-height:1.0; letter-spacing:-0.02em; color:{{textColor}};'>{{productName}}</div>"
+    },
+    {
+      "type": "TEXT",
+      "x": 88,
+      "y": 512,
+      "width": 300,
+      "anchor": "top-left",
+      "track": 4,
+      "text": "{{oldPrice}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "40px",
+        "fontWeight": "500",
+        "textDecoration": "line-through",
+        "color": "#8F8CA3"
+      }
+    },
+    {
+      "type": "TEXT",
+      "x": 86,
+      "y": 548,
+      "width": 430,
+      "anchor": "top-left",
+      "track": 4,
+      "style": { "fontFamily": "Archivo" },
+      "html": "<div style='color:{{textColor}}; font-weight:800; letter-spacing:-0.03em;'><span style='font-size:44px; vertical-align:top;'>{{currency}}</span><span style='font-size:118px;'>{{newPrice}}</span><span style='font-size:40px; color:{{mutedColor}};'>{{cents}}</span></div>"
+    },
+    {
+      "type": "SVG",
+      "x": 88,
+      "y": 712,
+      "width": 300,
+      "height": 48,
+      "anchor": "top-left",
+      "track": 4,
+      "svg": "<svg width='300' height='48' viewBox='0 0 300 48' xmlns='http://www.w3.org/2000/svg'><rect width='300' height='48' rx='12' fill='{{accentColor}}' fill-opacity='0.16'/><text x='20' y='31' font-family='Space Grotesk, Arial' font-size='19' font-weight='700' fill='{{accentColor}}' letter-spacing='0.12em'>{{saveNote}}</text></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 88,
+      "y": 850,
+      "width": 300,
+      "height": 64,
+      "anchor": "top-left",
+      "track": 4,
+      "svg": "<svg width='300' height='64' viewBox='0 0 300 64' xmlns='http://www.w3.org/2000/svg'><rect width='300' height='64' rx='32' fill='{{accentColor}}'/><text x='34' y='40' font-family='Space Grotesk, Arial' font-size='21' font-weight='600' fill='#0C0C11' letter-spacing='0.02em'>{{ctaLabel}}</text><path d='M250 32 L270 32 M263 25 L270 32 L263 39' fill='none' stroke='#0C0C11' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg>"
+    }
+  ]
+}

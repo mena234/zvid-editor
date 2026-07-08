@@ -24,6 +24,15 @@ export const OTHER_CATEGORY_KEY = 'other'
 
 export const EXAMPLE_CATEGORIES: ExampleCategory[] = [
   {
+    key: 'thumbnail',
+    label: 'Video thumbnails',
+    blurb: 'Cover images that match a video — YouTube, product, podcast, listing',
+    keywords: [
+      'thumbnail', 'thumbnails', 'cover', 'youtube', 'poster', 'clickbait',
+      'hook', 'preview', 'cover image', 'video cover', 'og',
+    ],
+  },
+  {
     key: 'ecommerce',
     label: 'E-commerce',
     blurb: 'Product promos, sales and drops for online stores',
@@ -67,6 +76,15 @@ export const EXAMPLE_CATEGORIES: ExampleCategory[] = [
     keywords: [
       'software', 'app', 'saas', 'developer', 'api', 'product', 'startup',
       'tech', 'b2b', 'changelog', 'feature', 'onboarding', 'integration',
+    ],
+  },
+  {
+    key: 'ogimage',
+    label: 'Open Graph / blog',
+    blurb: 'Link-preview and social-share cards for blogs, docs and launches',
+    keywords: [
+      'open graph', 'og image', 'og', 'blog', 'article', 'link preview',
+      'social share', 'meta', 'docs', 'changelog', 'seo', 'twitter card',
     ],
   },
   {

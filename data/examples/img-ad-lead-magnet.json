@@ -1,0 +1,92 @@
+{
+  "type": "image",
+  "name": "img-ad-lead-magnet",
+  "resolution": "instagram-post",
+  "outputFormat": "png",
+  "backgroundColor": "#0B1416",
+  "variables": {
+    "eyebrow": "FREE 2026 GUIDE",
+    "brand": "signal co",
+    "line1": "The",
+    "highlight": "growth",
+    "line2": "playbook",
+    "subline": "42 pages of the exact plays we use to scale paid ads — no fluff, no gatekeeping.",
+    "coverKicker": "FREE EBOOK",
+    "coverTitleA": "Growth",
+    "coverTitleB": "Playbook",
+    "cta": "Download free",
+    "accent": "#8B7CF6",
+    "ink": "#0B1416",
+    "textColor": "#F4F2FB",
+    "mutedColor": "#93A0A6",
+    "bg1": "#10233A",
+    "bg2": "#0A0F1E"
+  },
+  "visuals": [
+    {
+      "type": "SVG",
+      "width": 1080,
+      "height": 1080,
+      "position": "center-center",
+      "track": 0,
+      "svg": "<svg width='1080' height='1080' viewBox='0 0 1080 1080' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='bg' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='{{bg1}}'/><stop offset='0.6' stop-color='#0B1416'/><stop offset='1' stop-color='{{bg2}}'/></linearGradient><radialGradient id='g1' cx='0.78' cy='0.2' r='0.6'><stop offset='0' stop-color='{{accent}}' stop-opacity='0.3'/><stop offset='1' stop-color='{{accent}}' stop-opacity='0'/></radialGradient><radialGradient id='g2' cx='0.04' cy='0.9' r='0.7'><stop offset='0' stop-color='#24D3C4' stop-opacity='0.18'/><stop offset='1' stop-color='#24D3C4' stop-opacity='0'/></radialGradient></defs><rect width='1080' height='1080' fill='url(#bg)'/><rect width='1080' height='1080' fill='url(#g1)'/><rect width='1080' height='1080' fill='url(#g2)'/><rect x='28' y='28' width='1024' height='1024' rx='34' fill='none' stroke='#FFFFFF' stroke-opacity='0.08' stroke-width='1.5'/></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 616,
+      "y": 268,
+      "width": 360,
+      "height": 480,
+      "anchor": "top-left",
+      "angle": -5,
+      "track": 3,
+      "svg": "<svg width='360' height='480' viewBox='0 0 360 480' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='cov' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='{{accent}}'/><stop offset='1' stop-color='#3B2E7E'/></linearGradient></defs><rect x='0' y='0' width='360' height='480' rx='16' fill='url(#cov)'/><rect x='0' y='0' width='16' height='480' rx='6' fill='#000000' fill-opacity='0.24'/><text x='46' y='92' font-family='Space Grotesk, Arial' font-size='17' font-weight='600' letter-spacing='3' fill='#F4F2FB' fill-opacity='0.85'>{{coverKicker}}</text><text x='44' y='214' font-family='Sora, Arial' font-size='54' font-weight='800' fill='#F4F2FB'>{{coverTitleA}}</text><text x='44' y='274' font-family='Sora, Arial' font-size='54' font-weight='800' fill='#F4F2FB'>{{coverTitleB}}</text><rect x='46' y='300' width='64' height='4' rx='2' fill='#F4F2FB' fill-opacity='0.55'/><text x='46' y='436' font-family='Space Grotesk, Arial' font-size='22' font-weight='600' letter-spacing='0.5' fill='#F4F2FB' fill-opacity='0.9'>{{brand}}</text></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 80,
+      "y": 80,
+      "width": 260,
+      "height": 44,
+      "anchor": "top-left",
+      "track": 4,
+      "svg": "<svg width='260' height='44' viewBox='0 0 260 44' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='260' height='44' rx='22' fill='{{accent}}' fill-opacity='0.16' stroke='{{accent}}' stroke-opacity='0.55' stroke-width='1.2'/><circle cx='26' cy='22' r='6' fill='{{accent}}'/><text x='46' y='29' font-family='Space Grotesk, Arial' font-size='17' font-weight='600' letter-spacing='2.4' fill='#CBC2F5'>{{eyebrow}}</text></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 80,
+      "y": 348,
+      "width": 500,
+      "anchor": "top-left",
+      "track": 5,
+      "style": { "fontFamily": "Bricolage Grotesque" },
+      "html": "<div style='font-size:88px; font-weight:800; line-height:0.98; letter-spacing:-0.02em; color:{{textColor}};'>{{line1}} <span style='color:{{accent}};'>{{highlight}}</span><br>{{line2}}</div>"
+    },
+    {
+      "type": "TEXT",
+      "x": 80,
+      "y": 604,
+      "width": 470,
+      "anchor": "top-left",
+      "track": 5,
+      "text": "{{subline}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "26px",
+        "fontWeight": "500",
+        "lineHeight": "1.45",
+        "color": "#93A0A6"
+      }
+    },
+    {
+      "type": "SVG",
+      "x": 80,
+      "y": 892,
+      "width": 330,
+      "height": 76,
+      "anchor": "top-left",
+      "track": 6,
+      "svg": "<svg width='330' height='76' viewBox='0 0 330 76' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='330' height='76' rx='38' fill='{{accent}}'/><text x='134' y='48' font-family='Space Grotesk, Arial' font-size='25' font-weight='700' fill='{{ink}}' text-anchor='middle' letter-spacing='0.4'>{{cta}}</text><circle cx='282' cy='38' r='15' fill='{{ink}}' fill-opacity='0.16'/><path d='M282 31 L282 45 M275 38 L282 45 L289 38' fill='none' stroke='{{ink}}' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/></svg>"
+    }
+  ]
+}

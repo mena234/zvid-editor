@@ -1,0 +1,157 @@
+{
+  "type": "image",
+  "name": "img-ecom-feature",
+  "resolution": "instagram-post",
+  "outputFormat": "png",
+  "backgroundColor": "#0D1014",
+  "variables": {
+    "eyebrow": "WHY YOU'LL LOVE IT",
+    "productName": "Terra Smart Bottle",
+    "f1t": "Keeps drinks cold 24h",
+    "f1d": "Triple-wall vacuum insulation, tested to Arctic spec.",
+    "f2t": "Tracks your hydration",
+    "f2d": "LED lid glows to remind you, syncs to the app.",
+    "f3t": "Built to outlast you",
+    "f3d": "Aerospace aluminium, lifetime leak-proof guarantee.",
+    "specStrip": "MATERIAL · ALUMINIUM    CAPACITY · 750ML    WEIGHT · 240G",
+    "bgColor": "#0D1014",
+    "accentColor": "#4CD4CE",
+    "textColor": "#EAF2F1",
+    "mutedColor": "#7E8A8E",
+    "productImage": "https://images.unsplash.com/photo-1518051870910-a46e30d9db16?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&ixid=M3w3MDgwMTZ8MHwxfHNlYXJjaHw3fHxwcm9kdWN0JTIwb24lMjBwaW5rJTIwYmFja2dyb3VuZHxlbnwwfHx8fDE3ODM1MjY5MTN8MA&ixlib=rb-4.1.0&q=80&w=1600"
+  },
+  "visuals": [
+    {
+      "type": "SVG",
+      "width": 1080,
+      "height": 1080,
+      "position": "center-center",
+      "track": 0,
+      "svg": "<svg width='1080' height='1080' viewBox='0 0 1080 1080' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='g' cx='0.85' cy='0.9' r='0.7'><stop offset='0' stop-color='#4CD4CE' stop-opacity='0.16'/><stop offset='1' stop-color='#4CD4CE' stop-opacity='0'/></radialGradient></defs><rect width='1080' height='1080' fill='{{bgColor}}'/><rect width='1080' height='1080' fill='url(#g)'/><rect x='40' y='40' width='1000' height='1000' rx='40' fill='none' stroke='#FFFFFF' stroke-opacity='0.08' stroke-width='1.5'/></svg>"
+    },
+    {
+      "type": "IMAGE",
+      "src": "{{productImage}}",
+      "x": 88,
+      "y": 176,
+      "width": 430,
+      "height": 728,
+      "anchor": "top-left",
+      "radius": { "tl": 32, "tr": 32, "bl": 32, "br": 32 },
+      "track": 2
+    },
+    {
+      "type": "TEXT",
+      "x": 560,
+      "y": 182,
+      "width": 432,
+      "anchor": "top-left",
+      "track": 4,
+      "text": "{{eyebrow}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "21px",
+        "fontWeight": "600",
+        "letterSpacing": "0.24em",
+        "color": "#4CD4CE"
+      }
+    },
+    {
+      "type": "TEXT",
+      "x": 558,
+      "y": 220,
+      "width": 440,
+      "anchor": "top-left",
+      "track": 4,
+      "style": { "fontFamily": "Space Grotesk" },
+      "html": "<div style='font-size:52px; font-weight:700; line-height:0.98; letter-spacing:-0.025em; color:{{textColor}};'>{{productName}}</div>"
+    },
+    {
+      "type": "SVG",
+      "x": 560,
+      "y": 360,
+      "width": 48,
+      "height": 48,
+      "anchor": "top-left",
+      "track": 4,
+      "svg": "<svg width='48' height='48' viewBox='0 0 48 48' xmlns='http://www.w3.org/2000/svg'><rect x='0.75' y='0.75' width='46.5' height='46.5' rx='14' fill='{{accentColor}}' fill-opacity='0.12' stroke='{{accentColor}}' stroke-opacity='0.5' stroke-width='1.2'/><text x='24' y='31' font-family='IBM Plex Mono, monospace' font-size='20' font-weight='600' fill='{{accentColor}}' text-anchor='middle'>01</text></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 624,
+      "y": 360,
+      "width": 368,
+      "anchor": "top-left",
+      "track": 4,
+      "style": { "fontFamily": "Space Grotesk" },
+      "html": "<div style='font-size:26px; font-weight:700; letter-spacing:-0.01em; color:{{textColor}};'>{{f1t}}</div><div style='margin-top:4px; font-size:19px; font-weight:400; line-height:1.4; color:{{mutedColor}};'>{{f1d}}</div>"
+    },
+    {
+      "type": "SVG",
+      "x": 560,
+      "y": 500,
+      "width": 48,
+      "height": 48,
+      "anchor": "top-left",
+      "track": 4,
+      "svg": "<svg width='48' height='48' viewBox='0 0 48 48' xmlns='http://www.w3.org/2000/svg'><rect x='0.75' y='0.75' width='46.5' height='46.5' rx='14' fill='{{accentColor}}' fill-opacity='0.12' stroke='{{accentColor}}' stroke-opacity='0.5' stroke-width='1.2'/><text x='24' y='31' font-family='IBM Plex Mono, monospace' font-size='20' font-weight='600' fill='{{accentColor}}' text-anchor='middle'>02</text></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 624,
+      "y": 500,
+      "width": 368,
+      "anchor": "top-left",
+      "track": 4,
+      "style": { "fontFamily": "Space Grotesk" },
+      "html": "<div style='font-size:26px; font-weight:700; letter-spacing:-0.01em; color:{{textColor}};'>{{f2t}}</div><div style='margin-top:4px; font-size:19px; font-weight:400; line-height:1.4; color:{{mutedColor}};'>{{f2d}}</div>"
+    },
+    {
+      "type": "SVG",
+      "x": 560,
+      "y": 640,
+      "width": 48,
+      "height": 48,
+      "anchor": "top-left",
+      "track": 4,
+      "svg": "<svg width='48' height='48' viewBox='0 0 48 48' xmlns='http://www.w3.org/2000/svg'><rect x='0.75' y='0.75' width='46.5' height='46.5' rx='14' fill='{{accentColor}}' fill-opacity='0.12' stroke='{{accentColor}}' stroke-opacity='0.5' stroke-width='1.2'/><text x='24' y='31' font-family='IBM Plex Mono, monospace' font-size='20' font-weight='600' fill='{{accentColor}}' text-anchor='middle'>03</text></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 624,
+      "y": 640,
+      "width": 368,
+      "anchor": "top-left",
+      "track": 4,
+      "style": { "fontFamily": "Space Grotesk" },
+      "html": "<div style='font-size:26px; font-weight:700; letter-spacing:-0.01em; color:{{textColor}};'>{{f3t}}</div><div style='margin-top:4px; font-size:19px; font-weight:400; line-height:1.4; color:{{mutedColor}};'>{{f3d}}</div>"
+    },
+    {
+      "type": "SVG",
+      "x": 560,
+      "y": 812,
+      "width": 432,
+      "height": 2,
+      "anchor": "top-left",
+      "track": 4,
+      "svg": "<svg width='432' height='2' viewBox='0 0 432 2' xmlns='http://www.w3.org/2000/svg'><rect width='432' height='1' fill='#FFFFFF' fill-opacity='0.12'/></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 560,
+      "y": 840,
+      "width": 432,
+      "anchor": "top-left",
+      "track": 4,
+      "text": "{{specStrip}}",
+      "style": {
+        "fontFamily": "IBM Plex Mono",
+        "fontSize": "16px",
+        "fontWeight": "500",
+        "letterSpacing": "0.04em",
+        "lineHeight": "1.6",
+        "color": "#7E8A8E"
+      }
+    }
+  ]
+}

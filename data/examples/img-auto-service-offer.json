@@ -1,0 +1,102 @@
+{
+  "type": "image",
+  "name": "img-auto-service-offer",
+  "resolution": "instagram-post",
+  "outputFormat": "png",
+  "backgroundColor": "#07100F",
+  "variables": {
+    "badge": "SERVICE SPECIAL",
+    "dealerName": "GEARWORKS",
+    "monogram": "G",
+    "title1": "Full Service",
+    "title2": "&amp; Diagnostics",
+    "offerValue": "$89",
+    "offerWas": "was $140",
+    "chip1": "All makes &amp; models",
+    "chip2": "Free local collection",
+    "chip3": "Same-day slots",
+    "cta": "BOOK ONLINE",
+    "accent": "#35C4C0",
+    "ink": "#07100F",
+    "carImage": "https://images.pexels.com/photos/12808912/pexels-photo-12808912.jpeg?auto=compress&cs=tinysrgb&w=1620"
+  },
+  "visuals": [
+    {
+      "type": "IMAGE",
+      "src": "{{carImage}}",
+      "width": 1080,
+      "height": 1080,
+      "position": "center-center",
+      "resize": "cover",
+      "track": 0
+    },
+    {
+      "type": "SVG",
+      "width": 1080,
+      "height": 1080,
+      "position": "center-center",
+      "track": 1,
+      "svg": "<svg width='1080' height='1080' viewBox='0 0 1080 1080' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='sy' x1='0' y1='1' x2='0' y2='0'><stop offset='0' stop-color='{{ink}}' stop-opacity='0.96'/><stop offset='0.46' stop-color='{{ink}}' stop-opacity='0.56'/><stop offset='0.8' stop-color='{{ink}}' stop-opacity='0.06'/></linearGradient><linearGradient id='st' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='{{ink}}' stop-opacity='0.64'/><stop offset='0.26' stop-color='{{ink}}' stop-opacity='0'/></linearGradient></defs><rect width='1080' height='1080' fill='url(#st)'/><rect width='1080' height='1080' fill='url(#sy)'/></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 72,
+      "y": 68,
+      "width": 306,
+      "height": 56,
+      "anchor": "top-left",
+      "track": 4,
+      "svg": "<svg width='306' height='56' viewBox='0 0 306 56' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='306' height='56' rx='28' fill='{{accent}}'/><circle cx='30' cy='28' r='11' fill='none' stroke='{{ink}}' stroke-width='3'/><path d='M30 21 L30 28 L35 31' fill='none' stroke='{{ink}}' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/><text x='52' y='36' font-family='Sora, Arial' font-size='21' font-weight='700' letter-spacing='2.5' fill='{{ink}}'>{{badge}}</text></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 812,
+      "y": 68,
+      "width": 196,
+      "height": 56,
+      "anchor": "top-left",
+      "track": 4,
+      "svg": "<svg width='196' height='56' viewBox='0 0 196 56' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='196' height='56' rx='28' fill='#0C1817' fill-opacity='0.72' stroke='#FFFFFF' stroke-opacity='0.12' stroke-width='1.3'/><circle cx='30' cy='28' r='15' fill='{{accent}}'/><text x='30' y='35' font-family='Sora, Arial' font-size='18' font-weight='700' fill='{{ink}}' text-anchor='middle'>{{monogram}}</text><text x='54' y='35' font-family='Space Grotesk, Arial' font-size='19' font-weight='600' letter-spacing='0.5' fill='#FFFFFF'>{{dealerName}}</text></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 68,
+      "y": 512,
+      "width": 900,
+      "anchor": "top-left",
+      "track": 5,
+      "style": { "fontFamily": "Sora" },
+      "html": "<div style='font-size:84px; font-weight:700; line-height:0.98; letter-spacing:-0.03em; color:#FFFFFF;'>{{title1}}<br><span style='color:{{accent}};'>{{title2}}</span></div>"
+    },
+    {
+      "type": "SVG",
+      "x": 72,
+      "y": 712,
+      "width": 460,
+      "height": 96,
+      "anchor": "top-left",
+      "track": 6,
+      "svg": "<svg width='460' height='96' viewBox='0 0 460 96' xmlns='http://www.w3.org/2000/svg'><text x='0' y='72' font-family='Sora, Arial' font-size='86' font-weight='800' letter-spacing='-0.03em' fill='{{accent}}'>{{offerValue}}</text><text x='214' y='50' font-family='Space Grotesk, Arial' font-size='30' font-weight='600' letter-spacing='0.5' fill='#8FA4A2' text-decoration='line-through'>{{offerWas}}</text><text x='215' y='82' font-family='Space Grotesk, Arial' font-size='18' font-weight='600' letter-spacing='2.5' fill='#B9C7C5'>FROM · INC. VAT</text></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 72,
+      "y": 838,
+      "width": 720,
+      "height": 52,
+      "anchor": "top-left",
+      "track": 6,
+      "svg": "<svg width='720' height='52' viewBox='0 0 720 52' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='2' width='236' height='48' rx='24' fill='#FFFFFF' fill-opacity='0.07' stroke='#FFFFFF' stroke-opacity='0.16' stroke-width='1.2'/><circle cx='26' cy='26' r='5' fill='{{accent}}'/><text x='42' y='34' font-family='Space Grotesk, Arial' font-size='20' font-weight='600' fill='#E7F1F0'>{{chip1}}</text><rect x='250' y='2' width='260' height='48' rx='24' fill='#FFFFFF' fill-opacity='0.07' stroke='#FFFFFF' stroke-opacity='0.16' stroke-width='1.2'/><circle cx='276' cy='26' r='5' fill='{{accent}}'/><text x='292' y='34' font-family='Space Grotesk, Arial' font-size='20' font-weight='600' fill='#E7F1F0'>{{chip2}}</text><rect x='524' y='2' width='196' height='48' rx='24' fill='#FFFFFF' fill-opacity='0.07' stroke='#FFFFFF' stroke-opacity='0.16' stroke-width='1.2'/><circle cx='550' cy='26' r='5' fill='{{accent}}'/><text x='566' y='34' font-family='Space Grotesk, Arial' font-size='20' font-weight='600' fill='#E7F1F0'>{{chip3}}</text></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 72,
+      "y": 928,
+      "width": 372,
+      "height": 64,
+      "anchor": "top-left",
+      "track": 6,
+      "svg": "<svg width='372' height='64' viewBox='0 0 372 64' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='372' height='64' rx='32' fill='{{accent}}'/><text x='36' y='40' font-family='Sora, Arial' font-size='23' font-weight='700' letter-spacing='1.5' fill='{{ink}}'>{{cta}}</text><path d='M316 32 L340 32 M331 23 L340 32 L331 41' fill='none' stroke='{{ink}}' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'/></svg>"
+    }
+  ]
+}

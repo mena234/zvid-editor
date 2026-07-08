@@ -1,0 +1,98 @@
+{
+  "type": "image",
+  "name": "img-hr-hiring-event",
+  "resolution": "instagram-post",
+  "outputFormat": "png",
+  "backgroundColor": "#0B0B10",
+  "variables": {
+    "eyebrow": "HIRING EVENT",
+    "titleA": "Careers",
+    "titleB": "Live 2026",
+    "dateDay": "THU · MAR 14",
+    "timeLabel": "6:00 PM GMT",
+    "venue": "Online + London",
+    "rolesLine": "Design · Engineering · Growth",
+    "registerLabel": "Register",
+    "registerUrl": "acme.co/live",
+    "brand": "Acme Careers",
+    "accent": "#E9C46A",
+    "ink": "#0B0B10",
+    "eventImage": "https://images.pexels.com/photos/2623869/pexels-photo-2623869.jpeg?auto=compress&cs=tinysrgb&w=1600"
+  },
+  "visuals": [
+    {
+      "type": "IMAGE",
+      "src": "{{eventImage}}",
+      "width": 1080,
+      "height": 1080,
+      "position": "center-center",
+      "resize": "cover",
+      "track": 0
+    },
+    {
+      "type": "SVG",
+      "width": 1080,
+      "height": 1080,
+      "position": "center-center",
+      "track": 1,
+      "svg": "<svg width='1080' height='1080' viewBox='0 0 1080 1080' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='sy' x1='0' y1='1' x2='0' y2='0'><stop offset='0' stop-color='#0B0B10' stop-opacity='0.96'/><stop offset='0.5' stop-color='#0B0B10' stop-opacity='0.6'/><stop offset='1' stop-color='#0B0B10' stop-opacity='0.28'/></linearGradient><linearGradient id='st' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#0B0B10' stop-opacity='0.7'/><stop offset='0.35' stop-color='#0B0B10' stop-opacity='0'/></linearGradient></defs><rect width='1080' height='1080' fill='url(#sy)'/><rect width='1080' height='1080' fill='url(#st)'/></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 72,
+      "y": 82,
+      "width": 320,
+      "height": 48,
+      "anchor": "top-left",
+      "track": 4,
+      "svg": "<svg width='320' height='48' viewBox='0 0 320 48' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='250' height='48' rx='24' fill='{{accent}}'/><text x='30' y='31' font-family='Space Grotesk, Arial' font-size='19' font-weight='700' letter-spacing='3' fill='{{ink}}'>{{eyebrow}}</text></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 906,
+      "y": 92,
+      "width": 120,
+      "anchor": "top-left",
+      "track": 4,
+      "text": "{{brand}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "20px",
+        "fontWeight": "600",
+        "letterSpacing": "0.02em",
+        "color": "#F4F2FB",
+        "textAlign": "right"
+      }
+    },
+    {
+      "type": "TEXT",
+      "x": 68,
+      "y": 470,
+      "width": 940,
+      "anchor": "top-left",
+      "track": 5,
+      "style": { "fontFamily": "Archivo" },
+      "html": "<div style='font-size:132px; font-weight:800; line-height:0.9; letter-spacing:-0.03em; color:#F4F2FB;'>{{titleA}}<br><span style='color:{{accent}};'>{{titleB}}</span></div>"
+    },
+    {
+      "type": "SVG",
+      "x": 72,
+      "y": 748,
+      "width": 936,
+      "height": 132,
+      "anchor": "top-left",
+      "track": 6,
+      "svg": "<svg width='936' height='132' viewBox='0 0 936 132' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='456' height='132' rx='20' fill='#FFFFFF' fill-opacity='0.06' stroke='{{accent}}' stroke-opacity='0.4' stroke-width='1.2'/><text x='30' y='44' font-family='Space Grotesk, Arial' font-size='16' font-weight='600' letter-spacing='2.5' fill='{{accent}}'>DATE</text><text x='30' y='84' font-family='Space Grotesk, Arial' font-size='34' font-weight='800' fill='#F4F2FB'>{{dateDay}}</text><text x='30' y='116' font-family='Space Grotesk, Arial' font-size='22' font-weight='500' fill='#B9B7C6'>{{timeLabel}}</text><rect x='480' y='0' width='456' height='132' rx='20' fill='#FFFFFF' fill-opacity='0.06' stroke='#FFFFFF' stroke-opacity='0.12' stroke-width='1'/><text x='510' y='44' font-family='Space Grotesk, Arial' font-size='16' font-weight='600' letter-spacing='2.5' fill='{{accent}}'>WHERE</text><text x='510' y='84' font-family='Space Grotesk, Arial' font-size='30' font-weight='700' fill='#F4F2FB'>{{venue}}</text><text x='510' y='116' font-family='Space Grotesk, Arial' font-size='20' font-weight='500' fill='#B9B7C6'>{{rolesLine}}</text></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 72,
+      "y": 936,
+      "width": 480,
+      "height": 60,
+      "anchor": "top-left",
+      "track": 7,
+      "svg": "<svg width='480' height='60' viewBox='0 0 480 60' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='480' height='60' rx='30' fill='{{accent}}'/><text x='34' y='38' font-family='Space Grotesk, Arial' font-size='22' font-weight='700' fill='{{ink}}'>{{registerLabel}} · {{registerUrl}}</text><circle cx='446' cy='30' r='16' fill='{{ink}}'/><path d='M440 30 L452 30 M447 25 L453 30 L447 35' fill='none' stroke='{{accent}}' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/></svg>"
+    }
+  ]
+}

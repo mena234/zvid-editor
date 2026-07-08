@@ -1,0 +1,197 @@
+{
+  "type": "image",
+  "name": "img-realty-top-properties",
+  "resolution": "instagram-post",
+  "outputFormat": "png",
+  "backgroundColor": "#F5F1E9",
+  "variables": {
+    "kicker": "THIS WEEK",
+    "title": "Top Properties",
+    "subtitle": "Handpicked listings across the metro this week",
+    "brand": "VANTAGE REALTY GROUP",
+    "price1": "$540,000",
+    "detail1": "Elmwood · 3bd 2ba · 1,900 sqft",
+    "price2": "$765,000",
+    "detail2": "Harbor Point · 4bd 3ba · 2,540 sqft",
+    "price3": "$399,000",
+    "detail3": "Old Town · 2bd 1ba · 1,150 sqft",
+    "contact": "list@vantage.re · (212) 555-0117",
+    "accent": "#1E2A44",
+    "img1": "https://images.pexels.com/photos/4626268/pexels-photo-4626268.jpeg?auto=compress&cs=tinysrgb&w=1600",
+    "img2": "https://images.pexels.com/photos/14645272/pexels-photo-14645272.jpeg?auto=compress&cs=tinysrgb&w=1600",
+    "img3": "https://images.pexels.com/photos/7578906/pexels-photo-7578906.jpeg?auto=compress&cs=tinysrgb&w=1620"
+  },
+  "visuals": [
+    {
+      "type": "SVG",
+      "x": 72,
+      "y": 88,
+      "width": 190,
+      "height": 48,
+      "anchor": "top-left",
+      "track": 3,
+      "svg": "<svg width='190' height='48' viewBox='0 0 190 48' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='190' height='48' rx='24' fill='{{accent}}'/><text x='34' y='31' font-family='Space Grotesk, Arial' font-size='18' font-weight='700' letter-spacing='3' fill='#F5F1E9'>{{kicker}}</text><circle cx='20' cy='24' r='5' fill='#B08948'/></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 560,
+      "y": 100,
+      "width": 448,
+      "anchor": "top-left",
+      "track": 3,
+      "text": "{{brand}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "20px",
+        "fontWeight": "700",
+        "letterSpacing": "0.22em",
+        "color": "#1E2A44",
+        "textAlign": "right"
+      }
+    },
+    {
+      "type": "TEXT",
+      "x": 68,
+      "y": 150,
+      "width": 820,
+      "anchor": "top-left",
+      "track": 4,
+      "style": { "fontFamily": "Fraunces" },
+      "html": "<div style='font-size:88px; font-weight:600; line-height:0.98; letter-spacing:-0.015em; color:#17140F;'>{{title}}</div>"
+    },
+    {
+      "type": "TEXT",
+      "x": 74,
+      "y": 262,
+      "width": 820,
+      "anchor": "top-left",
+      "track": 4,
+      "text": "{{subtitle}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "24px",
+        "fontWeight": "500",
+        "color": "#6B6155"
+      }
+    },
+    {
+      "type": "IMAGE",
+      "src": "{{img1}}",
+      "x": 72,
+      "y": 336,
+      "width": 288,
+      "height": 330,
+      "anchor": "top-left",
+      "radius": { "tl": 18, "tr": 18, "bl": 18, "br": 18 },
+      "track": 4
+    },
+    {
+      "type": "IMAGE",
+      "src": "{{img2}}",
+      "x": 396,
+      "y": 336,
+      "width": 288,
+      "height": 330,
+      "anchor": "top-left",
+      "radius": { "tl": 18, "tr": 18, "bl": 18, "br": 18 },
+      "track": 4
+    },
+    {
+      "type": "IMAGE",
+      "src": "{{img3}}",
+      "x": 720,
+      "y": 336,
+      "width": 288,
+      "height": 330,
+      "anchor": "top-left",
+      "radius": { "tl": 18, "tr": 18, "bl": 18, "br": 18 },
+      "track": 4
+    },
+    {
+      "type": "SVG",
+      "x": 88,
+      "y": 352,
+      "width": 50,
+      "height": 50,
+      "anchor": "top-left",
+      "track": 5,
+      "svg": "<svg width='50' height='50' viewBox='0 0 50 50' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='50' height='50' rx='14' fill='{{accent}}'/><text x='25' y='33' font-family='Archivo, Arial' font-size='22' font-weight='800' fill='#F5F1E9' text-anchor='middle'>01</text></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 412,
+      "y": 352,
+      "width": 50,
+      "height": 50,
+      "anchor": "top-left",
+      "track": 5,
+      "svg": "<svg width='50' height='50' viewBox='0 0 50 50' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='50' height='50' rx='14' fill='{{accent}}'/><text x='25' y='33' font-family='Archivo, Arial' font-size='22' font-weight='800' fill='#F5F1E9' text-anchor='middle'>02</text></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 736,
+      "y": 352,
+      "width": 50,
+      "height": 50,
+      "anchor": "top-left",
+      "track": 5,
+      "svg": "<svg width='50' height='50' viewBox='0 0 50 50' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='50' height='50' rx='14' fill='{{accent}}'/><text x='25' y='33' font-family='Archivo, Arial' font-size='22' font-weight='800' fill='#F5F1E9' text-anchor='middle'>03</text></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 72,
+      "y": 692,
+      "width": 288,
+      "height": 150,
+      "anchor": "top-left",
+      "track": 5,
+      "svg": "<svg width='288' height='150' viewBox='0 0 288 150' xmlns='http://www.w3.org/2000/svg'><text x='2' y='40' font-family='Archivo, Arial' font-size='36' font-weight='800' fill='#17140F'>{{price1}}</text><text x='2' y='76' font-family='Space Grotesk, Arial' font-size='16' font-weight='500' fill='#6B6155'>{{detail1}}</text><rect x='2' y='102' width='284' height='1.4' fill='#17140F' fill-opacity='0.14'/><text x='2' y='132' font-family='Space Grotesk, Arial' font-size='15' font-weight='700' letter-spacing='2' fill='{{accent}}'>VIEW LISTING</text></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 396,
+      "y": 692,
+      "width": 288,
+      "height": 150,
+      "anchor": "top-left",
+      "track": 5,
+      "svg": "<svg width='288' height='150' viewBox='0 0 288 150' xmlns='http://www.w3.org/2000/svg'><text x='2' y='40' font-family='Archivo, Arial' font-size='36' font-weight='800' fill='#17140F'>{{price2}}</text><text x='2' y='76' font-family='Space Grotesk, Arial' font-size='16' font-weight='500' fill='#6B6155'>{{detail2}}</text><rect x='2' y='102' width='284' height='1.4' fill='#17140F' fill-opacity='0.14'/><text x='2' y='132' font-family='Space Grotesk, Arial' font-size='15' font-weight='700' letter-spacing='2' fill='{{accent}}'>VIEW LISTING</text></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 720,
+      "y": 692,
+      "width": 288,
+      "height": 150,
+      "anchor": "top-left",
+      "track": 5,
+      "svg": "<svg width='288' height='150' viewBox='0 0 288 150' xmlns='http://www.w3.org/2000/svg'><text x='2' y='40' font-family='Archivo, Arial' font-size='36' font-weight='800' fill='#17140F'>{{price3}}</text><text x='2' y='76' font-family='Space Grotesk, Arial' font-size='16' font-weight='500' fill='#6B6155'>{{detail3}}</text><rect x='2' y='102' width='284' height='1.4' fill='#17140F' fill-opacity='0.14'/><text x='2' y='132' font-family='Space Grotesk, Arial' font-size='15' font-weight='700' letter-spacing='2' fill='{{accent}}'>VIEW LISTING</text></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 72,
+      "y": 918,
+      "width": 936,
+      "height": 2,
+      "anchor": "top-left",
+      "track": 5,
+      "svg": "<svg width='936' height='2' viewBox='0 0 936 2' xmlns='http://www.w3.org/2000/svg'><rect width='936' height='1.4' fill='#17140F' fill-opacity='0.12'/></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 74,
+      "y": 946,
+      "width": 820,
+      "anchor": "top-left",
+      "track": 5,
+      "text": "{{contact}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "20px",
+        "fontWeight": "600",
+        "letterSpacing": "0.03em",
+        "color": "#1E2A44"
+      }
+    }
+  ]
+}

@@ -1,0 +1,104 @@
+{
+  "type": "image",
+  "name": "img-report-sales",
+  "resolution": "twitter-landscape",
+  "outputFormat": "png",
+  "backgroundColor": "#0A1224",
+  "variables": {
+    "eyebrow": "SALES REPORT",
+    "revenueLabel": "TOTAL REVENUE",
+    "revenueValue": "$182,400",
+    "revenueDelta": "+18% vs last quarter",
+    "stat1Label": "NEW LEADS",
+    "stat1Value": "1,860",
+    "stat2Label": "CLOSE RATE",
+    "stat2Value": "32%",
+    "stat3Label": "AVG DEAL",
+    "stat3Value": "$4,120",
+    "trendLabel": "PIPELINE — LAST 8 WEEKS",
+    "accent": "#4CD4CE"
+  },
+  "visuals": [
+    {
+      "type": "SVG",
+      "width": 1200,
+      "height": 675,
+      "position": "center-center",
+      "track": 0,
+      "svg": "<svg width='1200' height='675' viewBox='0 0 1200 675' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='bg' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#0C1730'/><stop offset='0.6' stop-color='#0A1224'/><stop offset='1' stop-color='#070C18'/></linearGradient><radialGradient id='glow' cx='0.08' cy='0.1' r='0.6'><stop offset='0' stop-color='{{accent}}' stop-opacity='0.16'/><stop offset='1' stop-color='{{accent}}' stop-opacity='0'/></radialGradient></defs><rect width='1200' height='675' fill='url(#bg)'/><rect width='1200' height='675' fill='url(#glow)'/><rect x='24' y='24' width='1152' height='627' rx='28' fill='none' stroke='#FFFFFF' stroke-opacity='0.08' stroke-width='1.5'/></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 72,
+      "y": 64,
+      "width": 320,
+      "height": 34,
+      "anchor": "top-left",
+      "track": 3,
+      "svg": "<svg width='320' height='34' viewBox='0 0 320 34' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='210' height='34' rx='17' fill='{{accent}}' fill-opacity='0.12' stroke='{{accent}}' stroke-opacity='0.5' stroke-width='1'/><circle cx='22' cy='17' r='4' fill='{{accent}}'/><text x='38' y='23' font-family='Space Grotesk, Arial' font-size='14' font-weight='600' letter-spacing='2.5' fill='{{accent}}'>{{eyebrow}}</text></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 72,
+      "y": 128,
+      "width": 620,
+      "anchor": "top-left",
+      "track": 4,
+      "text": "{{revenueLabel}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "20px",
+        "fontWeight": "600",
+        "letterSpacing": "0.22em",
+        "color": "#7C8AA6"
+      }
+    },
+    {
+      "type": "TEXT",
+      "x": 68,
+      "y": 158,
+      "width": 640,
+      "anchor": "top-left",
+      "track": 4,
+      "text": "{{revenueValue}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "104px",
+        "fontWeight": "700",
+        "letterSpacing": "-0.03em",
+        "lineHeight": "1",
+        "color": "#F2F6FA"
+      }
+    },
+    {
+      "type": "SVG",
+      "x": 72,
+      "y": 296,
+      "width": 460,
+      "height": 40,
+      "anchor": "top-left",
+      "track": 4,
+      "svg": "<svg width='460' height='40' viewBox='0 0 460 40' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='300' height='40' rx='20' fill='{{accent}}' fill-opacity='0.12' stroke='{{accent}}' stroke-opacity='0.4' stroke-width='1'/><polygon points='24,26 38,26 31,12' fill='{{accent}}'/><text x='52' y='26' font-family='Space Grotesk, Arial' font-size='18' font-weight='600' fill='{{accent}}'>{{revenueDelta}}</text></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 736,
+      "y": 128,
+      "width": 392,
+      "height": 300,
+      "anchor": "top-left",
+      "track": 5,
+      "svg": "<svg width='392' height='300' viewBox='0 0 392 300' xmlns='http://www.w3.org/2000/svg'><g><rect x='0' y='0' width='392' height='88' rx='18' fill='#FFFFFF' fill-opacity='0.04' stroke='#FFFFFF' stroke-opacity='0.08' stroke-width='1'/><text x='24' y='36' font-family='Space Grotesk, Arial' font-size='14' font-weight='600' letter-spacing='2' fill='#7C8AA6'>{{stat1Label}}</text><text x='24' y='70' font-family='Space Grotesk, Arial' font-size='34' font-weight='700' fill='#F2F6FA'>{{stat1Value}}</text><circle cx='360' cy='44' r='4' fill='{{accent}}'/></g><g transform='translate(0,106)'><rect x='0' y='0' width='392' height='88' rx='18' fill='#FFFFFF' fill-opacity='0.04' stroke='#FFFFFF' stroke-opacity='0.08' stroke-width='1'/><text x='24' y='36' font-family='Space Grotesk, Arial' font-size='14' font-weight='600' letter-spacing='2' fill='#7C8AA6'>{{stat2Label}}</text><text x='24' y='70' font-family='Space Grotesk, Arial' font-size='34' font-weight='700' fill='#F2F6FA'>{{stat2Value}}</text><circle cx='360' cy='44' r='4' fill='{{accent}}'/></g><g transform='translate(0,212)'><rect x='0' y='0' width='392' height='88' rx='18' fill='#FFFFFF' fill-opacity='0.04' stroke='#FFFFFF' stroke-opacity='0.08' stroke-width='1'/><text x='24' y='36' font-family='Space Grotesk, Arial' font-size='14' font-weight='600' letter-spacing='2' fill='#7C8AA6'>{{stat3Label}}</text><text x='24' y='70' font-family='Space Grotesk, Arial' font-size='34' font-weight='700' fill='#F2F6FA'>{{stat3Value}}</text><circle cx='360' cy='44' r='4' fill='{{accent}}'/></g></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 72,
+      "y": 470,
+      "width": 1056,
+      "height": 150,
+      "anchor": "top-left",
+      "track": 5,
+      "svg": "<svg width='1056' height='150' viewBox='0 0 1056 150' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='spark' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='{{accent}}' stop-opacity='0.28'/><stop offset='1' stop-color='{{accent}}' stop-opacity='0'/></linearGradient></defs><text x='0' y='16' font-family='Space Grotesk, Arial' font-size='14' font-weight='600' letter-spacing='2' fill='#5C6A86'>{{trendLabel}}</text><line x1='0' y1='62' x2='1056' y2='62' stroke='#FFFFFF' stroke-opacity='0.05' stroke-width='1'/><line x1='0' y1='100' x2='1056' y2='100' stroke='#FFFFFF' stroke-opacity='0.05' stroke-width='1'/><path d='M20 120 L168 108 L316 116 L464 88 L612 96 L760 62 L908 70 L1036 40 L1036 138 L20 138 Z' fill='url(#spark)'/><polyline points='20,120 168,108 316,116 464,88 612,96 760,62 908,70 1036,40' fill='none' stroke='{{accent}}' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/><circle cx='1036' cy='40' r='10' fill='{{accent}}' fill-opacity='0.2'/><circle cx='1036' cy='40' r='5' fill='{{accent}}'/></svg>"
+    }
+  ]
+}

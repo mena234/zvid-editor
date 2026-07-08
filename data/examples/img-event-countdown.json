@@ -1,0 +1,111 @@
+{
+  "type": "image",
+  "name": "img-event-countdown",
+  "resolution": "instagram-post",
+  "outputFormat": "png",
+  "backgroundColor": "#100D08",
+  "variables": {
+    "daysNumber": "3",
+    "daysUnit": "DAYS TO GO",
+    "eyebrow": "THE COUNTDOWN IS ON",
+    "eventName": "GrowthCon 2026",
+    "dateLabel": "SAT · APRIL 18 · 9AM",
+    "ctaLabel": "Save your seat → zvid.io/rsvp",
+    "ink": "#100D08",
+    "accent": "#E9C46A",
+    "bgImage": "https://images.pexels.com/photos/2623869/pexels-photo-2623869.jpeg?auto=compress&cs=tinysrgb&w=1600"
+  },
+  "visuals": [
+    {
+      "type": "IMAGE",
+      "src": "{{bgImage}}",
+      "width": 1080,
+      "height": 1080,
+      "position": "center-center",
+      "resize": "cover",
+      "track": 0
+    },
+    {
+      "type": "SVG",
+      "width": 1080,
+      "height": 1080,
+      "position": "center-center",
+      "track": 1,
+      "svg": "<svg width='1080' height='1080' viewBox='0 0 1080 1080' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='sy' x1='0' y1='1' x2='0' y2='0'><stop offset='0' stop-color='{{ink}}' stop-opacity='0.96'/><stop offset='0.5' stop-color='{{ink}}' stop-opacity='0.55'/><stop offset='1' stop-color='{{ink}}' stop-opacity='0.7'/></linearGradient><radialGradient id='vg' cx='0.5' cy='0.42' r='0.72'><stop offset='0.5' stop-color='{{ink}}' stop-opacity='0'/><stop offset='1' stop-color='{{ink}}' stop-opacity='0.7'/></radialGradient></defs><rect width='1080' height='1080' fill='url(#sy)'/><rect width='1080' height='1080' fill='url(#vg)'/></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 340,
+      "y": 132,
+      "width": 400,
+      "height": 46,
+      "anchor": "top-left",
+      "track": 4,
+      "svg": "<svg width='400' height='46' viewBox='0 0 400 46' xmlns='http://www.w3.org/2000/svg'><rect x='1' y='1' width='398' height='44' rx='22' fill='{{accent}}' fill-opacity='0.14' stroke='{{accent}}' stroke-opacity='0.6' stroke-width='1.2'/><text x='200' y='30' font-family='Space Grotesk, Arial' font-size='17' font-weight='600' letter-spacing='4' fill='#F6E7C2' text-anchor='middle'>{{eyebrow}}</text></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 40,
+      "y": 232,
+      "width": 1000,
+      "anchor": "top-left",
+      "track": 5,
+      "style": { "fontFamily": "Anton" },
+      "html": "<div style='font-size:440px; font-weight:400; line-height:0.8; letter-spacing:-0.02em; text-align:center; color:{{accent}};'>{{daysNumber}}</div>"
+    },
+    {
+      "type": "TEXT",
+      "x": 40,
+      "y": 640,
+      "width": 1000,
+      "anchor": "top-left",
+      "track": 5,
+      "text": "{{daysUnit}}",
+      "style": {
+        "fontFamily": "Anton",
+        "fontSize": "96px",
+        "fontWeight": "400",
+        "letterSpacing": "0.12em",
+        "textAlign": "center",
+        "color": "#FBF7EE"
+      }
+    },
+    {
+      "type": "SVG",
+      "x": 240,
+      "y": 792,
+      "width": 600,
+      "height": 2,
+      "anchor": "top-left",
+      "track": 5,
+      "svg": "<svg width='600' height='2' viewBox='0 0 600 2' xmlns='http://www.w3.org/2000/svg'><rect width='600' height='1' fill='{{accent}}' fill-opacity='0.4'/></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 40,
+      "y": 826,
+      "width": 1000,
+      "anchor": "top-left",
+      "track": 5,
+      "style": { "fontFamily": "Space Grotesk" },
+      "html": "<div style='font-size:52px; font-weight:700; letter-spacing:-0.01em; text-align:center; color:#FBF7EE;'>{{eventName}}</div><div style='margin-top:10px; font-size:24px; font-weight:600; letter-spacing:0.14em; text-align:center; color:{{accent}};'>{{dateLabel}}</div>"
+    },
+    {
+      "type": "TEXT",
+      "x": 40,
+      "y": 984,
+      "width": 1000,
+      "anchor": "top-left",
+      "track": 5,
+      "text": "{{ctaLabel}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "22px",
+        "fontWeight": "500",
+        "letterSpacing": "0.02em",
+        "textAlign": "center",
+        "color": "#C9C2B4"
+      }
+    }
+  ]
+}

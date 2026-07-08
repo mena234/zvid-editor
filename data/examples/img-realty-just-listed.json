@@ -1,0 +1,123 @@
+{
+  "type": "image",
+  "name": "img-realty-just-listed",
+  "resolution": "instagram-post",
+  "outputFormat": "png",
+  "backgroundColor": "#0B1220",
+  "variables": {
+    "statusLabel": "JUST LISTED",
+    "price": "$1,250,000",
+    "addressLine": "142 Marlowe Avenue · Highgate",
+    "beds": "4",
+    "baths": "3",
+    "sqft": "3,120",
+    "agentName": "Sofia Marchetti",
+    "agentTitle": "Senior Property Advisor",
+    "agentInitials": "SM",
+    "brand": "MERIDIAN REALTY",
+    "accent": "#E9C46A",
+    "propertyImage": "https://images.unsplash.com/photo-1748063578185-3d68121b11ff?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&ixid=M3w3MDgwMTZ8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBob3VzZSUyMGV4dGVyaW9yJTIwZHVza3xlbnwwfHx8fDE3ODM1MjY5MjR8MA&ixlib=rb-4.1.0&q=80&w=1600"
+  },
+  "visuals": [
+    {
+      "type": "IMAGE",
+      "src": "{{propertyImage}}",
+      "width": 1080,
+      "height": 1080,
+      "position": "center-center",
+      "resize": "cover",
+      "track": 0
+    },
+    {
+      "type": "SVG",
+      "width": 1080,
+      "height": 1080,
+      "position": "center-center",
+      "track": 1,
+      "svg": "<svg width='1080' height='1080' viewBox='0 0 1080 1080' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='sv' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#0B1220' stop-opacity='0.58'/><stop offset='0.3' stop-color='#0B1220' stop-opacity='0.05'/><stop offset='0.6' stop-color='#0B1220' stop-opacity='0.42'/><stop offset='1' stop-color='#0B1220' stop-opacity='0.97'/></linearGradient></defs><rect width='1080' height='1080' fill='url(#sv)'/></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 72,
+      "y": 72,
+      "width": 250,
+      "height": 56,
+      "anchor": "top-left",
+      "track": 4,
+      "svg": "<svg width='250' height='56' viewBox='0 0 250 56' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='250' height='56' rx='28' fill='{{accent}}'/><circle cx='30' cy='28' r='6' fill='#0B1220'/><text x='50' y='36' font-family='Space Grotesk, Arial' font-size='20' font-weight='700' letter-spacing='3' fill='#0B1220'>{{statusLabel}}</text></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 560,
+      "y": 86,
+      "width": 448,
+      "anchor": "top-left",
+      "track": 5,
+      "text": "{{brand}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "22px",
+        "fontWeight": "600",
+        "letterSpacing": "0.26em",
+        "color": "#EDE7D8",
+        "textAlign": "right"
+      }
+    },
+    {
+      "type": "TEXT",
+      "x": 68,
+      "y": 548,
+      "width": 960,
+      "anchor": "top-left",
+      "track": 5,
+      "style": { "fontFamily": "Archivo" },
+      "html": "<div style='font-size:112px; font-weight:800; line-height:0.9; letter-spacing:-0.03em; color:#F7F4EE;'>{{price}}</div>"
+    },
+    {
+      "type": "TEXT",
+      "x": 74,
+      "y": 692,
+      "width": 840,
+      "anchor": "top-left",
+      "track": 5,
+      "text": "{{addressLine}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "30px",
+        "fontWeight": "500",
+        "letterSpacing": "0.01em",
+        "color": "#C6D0E2"
+      }
+    },
+    {
+      "type": "SVG",
+      "x": 74,
+      "y": 768,
+      "width": 932,
+      "height": 2,
+      "anchor": "top-left",
+      "track": 5,
+      "svg": "<svg width='932' height='2' viewBox='0 0 932 2' xmlns='http://www.w3.org/2000/svg'><rect width='932' height='1.4' fill='#FFFFFF' fill-opacity='0.16'/></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 74,
+      "y": 800,
+      "width": 932,
+      "height": 96,
+      "anchor": "top-left",
+      "track": 6,
+      "svg": "<svg width='932' height='96' viewBox='0 0 932 96' xmlns='http://www.w3.org/2000/svg'><line x1='306' y1='14' x2='306' y2='82' stroke='#FFFFFF' stroke-opacity='0.16' stroke-width='1.4'/><line x1='624' y1='14' x2='624' y2='82' stroke='#FFFFFF' stroke-opacity='0.16' stroke-width='1.4'/><text x='4' y='48' font-family='Archivo, Arial' font-size='46' font-weight='800' fill='#F7F4EE'>{{beds}}</text><text x='6' y='80' font-family='Space Grotesk, Arial' font-size='16' font-weight='600' letter-spacing='2.5' fill='#92A0B6'>BEDROOMS</text><text x='330' y='48' font-family='Archivo, Arial' font-size='46' font-weight='800' fill='#F7F4EE'>{{baths}}</text><text x='332' y='80' font-family='Space Grotesk, Arial' font-size='16' font-weight='600' letter-spacing='2.5' fill='#92A0B6'>BATHROOMS</text><text x='648' y='48' font-family='Archivo, Arial' font-size='46' font-weight='800' fill='#F7F4EE'>{{sqft}}</text><text x='650' y='80' font-family='Space Grotesk, Arial' font-size='16' font-weight='600' letter-spacing='2.5' fill='#92A0B6'>SQ FT</text></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 74,
+      "y": 922,
+      "width": 600,
+      "height": 76,
+      "anchor": "top-left",
+      "track": 6,
+      "svg": "<svg width='600' height='76' viewBox='0 0 600 76' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='600' height='76' rx='38' fill='#0C1524' fill-opacity='0.78' stroke='#FFFFFF' stroke-opacity='0.14' stroke-width='1.2'/><circle cx='44' cy='38' r='26' fill='{{accent}}'/><text x='44' y='46' font-family='Archivo, Arial' font-size='22' font-weight='800' fill='#0B1220' text-anchor='middle'>{{agentInitials}}</text><text x='88' y='34' font-family='Space Grotesk, Arial' font-size='24' font-weight='700' fill='#F7F4EE'>{{agentName}}</text><text x='88' y='60' font-family='Space Grotesk, Arial' font-size='18' font-weight='500' fill='#9FB0C6'>{{agentTitle}}</text></svg>"
+    }
+  ]
+}

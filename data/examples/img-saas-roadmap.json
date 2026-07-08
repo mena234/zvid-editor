@@ -1,0 +1,130 @@
+{
+  "type": "image",
+  "name": "img-saas-roadmap",
+  "resolution": "custom",
+  "width": 1200,
+  "height": 630,
+  "outputFormat": "png",
+  "backgroundColor": "#0B0B14",
+  "variables": {
+    "eyebrow": "PRODUCT ROADMAP",
+    "quarter": "Q3 2026",
+    "col1Title": "Now",
+    "col1Item1": "Effect gallery",
+    "col1Item2": "Text-based editing",
+    "col2Title": "Next",
+    "col2Item1": "AI voiceovers",
+    "col2Item2": "Team workspaces",
+    "col3Title": "Later",
+    "col3Item1": "Live collaboration",
+    "col3Item2": "Mobile editor",
+    "brand": "zvid",
+    "accent": "#7C82FF",
+    "dotDone": "#3FB950",
+    "dotLater": "#5A6472",
+    "headingColor": "#F1F0FB",
+    "subColor": "#9A98B0"
+  },
+  "visuals": [
+    {
+      "type": "SVG",
+      "width": 1200,
+      "height": 630,
+      "position": "center-center",
+      "track": 0,
+      "svg": "<svg width='1200' height='630' viewBox='0 0 1200 630' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='bg' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#141327'/><stop offset='0.55' stop-color='#0B0B14'/><stop offset='1' stop-color='#09090F'/></linearGradient><radialGradient id='glow' cx='0.5' cy='0.05' r='0.7'><stop offset='0' stop-color='#7C82FF' stop-opacity='0.22'/><stop offset='1' stop-color='#7C82FF' stop-opacity='0'/></radialGradient></defs><rect width='1200' height='630' fill='url(#bg)'/><rect width='1200' height='630' fill='url(#glow)'/><rect x='24' y='24' width='1152' height='582' rx='28' fill='none' stroke='#FFFFFF' stroke-opacity='0.07' stroke-width='1.5'/></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 72,
+      "y": 78,
+      "width": 500,
+      "anchor": "top-left",
+      "track": 4,
+      "text": "{{eyebrow}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "22px",
+        "fontWeight": "600",
+        "letterSpacing": "0.32em",
+        "color": "#7C82FF"
+      }
+    },
+    {
+      "type": "TEXT",
+      "x": 70,
+      "y": 112,
+      "width": 700,
+      "anchor": "top-left",
+      "track": 4,
+      "text": "Where we are headed",
+      "style": {
+        "fontFamily": "Sora",
+        "fontSize": "44px",
+        "fontWeight": "700",
+        "letterSpacing": "-0.02em",
+        "color": "#F1F0FB"
+      }
+    },
+    {
+      "type": "SVG",
+      "x": 1128,
+      "y": 120,
+      "width": 140,
+      "height": 44,
+      "anchor": "top-right",
+      "track": 4,
+      "svg": "<svg width='140' height='44' viewBox='0 0 140 44' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='140' height='44' rx='22' fill='{{accent}}' fill-opacity='0.14' stroke='{{accent}}' stroke-opacity='0.5' stroke-width='1.2'/><text x='70' y='29' font-family='Space Grotesk, Arial' font-size='19' font-weight='600' fill='#C7C4F5' text-anchor='middle'>{{quarter}}</text></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 72,
+      "y": 208,
+      "width": 1056,
+      "height": 336,
+      "anchor": "top-left",
+      "track": 5,
+      "svg": "<svg width='1056' height='336' viewBox='0 0 1056 336' xmlns='http://www.w3.org/2000/svg'><g><rect x='0' y='0' width='336' height='336' rx='20' fill='#FFFFFF' fill-opacity='0.03' stroke='#FFFFFF' stroke-opacity='0.08' stroke-width='1.5'/><rect x='360' y='0' width='336' height='336' rx='20' fill='#FFFFFF' fill-opacity='0.03' stroke='#FFFFFF' stroke-opacity='0.08' stroke-width='1.5'/><rect x='720' y='0' width='336' height='336' rx='20' fill='#FFFFFF' fill-opacity='0.03' stroke='#FFFFFF' stroke-opacity='0.08' stroke-width='1.5'/></g><g font-family='Sora, Arial'><circle cx='40' cy='46' r='7' fill='{{dotDone}}'/><text x='60' y='54' font-size='27' font-weight='700' fill='{{headingColor}}'>{{col1Title}}</text><circle cx='400' cy='46' r='7' fill='{{accent}}'/><text x='420' y='54' font-size='27' font-weight='700' fill='{{headingColor}}'>{{col2Title}}</text><circle cx='760' cy='46' r='7' fill='{{dotLater}}'/><text x='780' y='54' font-size='27' font-weight='700' fill='{{headingColor}}'>{{col3Title}}</text></g><g><line x1='32' y1='84' x2='304' y2='84' stroke='#FFFFFF' stroke-opacity='0.08' stroke-width='1'/><line x1='392' y1='84' x2='664' y2='84' stroke='#FFFFFF' stroke-opacity='0.08' stroke-width='1'/><line x1='752' y1='84' x2='1024' y2='84' stroke='#FFFFFF' stroke-opacity='0.08' stroke-width='1'/></g></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 104,
+      "y": 336,
+      "width": 260,
+      "anchor": "top-left",
+      "track": 6,
+      "style": { "fontFamily": "Space Grotesk" },
+      "html": "<div style='font-size:23px; font-weight:500; line-height:1.9; color:{{headingColor}};'>{{col1Item1}}<br>{{col1Item2}}</div>"
+    },
+    {
+      "type": "TEXT",
+      "x": 464,
+      "y": 336,
+      "width": 260,
+      "anchor": "top-left",
+      "track": 6,
+      "style": { "fontFamily": "Space Grotesk" },
+      "html": "<div style='font-size:23px; font-weight:500; line-height:1.9; color:{{headingColor}};'>{{col2Item1}}<br>{{col2Item2}}</div>"
+    },
+    {
+      "type": "TEXT",
+      "x": 824,
+      "y": 336,
+      "width": 260,
+      "anchor": "top-left",
+      "track": 6,
+      "style": { "fontFamily": "Space Grotesk" },
+      "html": "<div style='font-size:23px; font-weight:500; line-height:1.9; color:{{subColor}};'>{{col3Item1}}<br>{{col3Item2}}</div>"
+    },
+    {
+      "type": "SVG",
+      "x": 1128,
+      "y": 558,
+      "width": 150,
+      "height": 44,
+      "anchor": "top-right",
+      "track": 6,
+      "svg": "<svg width='150' height='44' viewBox='0 0 150 44' xmlns='http://www.w3.org/2000/svg'><circle cx='12' cy='22' r='7' fill='{{accent}}'/><text x='30' y='29' font-family='Sora, Arial' font-size='20' font-weight='700' fill='#F1F0FB'>{{brand}}</text></svg>"
+    }
+  ]
+}

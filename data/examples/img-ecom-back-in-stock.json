@@ -1,0 +1,136 @@
+{
+  "type": "image",
+  "name": "img-ecom-back-in-stock",
+  "resolution": "instagram-post",
+  "outputFormat": "png",
+  "backgroundColor": "#E9F2EE",
+  "variables": {
+    "brand": "Fern & Field",
+    "monogram": "F",
+    "stampTop": "RESTOCKED",
+    "stampMid": "IT'S BACK",
+    "stampBottom": "AVAILABLE NOW",
+    "eyebrow": "YOU ASKED, WE LISTENED",
+    "headline": "Your favourite is back in stock",
+    "note": "Restocked today — limited quantities, and it sold out twice last month.",
+    "meterLabel": "ALMOST SOLD OUT AGAIN",
+    "ctaLabel": "Shop before it's gone",
+    "bgColor": "#E9F2EE",
+    "inkColor": "#0F1A16",
+    "accentColor": "#0FA98B",
+    "mutedColor": "#5F726B",
+    "productImage": "https://images.pexels.com/photos/24602075/pexels-photo-24602075.jpeg?auto=compress&cs=tinysrgb&w=1600"
+  },
+  "visuals": [
+    {
+      "type": "SVG",
+      "width": 1080,
+      "height": 1080,
+      "position": "center-center",
+      "track": 0,
+      "svg": "<svg width='1080' height='1080' viewBox='0 0 1080 1080' xmlns='http://www.w3.org/2000/svg'><rect width='1080' height='1080' fill='{{bgColor}}'/><rect x='40' y='40' width='1000' height='1000' rx='40' fill='none' stroke='{{inkColor}}' stroke-opacity='0.09' stroke-width='1.5'/></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 90,
+      "y": 74,
+      "width": 56,
+      "height": 56,
+      "anchor": "top-left",
+      "track": 4,
+      "svg": "<svg width='56' height='56' viewBox='0 0 56 56' xmlns='http://www.w3.org/2000/svg'><rect width='56' height='56' rx='16' fill='{{accentColor}}'/><text x='28' y='37' font-family='Manrope, Arial' font-size='28' font-weight='800' fill='{{bgColor}}' text-anchor='middle'>{{monogram}}</text></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 162,
+      "y": 88,
+      "width": 360,
+      "anchor": "top-left",
+      "track": 4,
+      "text": "{{brand}}",
+      "style": { "fontFamily": "Space Grotesk", "fontSize": "25px", "fontWeight": "600", "color": "#0F1A16" }
+    },
+    {
+      "type": "IMAGE",
+      "src": "{{productImage}}",
+      "x": 88,
+      "y": 176,
+      "width": 470,
+      "height": 644,
+      "anchor": "top-left",
+      "radius": { "tl": 34, "tr": 34, "bl": 34, "br": 34 },
+      "track": 2
+    },
+    {
+      "type": "SVG",
+      "x": 436,
+      "y": 150,
+      "width": 184,
+      "height": 184,
+      "anchor": "top-left",
+      "angle": -10,
+      "track": 5,
+      "svg": "<svg width='184' height='184' viewBox='0 0 184 184' xmlns='http://www.w3.org/2000/svg'><circle cx='92' cy='92' r='90' fill='{{bgColor}}' stroke='{{accentColor}}' stroke-width='3'/><circle cx='92' cy='92' r='78' fill='none' stroke='{{accentColor}}' stroke-opacity='0.4' stroke-width='1.4'/><text x='92' y='66' font-family='Space Grotesk, Arial' font-size='16' font-weight='700' fill='{{accentColor}}' text-anchor='middle' letter-spacing='3'>{{stampTop}}</text><text x='92' y='104' font-family='Manrope, Arial' font-size='34' font-weight='800' fill='{{inkColor}}' text-anchor='middle' letter-spacing='-1'>{{stampMid}}</text><text x='92' y='132' font-family='Space Grotesk, Arial' font-size='14' font-weight='600' fill='{{mutedColor}}' text-anchor='middle' letter-spacing='2'>{{stampBottom}}</text></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 600,
+      "y": 232,
+      "width": 392,
+      "anchor": "top-left",
+      "track": 4,
+      "text": "{{eyebrow}}",
+      "style": { "fontFamily": "Space Grotesk", "fontSize": "20px", "fontWeight": "600", "letterSpacing": "0.22em", "color": "#0FA98B" }
+    },
+    {
+      "type": "TEXT",
+      "x": 598,
+      "y": 270,
+      "width": 400,
+      "anchor": "top-left",
+      "track": 4,
+      "style": { "fontFamily": "Manrope" },
+      "html": "<div style='font-size:60px; font-weight:800; line-height:1.0; letter-spacing:-0.03em; color:{{inkColor}};'>{{headline}}</div>"
+    },
+    {
+      "type": "TEXT",
+      "x": 600,
+      "y": 552,
+      "width": 392,
+      "anchor": "top-left",
+      "track": 4,
+      "text": "{{note}}",
+      "style": { "fontFamily": "Space Grotesk", "fontSize": "23px", "fontWeight": "400", "lineHeight": "1.45", "color": "#5F726B" }
+    },
+    {
+      "type": "TEXT",
+      "x": 600,
+      "y": 690,
+      "width": 392,
+      "anchor": "top-left",
+      "track": 4,
+      "text": "{{meterLabel}}",
+      "style": { "fontFamily": "Space Grotesk", "fontSize": "17px", "fontWeight": "700", "letterSpacing": "0.14em", "color": "#0FA98B" }
+    },
+    {
+      "type": "SVG",
+      "x": 600,
+      "y": 718,
+      "width": 392,
+      "height": 12,
+      "anchor": "top-left",
+      "track": 4,
+      "svg": "<svg width='392' height='12' viewBox='0 0 392 12' xmlns='http://www.w3.org/2000/svg'><rect width='392' height='12' rx='6' fill='{{inkColor}}' fill-opacity='0.1'/><rect width='120' height='12' rx='6' fill='{{accentColor}}'/></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 600,
+      "y": 770,
+      "width": 392,
+      "height": 66,
+      "anchor": "top-left",
+      "track": 4,
+      "svg": "<svg width='392' height='66' viewBox='0 0 392 66' xmlns='http://www.w3.org/2000/svg'><rect width='392' height='66' rx='33' fill='{{accentColor}}'/><text x='34' y='41' font-family='Space Grotesk, Arial' font-size='21' font-weight='600' fill='{{bgColor}}' letter-spacing='0.02em'>{{ctaLabel}}</text><path d='M344 33 L362 33 M355 26 L362 33 L355 40' fill='none' stroke='{{bgColor}}' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/></svg>"
+    }
+  ]
+}

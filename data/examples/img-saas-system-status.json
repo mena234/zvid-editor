@@ -1,0 +1,123 @@
+{
+  "type": "image",
+  "name": "img-saas-system-status",
+  "resolution": "custom",
+  "width": 1200,
+  "height": 630,
+  "outputFormat": "png",
+  "backgroundColor": "#0A0F0D",
+  "variables": {
+    "eyebrow": "SYSTEM STATUS",
+    "headline": "All systems operational",
+    "uptime": "99.99%",
+    "uptimeLabel": "uptime · 90 days",
+    "service1": "Render API",
+    "service2": "Dashboard",
+    "service3": "Webhooks",
+    "service4": "Render workers",
+    "statusLabel": "Operational",
+    "updated": "Updated 2 min ago",
+    "brand": "zvid status",
+    "accent": "#34D399",
+    "cardColor": "#111815",
+    "headingColor": "#EAF6F0",
+    "subColor": "#8CA69B"
+  },
+  "visuals": [
+    {
+      "type": "SVG",
+      "width": 1200,
+      "height": 630,
+      "position": "center-center",
+      "track": 0,
+      "svg": "<svg width='1200' height='630' viewBox='0 0 1200 630' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='bg' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#0D1F18'/><stop offset='0.55' stop-color='#0A0F0D'/><stop offset='1' stop-color='#080B0A'/></linearGradient><radialGradient id='glow' cx='0.85' cy='0.12' r='0.6'><stop offset='0' stop-color='#34D399' stop-opacity='0.2'/><stop offset='1' stop-color='#34D399' stop-opacity='0'/></radialGradient></defs><rect width='1200' height='630' fill='url(#bg)'/><rect width='1200' height='630' fill='url(#glow)'/><rect x='24' y='24' width='1152' height='582' rx='28' fill='none' stroke='#FFFFFF' stroke-opacity='0.07' stroke-width='1.5'/></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 72,
+      "y": 82,
+      "width": 500,
+      "anchor": "top-left",
+      "track": 4,
+      "text": "{{eyebrow}}",
+      "style": {
+        "fontFamily": "IBM Plex Mono",
+        "fontSize": "21px",
+        "fontWeight": "500",
+        "letterSpacing": "0.3em",
+        "color": "#34D399"
+      }
+    },
+    {
+      "type": "SVG",
+      "x": 72,
+      "y": 124,
+      "width": 30,
+      "height": 30,
+      "anchor": "top-left",
+      "track": 5,
+      "svg": "<svg width='30' height='30' viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'><circle cx='15' cy='15' r='14' fill='{{accent}}' fill-opacity='0.2'/><circle cx='15' cy='15' r='7' fill='{{accent}}'/></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 116,
+      "y": 122,
+      "width": 760,
+      "anchor": "top-left",
+      "track": 5,
+      "text": "{{headline}}",
+      "style": {
+        "fontFamily": "Manrope",
+        "fontSize": "50px",
+        "fontWeight": "800",
+        "letterSpacing": "-0.02em",
+        "color": "#EAF6F0"
+      }
+    },
+    {
+      "type": "SVG",
+      "x": 72,
+      "y": 226,
+      "width": 744,
+      "height": 304,
+      "anchor": "top-left",
+      "track": 5,
+      "svg": "<svg width='744' height='304' viewBox='0 0 744 304' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='744' height='304' rx='20' fill='{{cardColor}}' stroke='#FFFFFF' stroke-opacity='0.08' stroke-width='1.5'/><g font-family='Manrope, Arial'><text x='32' y='58' font-size='24' font-weight='600' fill='{{headingColor}}'>{{service1}}</text><circle cx='566' cy='50' r='5' fill='{{accent}}'/><text x='584' y='58' font-size='20' font-weight='600' fill='{{accent}}'>{{statusLabel}}</text><line x1='32' y1='84' x2='712' y2='84' stroke='#FFFFFF' stroke-opacity='0.07' stroke-width='1'/><text x='32' y='128' font-size='24' font-weight='600' fill='{{headingColor}}'>{{service2}}</text><circle cx='566' cy='120' r='5' fill='{{accent}}'/><text x='584' y='128' font-size='20' font-weight='600' fill='{{accent}}'>{{statusLabel}}</text><line x1='32' y1='154' x2='712' y2='154' stroke='#FFFFFF' stroke-opacity='0.07' stroke-width='1'/><text x='32' y='198' font-size='24' font-weight='600' fill='{{headingColor}}'>{{service3}}</text><circle cx='566' cy='190' r='5' fill='{{accent}}'/><text x='584' y='198' font-size='20' font-weight='600' fill='{{accent}}'>{{statusLabel}}</text><line x1='32' y1='224' x2='712' y2='224' stroke='#FFFFFF' stroke-opacity='0.07' stroke-width='1'/><text x='32' y='268' font-size='24' font-weight='600' fill='{{headingColor}}'>{{service4}}</text><circle cx='566' cy='260' r='5' fill='{{accent}}'/><text x='584' y='268' font-size='20' font-weight='600' fill='{{accent}}'>{{statusLabel}}</text></g></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 848,
+      "y": 226,
+      "width": 280,
+      "height": 304,
+      "anchor": "top-left",
+      "track": 5,
+      "svg": "<svg width='280' height='304' viewBox='0 0 280 304' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='280' height='304' rx='20' fill='{{accent}}' fill-opacity='0.08' stroke='{{accent}}' stroke-opacity='0.35' stroke-width='1.5'/><text x='140' y='158' font-family='IBM Plex Mono, monospace' font-size='54' font-weight='600' fill='{{accent}}' text-anchor='middle'>{{uptime}}</text><text x='140' y='198' font-family='Manrope, Arial' font-size='19' font-weight='500' fill='{{subColor}}' text-anchor='middle'>{{uptimeLabel}}</text></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 72,
+      "y": 556,
+      "width": 500,
+      "anchor": "top-left",
+      "track": 6,
+      "text": "{{updated}}",
+      "style": {
+        "fontFamily": "IBM Plex Mono",
+        "fontSize": "18px",
+        "fontWeight": "500",
+        "color": "#8CA69B"
+      }
+    },
+    {
+      "type": "SVG",
+      "x": 1128,
+      "y": 556,
+      "width": 200,
+      "height": 44,
+      "anchor": "top-right",
+      "track": 6,
+      "svg": "<svg width='200' height='44' viewBox='0 0 200 44' xmlns='http://www.w3.org/2000/svg'><circle cx='12' cy='22' r='7' fill='{{accent}}'/><text x='30' y='29' font-family='Manrope, Arial' font-size='20' font-weight='700' fill='#EAF6F0'>{{brand}}</text></svg>"
+    }
+  ]
+}

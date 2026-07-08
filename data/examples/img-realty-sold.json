@@ -1,0 +1,111 @@
+{
+  "type": "image",
+  "name": "img-realty-sold",
+  "resolution": "instagram-post",
+  "outputFormat": "png",
+  "backgroundColor": "#0C130E",
+  "variables": {
+    "stamp": "SOLD",
+    "headline": "Another one closed.",
+    "addressLine": "540 Birch Street, Ashford",
+    "overAsking": "8% OVER ASKING",
+    "days": "6 DAYS ON MARKET",
+    "thanks": "Thank you to the Alvarez family",
+    "agentName": "Marcus Bell",
+    "agentInitials": "MB",
+    "brand": "NORTHGATE HOMES",
+    "accent": "#2FBF71",
+    "propertyImage": "https://images.unsplash.com/photo-1729855637715-99192904aac5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDgwMTZ8MHwxfHNlYXJjaHwzfHxob3VzZSUyMGtleXMlMjBuZXclMjBob21lfGVufDB8fHx8MTc4MzI2ODYxNnww&ixlib=rb-4.1.0&q=80&w=1080"
+  },
+  "visuals": [
+    {
+      "type": "IMAGE",
+      "src": "{{propertyImage}}",
+      "width": 1080,
+      "height": 1080,
+      "position": "center-center",
+      "resize": "cover",
+      "track": 0
+    },
+    {
+      "type": "SVG",
+      "width": 1080,
+      "height": 1080,
+      "position": "center-center",
+      "track": 1,
+      "svg": "<svg width='1080' height='1080' viewBox='0 0 1080 1080' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='sv' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#0C130E' stop-opacity='0.5'/><stop offset='0.34' stop-color='#0C130E' stop-opacity='0.08'/><stop offset='0.62' stop-color='#0C130E' stop-opacity='0.46'/><stop offset='1' stop-color='#0C130E' stop-opacity='0.97'/></linearGradient></defs><rect width='1080' height='1080' fill='url(#sv)'/></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 616,
+      "y": 128,
+      "width": 380,
+      "height": 208,
+      "anchor": "top-left",
+      "angle": -9,
+      "track": 6,
+      "svg": "<svg width='380' height='208' viewBox='0 0 380 208' xmlns='http://www.w3.org/2000/svg'><rect x='8' y='8' width='364' height='192' rx='18' fill='none' stroke='{{accent}}' stroke-opacity='0.92' stroke-width='6'/><rect x='22' y='22' width='336' height='164' rx='12' fill='none' stroke='{{accent}}' stroke-opacity='0.5' stroke-width='2'/><text x='190' y='118' font-family='Archivo, Arial' font-size='96' font-weight='800' letter-spacing='6' fill='{{accent}}' text-anchor='middle'>{{stamp}}</text><text x='190' y='162' font-family='Space Grotesk, Arial' font-size='16' font-weight='600' letter-spacing='7' fill='{{accent}}' text-anchor='middle'>OFFICIALLY</text></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 68,
+      "y": 492,
+      "width": 620,
+      "anchor": "top-left",
+      "track": 5,
+      "style": { "fontFamily": "Sora" },
+      "html": "<div style='font-size:84px; font-weight:800; line-height:0.96; letter-spacing:-0.03em; color:#F2FBF5;'>{{headline}}</div>"
+    },
+    {
+      "type": "TEXT",
+      "x": 74,
+      "y": 690,
+      "width": 700,
+      "anchor": "top-left",
+      "track": 5,
+      "text": "{{addressLine}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "28px",
+        "fontWeight": "500",
+        "color": "#B7C6BB"
+      }
+    },
+    {
+      "type": "SVG",
+      "x": 74,
+      "y": 740,
+      "width": 700,
+      "height": 56,
+      "anchor": "top-left",
+      "track": 6,
+      "svg": "<svg width='700' height='56' viewBox='0 0 700 56' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='300' height='56' rx='28' fill='{{accent}}' fill-opacity='0.16' stroke='{{accent}}' stroke-opacity='0.7' stroke-width='1.3'/><circle cx='30' cy='28' r='6' fill='{{accent}}'/><text x='50' y='36' font-family='Space Grotesk, Arial' font-size='19' font-weight='700' letter-spacing='1' fill='{{accent}}'>{{overAsking}}</text><rect x='320' y='0' width='340' height='56' rx='28' fill='{{accent}}' fill-opacity='0.16' stroke='{{accent}}' stroke-opacity='0.7' stroke-width='1.3'/><circle cx='350' cy='28' r='6' fill='{{accent}}'/><text x='370' y='36' font-family='Space Grotesk, Arial' font-size='19' font-weight='700' letter-spacing='1' fill='{{accent}}'>{{days}}</text></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 74,
+      "y": 828,
+      "width": 700,
+      "anchor": "top-left",
+      "track": 5,
+      "text": "{{thanks}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "24px",
+        "fontWeight": "500",
+        "letterSpacing": "0.02em",
+        "color": "#CFE9D8"
+      }
+    },
+    {
+      "type": "SVG",
+      "x": 74,
+      "y": 896,
+      "width": 540,
+      "height": 72,
+      "anchor": "top-left",
+      "track": 6,
+      "svg": "<svg width='540' height='72' viewBox='0 0 540 72' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='540' height='72' rx='36' fill='#0B1710' fill-opacity='0.78' stroke='#FFFFFF' stroke-opacity='0.14' stroke-width='1.2'/><circle cx='42' cy='36' r='24' fill='{{accent}}'/><text x='42' y='44' font-family='Archivo, Arial' font-size='21' font-weight='800' fill='#0C130E' text-anchor='middle'>{{agentInitials}}</text><text x='84' y='32' font-family='Space Grotesk, Arial' font-size='23' font-weight='700' fill='#F2FBF5'>{{agentName}}</text><text x='84' y='56' font-family='Space Grotesk, Arial' font-size='17' font-weight='500' letter-spacing='2' fill='#8FB49D'>{{brand}}</text></svg>"
+    }
+  ]
+}

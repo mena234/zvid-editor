@@ -1,0 +1,95 @@
+{
+  "type": "image",
+  "name": "img-report-saas-metrics",
+  "resolution": "twitter-landscape",
+  "outputFormat": "png",
+  "backgroundColor": "#0B0E1A",
+  "variables": {
+    "eyebrow": "SAAS METRICS",
+    "title": "Growth Dashboard",
+    "subtitle": "Trailing 12 months · recurring revenue",
+    "kpi1Label": "MRR",
+    "kpi1Value": "$94.6K",
+    "kpi1Delta": "+11.2%",
+    "kpi2Label": "NET CHURN",
+    "kpi2Value": "1.4%",
+    "kpi2Delta": "-0.3%",
+    "kpi3Label": "ACTIVATION",
+    "kpi3Value": "68%",
+    "kpi3Delta": "+4.0%",
+    "chartTitle": "MRR TREND — 12 MONTHS",
+    "accent": "#E9C46A"
+  },
+  "visuals": [
+    {
+      "type": "SVG",
+      "width": 1200,
+      "height": 675,
+      "position": "center-center",
+      "track": 0,
+      "svg": "<svg width='1200' height='675' viewBox='0 0 1200 675' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='bg' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#141830'/><stop offset='0.6' stop-color='#0B0E1A'/><stop offset='1' stop-color='#080A12'/></linearGradient><radialGradient id='glow' cx='0.88' cy='0.12' r='0.6'><stop offset='0' stop-color='{{accent}}' stop-opacity='0.16'/><stop offset='1' stop-color='{{accent}}' stop-opacity='0'/></radialGradient></defs><rect width='1200' height='675' fill='url(#bg)'/><rect width='1200' height='675' fill='url(#glow)'/><rect x='24' y='24' width='1152' height='627' rx='28' fill='none' stroke='#FFFFFF' stroke-opacity='0.08' stroke-width='1.5'/></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 72,
+      "y": 60,
+      "width": 300,
+      "height": 34,
+      "anchor": "top-left",
+      "track": 3,
+      "svg": "<svg width='300' height='34' viewBox='0 0 300 34' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='190' height='34' rx='17' fill='{{accent}}' fill-opacity='0.14' stroke='{{accent}}' stroke-opacity='0.45' stroke-width='1'/><circle cx='22' cy='17' r='4' fill='{{accent}}'/><text x='38' y='23' font-family='Space Grotesk, Arial' font-size='14' font-weight='600' letter-spacing='2.5' fill='{{accent}}'>{{eyebrow}}</text></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 72,
+      "y": 106,
+      "width": 720,
+      "anchor": "top-left",
+      "track": 4,
+      "text": "{{title}}",
+      "style": {
+        "fontFamily": "Bricolage Grotesque",
+        "fontSize": "58px",
+        "fontWeight": "700",
+        "letterSpacing": "-0.02em",
+        "lineHeight": "1",
+        "color": "#F4F1E9"
+      }
+    },
+    {
+      "type": "TEXT",
+      "x": 74,
+      "y": 180,
+      "width": 640,
+      "anchor": "top-left",
+      "track": 4,
+      "text": "{{subtitle}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "20px",
+        "fontWeight": "500",
+        "color": "#8C8A9E"
+      }
+    },
+    {
+      "type": "SVG",
+      "x": 72,
+      "y": 250,
+      "width": 452,
+      "height": 300,
+      "anchor": "top-left",
+      "track": 5,
+      "svg": "<svg width='452' height='300' viewBox='0 0 452 300' xmlns='http://www.w3.org/2000/svg'><g><rect x='0' y='0' width='452' height='88' rx='18' fill='#FFFFFF' fill-opacity='0.04' stroke='#FFFFFF' stroke-opacity='0.08' stroke-width='1'/><text x='24' y='36' font-family='Space Grotesk, Arial' font-size='14' font-weight='600' letter-spacing='2' fill='#8C8A9E'>{{kpi1Label}}</text><text x='24' y='72' font-family='Bricolage Grotesque, Arial' font-size='38' font-weight='700' fill='#F4F1E9'>{{kpi1Value}}</text><polygon points='372,60 386,60 379,46' fill='{{accent}}'/><text x='452' y='68' font-family='Space Grotesk, Arial' font-size='17' font-weight='600' fill='{{accent}}' text-anchor='end'>{{kpi1Delta}}</text></g><g transform='translate(0,106)'><rect x='0' y='0' width='452' height='88' rx='18' fill='#FFFFFF' fill-opacity='0.04' stroke='#FFFFFF' stroke-opacity='0.08' stroke-width='1'/><text x='24' y='36' font-family='Space Grotesk, Arial' font-size='14' font-weight='600' letter-spacing='2' fill='#8C8A9E'>{{kpi2Label}}</text><text x='24' y='72' font-family='Bricolage Grotesque, Arial' font-size='38' font-weight='700' fill='#F4F1E9'>{{kpi2Value}}</text><polygon points='372,46 386,46 379,60' fill='{{accent}}'/><text x='452' y='68' font-family='Space Grotesk, Arial' font-size='17' font-weight='600' fill='{{accent}}' text-anchor='end'>{{kpi2Delta}}</text></g><g transform='translate(0,212)'><rect x='0' y='0' width='452' height='88' rx='18' fill='#FFFFFF' fill-opacity='0.04' stroke='#FFFFFF' stroke-opacity='0.08' stroke-width='1'/><text x='24' y='36' font-family='Space Grotesk, Arial' font-size='14' font-weight='600' letter-spacing='2' fill='#8C8A9E'>{{kpi3Label}}</text><text x='24' y='72' font-family='Bricolage Grotesque, Arial' font-size='38' font-weight='700' fill='#F4F1E9'>{{kpi3Value}}</text><polygon points='372,60 386,60 379,46' fill='{{accent}}'/><text x='452' y='68' font-family='Space Grotesk, Arial' font-size='17' font-weight='600' fill='{{accent}}' text-anchor='end'>{{kpi3Delta}}</text></g></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 560,
+      "y": 250,
+      "width": 568,
+      "height": 300,
+      "anchor": "top-left",
+      "track": 5,
+      "svg": "<svg width='568' height='300' viewBox='0 0 568 300' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='568' height='300' rx='22' fill='#FFFFFF' fill-opacity='0.03' stroke='#FFFFFF' stroke-opacity='0.07' stroke-width='1'/><text x='28' y='42' font-family='Space Grotesk, Arial' font-size='14' font-weight='600' letter-spacing='2' fill='#8C8A9E'>{{chartTitle}}</text><line x1='28' y1='250' x2='540' y2='250' stroke='#FFFFFF' stroke-opacity='0.1' stroke-width='1'/><rect x='34' y='214' width='30' height='36' rx='5' fill='{{accent}}' fill-opacity='0.35'/><rect x='76' y='202' width='30' height='48' rx='5' fill='{{accent}}' fill-opacity='0.4'/><rect x='118' y='206' width='30' height='44' rx='5' fill='{{accent}}' fill-opacity='0.38'/><rect x='160' y='188' width='30' height='62' rx='5' fill='{{accent}}' fill-opacity='0.46'/><rect x='202' y='176' width='30' height='74' rx='5' fill='{{accent}}' fill-opacity='0.5'/><rect x='244' y='182' width='30' height='68' rx='5' fill='{{accent}}' fill-opacity='0.48'/><rect x='286' y='158' width='30' height='92' rx='5' fill='{{accent}}' fill-opacity='0.58'/><rect x='328' y='150' width='30' height='100' rx='5' fill='{{accent}}' fill-opacity='0.62'/><rect x='370' y='132' width='30' height='118' rx='5' fill='{{accent}}' fill-opacity='0.72'/><rect x='412' y='120' width='30' height='130' rx='5' fill='{{accent}}' fill-opacity='0.8'/><rect x='454' y='100' width='30' height='150' rx='5' fill='{{accent}}' fill-opacity='0.9'/><rect x='496' y='82' width='30' height='168' rx='5' fill='{{accent}}'/><text x='34' y='278' font-family='Space Grotesk, Arial' font-size='13' fill='#6C6A7E'>Jan</text><text x='526' y='278' font-family='Space Grotesk, Arial' font-size='13' fill='#6C6A7E' text-anchor='end'>Dec</text></svg>"
+    }
+  ]
+}

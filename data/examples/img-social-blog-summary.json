@@ -1,0 +1,119 @@
+{
+  "type": "image",
+  "name": "img-social-blog-summary",
+  "resolution": "instagram-post",
+  "outputFormat": "png",
+  "backgroundColor": "#F1ECE2",
+  "variables": {
+    "category": "PRODUCTIVITY",
+    "title": "The two-list system that killed my endless to-do list",
+    "takeawayLabel": "KEY TAKEAWAY",
+    "takeaway": "Keep a \"someday\" list far from your \"today\" list. Today holds three things — nothing more.",
+    "readOn": "Read the full post",
+    "domain": "deepwork.blog",
+    "paper": "#F1ECE2",
+    "ink": "#17140F",
+    "muted": "#6B6559",
+    "accent": "#1F3D2F",
+    "foil": "#B08948"
+  },
+  "visuals": [
+    {
+      "type": "SVG",
+      "width": 1080,
+      "height": 1080,
+      "position": "center-center",
+      "track": 0,
+      "svg": "<svg width='1080' height='1080' viewBox='0 0 1080 1080' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='pg' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#F5F0E7'/><stop offset='1' stop-color='#EAE2D3'/></linearGradient><radialGradient id='fg' cx='0.9' cy='0.92' r='0.7'><stop offset='0' stop-color='{{accent}}' stop-opacity='0.12'/><stop offset='1' stop-color='{{accent}}' stop-opacity='0'/></radialGradient></defs><rect width='1080' height='1080' fill='url(#pg)'/><rect width='1080' height='1080' fill='url(#fg)'/><rect x='40' y='40' width='1000' height='1000' rx='30' fill='none' stroke='{{ink}}' stroke-opacity='0.1' stroke-width='1.5'/></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 80,
+      "y": 100,
+      "width": 268,
+      "height": 46,
+      "anchor": "top-left",
+      "track": 4,
+      "svg": "<svg width='268' height='46' viewBox='0 0 268 46' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='268' height='46' rx='23' fill='{{accent}}'/><circle cx='27' cy='23' r='5' fill='{{foil}}'/><text x='46' y='30' font-family='Space Grotesk, Arial' font-size='17' font-weight='600' letter-spacing='3' fill='#F1ECE2'>{{category}}</text></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 80,
+      "y": 202,
+      "width": 920,
+      "anchor": "top-left",
+      "track": 5,
+      "text": "{{title}}",
+      "style": {
+        "fontFamily": "Instrument Serif",
+        "fontSize": "88px",
+        "fontWeight": "400",
+        "lineHeight": "1.02",
+        "letterSpacing": "-0.01em",
+        "color": "#17140F"
+      }
+    },
+    {
+      "type": "SVG",
+      "x": 80,
+      "y": 578,
+      "width": 920,
+      "height": 262,
+      "anchor": "top-left",
+      "track": 5,
+      "svg": "<svg width='920' height='262' viewBox='0 0 920 262' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='920' height='262' rx='24' fill='{{accent}}' fill-opacity='0.08' stroke='{{accent}}' stroke-opacity='0.28' stroke-width='1.4'/><rect x='0' y='0' width='6' height='262' rx='3' fill='{{accent}}'/></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 116,
+      "y": 612,
+      "width": 220,
+      "height": 24,
+      "anchor": "top-left",
+      "track": 6,
+      "svg": "<svg width='220' height='24' viewBox='0 0 220 24' xmlns='http://www.w3.org/2000/svg'><path d='M6 12 L18 12 M12 6 L12 18' stroke='{{foil}}' stroke-width='2.4' stroke-linecap='round'/><text x='30' y='18' font-family='Space Grotesk, Arial' font-size='16' font-weight='600' letter-spacing='3' fill='{{foil}}'>{{takeawayLabel}}</text></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 116,
+      "y": 654,
+      "width": 852,
+      "anchor": "top-left",
+      "track": 6,
+      "text": "{{takeaway}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "33px",
+        "fontWeight": "500",
+        "lineHeight": "1.32",
+        "color": "#17140F"
+      }
+    },
+    {
+      "type": "SVG",
+      "x": 80,
+      "y": 906,
+      "width": 320,
+      "height": 56,
+      "anchor": "top-left",
+      "track": 7,
+      "svg": "<svg width='320' height='56' viewBox='0 0 320 56' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='320' height='56' rx='28' fill='{{accent}}'/><text x='30' y='36' font-family='Space Grotesk, Arial' font-size='21' font-weight='600' fill='#F1ECE2'>{{readOn}}</text><path d='M262 28 L288 28 M278 18 L288 28 L278 38' stroke='#F1ECE2' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 748,
+      "y": 920,
+      "width": 250,
+      "anchor": "top-left",
+      "track": 7,
+      "text": "{{domain}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "22px",
+        "fontWeight": "600",
+        "textAlign": "right",
+        "color": "#6B6559"
+      }
+    }
+  ]
+}

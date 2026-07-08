@@ -1,0 +1,98 @@
+{
+  "type": "image",
+  "name": "img-ad-ab-hook",
+  "resolution": "instagram-post",
+  "outputFormat": "png",
+  "backgroundColor": "#0B0B12",
+  "variables": {
+    "variant": "VARIANT A",
+    "brand": "test lab",
+    "hookA": "Stop scrolling —",
+    "highlight": "this one actually",
+    "hookB": "works in 7 days.",
+    "note": "A / B HOOK TEST — same layout, swap the headline only.",
+    "cta": "Try it now",
+    "accent": "#35E0A1",
+    "ink": "#0B0B12",
+    "textColor": "#F4F2FB",
+    "mutedColor": "#8A8F94",
+    "productImage": "https://images.pexels.com/photos/13534508/pexels-photo-13534508.jpeg?auto=compress&cs=tinysrgb&w=1600"
+  },
+  "visuals": [
+    {
+      "type": "SVG",
+      "width": 1080,
+      "height": 1080,
+      "position": "center-center",
+      "track": 0,
+      "svg": "<svg width='1080' height='1080' viewBox='0 0 1080 1080' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='bg' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#0C1512'/><stop offset='0.5' stop-color='#0B0B12'/><stop offset='1' stop-color='#08080D'/></linearGradient><radialGradient id='glow' cx='0.15' cy='0.12' r='0.6'><stop offset='0' stop-color='{{accent}}' stop-opacity='0.18'/><stop offset='1' stop-color='{{accent}}' stop-opacity='0'/></radialGradient></defs><rect width='1080' height='1080' fill='url(#bg)'/><rect width='1080' height='1080' fill='url(#glow)'/><rect x='40' y='400' width='1000' height='1' fill='#FFFFFF' fill-opacity='0.05'/><rect x='40' y='700' width='1000' height='1' fill='#FFFFFF' fill-opacity='0.05'/><rect x='28' y='28' width='1024' height='1024' rx='34' fill='none' stroke='#FFFFFF' stroke-opacity='0.07' stroke-width='1.5'/></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 80,
+      "y": 80,
+      "width": 200,
+      "height": 48,
+      "anchor": "top-left",
+      "track": 4,
+      "svg": "<svg width='200' height='48' viewBox='0 0 200 48' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='200' height='48' rx='10' fill='{{accent}}'/><circle cx='26' cy='24' r='7' fill='{{ink}}'/><text x='46' y='31' font-family='Space Grotesk, Arial' font-size='18' font-weight='700' letter-spacing='2' fill='{{ink}}'>{{variant}}</text></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 800,
+      "y": 82,
+      "width": 200,
+      "height": 44,
+      "anchor": "top-left",
+      "track": 4,
+      "svg": "<svg width='200' height='44' viewBox='0 0 200 44' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='200' height='44' rx='22' fill='#FFFFFF' fill-opacity='0.06' stroke='#FFFFFF' stroke-opacity='0.16' stroke-width='1'/><circle cx='26' cy='22' r='6' fill='{{accent}}'/><text x='46' y='29' font-family='Space Grotesk, Arial' font-size='19' font-weight='600' letter-spacing='0.5' fill='#F4F2FB'>{{brand}}</text></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 80,
+      "y": 268,
+      "width": 860,
+      "anchor": "top-left",
+      "track": 5,
+      "style": { "fontFamily": "Space Grotesk" },
+      "html": "<div style='font-size:82px; font-weight:700; line-height:1.0; letter-spacing:-0.025em; color:{{textColor}};'>{{hookA}}<br><span style='color:{{accent}};'>{{highlight}}</span><br>{{hookB}}</div>"
+    },
+    {
+      "type": "TEXT",
+      "x": 80,
+      "y": 728,
+      "width": 620,
+      "anchor": "top-left",
+      "track": 5,
+      "text": "{{note}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "20px",
+        "fontWeight": "600",
+        "letterSpacing": "0.06em",
+        "color": "#8A8F94"
+      }
+    },
+    {
+      "type": "IMAGE",
+      "src": "{{productImage}}",
+      "x": 760,
+      "y": 744,
+      "width": 240,
+      "height": 240,
+      "anchor": "top-left",
+      "radius": { "tl": 22, "tr": 22, "bl": 22, "br": 22 },
+      "track": 3
+    },
+    {
+      "type": "SVG",
+      "x": 80,
+      "y": 866,
+      "width": 320,
+      "height": 76,
+      "anchor": "top-left",
+      "track": 6,
+      "svg": "<svg width='320' height='76' viewBox='0 0 320 76' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='320' height='76' rx='38' fill='{{accent}}'/><text x='136' y='48' font-family='Space Grotesk, Arial' font-size='26' font-weight='700' fill='{{ink}}' text-anchor='middle' letter-spacing='0.4'>{{cta}}</text><circle cx='272' cy='38' r='15' fill='{{ink}}' fill-opacity='0.16'/><path d='M266 38 L278 38 M273 33 L278 38 L273 43' fill='none' stroke='{{ink}}' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/></svg>"
+    }
+  ]
+}

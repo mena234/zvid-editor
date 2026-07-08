@@ -1,0 +1,120 @@
+{
+  "type": "image",
+  "name": "img-app-thank-you",
+  "resolution": "instagram-story",
+  "outputFormat": "png",
+  "backgroundColor": "#1A0C11",
+  "variables": {
+    "eyebrow": "A HEARTFELT THANK YOU",
+    "greeting": "Thank you,",
+    "userName": "Alex",
+    "message": "Your support means the world to us. You're the reason we get to build something we love — here's to what comes next.",
+    "signoff": "— The Zvid Team",
+    "brand": "zvid",
+    "accent": "#FF6F91",
+    "accent2": "#FFB86B",
+    "textPrimary": "#FBEDE9",
+    "textMuted": "#C29A97"
+  },
+  "visuals": [
+    {
+      "type": "SVG",
+      "width": 1080,
+      "height": 1920,
+      "position": "center-center",
+      "track": 0,
+      "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='bg' x1='0' y1='0' x2='0.5' y2='1'><stop offset='0' stop-color='#3A1622'/><stop offset='0.5' stop-color='#1E0D13'/><stop offset='1' stop-color='#120709'/></linearGradient><radialGradient id='g1' cx='0.5' cy='0.2' r='0.7'><stop offset='0' stop-color='{{accent}}' stop-opacity='0.42'/><stop offset='1' stop-color='{{accent}}' stop-opacity='0'/></radialGradient><radialGradient id='g2' cx='0.15' cy='0.9' r='0.7'><stop offset='0' stop-color='{{accent2}}' stop-opacity='0.24'/><stop offset='1' stop-color='{{accent2}}' stop-opacity='0'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#bg)'/><rect width='1080' height='1920' fill='url(#g1)'/><rect width='1080' height='1920' fill='url(#g2)'/><rect x='40' y='40' width='1000' height='1840' rx='46' fill='none' stroke='#FFFFFF' stroke-opacity='0.08' stroke-width='1.5'/></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 420,
+      "y": 300,
+      "width": 240,
+      "height": 220,
+      "anchor": "top-left",
+      "track": 4,
+      "svg": "<svg width='240' height='220' viewBox='0 0 240 220' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='ht' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='{{accent2}}'/><stop offset='1' stop-color='{{accent}}'/></linearGradient><radialGradient id='hh' cx='0.5' cy='0.5' r='0.5'><stop offset='0.6' stop-color='{{accent}}' stop-opacity='0'/><stop offset='1' stop-color='{{accent}}' stop-opacity='0.28'/></radialGradient></defs><circle cx='120' cy='110' r='108' fill='url(#hh)'/><path d='M120 196 C20 130 30 44 92 44 C116 44 120 74 120 74 C120 74 124 44 148 44 C210 44 220 130 120 196 Z' fill='url(#ht)'/></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 140,
+      "y": 588,
+      "width": 800,
+      "anchor": "top-left",
+      "track": 5,
+      "text": "{{eyebrow}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "30px",
+        "fontWeight": "600",
+        "letterSpacing": "0.42em",
+        "color": "{{accent2}}",
+        "textAlign": "center"
+      }
+    },
+    {
+      "type": "TEXT",
+      "x": 70,
+      "y": 660,
+      "width": 940,
+      "anchor": "top-left",
+      "track": 5,
+      "style": { "fontFamily": "Playfair Display" },
+      "html": "<div style='text-align:center; font-size:112px; font-weight:700; line-height:1.05; color:#FBEDE9;'>{{greeting}} <span style='font-style:italic; color:{{accent}};'>{{userName}}</span></div>"
+    },
+    {
+      "type": "TEXT",
+      "x": 150,
+      "y": 980,
+      "width": 780,
+      "anchor": "top-left",
+      "track": 5,
+      "text": "{{message}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "40px",
+        "fontWeight": "400",
+        "lineHeight": "1.55",
+        "color": "{{textMuted}}",
+        "textAlign": "center"
+      }
+    },
+    {
+      "type": "SVG",
+      "x": 490,
+      "y": 1470,
+      "width": 100,
+      "height": 20,
+      "anchor": "top-left",
+      "track": 5,
+      "svg": "<svg width='100' height='20' viewBox='0 0 100 20' xmlns='http://www.w3.org/2000/svg'><line x1='0' y1='10' x2='38' y2='10' stroke='{{accent}}' stroke-opacity='0.6' stroke-width='1.4'/><line x1='62' y1='10' x2='100' y2='10' stroke='{{accent}}' stroke-opacity='0.6' stroke-width='1.4'/><circle cx='50' cy='10' r='4' fill='{{accent}}'/></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 90,
+      "y": 1540,
+      "width": 900,
+      "anchor": "top-left",
+      "track": 5,
+      "text": "{{signoff}}",
+      "style": {
+        "fontFamily": "Playfair Display",
+        "fontSize": "44px",
+        "fontWeight": "500",
+        "fontStyle": "italic",
+        "color": "{{textPrimary}}",
+        "textAlign": "center"
+      }
+    },
+    {
+      "type": "SVG",
+      "x": 470,
+      "y": 1794,
+      "width": 140,
+      "height": 48,
+      "anchor": "top-left",
+      "track": 6,
+      "svg": "<svg width='140' height='48' viewBox='0 0 140 48' xmlns='http://www.w3.org/2000/svg'><circle cx='14' cy='24' r='8' fill='{{accent}}'/><text x='34' y='32' font-family='Space Grotesk, Arial' font-size='24' font-weight='700' fill='#FFFFFF'>{{brand}}</text></svg>"
+    }
+  ]
+}

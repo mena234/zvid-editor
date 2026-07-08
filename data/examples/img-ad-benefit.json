@@ -1,0 +1,93 @@
+{
+  "type": "image",
+  "name": "img-ad-benefit",
+  "resolution": "instagram-post",
+  "outputFormat": "png",
+  "backgroundColor": "#F7F4EE",
+  "variables": {
+    "eyebrow": "WHY SWITCH",
+    "brand": "atelier",
+    "line1": "Cut editing",
+    "highlight": "time by 90%",
+    "line2": "on every launch",
+    "proof1": "One file, unlimited variants",
+    "proof2": "On-brand in a single click",
+    "proof3": "Export in seconds, not days",
+    "cta": "Try it free",
+    "accent": "#1F3D2F",
+    "foil": "#B08948",
+    "ink": "#161310",
+    "cream": "#F7F4EE",
+    "productImage": "https://images.pexels.com/photos/6476115/pexels-photo-6476115.jpeg?auto=compress&cs=tinysrgb&w=1600"
+  },
+  "visuals": [
+    {
+      "type": "IMAGE",
+      "src": "{{productImage}}",
+      "x": 588,
+      "y": 70,
+      "width": 422,
+      "height": 940,
+      "anchor": "top-left",
+      "radius": { "tl": 28, "tr": 28, "bl": 28, "br": 28 },
+      "track": 2
+    },
+    {
+      "type": "SVG",
+      "x": 80,
+      "y": 96,
+      "width": 220,
+      "height": 44,
+      "anchor": "top-left",
+      "track": 4,
+      "svg": "<svg width='220' height='44' viewBox='0 0 220 44' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='220' height='44' rx='22' fill='none' stroke='{{accent}}' stroke-opacity='0.55' stroke-width='1.4'/><circle cx='26' cy='22' r='6' fill='{{foil}}'/><text x='46' y='29' font-family='Space Grotesk, Arial' font-size='17' font-weight='600' letter-spacing='2.4' fill='{{accent}}'>{{eyebrow}}</text></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 80,
+      "y": 172,
+      "width": 480,
+      "anchor": "top-left",
+      "track": 5,
+      "style": { "fontFamily": "Fraunces" },
+      "html": "<div style='font-size:76px; font-weight:600; line-height:1.02; letter-spacing:-0.015em; color:{{ink}};'>{{line1}} <span style='color:{{accent}};'>{{highlight}}</span> {{line2}}</div>"
+    },
+    {
+      "type": "SVG",
+      "x": 80,
+      "y": 566,
+      "width": 470,
+      "height": 210,
+      "anchor": "top-left",
+      "track": 5,
+      "svg": "<svg width='470' height='210' viewBox='0 0 470 210' xmlns='http://www.w3.org/2000/svg'><g><circle cx='20' cy='22' r='17' fill='{{accent}}'/><path d='M11 22 L18 29 L30 15' fill='none' stroke='{{cream}}' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'/><text x='54' y='30' font-family='Space Grotesk, Arial' font-size='23' font-weight='500' fill='{{ink}}'>{{proof1}}</text></g><g><circle cx='20' cy='92' r='17' fill='{{accent}}'/><path d='M11 92 L18 99 L30 85' fill='none' stroke='{{cream}}' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'/><text x='54' y='100' font-family='Space Grotesk, Arial' font-size='23' font-weight='500' fill='{{ink}}'>{{proof2}}</text></g><g><circle cx='20' cy='162' r='17' fill='{{accent}}'/><path d='M11 162 L18 169 L30 155' fill='none' stroke='{{cream}}' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'/><text x='54' y='170' font-family='Space Grotesk, Arial' font-size='23' font-weight='500' fill='{{ink}}'>{{proof3}}</text></g></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 80,
+      "y": 884,
+      "width": 300,
+      "height": 76,
+      "anchor": "top-left",
+      "track": 6,
+      "svg": "<svg width='300' height='76' viewBox='0 0 300 76' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='300' height='76' rx='38' fill='{{accent}}'/><text x='128' y='48' font-family='Space Grotesk, Arial' font-size='26' font-weight='700' fill='{{cream}}' text-anchor='middle' letter-spacing='0.4'>{{cta}}</text><circle cx='250' cy='38' r='15' fill='{{cream}}' fill-opacity='0.16'/><path d='M244 38 L256 38 M251 33 L256 38 L251 43' fill='none' stroke='{{cream}}' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 400,
+      "y": 906,
+      "width": 170,
+      "anchor": "top-left",
+      "track": 6,
+      "text": "{{brand}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "22px",
+        "fontWeight": "600",
+        "letterSpacing": "0.02em",
+        "lineHeight": "1.4",
+        "color": "#161310"
+      }
+    }
+  ]
+}

@@ -1,0 +1,133 @@
+{
+  "type": "image",
+  "name": "img-ecom-review",
+  "resolution": "instagram-post",
+  "outputFormat": "png",
+  "backgroundColor": "#F5F3F7",
+  "variables": {
+    "eyebrow": "VERIFIED REVIEW",
+    "ratingLabel": "5.0 out of 5",
+    "quote": "Genuinely the best purchase I've made all year. It feels premium, works flawlessly, and shipping was lightning fast.",
+    "reviewerName": "Priya Nair",
+    "reviewerTitle": "Verified buyer · Austin, TX",
+    "monogram": "P",
+    "bgColor": "#F5F3F7",
+    "inkColor": "#141018",
+    "accentColor": "#7A5CF0",
+    "mutedColor": "#8A86A0",
+    "star": "#7A5CF0",
+    "productImage": "https://images.unsplash.com/photo-1716043306198-6b685c0814c1?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&ixid=M3w3MDgwMTZ8MHwxfHNlYXJjaHw2fHxwcm9kdWN0JTIwb24lMjBwaW5rJTIwYmFja2dyb3VuZHxlbnwwfHx8fDE3ODM1MjY5MTN8MA&ixlib=rb-4.1.0&q=80&w=1600"
+  },
+  "visuals": [
+    {
+      "type": "SVG",
+      "width": 1080,
+      "height": 1080,
+      "position": "center-center",
+      "track": 0,
+      "svg": "<svg width='1080' height='1080' viewBox='0 0 1080 1080' xmlns='http://www.w3.org/2000/svg'><rect width='1080' height='1080' fill='{{bgColor}}'/><rect x='40' y='40' width='1000' height='1000' rx='40' fill='none' stroke='{{inkColor}}' stroke-opacity='0.08' stroke-width='1.5'/></svg>"
+    },
+    {
+      "type": "IMAGE",
+      "src": "{{productImage}}",
+      "x": 600,
+      "y": 150,
+      "width": 392,
+      "height": 780,
+      "anchor": "top-left",
+      "radius": { "tl": 30, "tr": 30, "bl": 30, "br": 30 },
+      "track": 2
+    },
+    {
+      "type": "SVG",
+      "x": 84,
+      "y": 150,
+      "width": 120,
+      "height": 96,
+      "anchor": "top-left",
+      "track": 4,
+      "svg": "<svg width='120' height='96' viewBox='0 0 120 96' xmlns='http://www.w3.org/2000/svg'><text x='0' y='96' font-family='Georgia, serif' font-size='170' font-weight='700' fill='{{accentColor}}' fill-opacity='0.24'>&#8220;</text></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 88,
+      "y": 214,
+      "width": 420,
+      "anchor": "top-left",
+      "track": 4,
+      "text": "{{eyebrow}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "21px",
+        "fontWeight": "600",
+        "letterSpacing": "0.26em",
+        "color": "#7A5CF0"
+      }
+    },
+    {
+      "type": "SVG",
+      "x": 88,
+      "y": 256,
+      "width": 190,
+      "height": 32,
+      "anchor": "top-left",
+      "track": 4,
+      "svg": "<svg width='190' height='32' viewBox='0 0 190 32' xmlns='http://www.w3.org/2000/svg'><polygon points='16,1 19.5,11.2 30.3,11.4 21.7,17.9 24.8,28.1 16,22 7.2,28.1 10.3,17.9 1.7,11.4 12.5,11.2' fill='{{star}}'/><polygon points='54,1 57.5,11.2 68.3,11.4 59.7,17.9 62.8,28.1 54,22 45.2,28.1 48.3,17.9 39.7,11.4 50.5,11.2' fill='{{star}}'/><polygon points='92,1 95.5,11.2 106.3,11.4 97.7,17.9 100.8,28.1 92,22 83.2,28.1 86.3,17.9 77.7,11.4 88.5,11.2' fill='{{star}}'/><polygon points='130,1 133.5,11.2 144.3,11.4 135.7,17.9 138.8,28.1 130,22 121.2,28.1 124.3,17.9 115.7,11.4 126.5,11.2' fill='{{star}}'/><polygon points='168,1 171.5,11.2 182.3,11.4 173.7,17.9 176.8,28.1 168,22 159.2,28.1 162.3,17.9 155.7,11.4 166.5,11.2' fill='{{star}}'/></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 300,
+      "y": 260,
+      "width": 220,
+      "anchor": "top-left",
+      "track": 4,
+      "text": "{{ratingLabel}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "20px",
+        "fontWeight": "600",
+        "color": "#8A86A0"
+      }
+    },
+    {
+      "type": "TEXT",
+      "x": 86,
+      "y": 320,
+      "width": 468,
+      "anchor": "top-left",
+      "track": 4,
+      "style": { "fontFamily": "Instrument Serif" },
+      "html": "<div style='font-size:52px; font-weight:400; line-height:1.14; letter-spacing:-0.005em; color:{{inkColor}};'>{{quote}}</div>"
+    },
+    {
+      "type": "SVG",
+      "x": 88,
+      "y": 812,
+      "width": 460,
+      "height": 2,
+      "anchor": "top-left",
+      "track": 4,
+      "svg": "<svg width='460' height='2' viewBox='0 0 460 2' xmlns='http://www.w3.org/2000/svg'><rect width='460' height='1' fill='{{inkColor}}' fill-opacity='0.12'/></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 88,
+      "y": 848,
+      "width": 60,
+      "height": 60,
+      "anchor": "top-left",
+      "track": 4,
+      "svg": "<svg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='mg' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#7A5CF0'/><stop offset='1' stop-color='#A98CFF'/></linearGradient></defs><circle cx='30' cy='30' r='30' fill='url(#mg)'/><text x='30' y='40' font-family='Space Grotesk, Arial' font-size='27' font-weight='700' fill='#FFFFFF' text-anchor='middle'>{{monogram}}</text></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 166,
+      "y": 852,
+      "width": 400,
+      "anchor": "top-left",
+      "track": 4,
+      "style": { "fontFamily": "Space Grotesk" },
+      "html": "<div style='font-size:25px; font-weight:700; color:{{inkColor}};'>{{reviewerName}}</div><div style='margin-top:3px; font-size:19px; font-weight:500; color:{{mutedColor}};'>{{reviewerTitle}}</div>"
+    }
+  ]
+}

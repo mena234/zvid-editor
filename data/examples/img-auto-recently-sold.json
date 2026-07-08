@@ -1,0 +1,106 @@
+{
+  "type": "image",
+  "name": "img-auto-recently-sold",
+  "resolution": "instagram-post",
+  "outputFormat": "png",
+  "backgroundColor": "#07110B",
+  "variables": {
+    "eyebrow": "JUST DELIVERED",
+    "stamp": "SOLD",
+    "line1": "Another Happy",
+    "line2": "Driver",
+    "vehicle": "2023 Mercedes-Benz GLC · delivered to Sarah K.",
+    "cta": "YOURS COULD BE NEXT",
+    "dealerName": "NORTHGATE AUTOS",
+    "monogram": "N",
+    "accent": "#38D07A",
+    "ink": "#07110B",
+    "carImage": "https://images.unsplash.com/photo-1621252792374-2b79e3fcf295?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDgwMTZ8MHwxfHNlYXJjaHw0fHxsdXh1cnklMjBjYXIlMjBzcG9ydHMlMjB2ZWhpY2xlfGVufDB8fHx8MTc4MzI2ODYxOHww&ixlib=rb-4.1.0&q=80&w=1080"
+  },
+  "visuals": [
+    {
+      "type": "IMAGE",
+      "src": "{{carImage}}",
+      "width": 1080,
+      "height": 1080,
+      "position": "center-center",
+      "resize": "cover",
+      "track": 0
+    },
+    {
+      "type": "SVG",
+      "width": 1080,
+      "height": 1080,
+      "position": "center-center",
+      "track": 1,
+      "svg": "<svg width='1080' height='1080' viewBox='0 0 1080 1080' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='sy' x1='0' y1='1' x2='0' y2='0'><stop offset='0' stop-color='{{ink}}' stop-opacity='0.95'/><stop offset='0.44' stop-color='{{ink}}' stop-opacity='0.5'/><stop offset='0.76' stop-color='{{ink}}' stop-opacity='0'/></linearGradient><linearGradient id='st' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='{{ink}}' stop-opacity='0.6'/><stop offset='0.24' stop-color='{{ink}}' stop-opacity='0'/></linearGradient></defs><rect width='1080' height='1080' fill='url(#st)'/><rect width='1080' height='1080' fill='url(#sy)'/></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 72,
+      "y": 72,
+      "width": 300,
+      "height": 46,
+      "anchor": "top-left",
+      "track": 4,
+      "svg": "<svg width='300' height='46' viewBox='0 0 300 46' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='16' width='40' height='4' rx='2' fill='{{accent}}'/><text x='54' y='28' font-family='Space Grotesk, Arial' font-size='22' font-weight='700' letter-spacing='3.5' fill='{{accent}}'>{{eyebrow}}</text></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 632,
+      "y": 150,
+      "width": 372,
+      "height": 168,
+      "anchor": "top-left",
+      "angle": -9,
+      "track": 5,
+      "svg": "<svg width='372' height='168' viewBox='0 0 372 168' xmlns='http://www.w3.org/2000/svg'><rect x='8' y='8' width='356' height='152' rx='18' fill='{{ink}}' fill-opacity='0.42' stroke='{{accent}}' stroke-width='5'/><rect x='24' y='24' width='324' height='120' rx='10' fill='none' stroke='{{accent}}' stroke-opacity='0.45' stroke-width='2'/><text x='186' y='120' font-family='Archivo, Arial' font-size='102' font-weight='800' letter-spacing='0.04em' fill='{{accent}}' text-anchor='middle'>{{stamp}}</text></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 68,
+      "y": 618,
+      "width": 900,
+      "anchor": "top-left",
+      "track": 6,
+      "style": { "fontFamily": "Archivo" },
+      "html": "<div style='font-size:104px; font-weight:800; line-height:0.92; letter-spacing:-0.03em; color:#FFFFFF;'>{{line1}}<br><span style='color:{{accent}};'>{{line2}}</span></div>"
+    },
+    {
+      "type": "TEXT",
+      "x": 72,
+      "y": 838,
+      "width": 820,
+      "anchor": "top-left",
+      "track": 6,
+      "text": "{{vehicle}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "29px",
+        "fontWeight": "500",
+        "letterSpacing": "0.01em",
+        "color": "#C4D4CA"
+      }
+    },
+    {
+      "type": "SVG",
+      "x": 72,
+      "y": 926,
+      "width": 452,
+      "height": 64,
+      "anchor": "top-left",
+      "track": 7,
+      "svg": "<svg width='452' height='64' viewBox='0 0 452 64' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='452' height='64' rx='32' fill='{{accent}}'/><text x='36' y='40' font-family='Space Grotesk, Arial' font-size='23' font-weight='700' letter-spacing='1.5' fill='{{ink}}'>{{cta}}</text><path d='M396 32 L420 32 M411 23 L420 32 L411 41' fill='none' stroke='{{ink}}' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'/></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 748,
+      "y": 936,
+      "width": 260,
+      "height": 44,
+      "anchor": "top-left",
+      "track": 7,
+      "svg": "<svg width='260' height='44' viewBox='0 0 260 44' xmlns='http://www.w3.org/2000/svg'><circle cx='20' cy='22' r='15' fill='{{accent}}'/><text x='20' y='29' font-family='Space Grotesk, Arial' font-size='16' font-weight='800' fill='{{ink}}' text-anchor='middle'>{{monogram}}</text><text x='260' y='29' font-family='Space Grotesk, Arial' font-size='19' font-weight='600' letter-spacing='0.5' fill='#FFFFFF' text-anchor='end'>{{dealerName}}</text></svg>"
+    }
+  ]
+}

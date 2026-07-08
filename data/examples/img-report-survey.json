@@ -1,0 +1,80 @@
+{
+  "type": "image",
+  "name": "img-report-survey",
+  "resolution": "twitter-landscape",
+  "outputFormat": "png",
+  "backgroundColor": "#EFEAE0",
+  "variables": {
+    "eyebrow": "SURVEY RESULTS · 2,480 RESPONSES",
+    "question": "How do teams create marketing video today?",
+    "opt1Label": "AI / automation tools",
+    "opt1Pct": "42%",
+    "opt2Label": "In-house editors",
+    "opt2Pct": "27%",
+    "opt3Label": "Freelancers or agency",
+    "opt3Pct": "18%",
+    "opt4Label": "Templates only",
+    "opt4Pct": "9%",
+    "opt5Label": "Not producing video yet",
+    "opt5Pct": "4%",
+    "footer": "2026 State of Video report",
+    "accent": "#7A2E2E"
+  },
+  "visuals": [
+    {
+      "type": "SVG",
+      "width": 1200,
+      "height": 675,
+      "position": "center-center",
+      "track": 0,
+      "svg": "<svg width='1200' height='675' viewBox='0 0 1200 675' xmlns='http://www.w3.org/2000/svg'><defs><radialGradient id='warm' cx='0.15' cy='0.12' r='0.7'><stop offset='0' stop-color='#E7DFCE' stop-opacity='0.9'/><stop offset='1' stop-color='#EFEAE0' stop-opacity='0'/></radialGradient></defs><rect width='1200' height='675' fill='#EFEAE0'/><rect width='1200' height='675' fill='url(#warm)'/><rect x='24' y='24' width='1152' height='627' rx='28' fill='none' stroke='#161310' stroke-opacity='0.1' stroke-width='1.5'/></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 72,
+      "y": 60,
+      "width": 460,
+      "height": 34,
+      "anchor": "top-left",
+      "track": 3,
+      "svg": "<svg width='460' height='34' viewBox='0 0 460 34' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='400' height='34' rx='17' fill='{{accent}}' fill-opacity='0.1' stroke='{{accent}}' stroke-opacity='0.4' stroke-width='1'/><circle cx='22' cy='17' r='4' fill='{{accent}}'/><text x='38' y='23' font-family='Space Grotesk, Arial' font-size='14' font-weight='600' letter-spacing='2' fill='{{accent}}'>{{eyebrow}}</text></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 72,
+      "y": 108,
+      "width": 940,
+      "anchor": "top-left",
+      "track": 4,
+      "text": "{{question}}",
+      "style": {
+        "fontFamily": "DM Serif Display",
+        "fontSize": "50px",
+        "fontWeight": "400",
+        "letterSpacing": "-0.005em",
+        "lineHeight": "1.06",
+        "color": "#161310"
+      }
+    },
+    {
+      "type": "SVG",
+      "x": 72,
+      "y": 296,
+      "width": 1056,
+      "height": 300,
+      "anchor": "top-left",
+      "track": 5,
+      "svg": "<svg width='1056' height='300' viewBox='0 0 1056 300' xmlns='http://www.w3.org/2000/svg'><g><text x='0' y='30' font-family='Space Grotesk, Arial' font-size='20' font-weight='600' fill='#161310'>{{opt1Label}}</text><rect x='300' y='14' width='600' height='20' rx='10' fill='#161310' fill-opacity='0.06'/><rect x='300' y='14' width='588' height='20' rx='10' fill='{{accent}}'/><text x='1056' y='31' font-family='Space Grotesk, Arial' font-size='22' font-weight='700' fill='#161310' text-anchor='end'>{{opt1Pct}}</text></g><g transform='translate(0,58)'><text x='0' y='30' font-family='Space Grotesk, Arial' font-size='20' font-weight='500' fill='#3A342B'>{{opt2Label}}</text><rect x='300' y='14' width='600' height='20' rx='10' fill='#161310' fill-opacity='0.06'/><rect x='300' y='14' width='378' height='20' rx='10' fill='{{accent}}' fill-opacity='0.82'/><text x='1056' y='31' font-family='Space Grotesk, Arial' font-size='22' font-weight='700' fill='#161310' text-anchor='end'>{{opt2Pct}}</text></g><g transform='translate(0,116)'><text x='0' y='30' font-family='Space Grotesk, Arial' font-size='20' font-weight='500' fill='#3A342B'>{{opt3Label}}</text><rect x='300' y='14' width='600' height='20' rx='10' fill='#161310' fill-opacity='0.06'/><rect x='300' y='14' width='252' height='20' rx='10' fill='{{accent}}' fill-opacity='0.66'/><text x='1056' y='31' font-family='Space Grotesk, Arial' font-size='22' font-weight='700' fill='#161310' text-anchor='end'>{{opt3Pct}}</text></g><g transform='translate(0,174)'><text x='0' y='30' font-family='Space Grotesk, Arial' font-size='20' font-weight='500' fill='#3A342B'>{{opt4Label}}</text><rect x='300' y='14' width='600' height='20' rx='10' fill='#161310' fill-opacity='0.06'/><rect x='300' y='14' width='126' height='20' rx='10' fill='{{accent}}' fill-opacity='0.5'/><text x='1056' y='31' font-family='Space Grotesk, Arial' font-size='22' font-weight='700' fill='#161310' text-anchor='end'>{{opt4Pct}}</text></g><g transform='translate(0,232)'><text x='0' y='30' font-family='Space Grotesk, Arial' font-size='20' font-weight='500' fill='#3A342B'>{{opt5Label}}</text><rect x='300' y='14' width='600' height='20' rx='10' fill='#161310' fill-opacity='0.06'/><rect x='300' y='14' width='56' height='20' rx='10' fill='{{accent}}' fill-opacity='0.38'/><text x='1056' y='31' font-family='Space Grotesk, Arial' font-size='22' font-weight='700' fill='#161310' text-anchor='end'>{{opt5Pct}}</text></g></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 72,
+      "y": 612,
+      "width": 500,
+      "height": 24,
+      "anchor": "top-left",
+      "track": 5,
+      "svg": "<svg width='500' height='24' viewBox='0 0 500 24' xmlns='http://www.w3.org/2000/svg'><circle cx='6' cy='12' r='4' fill='{{accent}}'/><text x='22' y='18' font-family='Space Grotesk, Arial' font-size='15' font-weight='500' letter-spacing='1' fill='#6B6357'>{{footer}}</text></svg>"
+    }
+  ]
+}

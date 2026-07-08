@@ -1,0 +1,146 @@
+{
+  "type": "image",
+  "name": "img-hr-role-comparison",
+  "resolution": "instagram-post",
+  "outputFormat": "png",
+  "backgroundColor": "#0C0E14",
+  "variables": {
+    "eyebrow": "WE'RE HIRING BOTH",
+    "roleA": "Frontend",
+    "roleB": "Backend",
+    "aDesc": "Craft the interface",
+    "bDesc": "Power the platform",
+    "aStack": "React · TypeScript · Next.js",
+    "bStack": "Go · PostgreSQL · gRPC",
+    "ctaLabel": "We hire both",
+    "applyUrl": "acme.dev/jobs",
+    "company": "Acme",
+    "monogram": "A",
+    "accent": "#5B8DEF",
+    "ink": "#0C0E14"
+  },
+  "visuals": [
+    {
+      "type": "SVG",
+      "width": 1080,
+      "height": 1080,
+      "position": "center-center",
+      "track": 0,
+      "svg": "<svg width='1080' height='1080' viewBox='0 0 1080 1080' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='bg' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#101528'/><stop offset='0.55' stop-color='#0C0E14'/><stop offset='1' stop-color='#090A0F'/></linearGradient><radialGradient id='gl' cx='0.5' cy='0.5' r='0.5'><stop offset='0' stop-color='#5B8DEF' stop-opacity='0.16'/><stop offset='1' stop-color='#5B8DEF' stop-opacity='0'/></radialGradient></defs><rect width='1080' height='1080' fill='url(#bg)'/><rect width='1080' height='1080' fill='url(#gl)'/><rect x='28' y='28' width='1024' height='1024' rx='30' fill='none' stroke='#FFFFFF' stroke-opacity='0.08' stroke-width='1.4'/><rect x='539' y='320' width='2' height='420' fill='#FFFFFF' fill-opacity='0.1'/></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 390,
+      "y": 96,
+      "width": 300,
+      "height": 48,
+      "anchor": "top-left",
+      "track": 3,
+      "svg": "<svg width='300' height='48' viewBox='0 0 300 48' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='300' height='48' rx='24' fill='{{accent}}' fill-opacity='0.16' stroke='{{accent}}' stroke-opacity='0.6' stroke-width='1.2'/><circle cx='30' cy='24' r='6' fill='{{accent}}'/><text x='150' y='31' font-family='Space Grotesk, Arial' font-size='19' font-weight='700' letter-spacing='2.5' fill='#C7D8FA' text-anchor='middle'>{{eyebrow}}</text></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 72,
+      "y": 360,
+      "width": 420,
+      "anchor": "top-left",
+      "track": 4,
+      "text": "01",
+      "style": {
+        "fontFamily": "IBM Plex Mono",
+        "fontSize": "30px",
+        "fontWeight": "600",
+        "letterSpacing": "0.1em",
+        "color": "#5B8DEF"
+      }
+    },
+    {
+      "type": "TEXT",
+      "x": 68,
+      "y": 400,
+      "width": 440,
+      "anchor": "top-left",
+      "track": 4,
+      "style": { "fontFamily": "Space Grotesk" },
+      "html": "<div style='font-size:86px; font-weight:800; line-height:0.96; letter-spacing:-0.03em; color:#F4F2FB;'>{{roleA}}</div><div style='margin-top:10px; font-size:27px; font-weight:500; color:#9AA3B4;'>{{aDesc}}</div>"
+    },
+    {
+      "type": "TEXT",
+      "x": 72,
+      "y": 588,
+      "width": 430,
+      "anchor": "top-left",
+      "track": 4,
+      "text": "{{aStack}}",
+      "style": {
+        "fontFamily": "IBM Plex Mono",
+        "fontSize": "26px",
+        "fontWeight": "500",
+        "lineHeight": "1.5",
+        "color": "#C7D8FA"
+      }
+    },
+    {
+      "type": "TEXT",
+      "x": 590,
+      "y": 360,
+      "width": 420,
+      "anchor": "top-left",
+      "track": 4,
+      "text": "02",
+      "style": {
+        "fontFamily": "IBM Plex Mono",
+        "fontSize": "30px",
+        "fontWeight": "600",
+        "letterSpacing": "0.1em",
+        "color": "#5B8DEF"
+      }
+    },
+    {
+      "type": "TEXT",
+      "x": 586,
+      "y": 400,
+      "width": 440,
+      "anchor": "top-left",
+      "track": 4,
+      "style": { "fontFamily": "Space Grotesk" },
+      "html": "<div style='font-size:86px; font-weight:800; line-height:0.96; letter-spacing:-0.03em; color:#F4F2FB;'>{{roleB}}</div><div style='margin-top:10px; font-size:27px; font-weight:500; color:#9AA3B4;'>{{bDesc}}</div>"
+    },
+    {
+      "type": "TEXT",
+      "x": 590,
+      "y": 588,
+      "width": 430,
+      "anchor": "top-left",
+      "track": 4,
+      "text": "{{bStack}}",
+      "style": {
+        "fontFamily": "IBM Plex Mono",
+        "fontSize": "26px",
+        "fontWeight": "500",
+        "lineHeight": "1.5",
+        "color": "#C7D8FA"
+      }
+    },
+    {
+      "type": "SVG",
+      "x": 480,
+      "y": 470,
+      "width": 120,
+      "height": 120,
+      "anchor": "top-left",
+      "track": 5,
+      "svg": "<svg width='120' height='120' viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'><circle cx='60' cy='60' r='42' fill='{{ink}}' stroke='{{accent}}' stroke-width='2'/><text x='60' y='72' font-family='Space Grotesk, Arial' font-size='30' font-weight='800' fill='{{accent}}' text-anchor='middle'>VS</text></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 300,
+      "y": 940,
+      "width": 480,
+      "height": 60,
+      "anchor": "top-left",
+      "track": 6,
+      "svg": "<svg width='480' height='60' viewBox='0 0 480 60' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='480' height='60' rx='30' fill='{{accent}}'/><text x='240' y='38' font-family='Space Grotesk, Arial' font-size='22' font-weight='700' fill='{{ink}}' text-anchor='middle'>{{ctaLabel}} · {{applyUrl}}</text></svg>"
+    }
+  ]
+}

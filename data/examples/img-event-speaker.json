@@ -1,0 +1,128 @@
+{
+  "type": "image",
+  "name": "img-event-speaker",
+  "resolution": "instagram-post",
+  "outputFormat": "png",
+  "backgroundColor": "#F5F1E8",
+  "variables": {
+    "tag": "SPEAKING",
+    "eventName": "FORGE SUMMIT 2026",
+    "speakerName": "Marcus Bennett",
+    "speakerRole": "Head of Product, Lumen AI",
+    "talkTitle": "Designing for the Agentic Era",
+    "sessionSlot": "Keynote · 10:30 AM · Main Stage",
+    "paper": "#F5F1E8",
+    "ink": "#191510",
+    "muted": "#6E6353",
+    "accent": "#1F3D2F",
+    "foil": "#B08948",
+    "portraitImage": "https://images.unsplash.com/photo-1762505465530-0584b9771329?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&ixid=M3w3MDgwMTZ8MHwxfHNlYXJjaHwxfHxidXNpbmVzcyUyMHBvcnRyYWl0JTIwc3R1ZGlvfGVufDB8fHx8MTc4MzUyNjg4Nnww&ixlib=rb-4.1.0&q=80&w=1600"
+  },
+  "visuals": [
+    {
+      "type": "SVG",
+      "width": 1080,
+      "height": 1080,
+      "position": "center-center",
+      "track": 0,
+      "svg": "<svg width='1080' height='1080' viewBox='0 0 1080 1080' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='bg' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#F8F4EC'/><stop offset='1' stop-color='#EFE9DB'/></linearGradient></defs><rect width='1080' height='1080' fill='url(#bg)'/><rect x='40' y='40' width='1000' height='1000' rx='26' fill='none' stroke='{{accent}}' stroke-opacity='0.28' stroke-width='1.5'/><rect x='40' y='40' width='1000' height='1000' rx='26' fill='none' stroke='{{foil}}' stroke-opacity='0.35' stroke-width='1' stroke-dasharray='2 8'/></svg>"
+    },
+    {
+      "type": "IMAGE",
+      "src": "{{portraitImage}}",
+      "width": 452,
+      "height": 560,
+      "x": 588,
+      "y": 300,
+      "anchor": "top-left",
+      "radius": { "tl": 24, "tr": 24, "bl": 24, "br": 24 },
+      "track": 3
+    },
+    {
+      "type": "SVG",
+      "x": 588,
+      "y": 300,
+      "width": 452,
+      "height": 560,
+      "anchor": "top-left",
+      "track": 4,
+      "svg": "<svg width='452' height='560' viewBox='0 0 452 560' xmlns='http://www.w3.org/2000/svg'><rect x='1' y='1' width='450' height='558' rx='24' fill='none' stroke='{{foil}}' stroke-width='2'/></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 80,
+      "y": 96,
+      "width": 400,
+      "height": 44,
+      "anchor": "top-left",
+      "track": 5,
+      "svg": "<svg width='400' height='44' viewBox='0 0 400 44' xmlns='http://www.w3.org/2000/svg'><line x1='2' y1='22' x2='40' y2='22' stroke='{{foil}}' stroke-width='2'/><text x='54' y='29' font-family='Space Grotesk, Arial' font-size='19' font-weight='600' letter-spacing='4' fill='{{muted}}'>{{eventName}}</text></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 80,
+      "y": 300,
+      "width": 250,
+      "height": 60,
+      "anchor": "top-left",
+      "track": 5,
+      "svg": "<svg width='250' height='60' viewBox='0 0 250 60' xmlns='http://www.w3.org/2000/svg'><rect x='1' y='1' width='196' height='58' rx='29' fill='{{accent}}'/><circle cx='36' cy='30' r='7' fill='{{foil}}'/><text x='58' y='38' font-family='Space Grotesk, Arial' font-size='20' font-weight='700' letter-spacing='3' fill='#F8F4EC'>{{tag}}</text></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 78,
+      "y": 400,
+      "width": 480,
+      "anchor": "top-left",
+      "track": 5,
+      "style": { "fontFamily": "Fraunces" },
+      "html": "<div style='font-size:74px; font-weight:600; line-height:0.98; letter-spacing:-0.02em; color:{{ink}};'>{{speakerName}}</div>"
+    },
+    {
+      "type": "TEXT",
+      "x": 80,
+      "y": 552,
+      "width": 470,
+      "anchor": "top-left",
+      "track": 5,
+      "text": "{{speakerRole}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "24px",
+        "fontWeight": "600",
+        "letterSpacing": "0.01em",
+        "color": "#6E6353"
+      }
+    },
+    {
+      "type": "SVG",
+      "x": 80,
+      "y": 632,
+      "width": 470,
+      "height": 2,
+      "anchor": "top-left",
+      "track": 5,
+      "svg": "<svg width='470' height='2' viewBox='0 0 470 2' xmlns='http://www.w3.org/2000/svg'><rect width='470' height='1' fill='{{ink}}' fill-opacity='0.14'/></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 78,
+      "y": 668,
+      "width": 470,
+      "anchor": "top-left",
+      "track": 5,
+      "style": { "fontFamily": "Fraunces" },
+      "html": "<div style='font-size:19px; font-weight:600; letter-spacing:0.22em; text-transform:uppercase; color:{{accent}};'>The Talk</div><div style='margin-top:10px; font-size:37px; font-weight:500; line-height:1.08; letter-spacing:-0.01em; color:{{ink}};'>{{talkTitle}}</div>"
+    },
+    {
+      "type": "SVG",
+      "x": 80,
+      "y": 936,
+      "width": 470,
+      "height": 40,
+      "anchor": "top-left",
+      "track": 5,
+      "svg": "<svg width='470' height='40' viewBox='0 0 470 40' xmlns='http://www.w3.org/2000/svg'><circle cx='8' cy='20' r='5' fill='{{foil}}'/><text x='26' y='27' font-family='Space Grotesk, Arial' font-size='20' font-weight='500' letter-spacing='0.5' fill='{{muted}}'>{{sessionSlot}}</text></svg>"
+    }
+  ]
+}

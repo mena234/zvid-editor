@@ -1,0 +1,181 @@
+{
+  "type": "image",
+  "name": "img-realty-luxury",
+  "resolution": "instagram-post",
+  "outputFormat": "png",
+  "backgroundColor": "#08080A",
+  "variables": {
+    "eyebrow": "PRIVATE COLLECTION",
+    "estate": "Maison Aurelia",
+    "location": "Bel-Air Crest · Los Angeles",
+    "descriptor": "Six bedrooms · Ocean view · 1.2 acres",
+    "price": "PRICE ON APPLICATION",
+    "ref": "REF · MA-0471",
+    "contact": "By private appointment only",
+    "brand": "AURELIA PRIVATE OFFICE",
+    "accent": "#C7A97B",
+    "propertyImage": "https://images.unsplash.com/photo-1706164971302-e30c0640cc3b?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&ixid=M3w3MDgwMTZ8MHwxfHNlYXJjaHwyfHxtb2Rlcm4lMjBob3VzZSUyMGV4dGVyaW9yJTIwZHVza3xlbnwwfHx8fDE3ODM1MjY5MjR8MA&ixlib=rb-4.1.0&q=80&w=1600"
+  },
+  "visuals": [
+    {
+      "type": "IMAGE",
+      "src": "{{propertyImage}}",
+      "width": 1080,
+      "height": 1080,
+      "position": "center-center",
+      "resize": "cover",
+      "track": 0
+    },
+    {
+      "type": "SVG",
+      "width": 1080,
+      "height": 1080,
+      "position": "center-center",
+      "track": 1,
+      "svg": "<svg width='1080' height='1080' viewBox='0 0 1080 1080' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='sy' x1='0' y1='1' x2='0' y2='0'><stop offset='0' stop-color='#08080A' stop-opacity='0.94'/><stop offset='0.4' stop-color='#08080A' stop-opacity='0.28'/><stop offset='0.7' stop-color='#08080A' stop-opacity='0.08'/><stop offset='1' stop-color='#08080A' stop-opacity='0.4'/></linearGradient></defs><rect width='1080' height='1080' fill='url(#sy)'/></svg>"
+    },
+    {
+      "type": "SVG",
+      "width": 1080,
+      "height": 1080,
+      "position": "center-center",
+      "track": 2,
+      "svg": "<svg width='1080' height='1080' viewBox='0 0 1080 1080' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='1080' height='128' fill='#08080A'/><rect x='0' y='952' width='1080' height='128' fill='#08080A'/><rect x='0' y='127' width='1080' height='1.5' fill='{{accent}}' fill-opacity='0.5'/><rect x='0' y='951.5' width='1080' height='1.5' fill='{{accent}}' fill-opacity='0.5'/></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 0,
+      "y": 52,
+      "width": 1080,
+      "anchor": "top-left",
+      "track": 5,
+      "text": "{{eyebrow}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "20px",
+        "fontWeight": "500",
+        "letterSpacing": "0.5em",
+        "color": "#C7A97B",
+        "textAlign": "center"
+      }
+    },
+    {
+      "type": "TEXT",
+      "x": 72,
+      "y": 548,
+      "width": 820,
+      "anchor": "top-left",
+      "track": 5,
+      "style": { "fontFamily": "Fraunces" },
+      "html": "<div style='font-size:98px; font-weight:500; line-height:0.98; letter-spacing:-0.01em; color:#F4EFE6;'>{{estate}}</div>"
+    },
+    {
+      "type": "TEXT",
+      "x": 74,
+      "y": 682,
+      "width": 720,
+      "anchor": "top-left",
+      "track": 5,
+      "text": "{{location}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "26px",
+        "fontWeight": "500",
+        "letterSpacing": "0.12em",
+        "color": "#D7CFC0"
+      }
+    },
+    {
+      "type": "TEXT",
+      "x": 74,
+      "y": 726,
+      "width": 720,
+      "anchor": "top-left",
+      "track": 5,
+      "text": "{{descriptor}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "22px",
+        "fontWeight": "400",
+        "letterSpacing": "0.02em",
+        "color": "#A9A296"
+      }
+    },
+    {
+      "type": "SVG",
+      "x": 74,
+      "y": 786,
+      "width": 600,
+      "height": 2,
+      "anchor": "top-left",
+      "track": 5,
+      "svg": "<svg width='600' height='2' viewBox='0 0 600 2' xmlns='http://www.w3.org/2000/svg'><rect width='600' height='1.4' fill='{{accent}}' fill-opacity='0.4'/></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 74,
+      "y": 812,
+      "width": 520,
+      "anchor": "top-left",
+      "track": 5,
+      "text": "{{price}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "24px",
+        "fontWeight": "600",
+        "letterSpacing": "0.18em",
+        "color": "#C7A97B"
+      }
+    },
+    {
+      "type": "TEXT",
+      "x": 560,
+      "y": 814,
+      "width": 448,
+      "anchor": "top-left",
+      "track": 5,
+      "text": "{{ref}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "20px",
+        "fontWeight": "500",
+        "letterSpacing": "0.16em",
+        "color": "#8F887C",
+        "textAlign": "right"
+      }
+    },
+    {
+      "type": "TEXT",
+      "x": 74,
+      "y": 858,
+      "width": 520,
+      "anchor": "top-left",
+      "track": 5,
+      "text": "{{contact}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "18px",
+        "fontWeight": "500",
+        "letterSpacing": "0.08em",
+        "color": "#8F887C"
+      }
+    },
+    {
+      "type": "TEXT",
+      "x": 0,
+      "y": 998,
+      "width": 1080,
+      "anchor": "top-left",
+      "track": 5,
+      "text": "{{brand}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "18px",
+        "fontWeight": "600",
+        "letterSpacing": "0.42em",
+        "color": "#B9B2A6",
+        "textAlign": "center"
+      }
+    }
+  ]
+}

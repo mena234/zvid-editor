@@ -1,0 +1,164 @@
+{
+  "type": "image",
+  "name": "img-app-certificate",
+  "resolution": "instagram-story",
+  "outputFormat": "png",
+  "backgroundColor": "#F5F1E8",
+  "variables": {
+    "eyebrow": "CERTIFICATE OF COMPLETION",
+    "presented": "THIS CERTIFIES THAT",
+    "recipient": "Jordan Rivera",
+    "achievement": "has successfully completed",
+    "courseName": "Advanced Motion Design",
+    "issuedLabel": "ISSUED",
+    "issuedDate": "April 12, 2026",
+    "signatory": "Head of Learning",
+    "brand": "zvid academy",
+    "ink": "#1C2A3A",
+    "foil": "#B08948",
+    "muted": "#6B7280"
+  },
+  "visuals": [
+    {
+      "type": "SVG",
+      "width": 1080,
+      "height": 1920,
+      "position": "center-center",
+      "track": 0,
+      "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='bg' x1='0' y1='0' x2='0.4' y2='1'><stop offset='0' stop-color='#FAF7F0'/><stop offset='1' stop-color='#EFE9DB'/></linearGradient><radialGradient id='g1' cx='0.5' cy='0.1' r='0.7'><stop offset='0' stop-color='{{foil}}' stop-opacity='0.16'/><stop offset='1' stop-color='{{foil}}' stop-opacity='0'/></radialGradient></defs><rect width='1080' height='1920' fill='url(#bg)'/><rect width='1080' height='1920' fill='url(#g1)'/><rect x='48' y='48' width='984' height='1824' rx='10' fill='none' stroke='{{foil}}' stroke-opacity='0.55' stroke-width='2'/><rect x='68' y='68' width='944' height='1784' rx='6' fill='none' stroke='{{ink}}' stroke-opacity='0.16' stroke-width='1'/><path d='M96 96 L156 96 M96 96 L96 156' stroke='{{foil}}' stroke-width='3' fill='none'/><path d='M984 96 L924 96 M984 96 L984 156' stroke='{{foil}}' stroke-width='3' fill='none'/><path d='M96 1824 L156 1824 M96 1824 L96 1764' stroke='{{foil}}' stroke-width='3' fill='none'/><path d='M984 1824 L924 1824 M984 1824 L984 1764' stroke='{{foil}}' stroke-width='3' fill='none'/></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 140,
+      "y": 320,
+      "width": 800,
+      "anchor": "top-left",
+      "track": 4,
+      "text": "{{eyebrow}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "30px",
+        "fontWeight": "600",
+        "letterSpacing": "0.42em",
+        "color": "{{foil}}",
+        "textAlign": "center"
+      }
+    },
+    {
+      "type": "SVG",
+      "x": 490,
+      "y": 388,
+      "width": 100,
+      "height": 20,
+      "anchor": "top-left",
+      "track": 4,
+      "svg": "<svg width='100' height='20' viewBox='0 0 100 20' xmlns='http://www.w3.org/2000/svg'><line x1='0' y1='10' x2='36' y2='10' stroke='{{foil}}' stroke-width='1.4'/><line x1='64' y1='10' x2='100' y2='10' stroke='{{foil}}' stroke-width='1.4'/><circle cx='50' cy='10' r='4' fill='{{foil}}'/></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 140,
+      "y": 500,
+      "width": 800,
+      "anchor": "top-left",
+      "track": 4,
+      "text": "{{presented}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "26px",
+        "fontWeight": "500",
+        "letterSpacing": "0.24em",
+        "color": "{{muted}}",
+        "textAlign": "center"
+      }
+    },
+    {
+      "type": "TEXT",
+      "x": 90,
+      "y": 566,
+      "width": 900,
+      "anchor": "top-left",
+      "track": 4,
+      "text": "{{recipient}}",
+      "style": {
+        "fontFamily": "Fraunces",
+        "fontSize": "128px",
+        "fontWeight": "600",
+        "letterSpacing": "-0.01em",
+        "lineHeight": "1.05",
+        "color": "{{ink}}",
+        "textAlign": "center"
+      }
+    },
+    {
+      "type": "TEXT",
+      "x": 140,
+      "y": 764,
+      "width": 800,
+      "anchor": "top-left",
+      "track": 4,
+      "text": "{{achievement}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "34px",
+        "fontWeight": "400",
+        "color": "{{muted}}",
+        "textAlign": "center"
+      }
+    },
+    {
+      "type": "TEXT",
+      "x": 120,
+      "y": 830,
+      "width": 840,
+      "anchor": "top-left",
+      "track": 4,
+      "text": "{{courseName}}",
+      "style": {
+        "fontFamily": "Fraunces",
+        "fontSize": "72px",
+        "fontWeight": "600",
+        "fontStyle": "italic",
+        "lineHeight": "1.12",
+        "color": "{{foil}}",
+        "textAlign": "center"
+      }
+    },
+    {
+      "type": "SVG",
+      "x": 400,
+      "y": 1340,
+      "width": 280,
+      "height": 280,
+      "anchor": "top-left",
+      "track": 5,
+      "svg": "<svg width='280' height='280' viewBox='0 0 280 280' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='seal' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#C9A55C'/><stop offset='1' stop-color='{{foil}}'/></linearGradient></defs><circle cx='140' cy='140' r='84' fill='url(#seal)'/><circle cx='140' cy='140' r='84' fill='none' stroke='#8A6A34' stroke-opacity='0.5' stroke-width='2'/><circle cx='140' cy='140' r='70' fill='none' stroke='#FBF5E7' stroke-opacity='0.7' stroke-width='1.5'/><polygon points='140,96 151,128 185,128 158,148 168,181 140,161 112,181 122,148 95,128 129,128' fill='#FBF5E7'/><polygon points='104,214 140,196 176,214 168,232 140,220 112,232' fill='url(#seal)'/></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 140,
+      "y": 1706,
+      "width": 800,
+      "height": 96,
+      "anchor": "top-left",
+      "track": 5,
+      "svg": "<svg width='800' height='96' viewBox='0 0 800 96' xmlns='http://www.w3.org/2000/svg'><line x1='0' y1='34' x2='300' y2='34' stroke='{{ink}}' stroke-opacity='0.28' stroke-width='1.2'/><line x1='500' y1='34' x2='800' y2='34' stroke='{{ink}}' stroke-opacity='0.28' stroke-width='1.2'/><text x='0' y='60' font-family='Space Grotesk, Arial' font-size='20' font-weight='600' letter-spacing='2' fill='#6B7280'>{{issuedLabel}}</text><text x='0' y='90' font-family='Space Grotesk, Arial' font-size='24' font-weight='600' fill='#1C2A3A'>{{issuedDate}}</text><text x='800' y='60' font-family='Space Grotesk, Arial' font-size='20' font-weight='600' letter-spacing='2' fill='#6B7280' text-anchor='end'>SIGNED</text><text x='800' y='90' font-family='Space Grotesk, Arial' font-size='24' font-weight='600' fill='#1C2A3A' text-anchor='end'>{{signatory}}</text></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 140,
+      "y": 224,
+      "width": 800,
+      "anchor": "top-left",
+      "track": 4,
+      "text": "{{brand}}",
+      "style": {
+        "fontFamily": "Fraunces",
+        "fontSize": "30px",
+        "fontWeight": "600",
+        "letterSpacing": "0.02em",
+        "color": "{{ink}}",
+        "textAlign": "center"
+      }
+    }
+  ]
+}

@@ -1,0 +1,100 @@
+{
+  "type": "image",
+  "name": "img-og-blog",
+  "resolution": "custom",
+  "width": 1200,
+  "height": 630,
+  "outputFormat": "png",
+  "backgroundColor": "#0E1015",
+  "variables": {
+    "category": "ENGINEERING",
+    "titleA": "Rendering 100 videos",
+    "titleB": "from a single",
+    "titleC": "JSON file",
+    "author": "Mina Nasser",
+    "domain": "zvid.io/blog",
+    "readTime": "6 min read",
+    "monogram": "Z",
+    "accent": "#8B7CF6"
+  },
+  "visuals": [
+    {
+      "type": "SVG",
+      "width": 1200,
+      "height": 630,
+      "position": "center-center",
+      "track": 0,
+      "svg": "<svg width='1200' height='630' viewBox='0 0 1200 630' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='bg' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#141026'/><stop offset='0.55' stop-color='#0E1015'/><stop offset='1' stop-color='#0B0B10'/></linearGradient><radialGradient id='glow' cx='0.82' cy='0.12' r='0.6'><stop offset='0' stop-color='#8B7CF6' stop-opacity='0.42'/><stop offset='1' stop-color='#8B7CF6' stop-opacity='0'/></radialGradient><radialGradient id='glow2' cx='0.05' cy='1' r='0.7'><stop offset='0' stop-color='#5B8DEF' stop-opacity='0.22'/><stop offset='1' stop-color='#5B8DEF' stop-opacity='0'/></radialGradient></defs><rect width='1200' height='630' fill='url(#bg)'/><rect width='1200' height='630' fill='url(#glow)'/><rect width='1200' height='630' fill='url(#glow2)'/><rect x='24' y='24' width='1152' height='582' rx='28' fill='none' stroke='#FFFFFF' stroke-opacity='0.08' stroke-width='1.5'/></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 72,
+      "y": 72,
+      "width": 260,
+      "height": 44,
+      "anchor": "top-left",
+      "track": 3,
+      "svg": "<svg width='260' height='44' viewBox='0 0 260 44' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='232' height='44' rx='22' fill='#8B7CF6' fill-opacity='0.14' stroke='#8B7CF6' stroke-opacity='0.5' stroke-width='1.2'/><circle cx='28' cy='22' r='5' fill='{{accent}}'/><text x='48' y='29' font-family='Space Grotesk, Arial' font-size='18' font-weight='600' letter-spacing='2.5' fill='#C9C2F5'>{{category}}</text></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 1040,
+      "y": 74,
+      "width": 96,
+      "height": 40,
+      "anchor": "top-left",
+      "track": 3,
+      "svg": "<svg width='96' height='40' viewBox='0 0 96 40' xmlns='http://www.w3.org/2000/svg'><circle cx='12' cy='20' r='7' fill='{{accent}}'/><text x='28' y='27' font-family='Space Grotesk, Arial' font-size='22' font-weight='700' letter-spacing='0.5' fill='#FFFFFF'>zvid</text></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 72,
+      "y": 168,
+      "width": 1000,
+      "anchor": "top-left",
+      "track": 5,
+      "style": { "fontFamily": "Fraunces" },
+      "html": "<div style='font-size:82px; font-weight:600; line-height:1.02; letter-spacing:-0.015em; color:#F4F2FB;'>{{titleA}}<br>{{titleB}} <span style='color:{{accent}};'>{{titleC}}</span></div>"
+    },
+    {
+      "type": "SVG",
+      "x": 72,
+      "y": 486,
+      "width": 1056,
+      "height": 2,
+      "anchor": "top-left",
+      "track": 6,
+      "svg": "<svg width='1056' height='2' viewBox='0 0 1056 2' xmlns='http://www.w3.org/2000/svg'><rect width='1056' height='1' y='0' fill='#FFFFFF' fill-opacity='0.1'/></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 72,
+      "y": 520,
+      "width": 60,
+      "height": 60,
+      "anchor": "top-left",
+      "track": 7,
+      "svg": "<svg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='mg' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#8B7CF6'/><stop offset='1' stop-color='#5B8DEF'/></linearGradient></defs><circle cx='30' cy='30' r='30' fill='url(#mg)'/><text x='30' y='40' font-family='Space Grotesk, Arial' font-size='28' font-weight='700' fill='#0B0B10' text-anchor='middle'>{{monogram}}</text></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 148,
+      "y": 524,
+      "width": 500,
+      "anchor": "top-left",
+      "track": 7,
+      "style": { "fontFamily": "Space Grotesk" },
+      "html": "<div style='font-size:24px; font-weight:600; color:#F4F2FB;'>{{author}}</div><div style='margin-top:4px; font-size:19px; font-weight:500; color:#8F8CA3;'>{{domain}}</div>"
+    },
+    {
+      "type": "SVG",
+      "x": 940,
+      "y": 526,
+      "width": 188,
+      "height": 48,
+      "anchor": "top-left",
+      "track": 7,
+      "svg": "<svg width='188' height='48' viewBox='0 0 188 48' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='188' height='48' rx='24' fill='#FFFFFF' fill-opacity='0.06' stroke='#FFFFFF' stroke-opacity='0.12' stroke-width='1'/><circle cx='28' cy='24' r='9' fill='none' stroke='{{accent}}' stroke-width='2'/><path d='M28 19 L28 24 L31 27' fill='none' stroke='{{accent}}' stroke-width='2' stroke-linecap='round'/><text x='50' y='31' font-family='Space Grotesk, Arial' font-size='18' font-weight='500' fill='#C9C6D6'>{{readTime}}</text></svg>"
+    }
+  ]
+}

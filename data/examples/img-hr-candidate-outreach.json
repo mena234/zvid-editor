@@ -1,0 +1,113 @@
+{
+  "type": "image",
+  "name": "img-hr-candidate-outreach",
+  "resolution": "instagram-post",
+  "outputFormat": "png",
+  "backgroundColor": "#0E1210",
+  "variables": {
+    "recruiterName": "Priya Nair",
+    "recruiterTitle": "Talent Partner · Acme",
+    "statusLabel": "Online now",
+    "greeting": "Hi",
+    "candidateName": "Alex",
+    "roleTitle": "Senior iOS Engineer",
+    "pitch": "Your work on offline-first apps is exactly what we're building next. Open to a quick chat this week?",
+    "ctaLabel": "Let's talk",
+    "replyHint": "Usually replies within a day",
+    "monogram": "P",
+    "accent": "#34D399",
+    "ink": "#0E1210"
+  },
+  "visuals": [
+    {
+      "type": "SVG",
+      "width": 1080,
+      "height": 1080,
+      "position": "center-center",
+      "track": 0,
+      "svg": "<svg width='1080' height='1080' viewBox='0 0 1080 1080' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='bg' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#0F1B17'/><stop offset='0.6' stop-color='#0E1210'/><stop offset='1' stop-color='#0A0D0B'/></linearGradient><radialGradient id='gl' cx='0.85' cy='0.12' r='0.65'><stop offset='0' stop-color='#34D399' stop-opacity='0.24'/><stop offset='1' stop-color='#34D399' stop-opacity='0'/></radialGradient></defs><rect width='1080' height='1080' fill='url(#bg)'/><rect width='1080' height='1080' fill='url(#gl)'/><rect x='28' y='28' width='1024' height='1024' rx='32' fill='none' stroke='#FFFFFF' stroke-opacity='0.08' stroke-width='1.4'/></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 72,
+      "y": 92,
+      "width": 700,
+      "height": 96,
+      "anchor": "top-left",
+      "track": 3,
+      "svg": "<svg width='700' height='96' viewBox='0 0 700 96' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='av' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#34D399'/><stop offset='1' stop-color='#2AA9C4'/></linearGradient></defs><circle cx='40' cy='48' r='40' fill='url(#av)'/><text x='40' y='60' font-family='Space Grotesk, Arial' font-size='34' font-weight='700' fill='{{ink}}' text-anchor='middle'>{{monogram}}</text><text x='104' y='42' font-family='Space Grotesk, Arial' font-size='30' font-weight='700' fill='#F4F2FB'>{{recruiterName}}</text><text x='104' y='76' font-family='Space Grotesk, Arial' font-size='21' font-weight='500' fill='#8FA79B'>{{recruiterTitle}}</text><circle cx='560' cy='40' r='6' fill='{{accent}}'/><text x='576' y='47' font-family='Space Grotesk, Arial' font-size='19' font-weight='600' fill='{{accent}}'>{{statusLabel}}</text></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 72,
+      "y": 248,
+      "width": 936,
+      "height": 560,
+      "anchor": "top-left",
+      "track": 4,
+      "svg": "<svg width='936' height='560' viewBox='0 0 936 560' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='24' width='936' height='536' rx='34' fill='#FFFFFF' fill-opacity='0.05' stroke='#FFFFFF' stroke-opacity='0.1' stroke-width='1.2'/><path d='M64 40 L64 0 L108 40 Z' fill='#FFFFFF' fill-opacity='0.05'/></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 116,
+      "y": 306,
+      "width": 848,
+      "anchor": "top-left",
+      "track": 5,
+      "style": { "fontFamily": "Sora" },
+      "html": "<div style='font-size:76px; font-weight:800; line-height:1.0; letter-spacing:-0.03em; color:#F4F2FB;'>{{greeting}} <span style='color:{{accent}};'>{{candidateName}}</span></div>"
+    },
+    {
+      "type": "SVG",
+      "x": 116,
+      "y": 430,
+      "width": 360,
+      "height": 48,
+      "anchor": "top-left",
+      "track": 5,
+      "svg": "<svg width='360' height='48' viewBox='0 0 360 48' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='360' height='48' rx='24' fill='{{accent}}' fill-opacity='0.14' stroke='{{accent}}' stroke-opacity='0.5' stroke-width='1.2'/><circle cx='30' cy='24' r='6' fill='{{accent}}'/><text x='48' y='31' font-family='Space Grotesk, Arial' font-size='20' font-weight='600' letter-spacing='0.5' fill='#BFF0DC'>{{roleTitle}}</text></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 116,
+      "y": 512,
+      "width": 812,
+      "anchor": "top-left",
+      "track": 5,
+      "text": "{{pitch}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "34px",
+        "fontWeight": "500",
+        "lineHeight": "1.42",
+        "color": "#C6D4CD"
+      }
+    },
+    {
+      "type": "SVG",
+      "x": 116,
+      "y": 700,
+      "width": 400,
+      "height": 60,
+      "anchor": "top-left",
+      "track": 5,
+      "svg": "<svg width='400' height='60' viewBox='0 0 400 60' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='260' height='60' rx='30' fill='{{accent}}'/><text x='34' y='38' font-family='Space Grotesk, Arial' font-size='22' font-weight='700' fill='{{ink}}'>{{ctaLabel}}</text><circle cx='226' cy='30' r='15' fill='{{ink}}'/><path d='M220 30 L232 30 M227 25 L233 30 L227 35' fill='none' stroke='{{accent}}' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 116,
+      "y": 900,
+      "width": 800,
+      "anchor": "top-left",
+      "track": 6,
+      "text": "{{replyHint}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "21px",
+        "fontWeight": "500",
+        "letterSpacing": "0.02em",
+        "color": "#7C918A"
+      }
+    }
+  ]
+}

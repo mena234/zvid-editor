@@ -1,0 +1,117 @@
+{
+  "type": "image",
+  "name": "img-event-conference",
+  "resolution": "instagram-post",
+  "outputFormat": "png",
+  "backgroundColor": "#F3ECE1",
+  "variables": {
+    "edition": "7TH EDITION",
+    "nameA": "HORIZON",
+    "nameB": "SUMMIT",
+    "tagline": "Where builders, designers & founders meet.",
+    "dateVenue": "OCT 02–04 · 2026 · LISBON",
+    "venueHall": "Centro de Congressos",
+    "footerLeft": "horizonsummit.io",
+    "footerRight": "#HORIZON26",
+    "paper": "#F3ECE1",
+    "ink": "#17120C",
+    "muted": "#6B5E4C",
+    "accent": "#7A2E2E",
+    "foil": "#B08948"
+  },
+  "visuals": [
+    {
+      "type": "SVG",
+      "width": 1080,
+      "height": 1080,
+      "position": "center-center",
+      "track": 0,
+      "svg": "<svg width='1080' height='1080' viewBox='0 0 1080 1080' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='bg' x1='0' y1='0' x2='0.6' y2='1'><stop offset='0' stop-color='#F7F1E7'/><stop offset='1' stop-color='#ECE3D4'/></linearGradient></defs><rect width='1080' height='1080' fill='url(#bg)'/><rect x='0' y='0' width='1080' height='150' fill='{{accent}}'/><rect x='0' y='930' width='1080' height='150' fill='{{accent}}'/><line x1='80' y1='250' x2='1000' y2='250' stroke='{{ink}}' stroke-opacity='0.16' stroke-width='1'/><line x1='80' y1='830' x2='1000' y2='830' stroke='{{ink}}' stroke-opacity='0.16' stroke-width='1'/></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 80,
+      "y": 60,
+      "width": 400,
+      "height": 40,
+      "anchor": "top-left",
+      "track": 4,
+      "svg": "<svg width='400' height='40' viewBox='0 0 400 40' xmlns='http://www.w3.org/2000/svg'><circle cx='8' cy='20' r='6' fill='{{foil}}'/><text x='26' y='27' font-family='Space Grotesk, Arial' font-size='19' font-weight='600' letter-spacing='4' fill='#F3ECE1'>{{edition}}</text></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 820,
+      "y": 62,
+      "width": 200,
+      "anchor": "top-left",
+      "track": 4,
+      "text": "{{footerRight}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "20px",
+        "fontWeight": "600",
+        "letterSpacing": "0.14em",
+        "textAlign": "right",
+        "color": "#F3ECE1"
+      }
+    },
+    {
+      "type": "TEXT",
+      "x": 40,
+      "y": 300,
+      "width": 1000,
+      "anchor": "top-left",
+      "track": 5,
+      "style": { "fontFamily": "Playfair Display" },
+      "html": "<div style='font-size:180px; font-weight:800; line-height:0.88; letter-spacing:-0.02em; text-align:center; color:{{ink}};'>{{nameA}}<br><span style='color:{{accent}};'>{{nameB}}</span></div>"
+    },
+    {
+      "type": "SVG",
+      "x": 465,
+      "y": 636,
+      "width": 150,
+      "height": 30,
+      "anchor": "top-left",
+      "track": 5,
+      "svg": "<svg width='150' height='30' viewBox='0 0 150 30' xmlns='http://www.w3.org/2000/svg'><line x1='0' y1='15' x2='55' y2='15' stroke='{{foil}}' stroke-width='2'/><circle cx='75' cy='15' r='5' fill='{{foil}}'/><line x1='95' y1='15' x2='150' y2='15' stroke='{{foil}}' stroke-width='2'/></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 140,
+      "y": 690,
+      "width": 800,
+      "anchor": "top-left",
+      "track": 5,
+      "text": "{{tagline}}",
+      "style": {
+        "fontFamily": "Playfair Display",
+        "fontSize": "34px",
+        "fontWeight": "500",
+        "fontStyle": "italic",
+        "lineHeight": "1.2",
+        "textAlign": "center",
+        "color": "#6B5E4C"
+      }
+    },
+    {
+      "type": "TEXT",
+      "x": 40,
+      "y": 872,
+      "width": 1000,
+      "anchor": "top-left",
+      "track": 5,
+      "style": { "fontFamily": "Space Grotesk" },
+      "html": "<div style='font-size:30px; font-weight:700; letter-spacing:0.14em; text-align:center; color:{{ink}};'>{{dateVenue}}</div><div style='margin-top:6px; font-size:20px; font-weight:500; letter-spacing:0.06em; text-align:center; color:#6B5E4C;'>{{venueHall}}</div>"
+    },
+    {
+      "type": "SVG",
+      "x": 80,
+      "y": 985,
+      "width": 400,
+      "height": 40,
+      "anchor": "top-left",
+      "track": 6,
+      "svg": "<svg width='400' height='40' viewBox='0 0 400 40' xmlns='http://www.w3.org/2000/svg'><circle cx='8' cy='20' r='6' fill='{{foil}}'/><text x='26' y='27' font-family='Space Grotesk, Arial' font-size='21' font-weight='600' letter-spacing='0.5' fill='#F3ECE1'>{{footerLeft}}</text></svg>"
+    }
+  ]
+}

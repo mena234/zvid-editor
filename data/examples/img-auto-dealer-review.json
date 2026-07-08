@@ -1,0 +1,113 @@
+{
+  "type": "image",
+  "name": "img-auto-dealer-review",
+  "resolution": "instagram-post",
+  "outputFormat": "png",
+  "backgroundColor": "#0B0A08",
+  "variables": {
+    "ratingLabel": "5.0 ON GOOGLE",
+    "quote": "Best car-buying experience I've had. No pressure, a fair price, and I drove home the same afternoon.",
+    "reviewer": "Marcus Reeves",
+    "reviewerMeta": "Verified buyer · 2024 Toyota RAV4",
+    "dealerName": "HALLMARK MOTORS",
+    "monogram": "H",
+    "accent": "#E9C46A",
+    "ink": "#0B0A08",
+    "carImage": "https://images.pexels.com/photos/3457780/pexels-photo-3457780.jpeg?auto=compress&cs=tinysrgb&w=1620"
+  },
+  "visuals": [
+    {
+      "type": "IMAGE",
+      "src": "{{carImage}}",
+      "width": 1080,
+      "height": 1080,
+      "position": "center-center",
+      "resize": "cover",
+      "track": 0
+    },
+    {
+      "type": "SVG",
+      "width": 1080,
+      "height": 1080,
+      "position": "center-center",
+      "track": 1,
+      "svg": "<svg width='1080' height='1080' viewBox='0 0 1080 1080' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='sy' x1='0' y1='1' x2='0' y2='0'><stop offset='0' stop-color='{{ink}}' stop-opacity='0.94'/><stop offset='0.5' stop-color='{{ink}}' stop-opacity='0.68'/><stop offset='1' stop-color='{{ink}}' stop-opacity='0.42'/></linearGradient><linearGradient id='st' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='{{ink}}' stop-opacity='0.72'/><stop offset='0.3' stop-color='{{ink}}' stop-opacity='0.28'/></linearGradient></defs><rect width='1080' height='1080' fill='url(#st)'/><rect width='1080' height='1080' fill='url(#sy)'/></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 72,
+      "y": 452,
+      "width": 320,
+      "height": 60,
+      "anchor": "top-left",
+      "track": 5,
+      "svg": "<svg width='320' height='60' viewBox='0 0 320 60' xmlns='http://www.w3.org/2000/svg'><g fill='{{accent}}'><polygon points='26,4 33,20 50,21 37,32 41,49 26,39 11,49 15,32 2,21 19,20'/><polygon points='80,4 87,20 104,21 91,32 95,49 80,39 65,49 69,32 56,21 73,20'/><polygon points='134,4 141,20 158,21 145,32 149,49 134,39 119,49 123,32 110,21 127,20'/><polygon points='188,4 195,20 212,21 199,32 203,49 188,39 173,49 177,32 164,21 181,20'/><polygon points='242,4 249,20 266,21 253,32 257,49 242,39 227,49 231,32 218,21 235,20'/></g></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 72,
+      "y": 300,
+      "width": 240,
+      "anchor": "top-left",
+      "track": 5,
+      "text": "{{ratingLabel}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "22px",
+        "fontWeight": "700",
+        "letterSpacing": "0.28em",
+        "color": "{{accent}}"
+      }
+    },
+    {
+      "type": "SVG",
+      "x": 70,
+      "y": 512,
+      "width": 120,
+      "height": 90,
+      "anchor": "top-left",
+      "track": 5,
+      "svg": "<svg width='120' height='90' viewBox='0 0 120 90' xmlns='http://www.w3.org/2000/svg'><text x='0' y='96' font-family='Fraunces, Georgia' font-size='150' font-weight='700' fill='{{accent}}'>“</text></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 68,
+      "y": 588,
+      "width": 900,
+      "anchor": "top-left",
+      "track": 5,
+      "style": { "fontFamily": "Fraunces" },
+      "html": "<div style='font-size:60px; font-weight:600; line-height:1.08; letter-spacing:-0.01em; color:#F7F4EE;'>{{quote}}</div>"
+    },
+    {
+      "type": "SVG",
+      "x": 72,
+      "y": 938,
+      "width": 60,
+      "height": 60,
+      "anchor": "top-left",
+      "track": 6,
+      "svg": "<svg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'><circle cx='30' cy='30' r='30' fill='{{accent}}'/><text x='30' y='40' font-family='Fraunces, Georgia' font-size='28' font-weight='700' fill='{{ink}}' text-anchor='middle'>{{monogram}}</text></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 150,
+      "y": 940,
+      "width": 620,
+      "anchor": "top-left",
+      "track": 6,
+      "style": { "fontFamily": "Space Grotesk" },
+      "html": "<div style='font-size:26px; font-weight:700; color:#FFFFFF;'>{{reviewer}}</div><div style='margin-top:3px; font-size:19px; font-weight:500; color:#B4B0A4;'>{{reviewerMeta}}</div>"
+    },
+    {
+      "type": "SVG",
+      "x": 748,
+      "y": 950,
+      "width": 260,
+      "height": 44,
+      "anchor": "top-left",
+      "track": 6,
+      "svg": "<svg width='260' height='44' viewBox='0 0 260 44' xmlns='http://www.w3.org/2000/svg'><rect x='1' y='1' width='258' height='42' rx='21' fill='none' stroke='#FFFFFF' stroke-opacity='0.16' stroke-width='1.2'/><text x='130' y='29' font-family='Space Grotesk, Arial' font-size='19' font-weight='600' letter-spacing='1.5' fill='#E7E1D6' text-anchor='middle'>{{dealerName}}</text></svg>"
+    }
+  ]
+}

@@ -1,0 +1,120 @@
+{
+  "type": "image",
+  "name": "img-saas-metric-milestone",
+  "resolution": "custom",
+  "width": 1200,
+  "height": 630,
+  "outputFormat": "png",
+  "backgroundColor": "#0A0810",
+  "variables": {
+    "eyebrow": "MILESTONE UNLOCKED",
+    "bigNumber": "1,000,000",
+    "unit": "API calls served",
+    "sub": "Every one rendered on zvid — thank you for building with us.",
+    "stat1": "since launch",
+    "stat2": "+240% this quarter",
+    "brand": "zvid",
+    "accent": "#E879F9",
+    "headingColor": "#FFFFFF",
+    "subColor": "#B7AEC2"
+  },
+  "visuals": [
+    {
+      "type": "SVG",
+      "width": 1200,
+      "height": 630,
+      "position": "center-center",
+      "track": 0,
+      "svg": "<svg width='1200' height='630' viewBox='0 0 1200 630' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='bg' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#17102A'/><stop offset='0.55' stop-color='#0A0810'/><stop offset='1' stop-color='#080610'/></linearGradient><radialGradient id='glow' cx='0.5' cy='0.4' r='0.6'><stop offset='0' stop-color='#E879F9' stop-opacity='0.3'/><stop offset='1' stop-color='#E879F9' stop-opacity='0'/></radialGradient></defs><rect width='1200' height='630' fill='url(#bg)'/><rect width='1200' height='630' fill='url(#glow)'/><g fill='#E879F9'><circle cx='150' cy='120' r='4' opacity='0.7'/><circle cx='1040' cy='96' r='5' opacity='0.6'/><circle cx='980' cy='210' r='3' opacity='0.5'/><circle cx='220' cy='260' r='3' opacity='0.5'/><circle cx='1080' cy='420' r='4' opacity='0.55'/><circle cx='120' cy='430' r='5' opacity='0.5'/></g><g fill='#FFFFFF'><circle cx='300' cy='110' r='2.5' opacity='0.5'/><circle cx='900' cy='150' r='2.5' opacity='0.45'/><circle cx='1010' cy='510' r='3' opacity='0.4'/><circle cx='190' cy='520' r='3' opacity='0.4'/></g><rect x='24' y='24' width='1152' height='582' rx='28' fill='none' stroke='#FFFFFF' stroke-opacity='0.07' stroke-width='1.5'/></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 600,
+      "y": 116,
+      "width": 700,
+      "anchor": "top-center",
+      "track": 4,
+      "text": "{{eyebrow}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "24px",
+        "fontWeight": "600",
+        "letterSpacing": "0.36em",
+        "textAlign": "center",
+        "color": "#E879F9"
+      }
+    },
+    {
+      "type": "TEXT",
+      "x": 600,
+      "y": 168,
+      "width": 1120,
+      "anchor": "top-center",
+      "track": 5,
+      "text": "{{bigNumber}}",
+      "style": {
+        "fontFamily": "Anton",
+        "fontSize": "196px",
+        "fontWeight": "400",
+        "lineHeight": "1.0",
+        "letterSpacing": "-0.01em",
+        "textAlign": "center",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "type": "SVG",
+      "x": 600,
+      "y": 398,
+      "width": 120,
+      "height": 6,
+      "anchor": "top-center",
+      "track": 5,
+      "svg": "<svg width='120' height='6' viewBox='0 0 120 6' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='120' height='6' rx='3' fill='{{accent}}'/></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 600,
+      "y": 420,
+      "width": 900,
+      "anchor": "top-center",
+      "track": 5,
+      "text": "{{unit}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "38px",
+        "fontWeight": "600",
+        "letterSpacing": "0.02em",
+        "textAlign": "center",
+        "color": "#F1EAF5"
+      }
+    },
+    {
+      "type": "TEXT",
+      "x": 600,
+      "y": 480,
+      "width": 760,
+      "anchor": "top-center",
+      "track": 5,
+      "text": "{{sub}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "23px",
+        "fontWeight": "500",
+        "lineHeight": "1.4",
+        "textAlign": "center",
+        "color": "#B7AEC2"
+      }
+    },
+    {
+      "type": "SVG",
+      "x": 600,
+      "y": 548,
+      "width": 460,
+      "height": 40,
+      "anchor": "top-center",
+      "track": 6,
+      "svg": "<svg width='460' height='40' viewBox='0 0 460 40' xmlns='http://www.w3.org/2000/svg'><circle cx='104' cy='20' r='4' fill='{{accent}}'/><text x='118' y='26' font-family='Space Grotesk, Arial' font-size='18' font-weight='500' fill='#B7AEC2'>{{stat1}}</text><circle cx='262' cy='20' r='4' fill='{{accent}}'/><text x='276' y='26' font-family='Space Grotesk, Arial' font-size='18' font-weight='500' fill='#B7AEC2'>{{stat2}}</text></svg>"
+    }
+  ]
+}

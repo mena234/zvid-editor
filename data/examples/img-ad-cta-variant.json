@@ -1,0 +1,104 @@
+{
+  "type": "image",
+  "name": "img-ad-cta-variant",
+  "resolution": "instagram-post",
+  "outputFormat": "png",
+  "backgroundColor": "#170E14",
+  "variables": {
+    "eyebrow": "CTA TEST",
+    "brand": "pulse",
+    "headlineA": "Same ad.",
+    "headlineB": "Different button.",
+    "ctaA": "Start free trial",
+    "ctaB": "Get 20% off today",
+    "caption": "which converts?",
+    "accent": "#FF4D8D",
+    "ink": "#170E14",
+    "textColor": "#FDEBF1",
+    "mutedColor": "#C79FB2",
+    "bg1": "#3A1430",
+    "bg2": "#120A10",
+    "productImage": "https://images.pexels.com/photos/24602075/pexels-photo-24602075.jpeg?auto=compress&cs=tinysrgb&w=1600"
+  },
+  "visuals": [
+    {
+      "type": "SVG",
+      "width": 1080,
+      "height": 1080,
+      "position": "center-center",
+      "track": 0,
+      "svg": "<svg width='1080' height='1080' viewBox='0 0 1080 1080' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='bg' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='{{bg1}}'/><stop offset='0.55' stop-color='#170E14'/><stop offset='1' stop-color='{{bg2}}'/></linearGradient><radialGradient id='g1' cx='0.85' cy='0.12' r='0.6'><stop offset='0' stop-color='{{accent}}' stop-opacity='0.34'/><stop offset='1' stop-color='{{accent}}' stop-opacity='0'/></radialGradient><radialGradient id='g2' cx='0.1' cy='0.95' r='0.7'><stop offset='0' stop-color='#FFB05E' stop-opacity='0.18'/><stop offset='1' stop-color='#FFB05E' stop-opacity='0'/></radialGradient></defs><rect width='1080' height='1080' fill='url(#bg)'/><rect width='1080' height='1080' fill='url(#g1)'/><rect width='1080' height='1080' fill='url(#g2)'/><rect x='28' y='28' width='1024' height='1024' rx='34' fill='none' stroke='#FFFFFF' stroke-opacity='0.08' stroke-width='1.5'/></svg>"
+    },
+    {
+      "type": "IMAGE",
+      "src": "{{productImage}}",
+      "x": 740,
+      "y": 150,
+      "width": 260,
+      "height": 260,
+      "anchor": "top-left",
+      "radius": { "tl": 24, "tr": 24, "bl": 24, "br": 24 },
+      "track": 3
+    },
+    {
+      "type": "SVG",
+      "x": 80,
+      "y": 80,
+      "width": 180,
+      "height": 44,
+      "anchor": "top-left",
+      "track": 4,
+      "svg": "<svg width='180' height='44' viewBox='0 0 180 44' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='180' height='44' rx='22' fill='{{accent}}' fill-opacity='0.18' stroke='{{accent}}' stroke-opacity='0.6' stroke-width='1.2'/><circle cx='24' cy='22' r='6' fill='{{accent}}'/><text x='44' y='29' font-family='Space Grotesk, Arial' font-size='16' font-weight='600' letter-spacing='2.4' fill='{{accent}}'>{{eyebrow}}</text></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 820,
+      "y": 88,
+      "width": 180,
+      "height": 44,
+      "anchor": "top-left",
+      "track": 4,
+      "svg": "<svg width='180' height='44' viewBox='0 0 180 44' xmlns='http://www.w3.org/2000/svg'><circle cx='16' cy='22' r='6' fill='{{accent}}'/><text x='36' y='29' font-family='Space Grotesk, Arial' font-size='19' font-weight='600' letter-spacing='0.5' fill='{{textColor}}'>{{brand}}</text></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 80,
+      "y": 190,
+      "width": 620,
+      "anchor": "top-left",
+      "track": 5,
+      "style": { "fontFamily": "Instrument Serif" },
+      "html": "<div style='font-size:96px; font-weight:400; line-height:0.98; letter-spacing:-0.01em; color:{{textColor}};'>{{headlineA}}<br><span style='color:{{accent}};'>{{headlineB}}</span></div>"
+    },
+    {
+      "type": "SVG",
+      "x": 220,
+      "y": 556,
+      "width": 640,
+      "height": 116,
+      "anchor": "top-left",
+      "track": 6,
+      "svg": "<svg width='640' height='116' viewBox='0 0 640 116' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='640' height='116' rx='58' fill='{{accent}}'/><circle cx='58' cy='58' r='22' fill='{{ink}}' fill-opacity='0.18'/><text x='58' y='67' font-family='Space Grotesk, Arial' font-size='24' font-weight='800' fill='{{ink}}' text-anchor='middle'>A</text><text x='344' y='70' font-family='Space Grotesk, Arial' font-size='36' font-weight='700' fill='{{ink}}' text-anchor='middle' letter-spacing='0.2'>{{ctaA}}</text></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 220,
+      "y": 692,
+      "width": 640,
+      "height": 100,
+      "anchor": "top-left",
+      "track": 6,
+      "svg": "<svg width='640' height='100' viewBox='0 0 640 100' xmlns='http://www.w3.org/2000/svg'><rect x='2' y='2' width='636' height='96' rx='48' fill='#FFFFFF' fill-opacity='0.04' stroke='{{accent}}' stroke-opacity='0.6' stroke-width='1.8'/><circle cx='50' cy='50' r='20' fill='{{accent}}' fill-opacity='0.16'/><text x='50' y='58' font-family='Space Grotesk, Arial' font-size='22' font-weight='800' fill='{{accent}}' text-anchor='middle'>B</text><text x='344' y='60' font-family='Space Grotesk, Arial' font-size='32' font-weight='600' fill='{{textColor}}' text-anchor='middle' letter-spacing='0.2'>{{ctaB}}</text></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 80,
+      "y": 856,
+      "width": 920,
+      "anchor": "top-left",
+      "track": 5,
+      "style": { "fontFamily": "Instrument Serif" },
+      "html": "<div style='font-size:44px; font-style:italic; font-weight:400; text-align:center; color:{{mutedColor}};'>{{caption}}</div>"
+    }
+  ]
+}

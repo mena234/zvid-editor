@@ -31,11 +31,32 @@ const hoverSlug = ref('')
 const query = ref('')
 const activeCat = ref('all')
 
+/**
+ * Video vs Image examples live in one library, split by `meta.type` (legacy
+ * video entries carry no type → treated as 'video'). The toggle opens on the
+ * kind you're already editing so an image project sees image templates first.
+ */
+const mode = ref<'video' | 'image'>(project.isImage ? 'image' : 'video')
+/** Items of the currently-selected kind — everything downstream works off this. */
+const modeItems = computed(() =>
+  items.value.filter((it) => (it.meta?.type ?? 'video') === mode.value)
+)
+const modeCounts = computed(() => {
+  let image = 0
+  for (const it of items.value) if (it.meta?.type === 'image') image++
+  return { image, video: items.value.length - image }
+})
+function pickMode(m: 'video' | 'image') {
+  if (mode.value === m) return
+  mode.value = m
+  activeCat.value = 'all'
+}
+
 /** Premium templates need a paid plan; everyone can still hover-preview them. */
 function isLocked(item: LibraryItem): boolean {
   return !!item.meta?.premium && !auth.isPaid
 }
-const hasLocked = computed(() => items.value.some(isLocked))
+const hasLocked = computed(() => modeItems.value.some(isLocked))
 
 /** Which display category an item belongs to (by meta.pack, OTHER as fallback). */
 function catKeyOf(item: LibraryItem): string {
@@ -49,7 +70,7 @@ function catKeyOf(item: LibraryItem): string {
  */
 const haystacks = computed(() => {
   const map = new Map<string, string>()
-  for (const it of items.value) {
+  for (const it of modeItems.value) {
     const cat = exampleCategory(catKeyOf(it))
     map.set(
       it.slug,
@@ -94,12 +115,12 @@ function matchesQuery(item: LibraryItem): boolean {
 }
 
 /** Items matching the search box, ignoring the category chip (drives chip counts). */
-const queryMatched = computed(() => items.value.filter(matchesQuery))
+const queryMatched = computed(() => modeItems.value.filter(matchesQuery))
 
 /** Chip list: every category that has at least one item, with its match count. */
 const visibleCats = computed(() => {
   const base = new Map<string, number>()
-  for (const it of items.value) {
+  for (const it of modeItems.value) {
     base.set(catKeyOf(it), (base.get(catKeyOf(it)) ?? 0) + 1)
   }
   const matched = new Map<string, number>()
@@ -225,16 +246,40 @@ function onLeave(slug: string) {
 
     <template v-if="!pending && !error">
       <div class="ex-tools">
+        <div class="ex-mode" role="tablist" aria-label="Example kind">
+          <button
+            class="ex-mode-btn"
+            :class="{ active: mode === 'video' }"
+            role="tab"
+            :aria-selected="mode === 'video'"
+            @click="pickMode('video')"
+          >
+            🎬 Videos <span class="ex-mode-n">{{ modeCounts.video }}</span>
+          </button>
+          <button
+            class="ex-mode-btn"
+            :class="{ active: mode === 'image' }"
+            role="tab"
+            :aria-selected="mode === 'image'"
+            @click="pickMode('image')"
+          >
+            🖼 Images <span class="ex-mode-n">{{ modeCounts.image }}</span>
+          </button>
+        </div>
         <div class="ex-search-row">
           <input
             v-model="query"
             class="ctl ex-search"
             type="search"
-            placeholder="Search examples… (crypto, real estate, quiz, sale)"
+            :placeholder="
+              mode === 'image'
+                ? 'Search image templates… (thumbnail, product, quote, og)'
+                : 'Search examples… (crypto, real estate, quiz, sale)'
+            "
             spellcheck="false"
             aria-label="Search example projects"
           />
-          <span class="ex-count mono">{{ filtered.length }} / {{ items.length }}</span>
+          <span class="ex-count mono">{{ filtered.length }} / {{ modeItems.length }}</span>
         </div>
         <div class="ex-cats">
           <button
@@ -308,7 +353,7 @@ function onLeave(slug: string) {
               />
               <span v-else class="thumb thumb-fallback">
                 <UiIcon
-                  :name="ex.meta?.hasScenes ? 'scene' : ex.meta?.hasSubtitle ? 'subtitles' : 'film'"
+                  :name="ex.meta?.type === 'image' ? 'image' : ex.meta?.hasScenes ? 'scene' : ex.meta?.hasSubtitle ? 'subtitles' : 'film'"
                   :size="22"
                 />
               </span>
@@ -327,13 +372,19 @@ function onLeave(slug: string) {
               <span v-if="ex.meta?.duration" class="shot-badge mono">
                 {{ ex.meta.duration }}s
               </span>
+              <span
+                v-else-if="ex.meta?.type === 'image'"
+                class="shot-badge mono"
+              >
+                {{ (ex.meta?.format || 'png').toUpperCase() }}
+              </span>
             </span>
             <span class="card-head">
               <b>{{ ex.title }}</b>
             </span>
             <span class="card-desc">{{ ex.description }}</span>
             <span class="card-meta mono">
-              {{ ex.meta?.resolution }}
+              {{ ex.meta?.type === 'image' && ex.meta?.size ? ex.meta.size : ex.meta?.resolution }}
               <template v-if="ex.meta?.scenes"> · {{ ex.meta.scenes }} scenes</template>
             </span>
           </button>
@@ -359,6 +410,42 @@ function onLeave(slug: string) {
   margin-bottom: 4px;
   background: var(--bg-1);
   border-bottom: 1px solid var(--border-1);
+}
+.ex-mode {
+  display: inline-flex;
+  align-self: flex-start;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--border-1);
+  border-radius: 999px;
+  background: var(--bg-2);
+}
+.ex-mode-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 14px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-2);
+  font-size: 11.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+}
+.ex-mode-btn:hover {
+  color: var(--text-0);
+}
+.ex-mode-btn.active {
+  background: var(--accent);
+  color: #fff;
+}
+.ex-mode-n {
+  font-size: 9.5px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.7;
 }
 .ex-search-row {
   display: flex;

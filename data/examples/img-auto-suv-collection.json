@@ -1,0 +1,111 @@
+{
+  "type": "image",
+  "name": "img-auto-suv-collection",
+  "resolution": "instagram-post",
+  "outputFormat": "png",
+  "backgroundColor": "#0E0A07",
+  "variables": {
+    "eyebrow": "THE 2024 COLLECTION",
+    "line1": "SUV",
+    "line2": "LINEUP",
+    "countValue": "18",
+    "countLabel": "IN STOCK",
+    "sub": "7-seaters · AWD · from $24,900",
+    "dealerName": "RIDGELINE AUTO GROUP",
+    "monogram": "R",
+    "accent": "#F2933C",
+    "ink": "#0E0A07",
+    "carImage": "https://images.unsplash.com/photo-1706908431782-8e781d614235?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDgwMTZ8MHwxfHNlYXJjaHw2fHxzdXYlMjBjYXIlMjByb2FkJTIwZHJpdmV8ZW58MHx8fHwxNzgzMjY4NjIxfDA&ixlib=rb-4.1.0&q=80&w=1080"
+  },
+  "visuals": [
+    {
+      "type": "IMAGE",
+      "src": "{{carImage}}",
+      "width": 1080,
+      "height": 1080,
+      "position": "center-center",
+      "resize": "cover",
+      "track": 0
+    },
+    {
+      "type": "SVG",
+      "width": 1080,
+      "height": 1080,
+      "position": "center-center",
+      "track": 1,
+      "svg": "<svg width='1080' height='1080' viewBox='0 0 1080 1080' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='sy' x1='0' y1='1' x2='0' y2='0'><stop offset='0' stop-color='{{ink}}' stop-opacity='0.95'/><stop offset='0.44' stop-color='{{ink}}' stop-opacity='0.5'/><stop offset='0.76' stop-color='{{ink}}' stop-opacity='0'/></linearGradient><linearGradient id='st' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='{{ink}}' stop-opacity='0.7'/><stop offset='0.26' stop-color='{{ink}}' stop-opacity='0'/></linearGradient></defs><rect width='1080' height='1080' fill='url(#st)'/><rect width='1080' height='1080' fill='url(#sy)'/></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 72,
+      "y": 72,
+      "width": 380,
+      "height": 60,
+      "anchor": "top-left",
+      "track": 4,
+      "svg": "<svg width='380' height='60' viewBox='0 0 380 60' xmlns='http://www.w3.org/2000/svg'><circle cx='30' cy='30' r='20' fill='{{accent}}'/><text x='30' y='37' font-family='Space Grotesk, Arial' font-size='20' font-weight='800' fill='{{ink}}' text-anchor='middle'>{{monogram}}</text><text x='62' y='37' font-family='Space Grotesk, Arial' font-size='21' font-weight='600' letter-spacing='1' fill='#FFFFFF'>{{dealerName}}</text></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 792,
+      "y": 74,
+      "width": 216,
+      "height": 108,
+      "anchor": "top-left",
+      "track": 4,
+      "svg": "<svg width='216' height='108' viewBox='0 0 216 108' xmlns='http://www.w3.org/2000/svg'><rect x='1' y='1' width='214' height='106' rx='20' fill='{{ink}}' fill-opacity='0.5' stroke='{{accent}}' stroke-opacity='0.6' stroke-width='1.4'/><text x='108' y='62' font-family='Space Grotesk, Arial' font-size='52' font-weight='800' letter-spacing='-0.02em' fill='{{accent}}' text-anchor='middle'>{{countValue}}</text><text x='108' y='88' font-family='Space Grotesk, Arial' font-size='16' font-weight='700' letter-spacing='3' fill='#E7E1D6' text-anchor='middle'>{{countLabel}}</text></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 72,
+      "y": 588,
+      "width": 820,
+      "anchor": "top-left",
+      "track": 5,
+      "text": "{{eyebrow}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "27px",
+        "fontWeight": "600",
+        "letterSpacing": "0.34em",
+        "color": "{{accent}}"
+      }
+    },
+    {
+      "type": "TEXT",
+      "x": 68,
+      "y": 632,
+      "width": 900,
+      "anchor": "top-left",
+      "track": 5,
+      "style": { "fontFamily": "Space Grotesk" },
+      "html": "<div style='color:#FFFFFF; line-height:0.86; letter-spacing:-0.03em;'><span style='font-size:150px; font-weight:700;'>{{line1}} </span><span style='font-size:150px; font-weight:700; color:{{accent}};'>{{line2}}</span></div>"
+    },
+    {
+      "type": "TEXT",
+      "x": 72,
+      "y": 862,
+      "width": 800,
+      "anchor": "top-left",
+      "track": 6,
+      "text": "{{sub}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "32px",
+        "fontWeight": "500",
+        "letterSpacing": "0.01em",
+        "color": "#D9D3C7"
+      }
+    },
+    {
+      "type": "SVG",
+      "x": 72,
+      "y": 942,
+      "width": 220,
+      "height": 8,
+      "anchor": "top-left",
+      "track": 6,
+      "svg": "<svg width='220' height='8' viewBox='0 0 220 8' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='2' width='140' height='5' rx='2.5' fill='{{accent}}'/></svg>"
+    }
+  ]
+}

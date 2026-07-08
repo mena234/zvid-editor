@@ -1,0 +1,138 @@
+{
+  "type": "image",
+  "name": "img-realty-price-reduced",
+  "resolution": "instagram-post",
+  "outputFormat": "png",
+  "backgroundColor": "#12100F",
+  "variables": {
+    "badge": "PRICE REDUCED",
+    "oldPrice": "$899,000",
+    "newPrice": "$824,900",
+    "saveNote": "Save $74,100 today",
+    "addressLine": "88 Cedarwood Lane, Brookfield",
+    "metaLine": "4 BED · 2.5 BATH · 2,480 SQFT",
+    "agentName": "Daniel Cho",
+    "agentPhone": "(415) 555-0132",
+    "agentInitials": "DC",
+    "brand": "Anchor & Vale",
+    "accent": "#FF6B5E",
+    "propertyImage": "https://images.pexels.com/photos/186077/pexels-photo-186077.jpeg?auto=compress&cs=tinysrgb&w=1600"
+  },
+  "visuals": [
+    {
+      "type": "IMAGE",
+      "src": "{{propertyImage}}",
+      "width": 1080,
+      "height": 1080,
+      "position": "center-center",
+      "resize": "cover",
+      "track": 0
+    },
+    {
+      "type": "SVG",
+      "width": 1080,
+      "height": 1080,
+      "position": "center-center",
+      "track": 1,
+      "svg": "<svg width='1080' height='1080' viewBox='0 0 1080 1080' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='sx' x1='0' y1='0' x2='1' y2='0'><stop offset='0' stop-color='#12100F' stop-opacity='0.96'/><stop offset='0.5' stop-color='#12100F' stop-opacity='0.72'/><stop offset='1' stop-color='#12100F' stop-opacity='0.06'/></linearGradient><linearGradient id='sy' x1='0' y1='1' x2='0' y2='0'><stop offset='0' stop-color='#12100F' stop-opacity='0.72'/><stop offset='0.42' stop-color='#12100F' stop-opacity='0'/></linearGradient></defs><rect width='1080' height='1080' fill='url(#sx)'/><rect width='1080' height='1080' fill='url(#sy)'/></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 560,
+      "y": 92,
+      "width": 448,
+      "anchor": "top-left",
+      "track": 5,
+      "text": "{{brand}}",
+      "style": {
+        "fontFamily": "Sora",
+        "fontSize": "24px",
+        "fontWeight": "700",
+        "letterSpacing": "0.14em",
+        "color": "#F1EBE7",
+        "textAlign": "right"
+      }
+    },
+    {
+      "type": "SVG",
+      "x": 72,
+      "y": 108,
+      "width": 316,
+      "height": 60,
+      "anchor": "top-left",
+      "track": 4,
+      "svg": "<svg width='316' height='60' viewBox='0 0 316 60' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='316' height='60' rx='30' fill='{{accent}}'/><path d='M30 22 L30 36 M24 31 L30 37 L36 31' fill='none' stroke='#12100F' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/><text x='54' y='38' font-family='Space Grotesk, Arial' font-size='21' font-weight='700' letter-spacing='2.5' fill='#12100F'>{{badge}}</text></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 72,
+      "y": 396,
+      "width": 640,
+      "anchor": "top-left",
+      "track": 5,
+      "style": { "fontFamily": "Sora" },
+      "html": "<div style='font-size:34px; font-weight:600; color:#B9B0AC; letter-spacing:0.01em;'><s>{{oldPrice}}</s></div><div style='margin-top:6px; font-size:106px; font-weight:800; line-height:0.9; letter-spacing:-0.03em; color:#FBF7F4;'>{{newPrice}}</div>"
+    },
+    {
+      "type": "SVG",
+      "x": 72,
+      "y": 588,
+      "width": 320,
+      "height": 52,
+      "anchor": "top-left",
+      "track": 5,
+      "svg": "<svg width='320' height='52' viewBox='0 0 320 52' xmlns='http://www.w3.org/2000/svg'><rect x='1' y='1' width='318' height='50' rx='25' fill='{{accent}}' fill-opacity='0.14' stroke='{{accent}}' stroke-opacity='0.75' stroke-width='1.4'/><text x='28' y='33' font-family='Space Grotesk, Arial' font-size='20' font-weight='700' letter-spacing='0.5' fill='{{accent}}'>{{saveNote}}</text></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 74,
+      "y": 668,
+      "width": 560,
+      "anchor": "top-left",
+      "track": 5,
+      "text": "{{addressLine}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "30px",
+        "fontWeight": "600",
+        "color": "#F1EBE7"
+      }
+    },
+    {
+      "type": "TEXT",
+      "x": 74,
+      "y": 716,
+      "width": 560,
+      "anchor": "top-left",
+      "track": 5,
+      "text": "{{metaLine}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "21px",
+        "fontWeight": "500",
+        "letterSpacing": "0.06em",
+        "color": "#B4A9A3"
+      }
+    },
+    {
+      "type": "SVG",
+      "x": 74,
+      "y": 772,
+      "width": 520,
+      "height": 2,
+      "anchor": "top-left",
+      "track": 5,
+      "svg": "<svg width='520' height='2' viewBox='0 0 520 2' xmlns='http://www.w3.org/2000/svg'><rect width='520' height='1.4' fill='#FFFFFF' fill-opacity='0.16'/></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 74,
+      "y": 800,
+      "width": 560,
+      "height": 64,
+      "anchor": "top-left",
+      "track": 6,
+      "svg": "<svg width='560' height='64' viewBox='0 0 560 64' xmlns='http://www.w3.org/2000/svg'><circle cx='30' cy='32' r='24' fill='none' stroke='{{accent}}' stroke-width='2'/><text x='30' y='40' font-family='Sora, Arial' font-size='19' font-weight='700' fill='#F1EBE7' text-anchor='middle'>{{agentInitials}}</text><text x='72' y='28' font-family='Sora, Arial' font-size='23' font-weight='700' fill='#F5EFEB'>{{agentName}}</text><text x='72' y='52' font-family='Space Grotesk, Arial' font-size='19' font-weight='600' fill='{{accent}}'>{{agentPhone}}</text></svg>"
+    }
+  ]
+}

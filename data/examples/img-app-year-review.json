@@ -1,0 +1,123 @@
+{
+  "type": "image",
+  "name": "img-app-year-review",
+  "resolution": "instagram-story",
+  "outputFormat": "png",
+  "backgroundColor": "#1A0821",
+  "variables": {
+    "eyebrow": "YOUR YEAR, WRAPPED",
+    "year": "2026",
+    "topStatValue": "18,204",
+    "topStatLabel": "MINUTES CREATED",
+    "runnerUp": "You were in the top 3% of creators",
+    "userName": "Maya",
+    "shareCue": "#ZVIDWRAPPED",
+    "brand": "zvid",
+    "ink": "#1A0821",
+    "accent": "#FFE14D",
+    "gradA": "#FF2E7E",
+    "gradB": "#8A2BE2",
+    "gradC": "#FF7A3D"
+  },
+  "visuals": [
+    {
+      "type": "SVG",
+      "width": 1080,
+      "height": 1920,
+      "position": "center-center",
+      "track": 0,
+      "svg": "<svg width='1080' height='1920' viewBox='0 0 1080 1920' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='bg' x1='0' y1='0' x2='0.7' y2='1'><stop offset='0' stop-color='{{gradA}}'/><stop offset='0.5' stop-color='{{gradB}}'/><stop offset='1' stop-color='{{gradC}}'/></linearGradient><radialGradient id='g1' cx='0.2' cy='0.14' r='0.7'><stop offset='0' stop-color='{{accent}}' stop-opacity='0.34'/><stop offset='1' stop-color='{{accent}}' stop-opacity='0'/></radialGradient><linearGradient id='scr' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='{{ink}}' stop-opacity='0'/><stop offset='1' stop-color='{{ink}}' stop-opacity='0.66'/></linearGradient></defs><rect width='1080' height='1920' fill='url(#bg)'/><rect width='1080' height='1920' fill='url(#g1)'/><rect x='0' y='1020' width='1080' height='900' fill='url(#scr)'/><rect x='40' y='40' width='1000' height='1840' rx='46' fill='none' stroke='#FFFFFF' stroke-opacity='0.24' stroke-width='1.5'/></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 90,
+      "y": 150,
+      "width": 460,
+      "height": 56,
+      "anchor": "top-left",
+      "track": 4,
+      "svg": "<svg width='460' height='56' viewBox='0 0 460 56' xmlns='http://www.w3.org/2000/svg'><rect x='1' y='1' width='420' height='54' rx='27' fill='#1A0821' fill-opacity='0.34' stroke='#FFFFFF' stroke-opacity='0.6' stroke-width='1.4'/><circle cx='34' cy='28' r='6' fill='{{accent}}'/><text x='58' y='36' font-family='Space Grotesk, Arial' font-size='21' font-weight='700' letter-spacing='4' fill='#FFFFFF'>{{eyebrow}}</text></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 90,
+      "y": 372,
+      "width": 900,
+      "anchor": "top-left",
+      "track": 5,
+      "text": "{{year}}",
+      "style": {
+        "fontFamily": "Bricolage Grotesque",
+        "fontSize": "372px",
+        "fontWeight": "800",
+        "letterSpacing": "-0.04em",
+        "lineHeight": "1",
+        "color": "#FFFFFF",
+        "textAlign": "center"
+      }
+    },
+    {
+      "type": "TEXT",
+      "x": 90,
+      "y": 1120,
+      "width": 900,
+      "anchor": "top-left",
+      "track": 5,
+      "text": "{{topStatLabel}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "34px",
+        "fontWeight": "600",
+        "letterSpacing": "0.4em",
+        "color": "{{accent}}"
+      }
+    },
+    {
+      "type": "TEXT",
+      "x": 84,
+      "y": 1168,
+      "width": 920,
+      "anchor": "top-left",
+      "track": 5,
+      "text": "{{topStatValue}}",
+      "style": {
+        "fontFamily": "Bricolage Grotesque",
+        "fontSize": "232px",
+        "fontWeight": "800",
+        "letterSpacing": "-0.03em",
+        "lineHeight": "1",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "type": "SVG",
+      "x": 90,
+      "y": 1470,
+      "width": 900,
+      "height": 2,
+      "anchor": "top-left",
+      "track": 5,
+      "svg": "<svg width='900' height='2' viewBox='0 0 900 2' xmlns='http://www.w3.org/2000/svg'><rect width='900' height='1' fill='#FFFFFF' fill-opacity='0.3'/></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 90,
+      "y": 1516,
+      "width": 900,
+      "anchor": "top-left",
+      "track": 5,
+      "style": { "fontFamily": "Space Grotesk" },
+      "html": "<div style='font-size:44px; font-weight:600; line-height:1.3; color:#FFFFFF;'>{{runnerUp}}</div><div style='margin-top:10px; font-size:32px; font-weight:500; color:rgba(255,255,255,0.72);'>Wrapped for {{userName}}</div>"
+    },
+    {
+      "type": "SVG",
+      "x": 90,
+      "y": 1786,
+      "width": 500,
+      "height": 56,
+      "anchor": "top-left",
+      "track": 6,
+      "svg": "<svg width='500' height='56' viewBox='0 0 500 56' xmlns='http://www.w3.org/2000/svg'><rect x='1' y='1' width='300' height='54' rx='27' fill='{{accent}}'/><text x='151' y='36' font-family='Space Grotesk, Arial' font-size='22' font-weight='700' letter-spacing='2' fill='#1A0821' text-anchor='middle'>{{shareCue}}</text><text x='470' y='37' font-family='Space Grotesk, Arial' font-size='24' font-weight='700' fill='#FFFFFF' text-anchor='end'>{{brand}}</text></svg>"
+    }
+  ]
+}

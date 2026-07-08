@@ -1,0 +1,106 @@
+{
+  "type": "image",
+  "name": "img-ad-localized",
+  "resolution": "instagram-post",
+  "outputFormat": "png",
+  "backgroundColor": "#0B0B12",
+  "variables": {
+    "eyebrow": "NOW LIVE IN",
+    "brand": "swiftly",
+    "city": "Austin",
+    "localeTag": "Texas, USA",
+    "headline1": "Now live in",
+    "offer": "Same-day delivery across town. Order before 6pm, get it tonight.",
+    "ctaPrefix": "Order in",
+    "accent": "#E76F51",
+    "ink": "#0B0B12",
+    "textColor": "#F4F2FB",
+    "mutedColor": "#C7C2C0",
+    "cityImage": "https://images.unsplash.com/photo-1499092346589-b9b6be3e94b2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDgwMTZ8MHwxfHNlYXJjaHwxfHxjaXR5JTIwc2t5bGluZSUyMGFlcmlhbCUyMHRyYXZlbHxlbnwwfHx8fDE3ODMyNjg1NjJ8MA&ixlib=rb-4.1.0&q=80&w=1080"
+  },
+  "visuals": [
+    {
+      "type": "IMAGE",
+      "src": "{{cityImage}}",
+      "width": 1080,
+      "height": 1080,
+      "position": "center-center",
+      "resize": "cover",
+      "track": 0
+    },
+    {
+      "type": "SVG",
+      "width": 1080,
+      "height": 1080,
+      "position": "center-center",
+      "track": 1,
+      "svg": "<svg width='1080' height='1080' viewBox='0 0 1080 1080' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='sy' x1='0' y1='1' x2='0' y2='0'><stop offset='0' stop-color='#0B0B12' stop-opacity='0.96'/><stop offset='0.45' stop-color='#0B0B12' stop-opacity='0.35'/><stop offset='1' stop-color='#0B0B12' stop-opacity='0.08'/></linearGradient><linearGradient id='sx' x1='0' y1='0' x2='1' y2='0'><stop offset='0' stop-color='#0B0B12' stop-opacity='0.7'/><stop offset='0.6' stop-color='#0B0B12' stop-opacity='0.08'/><stop offset='1' stop-color='#0B0B12' stop-opacity='0'/></linearGradient></defs><rect width='1080' height='1080' fill='url(#sx)'/><rect width='1080' height='1080' fill='url(#sy)'/></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 80,
+      "y": 80,
+      "width": 220,
+      "height": 48,
+      "anchor": "top-left",
+      "track": 4,
+      "svg": "<svg width='220' height='48' viewBox='0 0 220 48' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='220' height='48' rx='24' fill='#FFFFFF' fill-opacity='0.08' stroke='#FFFFFF' stroke-opacity='0.18' stroke-width='1'/><circle cx='27' cy='24' r='6' fill='{{accent}}'/><text x='47' y='31' font-family='Space Grotesk, Arial' font-size='19' font-weight='600' letter-spacing='0.5' fill='#F4F2FB'>{{brand}}</text></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 720,
+      "y": 82,
+      "width": 280,
+      "height": 44,
+      "anchor": "top-left",
+      "track": 4,
+      "svg": "<svg width='280' height='44' viewBox='0 0 280 44' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='280' height='44' rx='22' fill='#0B0B12' fill-opacity='0.5' stroke='#FFFFFF' stroke-opacity='0.16' stroke-width='1'/><path d='M24 14 C30 14 34 18 34 24 C34 31 24 38 24 38 C24 38 14 31 14 24 C14 18 18 14 24 14 Z' fill='{{accent}}'/><circle cx='24' cy='23' r='4' fill='#0B0B12'/><text x='52' y='29' font-family='Space Grotesk, Arial' font-size='16' font-weight='600' letter-spacing='0.6' fill='#F4F2FB'>{{city}} · {{localeTag}}</text></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 80,
+      "y": 512,
+      "width": 250,
+      "height": 44,
+      "anchor": "top-left",
+      "track": 4,
+      "svg": "<svg width='250' height='44' viewBox='0 0 250 44' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='250' height='44' rx='22' fill='{{accent}}' fill-opacity='0.2' stroke='{{accent}}' stroke-opacity='0.65' stroke-width='1.2'/><text x='24' y='29' font-family='Space Grotesk, Arial' font-size='17' font-weight='600' letter-spacing='2.6' fill='{{accent}}'>{{eyebrow}}</text></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 78,
+      "y": 570,
+      "width": 780,
+      "anchor": "top-left",
+      "track": 5,
+      "style": { "fontFamily": "Playfair Display" },
+      "html": "<div style='font-size:96px; font-weight:700; line-height:0.98; letter-spacing:-0.015em; color:{{textColor}};'>{{headline1}}<br><span style='color:{{accent}};'>{{city}}</span></div>"
+    },
+    {
+      "type": "TEXT",
+      "x": 80,
+      "y": 800,
+      "width": 640,
+      "anchor": "top-left",
+      "track": 5,
+      "text": "{{offer}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "27px",
+        "fontWeight": "500",
+        "lineHeight": "1.4",
+        "color": "#C7C2C0"
+      }
+    },
+    {
+      "type": "SVG",
+      "x": 80,
+      "y": 906,
+      "width": 420,
+      "height": 76,
+      "anchor": "top-left",
+      "track": 6,
+      "svg": "<svg width='420' height='76' viewBox='0 0 420 76' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='420' height='76' rx='38' fill='{{accent}}'/><text x='186' y='48' font-family='Space Grotesk, Arial' font-size='25' font-weight='700' fill='{{ink}}' text-anchor='middle' letter-spacing='0.4'>{{ctaPrefix}} {{city}}</text><circle cx='368' cy='38' r='15' fill='{{ink}}' fill-opacity='0.16'/><path d='M362 38 L374 38 M369 33 L374 38 L369 43' fill='none' stroke='{{ink}}' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/></svg>"
+    }
+  ]
+}

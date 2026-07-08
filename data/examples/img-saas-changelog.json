@@ -1,0 +1,189 @@
+{
+  "type": "image",
+  "name": "img-saas-changelog",
+  "resolution": "custom",
+  "width": 1200,
+  "height": 630,
+  "outputFormat": "png",
+  "backgroundColor": "#101418",
+  "variables": {
+    "eyebrow": "CHANGELOG",
+    "version": "v2.4.0",
+    "date": "Jul 8, 2026",
+    "type1": "ADDED",
+    "desc1": "Effect gallery with hover-to-play transitions",
+    "type2": "IMPROVED",
+    "desc2": "3× faster project load on large timelines",
+    "type3": "FIXED",
+    "desc3": "Subtitle drift on variable-frame-rate sources",
+    "footnote": "Three updates shipped this week",
+    "brand": "zvid",
+    "accent": "#E9C46A",
+    "addedColor": "#3FB950",
+    "improvedColor": "#5B8DEF",
+    "fixedColor": "#E9C46A",
+    "headingColor": "#F4F2EC"
+  },
+  "visuals": [
+    {
+      "type": "SVG",
+      "width": 1200,
+      "height": 630,
+      "position": "center-center",
+      "track": 0,
+      "svg": "<svg width='1200' height='630' viewBox='0 0 1200 630' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='bg' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#171410'/><stop offset='0.5' stop-color='#101418'/><stop offset='1' stop-color='#0C0F12'/></linearGradient><radialGradient id='glow' cx='0.85' cy='0.1' r='0.65'><stop offset='0' stop-color='#E9C46A' stop-opacity='0.22'/><stop offset='1' stop-color='#E9C46A' stop-opacity='0'/></radialGradient></defs><rect width='1200' height='630' fill='url(#bg)'/><rect width='1200' height='630' fill='url(#glow)'/><rect x='24' y='24' width='1152' height='582' rx='28' fill='none' stroke='#FFFFFF' stroke-opacity='0.07' stroke-width='1.5'/></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 72,
+      "y": 76,
+      "width": 500,
+      "anchor": "top-left",
+      "track": 4,
+      "text": "{{eyebrow}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "22px",
+        "fontWeight": "600",
+        "letterSpacing": "0.34em",
+        "color": "#E9C46A"
+      }
+    },
+    {
+      "type": "TEXT",
+      "x": 70,
+      "y": 110,
+      "width": 640,
+      "anchor": "top-left",
+      "track": 4,
+      "text": "{{version}}",
+      "style": {
+        "fontFamily": "IBM Plex Mono",
+        "fontSize": "66px",
+        "fontWeight": "600",
+        "letterSpacing": "-0.01em",
+        "color": "#F4F2EC"
+      }
+    },
+    {
+      "type": "SVG",
+      "x": 1128,
+      "y": 122,
+      "width": 176,
+      "height": 44,
+      "anchor": "top-right",
+      "track": 4,
+      "svg": "<svg width='176' height='44' viewBox='0 0 176 44' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='176' height='44' rx='22' fill='#FFFFFF' fill-opacity='0.05' stroke='#FFFFFF' stroke-opacity='0.12' stroke-width='1'/><circle cx='24' cy='22' r='5' fill='{{accent}}'/><text x='40' y='29' font-family='IBM Plex Mono, monospace' font-size='17' font-weight='500' fill='#CBC7BE'>{{date}}</text></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 72,
+      "y": 214,
+      "width": 1056,
+      "height": 2,
+      "anchor": "top-left",
+      "track": 4,
+      "svg": "<svg width='1056' height='2' viewBox='0 0 1056 2' xmlns='http://www.w3.org/2000/svg'><rect width='1056' height='1' fill='#FFFFFF' fill-opacity='0.1'/></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 72,
+      "y": 262,
+      "width": 140,
+      "height": 40,
+      "anchor": "top-left",
+      "track": 5,
+      "svg": "<svg width='140' height='40' viewBox='0 0 140 40' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='140' height='40' rx='10' fill='{{addedColor}}' fill-opacity='0.16' stroke='{{addedColor}}' stroke-opacity='0.55' stroke-width='1.2'/><text x='70' y='26' font-family='Space Grotesk, Arial' font-size='16' font-weight='700' letter-spacing='1.5' fill='{{addedColor}}' text-anchor='middle'>{{type1}}</text></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 232,
+      "y": 266,
+      "width": 880,
+      "anchor": "top-left",
+      "track": 5,
+      "text": "{{desc1}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "27px",
+        "fontWeight": "500",
+        "color": "#E7E4DC"
+      }
+    },
+    {
+      "type": "SVG",
+      "x": 72,
+      "y": 348,
+      "width": 140,
+      "height": 40,
+      "anchor": "top-left",
+      "track": 5,
+      "svg": "<svg width='140' height='40' viewBox='0 0 140 40' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='140' height='40' rx='10' fill='{{improvedColor}}' fill-opacity='0.16' stroke='{{improvedColor}}' stroke-opacity='0.55' stroke-width='1.2'/><text x='70' y='26' font-family='Space Grotesk, Arial' font-size='16' font-weight='700' letter-spacing='1.5' fill='{{improvedColor}}' text-anchor='middle'>{{type2}}</text></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 232,
+      "y": 352,
+      "width": 880,
+      "anchor": "top-left",
+      "track": 5,
+      "text": "{{desc2}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "27px",
+        "fontWeight": "500",
+        "color": "#E7E4DC"
+      }
+    },
+    {
+      "type": "SVG",
+      "x": 72,
+      "y": 434,
+      "width": 140,
+      "height": 40,
+      "anchor": "top-left",
+      "track": 5,
+      "svg": "<svg width='140' height='40' viewBox='0 0 140 40' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='140' height='40' rx='10' fill='{{fixedColor}}' fill-opacity='0.16' stroke='{{fixedColor}}' stroke-opacity='0.55' stroke-width='1.2'/><text x='70' y='26' font-family='Space Grotesk, Arial' font-size='16' font-weight='700' letter-spacing='1.5' fill='{{fixedColor}}' text-anchor='middle'>{{type3}}</text></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 232,
+      "y": 438,
+      "width": 880,
+      "anchor": "top-left",
+      "track": 5,
+      "text": "{{desc3}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "27px",
+        "fontWeight": "500",
+        "color": "#E7E4DC"
+      }
+    },
+    {
+      "type": "TEXT",
+      "x": 72,
+      "y": 556,
+      "width": 600,
+      "anchor": "top-left",
+      "track": 6,
+      "text": "{{footnote}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "20px",
+        "fontWeight": "500",
+        "color": "#8C887E"
+      }
+    },
+    {
+      "type": "SVG",
+      "x": 1128,
+      "y": 556,
+      "width": 150,
+      "height": 44,
+      "anchor": "top-right",
+      "track": 6,
+      "svg": "<svg width='150' height='44' viewBox='0 0 150 44' xmlns='http://www.w3.org/2000/svg'><circle cx='12' cy='22' r='7' fill='{{accent}}'/><text x='30' y='29' font-family='Space Grotesk, Arial' font-size='20' font-weight='700' fill='#FFFFFF'>{{brand}}</text></svg>"
+    }
+  ]
+}

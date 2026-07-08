@@ -1,0 +1,162 @@
+{
+  "type": "image",
+  "name": "img-og-newsletter",
+  "resolution": "custom",
+  "width": 1200,
+  "height": 630,
+  "outputFormat": "png",
+  "backgroundColor": "#F5EFE4",
+  "variables": {
+    "masthead": "THE DISPATCH",
+    "issue": "Issue 24",
+    "date": "July 8, 2026",
+    "titleA": "The state of",
+    "titleB": "programmatic video",
+    "standfirst": "Where automated rendering is heading — and the tools quietly winning the pipeline.",
+    "author": "Mina Nasser",
+    "role": "Editor",
+    "cta": "SUBSCRIBE",
+    "monogram": "M",
+    "accent": "#7A2E2E",
+    "foil": "#B08948",
+    "ink": "#1A1512",
+    "muted": "#6E655A"
+  },
+  "visuals": [
+    {
+      "type": "SVG",
+      "width": 1200,
+      "height": 630,
+      "position": "center-center",
+      "track": 0,
+      "svg": "<svg width='1200' height='630' viewBox='0 0 1200 630' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='bg' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#FAF5EC'/><stop offset='0.55' stop-color='#F4EEE2'/><stop offset='1' stop-color='#EDE5D5'/></linearGradient><radialGradient id='foil' cx='0.9' cy='0.92' r='0.6'><stop offset='0' stop-color='#B08948' stop-opacity='0.14'/><stop offset='1' stop-color='#B08948' stop-opacity='0'/></radialGradient></defs><rect width='1200' height='630' fill='url(#bg)'/><rect width='1200' height='630' fill='url(#foil)'/><rect x='24' y='24' width='1152' height='582' rx='24' fill='none' stroke='#7A2E2E' stroke-opacity='0.2' stroke-width='1.5'/></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 72,
+      "y": 68,
+      "width": 1056,
+      "anchor": "top-left",
+      "track": 4,
+      "text": "{{masthead}}",
+      "style": {
+        "fontFamily": "Playfair Display",
+        "fontSize": "38px",
+        "fontWeight": "700",
+        "letterSpacing": "0.34em",
+        "textAlign": "center",
+        "color": "#7A2E2E"
+      }
+    },
+    {
+      "type": "SVG",
+      "x": 72,
+      "y": 124,
+      "width": 1056,
+      "height": 8,
+      "anchor": "top-left",
+      "track": 4,
+      "svg": "<svg width='1056' height='8' viewBox='0 0 1056 8' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='1056' height='2' fill='#7A2E2E' fill-opacity='0.55'/><rect x='0' y='6' width='1056' height='1' fill='#7A2E2E' fill-opacity='0.3'/></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 72,
+      "y": 146,
+      "width": 400,
+      "anchor": "top-left",
+      "track": 5,
+      "text": "{{issue}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "19px",
+        "fontWeight": "600",
+        "letterSpacing": "0.22em",
+        "color": "#8A6F3E"
+      }
+    },
+    {
+      "type": "TEXT",
+      "x": 728,
+      "y": 146,
+      "width": 400,
+      "anchor": "top-left",
+      "track": 5,
+      "text": "{{date}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "19px",
+        "fontWeight": "600",
+        "letterSpacing": "0.22em",
+        "textAlign": "right",
+        "color": "#8A6F3E"
+      }
+    },
+    {
+      "type": "TEXT",
+      "x": 72,
+      "y": 214,
+      "width": 960,
+      "anchor": "top-left",
+      "track": 5,
+      "style": { "fontFamily": "Playfair Display" },
+      "html": "<div style='font-size:78px; font-weight:600; line-height:1.04; letter-spacing:-0.01em; color:{{ink}};'>{{titleA}} <span style='color:{{accent}};'>{{titleB}}</span></div>"
+    },
+    {
+      "type": "TEXT",
+      "x": 74,
+      "y": 400,
+      "width": 800,
+      "anchor": "top-left",
+      "track": 5,
+      "text": "{{standfirst}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "26px",
+        "fontWeight": "400",
+        "fontStyle": "italic",
+        "lineHeight": "1.45",
+        "color": "#5A5348"
+      }
+    },
+    {
+      "type": "SVG",
+      "x": 72,
+      "y": 500,
+      "width": 1056,
+      "height": 2,
+      "anchor": "top-left",
+      "track": 6,
+      "svg": "<svg width='1056' height='2' viewBox='0 0 1056 2' xmlns='http://www.w3.org/2000/svg'><rect width='1056' height='1' fill='#7A2E2E' fill-opacity='0.18'/></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 72,
+      "y": 528,
+      "width": 56,
+      "height": 56,
+      "anchor": "top-left",
+      "track": 7,
+      "svg": "<svg width='56' height='56' viewBox='0 0 56 56' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='fg' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#C79B54'/><stop offset='1' stop-color='#B08948'/></linearGradient></defs><circle cx='28' cy='28' r='28' fill='url(#fg)'/><text x='28' y='37' font-family='Playfair Display, Georgia' font-size='26' font-weight='700' fill='#241C0E' text-anchor='middle'>{{monogram}}</text></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 144,
+      "y": 532,
+      "width": 520,
+      "anchor": "top-left",
+      "track": 7,
+      "html": "<div style='font-size:24px; font-weight:600; color:#1A1512;'>{{author}}</div><div style='margin-top:3px; font-size:18px; font-weight:500; letter-spacing:0.02em; color:#6E655A;'>{{role}}</div>",
+      "style": { "fontFamily": "Space Grotesk" }
+    },
+    {
+      "type": "SVG",
+      "x": 960,
+      "y": 530,
+      "width": 168,
+      "height": 52,
+      "anchor": "top-left",
+      "track": 7,
+      "svg": "<svg width='168' height='52' viewBox='0 0 168 52' xmlns='http://www.w3.org/2000/svg'><rect x='0.75' y='0.75' width='166.5' height='50.5' rx='14' fill='#7A2E2E'/><text x='84' y='33' font-family='Space Grotesk, Arial' font-size='17' font-weight='700' letter-spacing='2.5' fill='#F5EFE4' text-anchor='middle'>{{cta}}</text></svg>"
+    }
+  ]
+}

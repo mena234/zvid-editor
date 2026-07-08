@@ -1,0 +1,118 @@
+{
+  "type": "image",
+  "name": "img-auto-price-drop",
+  "resolution": "instagram-post",
+  "outputFormat": "png",
+  "backgroundColor": "#0C0A0E",
+  "variables": {
+    "eyebrow": "PRICE DROP",
+    "vehicle": "2022 Audi Q5 · Premium Plus",
+    "nowLabel": "NOW",
+    "wasPrice": "$42,900",
+    "nowPrice": "$38,900",
+    "saveTop": "YOU SAVE",
+    "savePrice": "$4,000",
+    "urgency": "OFFER ENDS SUNDAY",
+    "stock": "ONLY 3 LEFT",
+    "dealerName": "AUTO NEXUS",
+    "accent": "#FF5A4D",
+    "ink": "#0C0A0E",
+    "carImage": "https://images.pexels.com/photos/20484408/pexels-photo-20484408.jpeg?auto=compress&cs=tinysrgb&w=1600"
+  },
+  "visuals": [
+    {
+      "type": "IMAGE",
+      "src": "{{carImage}}",
+      "width": 1080,
+      "height": 1080,
+      "position": "center-center",
+      "resize": "cover",
+      "track": 0
+    },
+    {
+      "type": "SVG",
+      "width": 1080,
+      "height": 1080,
+      "position": "center-center",
+      "track": 1,
+      "svg": "<svg width='1080' height='1080' viewBox='0 0 1080 1080' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='sy' x1='0' y1='1' x2='0' y2='0'><stop offset='0' stop-color='{{ink}}' stop-opacity='0.96'/><stop offset='0.44' stop-color='{{ink}}' stop-opacity='0.58'/><stop offset='0.78' stop-color='{{ink}}' stop-opacity='0'/></linearGradient><linearGradient id='sx' x1='0' y1='0' x2='1' y2='0'><stop offset='0' stop-color='{{ink}}' stop-opacity='0.66'/><stop offset='0.55' stop-color='{{ink}}' stop-opacity='0'/></linearGradient></defs><rect width='1080' height='1080' fill='url(#sx)'/><rect width='1080' height='1080' fill='url(#sy)'/></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 72,
+      "y": 76,
+      "width": 300,
+      "height": 56,
+      "anchor": "top-left",
+      "track": 4,
+      "svg": "<svg width='300' height='56' viewBox='0 0 300 56' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='300' height='56' rx='28' fill='{{accent}}'/><path d='M30 20 L30 34 M24 29 L30 36 L36 29' fill='none' stroke='{{ink}}' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'/><text x='58' y='36' font-family='Space Grotesk, Arial' font-size='22' font-weight='700' letter-spacing='2.5' fill='{{ink}}'>{{eyebrow}}</text></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 812,
+      "y": 60,
+      "width": 196,
+      "height": 196,
+      "anchor": "top-left",
+      "angle": -8,
+      "track": 6,
+      "svg": "<svg width='196' height='196' viewBox='0 0 196 196' xmlns='http://www.w3.org/2000/svg'><circle cx='98' cy='98' r='96' fill='{{accent}}'/><circle cx='98' cy='98' r='86' fill='none' stroke='{{ink}}' stroke-opacity='0.28' stroke-width='2'/><text x='98' y='84' font-family='Space Grotesk, Arial' font-size='19' font-weight='700' letter-spacing='2.5' fill='{{ink}}' text-anchor='middle'>{{saveTop}}</text><text x='98' y='134' font-family='Archivo, Arial' font-size='50' font-weight='800' letter-spacing='-0.02em' fill='{{ink}}' text-anchor='middle'>{{savePrice}}</text></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 72,
+      "y": 560,
+      "width": 720,
+      "anchor": "top-left",
+      "track": 5,
+      "text": "{{vehicle}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "30px",
+        "fontWeight": "600",
+        "letterSpacing": "0.02em",
+        "color": "#E6E4EC"
+      }
+    },
+    {
+      "type": "SVG",
+      "x": 72,
+      "y": 620,
+      "width": 320,
+      "height": 46,
+      "anchor": "top-left",
+      "track": 5,
+      "svg": "<svg width='320' height='46' viewBox='0 0 320 46' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='4' width='84' height='38' rx='10' fill='{{accent}}'/><text x='42' y='30' font-family='Space Grotesk, Arial' font-size='20' font-weight='700' letter-spacing='2' fill='{{ink}}' text-anchor='middle'>{{nowLabel}}</text><text x='104' y='34' font-family='Space Grotesk, Arial' font-size='26' font-weight='600' letter-spacing='1' fill='#9A97A6' text-decoration='line-through'>{{wasPrice}}</text></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 68,
+      "y": 668,
+      "width": 940,
+      "anchor": "top-left",
+      "track": 5,
+      "style": { "fontFamily": "Anton" },
+      "html": "<div style='font-size:184px; font-weight:400; line-height:0.86; letter-spacing:-0.02em; color:#FFFFFF;'>{{nowPrice}}</div>"
+    },
+    {
+      "type": "SVG",
+      "x": 72,
+      "y": 950,
+      "width": 560,
+      "height": 52,
+      "anchor": "top-left",
+      "track": 6,
+      "svg": "<svg width='560' height='52' viewBox='0 0 560 52' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='2' width='560' height='48' rx='24' fill='#FFFFFF' fill-opacity='0.07' stroke='{{accent}}' stroke-opacity='0.5' stroke-width='1.2'/><circle cx='30' cy='26' r='6' fill='{{accent}}'/><text x='50' y='34' font-family='Space Grotesk, Arial' font-size='20' font-weight='600' letter-spacing='1.5' fill='#EDECF6'>{{urgency}}</text><circle cx='352' cy='26' r='3' fill='#7C7986'/><text x='372' y='34' font-family='Space Grotesk, Arial' font-size='20' font-weight='700' letter-spacing='1.5' fill='{{accent}}'>{{stock}}</text></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 760,
+      "y": 962,
+      "width": 248,
+      "height": 40,
+      "anchor": "top-left",
+      "track": 6,
+      "svg": "<svg width='248' height='40' viewBox='0 0 248 40' xmlns='http://www.w3.org/2000/svg'><text x='248' y='28' font-family='Space Grotesk, Arial' font-size='22' font-weight='700' letter-spacing='1' fill='#FFFFFF' text-anchor='end'>{{dealerName}}</text></svg>"
+    }
+  ]
+}

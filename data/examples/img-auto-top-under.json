@@ -1,0 +1,95 @@
+{
+  "type": "image",
+  "name": "img-auto-top-under",
+  "resolution": "instagram-post",
+  "outputFormat": "png",
+  "backgroundColor": "#0A0C08",
+  "variables": {
+    "eyebrow": "USED CAR ROUNDUP",
+    "line1": "TOP CARS",
+    "line2": "UNDER",
+    "priceCap": "$20K",
+    "sub": "12 hand-picked deals in stock now",
+    "cta": "SWIPE TO SHOP",
+    "dealerName": "CITY DRIVE AUTOS",
+    "monogram": "C",
+    "accent": "#B6F03C",
+    "ink": "#0A0C08",
+    "carImage": "https://images.pexels.com/photos/13767596/pexels-photo-13767596.jpeg?auto=compress&cs=tinysrgb&w=1620"
+  },
+  "visuals": [
+    {
+      "type": "IMAGE",
+      "src": "{{carImage}}",
+      "width": 1080,
+      "height": 1080,
+      "position": "center-center",
+      "resize": "cover",
+      "track": 0
+    },
+    {
+      "type": "SVG",
+      "width": 1080,
+      "height": 1080,
+      "position": "center-center",
+      "track": 1,
+      "svg": "<svg width='1080' height='1080' viewBox='0 0 1080 1080' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='sy' x1='0' y1='1' x2='0' y2='0'><stop offset='0' stop-color='{{ink}}' stop-opacity='0.96'/><stop offset='0.48' stop-color='{{ink}}' stop-opacity='0.6'/><stop offset='0.82' stop-color='{{ink}}' stop-opacity='0.06'/></linearGradient><linearGradient id='st' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='{{ink}}' stop-opacity='0.58'/><stop offset='0.24' stop-color='{{ink}}' stop-opacity='0'/></linearGradient></defs><rect width='1080' height='1080' fill='url(#st)'/><rect width='1080' height='1080' fill='url(#sy)'/></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 72,
+      "y": 72,
+      "width": 340,
+      "height": 46,
+      "anchor": "top-left",
+      "track": 4,
+      "svg": "<svg width='340' height='46' viewBox='0 0 340 46' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='16' width='40' height='4' rx='2' fill='{{accent}}'/><text x='54' y='28' font-family='Space Grotesk, Arial' font-size='22' font-weight='700' letter-spacing='3.5' fill='{{accent}}'>{{eyebrow}}</text></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 828,
+      "y": 66,
+      "width": 180,
+      "height": 56,
+      "anchor": "top-left",
+      "track": 4,
+      "svg": "<svg width='180' height='56' viewBox='0 0 180 56' xmlns='http://www.w3.org/2000/svg'><circle cx='28' cy='28' r='19' fill='{{accent}}'/><text x='28' y='35' font-family='Space Grotesk, Arial' font-size='20' font-weight='800' fill='{{ink}}' text-anchor='middle'>{{monogram}}</text><text x='58' y='34' font-family='Space Grotesk, Arial' font-size='17' font-weight='600' letter-spacing='0.5' fill='#FFFFFF'>{{dealerName}}</text></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 66,
+      "y": 548,
+      "width": 940,
+      "anchor": "top-left",
+      "track": 5,
+      "style": { "fontFamily": "Syne" },
+      "html": "<div style='font-size:104px; font-weight:800; line-height:0.9; letter-spacing:-0.02em; color:#FFFFFF;'>{{line1}}</div><div style='margin-top:2px; color:#FFFFFF; line-height:0.9;'><span style='font-size:104px; font-weight:800; letter-spacing:-0.02em;'>{{line2}} </span><span style='font-size:104px; font-weight:800; letter-spacing:-0.02em; color:{{accent}};'>{{priceCap}}</span></div>"
+    },
+    {
+      "type": "TEXT",
+      "x": 72,
+      "y": 812,
+      "width": 760,
+      "anchor": "top-left",
+      "track": 5,
+      "text": "{{sub}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "32px",
+        "fontWeight": "500",
+        "letterSpacing": "0.01em",
+        "color": "#CDD4C2"
+      }
+    },
+    {
+      "type": "SVG",
+      "x": 72,
+      "y": 916,
+      "width": 388,
+      "height": 64,
+      "anchor": "top-left",
+      "track": 6,
+      "svg": "<svg width='388' height='64' viewBox='0 0 388 64' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='388' height='64' rx='32' fill='{{accent}}'/><text x='36' y='40' font-family='Space Grotesk, Arial' font-size='23' font-weight='700' letter-spacing='2' fill='{{ink}}'>{{cta}}</text><path d='M330 32 L354 32 M345 23 L354 32 L345 41' fill='none' stroke='{{ink}}' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'/></svg>"
+    }
+  ]
+}

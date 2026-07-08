@@ -1,0 +1,89 @@
+{
+  "type": "image",
+  "name": "img-thumb-car",
+  "resolution": "hd",
+  "outputFormat": "png",
+  "backgroundColor": "#0A0C10",
+  "variables": {
+    "eyebrow": "CERTIFIED PRE-OWNED",
+    "make": "PORSCHE",
+    "model": "911 Carrera S",
+    "year": "2023",
+    "price": "$128,500",
+    "spec1": "12,400 mi",
+    "spec2": "PDK Auto",
+    "spec3": "Twin-Turbo",
+    "dealer": "APEX MOTORS",
+    "accent": "#4EA8FF",
+    "carImage": "https://images.unsplash.com/photo-1574124282542-3de3564a63a0?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&ixid=M3w3MDgwMTZ8MHwxfHNlYXJjaHwxfHxzcG9ydHMlMjBjYXIlMjBzdHVkaW98ZW58MHx8fHwxNzgzNTI2OTM3fDA&ixlib=rb-4.1.0&q=80&w=1600"
+  },
+  "visuals": [
+    {
+      "type": "IMAGE",
+      "src": "{{carImage}}",
+      "width": 1280,
+      "height": 720,
+      "position": "center-center",
+      "resize": "cover",
+      "track": 0
+    },
+    {
+      "type": "SVG",
+      "width": 1280,
+      "height": 720,
+      "position": "center-center",
+      "track": 1,
+      "svg": "<svg width='1280' height='720' viewBox='0 0 1280 720' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='sy' x1='0' y1='1' x2='0' y2='0'><stop offset='0' stop-color='#05070A' stop-opacity='0.97'/><stop offset='0.46' stop-color='#05070A' stop-opacity='0.35'/><stop offset='1' stop-color='#05070A' stop-opacity='0.05'/></linearGradient><linearGradient id='sx' x1='0' y1='0' x2='1' y2='0'><stop offset='0' stop-color='#05070A' stop-opacity='0.7'/><stop offset='0.4' stop-color='#05070A' stop-opacity='0'/><stop offset='1' stop-color='#05070A' stop-opacity='0.5'/></linearGradient></defs><rect width='1280' height='720' fill='url(#sx)'/><rect width='1280' height='720' fill='url(#sy)'/></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 80,
+      "y": 116,
+      "width": 520,
+      "height": 40,
+      "anchor": "top-left",
+      "track": 4,
+      "svg": "<svg width='520' height='40' viewBox='0 0 520 40' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='6' width='4' height='28' fill='{{accent}}'/><text x='20' y='29' font-family='IBM Plex Mono, monospace' font-size='20' font-weight='500' letter-spacing='4' fill='#9FC7F0'>{{eyebrow}}</text></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 76,
+      "y": 400,
+      "width": 820,
+      "anchor": "top-left",
+      "track": 5,
+      "style": { "fontFamily": "Sora" },
+      "html": "<div style='font-size:92px; font-weight:800; line-height:0.92; letter-spacing:-0.03em; color:#F3F6FB; text-transform:uppercase;'>{{make}}</div><div style='margin-top:6px; font-size:44px; font-weight:600; letter-spacing:-0.01em; color:{{accent}};'>{{model}} · {{year}}</div>"
+    },
+    {
+      "type": "SVG",
+      "x": 700,
+      "y": 452,
+      "width": 500,
+      "height": 120,
+      "anchor": "top-left",
+      "track": 5,
+      "svg": "<svg width='500' height='120' viewBox='0 0 500 120' xmlns='http://www.w3.org/2000/svg'><text x='500' y='58' font-family='IBM Plex Mono, monospace' font-size='19' font-weight='500' letter-spacing='4' fill='#9FC7F0' text-anchor='end'>ASKING PRICE</text><text x='500' y='108' font-family='Sora, Arial' font-size='72' font-weight='800' letter-spacing='-0.02em' fill='#F3F6FB' text-anchor='end'>{{price}}</text></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 80,
+      "y": 626,
+      "width": 620,
+      "height": 56,
+      "anchor": "top-left",
+      "track": 5,
+      "svg": "<svg width='620' height='56' viewBox='0 0 620 56' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='620' height='56' rx='12' fill='#0A0C10' fill-opacity='0.62' stroke='{{accent}}' stroke-opacity='0.4' stroke-width='1'/><text x='28' y='35' font-family='IBM Plex Mono, monospace' font-size='22' font-weight='500' fill='#DCE7F4'>{{spec1}}</text><rect x='196' y='18' width='1' height='20' fill='#4EA8FF' fill-opacity='0.5'/><text x='224' y='35' font-family='IBM Plex Mono, monospace' font-size='22' font-weight='500' fill='#DCE7F4'>{{spec2}}</text><rect x='388' y='18' width='1' height='20' fill='#4EA8FF' fill-opacity='0.5'/><text x='416' y='35' font-family='IBM Plex Mono, monospace' font-size='22' font-weight='500' fill='#DCE7F4'>{{spec3}}</text></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 1004,
+      "y": 632,
+      "width": 196,
+      "height": 44,
+      "anchor": "top-left",
+      "track": 6,
+      "svg": "<svg width='196' height='44' viewBox='0 0 196 44' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='196' height='44' rx='22' fill='#F3F6FB' fill-opacity='0.06' stroke='#FFFFFF' stroke-opacity='0.16' stroke-width='1'/><circle cx='24' cy='22' r='8' fill='{{accent}}'/><text x='44' y='29' font-family='IBM Plex Mono, monospace' font-size='18' font-weight='600' letter-spacing='1.5' fill='#F3F6FB'>{{dealer}}</text></svg>"
+    }
+  ]
+}

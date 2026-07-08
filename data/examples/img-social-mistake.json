@@ -1,0 +1,117 @@
+{
+  "type": "image",
+  "name": "img-social-mistake",
+  "resolution": "instagram-post",
+  "outputFormat": "png",
+  "backgroundColor": "#111015",
+  "variables": {
+    "eyebrow": "COMMON MISTAKE",
+    "headline": "STOP WRITING TO EVERYONE",
+    "mistakeLabel": "THE MISTAKE",
+    "mistakeText": "Speaking to \"everyone\" so nobody feels it was written for them.",
+    "fixLabel": "THE FIX",
+    "fixText": "Write to one person. Name their exact problem in the first line.",
+    "brand": "@thecopydesk",
+    "ink": "#111015",
+    "offWhite": "#F5F3F7",
+    "muted": "#8C8894",
+    "accent": "#FF6B5E"
+  },
+  "visuals": [
+    {
+      "type": "SVG",
+      "width": 1080,
+      "height": 1080,
+      "position": "center-center",
+      "track": 0,
+      "svg": "<svg width='1080' height='1080' viewBox='0 0 1080 1080' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='bg' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#1A1218'/><stop offset='0.55' stop-color='#111015'/><stop offset='1' stop-color='#0C0B0F'/></linearGradient><radialGradient id='gl' cx='0.1' cy='0.08' r='0.72'><stop offset='0' stop-color='{{accent}}' stop-opacity='0.22'/><stop offset='1' stop-color='{{accent}}' stop-opacity='0'/></radialGradient></defs><rect width='1080' height='1080' fill='url(#bg)'/><rect width='1080' height='1080' fill='url(#gl)'/><rect x='40' y='40' width='1000' height='1000' rx='30' fill='none' stroke='#FFFFFF' stroke-opacity='0.08' stroke-width='1.5'/></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 80,
+      "y": 92,
+      "width": 288,
+      "height": 48,
+      "anchor": "top-left",
+      "track": 4,
+      "svg": "<svg width='288' height='48' viewBox='0 0 288 48' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='288' height='48' rx='24' fill='{{accent}}' fill-opacity='0.14' stroke='{{accent}}' stroke-opacity='0.5' stroke-width='1.2'/><path d='M28 15 L38 33 L18 33 Z' fill='none' stroke='{{accent}}' stroke-width='2' stroke-linejoin='round'/><rect x='27.4' y='22' width='1.2' height='6' rx='0.6' fill='{{accent}}'/><circle cx='28' cy='30.4' r='1' fill='{{accent}}'/><text x='56' y='31' font-family='Space Grotesk, Arial' font-size='18' font-weight='600' letter-spacing='3' fill='{{accent}}'>{{eyebrow}}</text></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 78,
+      "y": 196,
+      "width": 940,
+      "anchor": "top-left",
+      "track": 5,
+      "text": "{{headline}}",
+      "style": {
+        "fontFamily": "Anton",
+        "fontSize": "104px",
+        "fontWeight": "400",
+        "lineHeight": "0.96",
+        "letterSpacing": "-0.01em",
+        "color": "#F5F3F7"
+      }
+    },
+    {
+      "type": "SVG",
+      "x": 80,
+      "y": 556,
+      "width": 60,
+      "height": 60,
+      "anchor": "top-left",
+      "track": 6,
+      "svg": "<svg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'><circle cx='30' cy='30' r='29' fill='{{accent}}' fill-opacity='0.12' stroke='{{accent}}' stroke-width='1.6'/><path d='M22 22 L38 38 M38 22 L22 38' stroke='{{accent}}' stroke-width='2.6' stroke-linecap='round'/></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 164,
+      "y": 552,
+      "width": 840,
+      "anchor": "top-left",
+      "track": 6,
+      "style": { "fontFamily": "Space Grotesk" },
+      "html": "<div style='font-size:17px; font-weight:600; letter-spacing:0.22em; color:{{accent}};'>{{mistakeLabel}}</div><div style='margin-top:8px; font-size:32px; font-weight:500; line-height:1.28; color:{{muted}}; text-decoration:line-through;'>{{mistakeText}}</div>"
+    },
+    {
+      "type": "SVG",
+      "x": 80,
+      "y": 728,
+      "width": 920,
+      "height": 2,
+      "anchor": "top-left",
+      "track": 6,
+      "svg": "<svg width='920' height='2' viewBox='0 0 920 2' xmlns='http://www.w3.org/2000/svg'><rect width='920' height='1' fill='#FFFFFF' fill-opacity='0.1'/></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 80,
+      "y": 770,
+      "width": 60,
+      "height": 60,
+      "anchor": "top-left",
+      "track": 6,
+      "svg": "<svg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'><circle cx='30' cy='30' r='29' fill='{{accent}}' stroke='{{accent}}' stroke-width='1.6'/><path d='M20 31 L27 38 L41 23' fill='none' stroke='{{ink}}' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 164,
+      "y": 766,
+      "width": 840,
+      "anchor": "top-left",
+      "track": 6,
+      "style": { "fontFamily": "Space Grotesk" },
+      "html": "<div style='font-size:17px; font-weight:600; letter-spacing:0.22em; color:{{accent}};'>{{fixLabel}}</div><div style='margin-top:8px; font-size:32px; font-weight:600; line-height:1.28; color:{{offWhite}};'>{{fixText}}</div>"
+    },
+    {
+      "type": "SVG",
+      "x": 80,
+      "y": 966,
+      "width": 360,
+      "height": 40,
+      "anchor": "top-left",
+      "track": 7,
+      "svg": "<svg width='360' height='40' viewBox='0 0 360 40' xmlns='http://www.w3.org/2000/svg'><circle cx='11' cy='20' r='7' fill='{{accent}}'/><text x='30' y='27' font-family='Space Grotesk, Arial' font-size='21' font-weight='600' fill='#C6C2CE'>{{brand}}</text></svg>"
+    }
+  ]
+}

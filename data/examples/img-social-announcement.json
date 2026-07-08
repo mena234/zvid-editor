@@ -1,0 +1,106 @@
+{
+  "type": "image",
+  "name": "img-social-announcement",
+  "resolution": "instagram-post",
+  "outputFormat": "png",
+  "backgroundColor": "#0C0C14",
+  "variables": {
+    "badge": "BIG NEWS",
+    "titlePre": "We just shipped",
+    "highlight": "v2.0",
+    "titlePost": "— a whole new studio.",
+    "sub": "Faster renders, live previews, and templates you ship in one click.",
+    "dateChip": "OUT NOW",
+    "brand": "zvid studio",
+    "ink": "#0C0C14",
+    "offWhite": "#F5F1E6",
+    "muted": "#928D7E",
+    "accent": "#E9C46A"
+  },
+  "visuals": [
+    {
+      "type": "SVG",
+      "width": 1080,
+      "height": 1080,
+      "position": "center-center",
+      "track": 0,
+      "svg": "<svg width='1080' height='1080' viewBox='0 0 1080 1080' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='bg' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#16150F'/><stop offset='0.5' stop-color='#0C0C14'/><stop offset='1' stop-color='#08080D'/></linearGradient><radialGradient id='gl' cx='0.85' cy='0.16' r='0.66'><stop offset='0' stop-color='{{accent}}' stop-opacity='0.32'/><stop offset='1' stop-color='{{accent}}' stop-opacity='0'/></radialGradient></defs><rect width='1080' height='1080' fill='url(#bg)'/><rect width='1080' height='1080' fill='url(#gl)'/><rect x='40' y='40' width='1000' height='1000' rx='30' fill='none' stroke='#FFFFFF' stroke-opacity='0.08' stroke-width='1.5'/></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 812,
+      "y": 96,
+      "width": 176,
+      "height": 176,
+      "anchor": "top-left",
+      "track": 3,
+      "svg": "<svg width='176' height='176' viewBox='0 0 176 176' xmlns='http://www.w3.org/2000/svg'><polygon points='88,8 104,64 160,48 120,88 160,128 104,112 88,168 72,112 16,128 56,88 16,48 72,64' fill='{{accent}}' fill-opacity='0.16'/><polygon points='88,34 99,72 137,62 110,90 137,118 99,108 88,146 77,108 39,118 66,90 39,62 77,72' fill='{{accent}}'/><circle cx='88' cy='90' r='20' fill='{{ink}}'/></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 80,
+      "y": 100,
+      "width": 208,
+      "height": 54,
+      "anchor": "top-left",
+      "track": 4,
+      "svg": "<svg width='208' height='54' viewBox='0 0 208 54' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='208' height='54' rx='27' fill='{{accent}}'/><circle cx='30' cy='27' r='7' fill='{{ink}}'/><text x='52' y='35' font-family='Space Grotesk, Arial' font-size='20' font-weight='700' letter-spacing='2.5' fill='{{ink}}'>{{badge}}</text></svg>"
+    },
+    {
+      "type": "TEXT",
+      "x": 78,
+      "y": 320,
+      "width": 904,
+      "anchor": "top-left",
+      "track": 5,
+      "style": { "fontFamily": "Syne" },
+      "html": "<div style='font-size:76px; font-weight:800; line-height:1.04; letter-spacing:-0.02em; color:{{offWhite}};'>{{titlePre}} <span style='color:{{accent}};'>{{highlight}}</span> {{titlePost}}</div>"
+    },
+    {
+      "type": "TEXT",
+      "x": 80,
+      "y": 736,
+      "width": 780,
+      "anchor": "top-left",
+      "track": 5,
+      "text": "{{sub}}",
+      "style": {
+        "fontFamily": "Space Grotesk",
+        "fontSize": "30px",
+        "fontWeight": "500",
+        "lineHeight": "1.4",
+        "color": "#928D7E"
+      }
+    },
+    {
+      "type": "SVG",
+      "x": 80,
+      "y": 890,
+      "width": 920,
+      "height": 2,
+      "anchor": "top-left",
+      "track": 6,
+      "svg": "<svg width='920' height='2' viewBox='0 0 920 2' xmlns='http://www.w3.org/2000/svg'><rect width='920' height='1' fill='#FFFFFF' fill-opacity='0.1'/></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 80,
+      "y": 922,
+      "width": 340,
+      "height": 52,
+      "anchor": "top-left",
+      "track": 7,
+      "svg": "<svg width='340' height='52' viewBox='0 0 340 52' xmlns='http://www.w3.org/2000/svg'><circle cx='26' cy='26' r='11' fill='{{accent}}'/><path d='M22 26 L32 20 L32 32 Z' fill='{{ink}}'/><text x='52' y='34' font-family='Space Grotesk, Arial' font-size='24' font-weight='600' fill='{{offWhite}}'>{{brand}}</text></svg>"
+    },
+    {
+      "type": "SVG",
+      "x": 812,
+      "y": 918,
+      "width": 188,
+      "height": 52,
+      "anchor": "top-left",
+      "track": 7,
+      "svg": "<svg width='188' height='52' viewBox='0 0 188 52' xmlns='http://www.w3.org/2000/svg'><rect x='0' y='2' width='188' height='48' rx='24' fill='{{accent}}' fill-opacity='0.14' stroke='{{accent}}' stroke-opacity='0.5' stroke-width='1.2'/><circle cx='30' cy='26' r='6' fill='{{accent}}'/><text x='50' y='33' font-family='Space Grotesk, Arial' font-size='19' font-weight='700' letter-spacing='2' fill='{{accent}}'>{{dateChip}}</text></svg>"
+    }
+  ]
+}
