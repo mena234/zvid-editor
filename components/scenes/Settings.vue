@@ -3,7 +3,6 @@ import { computed } from 'vue'
 import { useEditorContext } from '~/composables/useEditorContext'
 import { useTemplateVars } from '~/composables/useTemplateVars'
 import { variableTypeOf } from '~/shared/template/engine'
-import { XFADE_GROUPS } from '~/shared/schema/constants'
 
 const { project, editor, scenePlan } = useEditorContext()
 const tvars = useTemplateVars()
@@ -29,6 +28,15 @@ const isAuto = computed(() => (scene.value?.duration ?? -1) === -1)
 
 function patch(patchObj: Record<string, any>) {
   if (scene.value) project.patchScene(scene.value._id, patchObj)
+}
+
+function setSceneTransition(effect?: string) {
+  patch({
+    transition: effect || undefined,
+    transitionDuration: effect
+      ? (scene.value?.transitionDuration ?? 0.5)
+      : undefined,
+  })
 }
 
 /* ---------------- template: condition + iterate ---------------- */
@@ -138,34 +146,13 @@ function commitCondition(e: Event) {
 
     <template v-if="!isLast">
       <UiField label="Transition to next scene">
-        <select
-          class="ctl"
-          :value="scene.transition ?? ''"
-          @change="
-            patch({
-              transition: ($event.target as HTMLSelectElement).value || undefined,
-              transitionDuration:
-                ($event.target as HTMLSelectElement).value
-                  ? (scene.transitionDuration ?? 0.5)
-                  : undefined,
-            })
-          "
-        >
-          <option value="">none (hard cut)</option>
-          <optgroup
-            v-for="(effects, group) in XFADE_GROUPS"
-            :key="group"
-            :label="String(group)"
-          >
-            <option v-for="fx in effects" :key="fx" :value="fx">{{ fx }}</option>
-          </optgroup>
-        </select>
+        <UiEffectPicker
+          :model-value="scene.transition ? String(scene.transition) : undefined"
+          direction="transition"
+          none-label="None (hard cut)"
+          @update:model-value="setSceneTransition($event)"
+        />
       </UiField>
-      <InspectorXfadePreview
-        v-if="scene?.transition"
-        :effect="String(scene.transition || 'fade')"
-        direction="transition"
-      />
       <UiField
         v-if="scene.transition"
         label="Transition duration"

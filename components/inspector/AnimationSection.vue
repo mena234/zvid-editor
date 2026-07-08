@@ -5,7 +5,6 @@ import { canonicalVisualType } from '~/shared/schema/types'
 import { makeId } from '~/shared/schema/normalize'
 import { useProjectStore } from '~/stores/project'
 import { useEditorContext } from '~/composables/useEditorContext'
-import { XFADE_GROUPS } from '~/shared/schema/constants'
 import { resolveVisualTiming } from '~/shared/schema/defaults'
 import { round3 } from '~/utils/time'
 
@@ -20,7 +19,7 @@ function patch(p: Record<string, any>) {
   project.patchVisual(props.item._id, p)
 }
 
-function setEnter(effect: string) {
+function setEnter(effect?: string) {
   if (!effect) {
     patch({ enterAnimation: undefined })
     return
@@ -35,7 +34,7 @@ function setEnter(effect: string) {
   patch(p)
 }
 
-function setExit(effect: string) {
+function setExit(effect?: string) {
   if (!effect) {
     patch({ exitAnimation: undefined })
     return
@@ -85,18 +84,12 @@ function linkTransition(targetEditorId: string) {
 <template>
   <div>
     <UiSection title="Enter animation">
-      <select
-        class="ctl"
-        :value="item.enterAnimation ?? ''"
-        @change="setEnter(($event.target as HTMLSelectElement).value)"
-      >
-        <option value="">none</option>
-        <optgroup v-for="(effects, group) in XFADE_GROUPS" :key="group" :label="String(group)">
-          <option v-for="fx in effects" :key="fx" :value="fx">{{ fx }}</option>
-        </optgroup>
-      </select>
+      <UiEffectPicker
+        :model-value="item.enterAnimation"
+        direction="enter"
+        @update:model-value="setEnter($event)"
+      />
       <template v-if="item.enterAnimation">
-        <InspectorXfadePreview :effect="item.enterAnimation" direction="enter" />
         <UiField
           label="Duration"
           :hint="`Runs ${timing.enterBegin}s → ${timing.enterEnd}s (drag the yellow handle on the clip)`"
@@ -116,18 +109,12 @@ function linkTransition(targetEditorId: string) {
     </UiSection>
 
     <UiSection title="Exit animation">
-      <select
-        class="ctl"
-        :value="item.exitAnimation ?? ''"
-        @change="setExit(($event.target as HTMLSelectElement).value)"
-      >
-        <option value="">none</option>
-        <optgroup v-for="(effects, group) in XFADE_GROUPS" :key="group" :label="String(group)">
-          <option v-for="fx in effects" :key="fx" :value="fx">{{ fx }}</option>
-        </optgroup>
-      </select>
+      <UiEffectPicker
+        :model-value="item.exitAnimation"
+        direction="exit"
+        @update:model-value="setExit($event)"
+      />
       <template v-if="item.exitAnimation">
-        <InspectorXfadePreview :effect="item.exitAnimation" direction="exit" />
         <UiField label="Duration" :hint="`Runs ${timing.exitBegin}s → ${timing.exitEnd}s`">
           <UiNumberInput
             :model-value="round3(timing.exitEnd - timing.exitBegin)"
@@ -166,17 +153,13 @@ function linkTransition(targetEditorId: string) {
       </UiField>
       <template v-if="item.transition && item.transitionId">
         <UiField label="Effect">
-          <select
-            class="ctl"
-            :value="item.transition"
-            @change="patch({ transition: ($event.target as HTMLSelectElement).value })"
-          >
-            <optgroup v-for="(effects, group) in XFADE_GROUPS" :key="group" :label="String(group)">
-              <option v-for="fx in effects" :key="fx" :value="fx">{{ fx }}</option>
-            </optgroup>
-          </select>
+          <UiEffectPicker
+            :model-value="item.transition"
+            direction="transition"
+            :allow-none="false"
+            @update:model-value="patch({ transition: $event })"
+          />
         </UiField>
-        <InspectorXfadePreview :effect="item.transition" direction="transition" />
         <UiField label="Overlap duration">
           <UiNumberInput
             :model-value="item.transitionDuration ?? 0.5"

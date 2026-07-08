@@ -9,6 +9,11 @@ import {
   libraryErrorMessage,
   type LibraryItem,
 } from '~/composables/useLibrary'
+import {
+  EXAMPLE_CATEGORIES_WITH_OTHER,
+  categoryKeyForPack,
+  exampleCategory,
+} from '~/data/exampleCategories'
 
 const project = useProjectStore()
 const editor = useEditorStore()
@@ -22,11 +27,127 @@ const loadingSlug = ref('')
 /** Card the pointer is over — that card swaps its thumbnail for the preview video. */
 const hoverSlug = ref('')
 
+/** Search box + selected category chip ('all' = every category). */
+const query = ref('')
+const activeCat = ref('all')
+
 /** Premium templates need a paid plan; everyone can still hover-preview them. */
 function isLocked(item: LibraryItem): boolean {
   return !!item.meta?.premium && !auth.isPaid
 }
 const hasLocked = computed(() => items.value.some(isLocked))
+
+/** Which display category an item belongs to (by meta.pack, OTHER as fallback). */
+function catKeyOf(item: LibraryItem): string {
+  return categoryKeyForPack(item.meta?.pack)
+}
+
+/**
+ * Lower-cased search haystack per item: its title, description and its
+ * category's label + keyword synonyms, so an industry term (e.g. "crypto")
+ * finds a whole category even when the word isn't in the template's own copy.
+ */
+const haystacks = computed(() => {
+  const map = new Map<string, string>()
+  for (const it of items.value) {
+    const cat = exampleCategory(catKeyOf(it))
+    map.set(
+      it.slug,
+      [
+        it.title,
+        it.description ?? '',
+        cat?.label ?? '',
+        cat?.keywords.join(' ') ?? '',
+      ]
+        .join(' ')
+        .toLowerCase()
+    )
+  }
+  return map
+})
+
+const queryTerms = computed(() =>
+  query.value.toLowerCase().split(/\s+/).filter(Boolean).slice(0, 6)
+)
+
+/**
+ * AND search: every term must prefix-match a whitespace token of the item's
+ * haystack. Prefix-on-token (not bare substring) keeps "crypto" → Finance and
+ * "crypt" → Finance working while avoiding fragment hits — e.g. "art" no longer
+ * matches the keyword "chart" and drags in every Data-viz template.
+ */
+function matchesQuery(item: LibraryItem): boolean {
+  const terms = queryTerms.value
+  if (!terms.length) return true
+  const tokens = (haystacks.value.get(item.slug) ?? '').split(/\s+/)
+  return terms.every((t) => tokens.some((tok) => tok.startsWith(t)))
+}
+
+/** Items matching the search box, ignoring the category chip (drives chip counts). */
+const queryMatched = computed(() => items.value.filter(matchesQuery))
+
+/** Chip list: every category that has at least one item, with its match count. */
+const visibleCats = computed(() => {
+  const base = new Map<string, number>()
+  for (const it of items.value) {
+    base.set(catKeyOf(it), (base.get(catKeyOf(it)) ?? 0) + 1)
+  }
+  const matched = new Map<string, number>()
+  for (const it of queryMatched.value) {
+    matched.set(catKeyOf(it), (matched.get(catKeyOf(it)) ?? 0) + 1)
+  }
+  return EXAMPLE_CATEGORIES_WITH_OTHER.filter((c) => base.has(c.key)).map(
+    (c) => ({
+      key: c.key,
+      label: c.label,
+      blurb: c.blurb,
+      count: matched.get(c.key) ?? 0,
+    })
+  )
+})
+
+const totalMatches = computed(() => queryMatched.value.length)
+
+const activeCatLabel = computed(() =>
+  activeCat.value === 'all' ? '' : exampleCategory(activeCat.value)?.label ?? ''
+)
+
+/** Items shown, after both the search box and the category chip. */
+const filtered = computed(() =>
+  activeCat.value === 'all'
+    ? queryMatched.value
+    : queryMatched.value.filter((it) => catKeyOf(it) === activeCat.value)
+)
+
+/**
+ * Cards grouped into sections. Browsing "All" shows every non-empty category in
+ * order; a selected chip collapses to that single section. Items keep the API's
+ * sort_order (premium/curated first within each pack).
+ */
+const groups = computed(() => {
+  const byCat = new Map<string, LibraryItem[]>()
+  for (const it of filtered.value) {
+    const k = catKeyOf(it)
+    const arr = byCat.get(k)
+    if (arr) arr.push(it)
+    else byCat.set(k, [it])
+  }
+  return EXAMPLE_CATEGORIES_WITH_OTHER.filter((c) => byCat.has(c.key)).map(
+    (c) => ({ key: c.key, label: c.label, blurb: c.blurb, items: byCat.get(c.key)! })
+  )
+})
+
+function pickCat(key: string) {
+  activeCat.value = key
+}
+/** Keep the search term, drop the category filter (recovers an empty category). */
+function showAllMatches() {
+  activeCat.value = 'all'
+}
+function clearFilters() {
+  query.value = ''
+  activeCat.value = 'all'
+}
 
 async function loadList() {
   pending.value = true
@@ -80,8 +201,8 @@ function onLeave(slug: string) {
 </script>
 
 <template>
-  <UiModal title="Example projects" width="860px" @close="editor.closeModal()">
-    <p class="hint">
+  <UiModal title="Example projects" width="900px" @close="editor.closeModal()">
+    <p class="hint intro">
       Curated example projects — hover a card to preview, click to load it into
       the editor. Loading replaces the current project.
       <template v-if="hasLocked">
@@ -91,74 +212,229 @@ function onLeave(slug: string) {
         >.
       </template>
     </p>
+
+    <template v-if="!pending && !error">
+      <div class="ex-tools">
+        <div class="ex-search-row">
+          <input
+            v-model="query"
+            class="ctl ex-search"
+            type="search"
+            placeholder="Search examples… (crypto, real estate, quiz, sale)"
+            spellcheck="false"
+            aria-label="Search example projects"
+          />
+          <span class="ex-count mono">{{ filtered.length }} / {{ items.length }}</span>
+        </div>
+        <div class="ex-cats">
+          <button
+            class="ex-cat"
+            :class="{ active: activeCat === 'all' }"
+            @click="pickCat('all')"
+          >
+            All <span class="ex-cat-n">{{ totalMatches }}</span>
+          </button>
+          <button
+            v-for="c in visibleCats"
+            :key="c.key"
+            class="ex-cat"
+            :class="{ active: activeCat === c.key, 'is-empty': c.count === 0 }"
+            :disabled="c.count === 0 && activeCat !== c.key"
+            :title="c.blurb"
+            @click="pickCat(c.key)"
+          >
+            {{ c.label }} <span class="ex-cat-n">{{ c.count }}</span>
+          </button>
+        </div>
+      </div>
+    </template>
+
     <p v-if="pending" class="hint">Loading examples…</p>
     <div v-else-if="error" class="error-box">
       <p class="hint">⚠ {{ error }}</p>
       <button class="btn sm" @click="loadList()">Retry</button>
     </div>
-    <div v-else class="grid">
-      <button
-        v-for="ex in items"
-        :key="ex.slug"
-        class="card"
-        :class="{ busy: loadingSlug === ex.slug, locked: isLocked(ex) }"
-        @click="load(ex)"
-        @mouseenter="onEnter(ex.slug)"
-        @mouseleave="onLeave(ex.slug)"
-        @focus="onEnter(ex.slug)"
-        @blur="onLeave(ex.slug)"
-      >
-        <span class="shot">
-          <img
-            v-if="ex.meta?.thumbnail"
-            class="thumb"
-            :src="ex.meta.thumbnail"
-            :alt="ex.title"
-            loading="lazy"
-          />
-          <span v-else class="thumb thumb-fallback">
-            <UiIcon
-              :name="ex.meta?.hasScenes ? 'scene' : ex.meta?.hasSubtitle ? 'subtitles' : 'film'"
-              :size="22"
-            />
-          </span>
-          <video
-            v-if="hoverSlug === ex.slug && ex.meta?.preview"
-            class="shot-video"
-            :src="ex.meta.preview"
-            autoplay
-            muted
-            loop
-            playsinline
-          />
-          <span v-if="ex.meta?.premium" class="pro-badge">
-            <template v-if="isLocked(ex)">🔒 </template>PRO
-          </span>
-          <span v-if="ex.meta?.duration" class="shot-badge mono">
-            {{ ex.meta.duration }}s
-          </span>
-        </span>
-        <span class="card-head">
-          <b>{{ ex.title }}</b>
-        </span>
-        <span class="card-desc">{{ ex.description }}</span>
-        <span class="card-meta mono">
-          {{ ex.meta?.resolution }}
-          <template v-if="ex.meta?.scenes"> · {{ ex.meta.scenes }} scenes</template>
-        </span>
-      </button>
-    </div>
+    <template v-else>
+      <template v-if="!groups.length">
+        <p
+          v-if="totalMatches > 0 && activeCat !== 'all'"
+          class="hint empty-note"
+        >
+          No {{ activeCatLabel }} examples match “{{ query }}”. Found
+          {{ totalMatches }} in other categories —
+          <button class="link-btn" @click="showAllMatches()">show all matches</button>.
+        </p>
+        <p v-else class="hint empty-note">
+          No examples match your search. Try another term or
+          <button class="link-btn" @click="clearFilters()">clear filters</button>.
+        </p>
+      </template>
+      <section v-for="g in groups" :key="g.key" class="cat-section">
+        <header class="cat-head">
+          <h3 class="cat-title">
+            {{ g.label }} <span class="cat-n">{{ g.items.length }}</span>
+          </h3>
+          <p class="cat-blurb">{{ g.blurb }}</p>
+        </header>
+        <div class="grid">
+          <button
+            v-for="ex in g.items"
+            :key="ex.slug"
+            class="card"
+            :class="{ busy: loadingSlug === ex.slug, locked: isLocked(ex) }"
+            @click="load(ex)"
+            @mouseenter="onEnter(ex.slug)"
+            @mouseleave="onLeave(ex.slug)"
+            @focus="onEnter(ex.slug)"
+            @blur="onLeave(ex.slug)"
+          >
+            <span class="shot">
+              <img
+                v-if="ex.meta?.thumbnail"
+                class="thumb"
+                :src="ex.meta.thumbnail"
+                :alt="ex.title"
+                loading="lazy"
+              />
+              <span v-else class="thumb thumb-fallback">
+                <UiIcon
+                  :name="ex.meta?.hasScenes ? 'scene' : ex.meta?.hasSubtitle ? 'subtitles' : 'film'"
+                  :size="22"
+                />
+              </span>
+              <video
+                v-if="hoverSlug === ex.slug && ex.meta?.preview"
+                class="shot-video"
+                :src="ex.meta.preview"
+                autoplay
+                muted
+                loop
+                playsinline
+              />
+              <span v-if="ex.meta?.premium" class="pro-badge">
+                <template v-if="isLocked(ex)">🔒 </template>PRO
+              </span>
+              <span v-if="ex.meta?.duration" class="shot-badge mono">
+                {{ ex.meta.duration }}s
+              </span>
+            </span>
+            <span class="card-head">
+              <b>{{ ex.title }}</b>
+            </span>
+            <span class="card-desc">{{ ex.description }}</span>
+            <span class="card-meta mono">
+              {{ ex.meta?.resolution }}
+              <template v-if="ex.meta?.scenes"> · {{ ex.meta.scenes }} scenes</template>
+            </span>
+          </button>
+        </div>
+      </section>
+    </template>
   </UiModal>
 </template>
 
 <style scoped>
+.intro {
+  margin-bottom: 8px;
+}
+/* Search + category chips stay pinned while the card sections scroll. */
+.ex-tools {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 4px 0 8px;
+  margin-bottom: 4px;
+  background: var(--bg-1);
+  border-bottom: 1px solid var(--border-1);
+}
+.ex-search-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.ex-search {
+  flex: 1;
+}
+.ex-count {
+  flex: 0 0 auto;
+  font-size: 10px;
+  color: var(--text-3);
+  white-space: nowrap;
+}
+.ex-cats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.ex-cat {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  border: 1px solid var(--border-1);
+  border-radius: 999px;
+  background: var(--bg-2);
+  color: var(--text-2);
+  font-size: 10.5px;
+  font-weight: 600;
+}
+.ex-cat:not(:disabled):hover {
+  border-color: var(--accent);
+  color: var(--text-0);
+}
+.ex-cat:disabled {
+  cursor: default;
+}
+.ex-cat.active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+}
+.ex-cat.is-empty {
+  opacity: 0.4;
+}
+.ex-cat-n {
+  font-size: 9px;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-3);
+}
+.ex-cat.active .ex-cat-n {
+  color: var(--accent-strong);
+}
+.cat-section {
+  margin-bottom: 16px;
+}
+.cat-head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 4px 0 8px;
+  flex-wrap: wrap;
+}
+.cat-title {
+  margin: 0;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--text-0);
+}
+.cat-n {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-3);
+  font-variant-numeric: tabular-nums;
+}
+.cat-blurb {
+  margin: 0;
+  font-size: 10px;
+  color: var(--text-3);
+}
 .grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 10px;
-  max-height: 62vh;
-  overflow-y: auto;
-  padding-right: 2px;
 }
 .card {
   display: flex;
@@ -267,6 +543,19 @@ function onLeave(slug: string) {
 .card-meta {
   font-size: 9px;
   color: var(--text-3);
+}
+.empty-note {
+  padding: 20px 0;
+  text-align: center;
+}
+.link-btn {
+  color: var(--accent);
+  text-decoration: underline;
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
 }
 .error-box {
   display: flex;
