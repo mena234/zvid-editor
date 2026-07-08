@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import type { VisualDoc } from '~/shared/schema/types'
 import { canonicalVisualType } from '~/shared/schema/types'
 import { resolveVisualTiming } from '~/shared/schema/defaults'
+import { MAX_DESIGN_ELEMENT_DURATION } from '~/shared/schema/constants'
 import { useProjectStore } from '~/stores/project'
 import { useEditorStore } from '~/stores/editor'
 import { round3, clamp } from '~/utils/time'
@@ -29,6 +30,25 @@ function onContextMenu(e: MouseEvent) {
 
 const type = computed(() => canonicalVisualType(props.item.type) ?? 'IMAGE')
 const timing = computed(() => resolveVisualTiming(props.item, props.contextDuration))
+
+/* Design studio elements animate via customCode — 15s screen-time ceiling.
+   Template-driven timing ("{{var}}") resolves at render and is exempt, same
+   as the store clamp. */
+const maxWindow = computed(() =>
+  props.item.designer &&
+  typeof props.item.enterBegin !== 'string' &&
+  typeof props.item.exitEnd !== 'string'
+    ? MAX_DESIGN_ELEMENT_DURATION
+    : Infinity
+)
+/* Left-trim floor comes from the EXPLICIT end only: an open-ended legacy
+   window resolves to the timeline end, and a floor derived from that would
+   teleport the clip — the store pins the end on the resulting patch anyway. */
+const trimLFloor = computed(() =>
+  typeof props.item.exitEnd === 'number' && Number.isFinite(props.item.exitEnd)
+    ? Math.max(0, props.item.exitEnd - maxWindow.value)
+    : 0
+)
 
 const left = computed(() => timing.value.enterBegin * props.pxPerSec)
 const width = computed(() =>
@@ -153,7 +173,7 @@ function onMove(e: PointerEvent) {
     project.patchVisual(props.item._id, patch, false)
   } else if (g.mode === 'trim-l') {
     let nb = props.snap(g.t0.enterBegin + dt, props.item._id)
-    nb = clamp(nb, 0, g.t0.exitEnd - 0.05)
+    nb = clamp(nb, trimLFloor.value, g.t0.exitEnd - 0.05)
     const shift = nb - g.t0.enterBegin
     const patch: Record<string, any> = {
       enterBegin: round3(nb),
@@ -163,7 +183,7 @@ function onMove(e: PointerEvent) {
     project.patchVisual(props.item._id, patch, false)
   } else if (g.mode === 'trim-r') {
     let ne = props.snap(g.t0.exitEnd + dt, props.item._id)
-    ne = Math.max(g.t0.enterBegin + 0.05, ne)
+    ne = clamp(ne, g.t0.enterBegin + 0.05, g.t0.enterBegin + maxWindow.value)
     const patch: Record<string, any> = {
       exitEnd: round3(ne),
       exitBegin: round3(

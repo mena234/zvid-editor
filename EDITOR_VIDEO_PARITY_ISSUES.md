@@ -57,6 +57,28 @@ Impact: any project using `chromaKey` is not WYSIWYG in the editor.
 
 ### P0 - Linked video transitions are not composed like the package
 
+> **Update 2026-07-08:** addressed. `utils/xfade.ts` is now an exact port of
+> FFmpeg n6.1.2 `vf_xfade.c` (all 43 effects, both-stream composition,
+> straight-alpha enter/exit law verified against real ffmpeg pixel probes).
+> StageView composes linked `transition`/`transitionId` pairs on a full-frame
+> canvas mapped into item-local styles, scene transitions style both scene
+> layers plus fade-through-color plates, and enter/exit animations use the
+> same module. Covered by `tests/xfade.test.ts` + headless DOM verification.
+>
+> **Update 2026-07-08 (later):** SVG-filter effects (pixelize/hblur) further
+> hardened after an adversarial audit: filters declare
+> `color-interpolation-filters="sRGB"` (FFmpeg mixes gamma values; default
+> linearRGB skewed chained brightness), and pixelize's sampling dot is sized
+> in DEVICE pixels (`rasterScale` = stage zoom × dpr) — 1px dots pixel-snap
+> to nothing at fractional zoom, vanishing the whole layer. Editor enter
+> animations now match real package renders at MAD 0.9–3.0. Package fix in
+> the same pass: `generateTransitionsFilters` color canvas got `r: frameRate`
+> (was silently 25 fps). Remaining known approximations: rotated-item
+> animation canvases (package uses the expanded rotated bbox with
+> screen-aligned cells), one-sided regions of non-full-frame transitions
+> (straight-alpha t² darkening not simulated in transition mode), and
+> asset-fps progress quantization.
+
 The package groups linked video items and applies FFmpeg `xfade`. The editor stage renders items independently by visibility and track order, and only suppresses exit animation when a transition exists.
 
 Evidence:

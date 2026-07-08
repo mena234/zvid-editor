@@ -3,7 +3,7 @@ import { computed } from 'vue'
 import { useEditorContext } from '~/composables/useEditorContext'
 import { useTemplateVars } from '~/composables/useTemplateVars'
 import { variableTypeOf } from '~/shared/template/engine'
-import { XFADE_EFFECTS } from '~/shared/schema/constants'
+import { XFADE_GROUPS } from '~/shared/schema/constants'
 
 const { project, editor, scenePlan } = useEditorContext()
 const tvars = useTemplateVars()
@@ -152,9 +152,20 @@ function commitCondition(e: Event) {
           "
         >
           <option value="">none (hard cut)</option>
-          <option v-for="fx in XFADE_EFFECTS" :key="fx" :value="fx">{{ fx }}</option>
+          <optgroup
+            v-for="(effects, group) in XFADE_GROUPS"
+            :key="group"
+            :label="String(group)"
+          >
+            <option v-for="fx in effects" :key="fx" :value="fx">{{ fx }}</option>
+          </optgroup>
         </select>
       </UiField>
+      <InspectorXfadePreview
+        v-if="scene?.transition"
+        :effect="String(scene.transition || 'fade')"
+        direction="transition"
+      />
       <UiField
         v-if="scene.transition"
         label="Transition duration"

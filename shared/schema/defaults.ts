@@ -1,6 +1,7 @@
 import {
   PROJECT_DEFAULTS,
   RESOLUTION_PRESETS,
+  MAX_DESIGN_ELEMENT_DURATION,
   type ResolutionPreset,
   type Anchor,
   type PositionPreset,
@@ -80,6 +81,74 @@ export function resolveVisualTiming(
   const exitEnd = asNum(item.exitEnd, contextDuration)
   const exitBegin = Math.min(asNum(item.exitBegin, contextDuration), exitEnd)
   return { enterBegin, enterEnd, exitBegin, exitEnd }
+}
+
+/**
+ * Design Studio elements (visuals carrying a `designer` doc) animate through
+ * customCode, whose loop the renderer caps at 15s — so their on-screen window
+ * is capped to MAX_DESIGN_ELEMENT_DURATION too. Mutates the item; `prefer`
+ * picks which edge gives way when the window is too long ('start' when the
+ * caller just moved enterBegin, 'end' otherwise).
+ *
+ * Design elements always end up with an explicit exitEnd: an open-ended
+ * window ("empty = end of timeline") silently grows whenever the timeline
+ * does and would outrun the animation ceiling, so it is pinned to today's
+ * timeline end (capped at the ceiling). Contexts with no usable duration
+ * (auto "-1" scenes) pin straight to the ceiling.
+ *
+ * Template-placeholder timing ("{{var}}") is left alone — it resolves at
+ * render, not here. Returns true when the item was changed.
+ */
+export function clampDesignTiming(
+  item: VisualDoc,
+  contextDuration: number,
+  prefer: 'start' | 'end' = 'end'
+): boolean {
+  if (!(item as any).designer) return false
+  if (typeof item.enterBegin === 'string' || typeof item.exitEnd === 'string')
+    return false
+  // NaN timing (corrupted or unresolvable) — nothing sane to clamp against,
+  // and "fixing" it would overwrite fields the user can still repair
+  if (
+    (typeof item.enterBegin === 'number' && Number.isNaN(item.enterBegin)) ||
+    (typeof item.exitEnd === 'number' && Number.isNaN(item.exitEnd))
+  )
+    return false
+  const r3 = (n: number) => Math.round(n * 1000) / 1000
+  let changed = false
+
+  if (item.exitEnd === undefined) {
+    const eb =
+      typeof item.enterBegin === 'number' && !Number.isNaN(item.enterBegin)
+        ? item.enterBegin
+        : 0
+    const ctxEnd =
+      contextDuration > 0 ? contextDuration : eb + MAX_DESIGN_ELEMENT_DURATION
+    item.exitEnd = r3(
+      Math.min(Math.max(ctxEnd, eb), eb + MAX_DESIGN_ELEMENT_DURATION)
+    )
+    changed = true
+  }
+
+  const t = resolveVisualTiming(item, contextDuration)
+  if (t.exitEnd - t.enterBegin > MAX_DESIGN_ELEMENT_DURATION + 1e-6) {
+    if (prefer === 'start') {
+      item.enterBegin = r3(t.exitEnd - MAX_DESIGN_ELEMENT_DURATION)
+    } else {
+      item.exitEnd = r3(t.enterBegin + MAX_DESIGN_ELEMENT_DURATION)
+    }
+    changed = true
+  }
+  if (!changed) return false
+
+  // pull explicit animation edges back inside the (possibly shrunk) window
+  const begin = typeof item.enterBegin === 'number' ? item.enterBegin : 0
+  const end = item.exitEnd as number
+  if (typeof item.enterEnd === 'number')
+    item.enterEnd = Math.min(Math.max(item.enterEnd, begin), end)
+  if (typeof item.exitBegin === 'number')
+    item.exitBegin = Math.min(Math.max(item.exitBegin, begin), end)
+  return true
 }
 
 export interface ResolvedAudioTiming {

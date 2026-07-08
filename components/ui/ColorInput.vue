@@ -86,10 +86,11 @@ function onText(e: Event) {
       @change="onText"
     />
     <UiVarMenu
-      v-if="varOptions.length"
+      v-if="allowVar"
       class="embed"
       :options="varOptions"
       title="Use a text variable for this color"
+      empty-text="No text variables yet."
       @insert="emit('update:modelValue', $event)"
     />
   </span>

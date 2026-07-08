@@ -5,7 +5,8 @@ import { useTemplateVars } from '~/composables/useTemplateVars'
 import { effectiveLayout, isVisibleAt } from '~/utils/itemGeometry'
 import { clamp } from '~/utils/time'
 import type { VisualDoc } from '~/shared/schema/types'
-import { xfadeToCss } from '~/utils/xfadeCss'
+import { xfadeFrame, layerStyle, plateStyle, deviceScale } from '~/utils/xfade'
+import { activeGroupFx, type GroupFxResult } from '~/utils/groupTransitions'
 import { isStockDrag, parseStockDragData, buildStockVisual } from '~/utils/stockDrag'
 
 const {
@@ -77,32 +78,66 @@ const isFullPreview = computed(
     editor.scenePreviewMode === 'full'
 )
 
-const fullEntries = computed(() => {
-  if (!isFullPreview.value || !scenePlan.value) return []
+interface FullEntry {
+  entry: import('~/shared/schema/scenePlan').ScenePlanEntry
+  localT: number
+  visible: boolean
+  layer: Record<string, any>
+  groupFx: GroupFxResult | null
+  key: string
+}
+
+const fullPreview = computed(() => {
+  if (!isFullPreview.value || !scenePlan.value)
+    return { entries: [] as FullEntry[], plates: [] as Record<string, any>[] }
   const t = editor.playhead
-  return scenePlan.value.entries
-    .map((entry, i) => {
-      const prev = scenePlan.value!.entries[i - 1]
-      const localT = t - entry.start
-      const visible = localT >= 0 && localT <= entry.duration
-      let animStyle: Record<string, any> = {}
-      if (visible && prev?.transition) {
-        const overlap = prev.transitionDuration
-        if (localT < overlap && overlap > 0) {
-          const p = localT / overlap
-          const s = xfadeToCss(prev.transition, p)
-          animStyle = {
-            opacity: s.opacity,
-            clipPath: s.clipPath,
-            transform: s.transform,
-            filter: s.filter,
-          }
-        }
-      }
-      return { entry, localT, visible, animStyle, key: entry.scene._id }
+  const entries = scenePlan.value.entries
+  const list: FullEntry[] = entries.map((entry) => {
+    const localT = t - entry.start
+    return {
+      entry,
+      localT,
+      visible: localT >= 0 && localT <= entry.duration,
+      layer: {},
+      groupFx: null,
+      key: entry.scene._id,
+    }
+  })
+  const plates: Record<string, any>[] = []
+  // scene→scene xfade: prev scene is stream A, next scene stream B
+  for (let i = 1; i < entries.length; i++) {
+    const prev = entries[i - 1]
+    if (!prev.transition) continue
+    const overlap = prev.transitionDuration
+    const localT = list[i].localT
+    if (!(overlap > 0) || localT < 0 || localT >= overlap) continue
+    const frame = xfadeFrame(prev.transition, localT / overlap, {
+      mode: 'transition',
+      canvasW: projW.value,
+      canvasH: projH.value,
+      rasterScale: deviceScale(scale.value),
     })
-    .filter((e) => e.visible)
+    list[i - 1].layer = layerStyle(frame.a)
+    list[i].layer = layerStyle(frame.b)
+    if (frame.plate) plates.push(plateStyle(frame.plate))
+  }
+  // per-scene video↔video linked transitions
+  for (const e of list) {
+    if (!e.visible) continue
+    e.groupFx = activeGroupFx(
+      e.entry.scene.visuals,
+      e.localT,
+      e.entry.duration,
+      projW.value,
+      projH.value,
+      deviceScale(scale.value)
+    )
+  }
+  return { entries: list.filter((e) => e.visible), plates }
 })
+
+const fullEntries = computed(() => fullPreview.value.entries)
+const scenePlates = computed(() => fullPreview.value.plates)
 
 /* ---------------- sorted visuals (track z-order) ---------------- */
 function sortByTrack(items: VisualDoc[]) {
@@ -136,6 +171,30 @@ const overlayVisuals = computed(() =>
   tvars.previewOn.value
     ? sortByTrack(project.resolvedPreviewDoc.visuals)
     : sortedVisuals.value
+)
+
+/* video↔video linked transitions in the current editing context */
+const contextGroupFx = computed(() =>
+  activeGroupFx(
+    displayedVisuals.value,
+    editor.playhead,
+    contextDuration.value,
+    projW.value,
+    projH.value
+  )
+)
+
+/* …and for the global overlays of the full preview */
+const overlayGroupFx = computed(() =>
+  isFullPreview.value
+    ? activeGroupFx(
+        overlayVisuals.value,
+        editor.playhead,
+        contextDuration.value,
+        projW.value,
+        projH.value
+      )
+    : null
 )
 
 const displayContextBg = computed(
@@ -415,18 +474,25 @@ const contextLabel = computed(() => {
         >
           <!-- full movie preview: scene groups + global overlays -->
           <template v-if="isFullPreview">
+            <!-- scene-transition fade-through-color plates (under both scenes) -->
+            <div
+              v-for="(ps, i) in scenePlates"
+              :key="`plate-${i}`"
+              class="fx-plate"
+              :style="ps"
+            />
             <div
               v-for="fe in fullEntries"
               :key="fe.key"
               class="scene-group"
-              :style="{
-                background: fe.entry.backgroundColor,
-                opacity: fe.animStyle.opacity,
-                clipPath: fe.animStyle.clipPath,
-                transform: fe.animStyle.transform,
-                filter: fe.animStyle.filter,
-              }"
+              :style="{ background: fe.entry.backgroundColor, ...fe.layer }"
             >
+              <div
+                v-for="(ps, i) in fe.groupFx?.plates ?? []"
+                :key="`gplate-${i}`"
+                class="fx-plate"
+                :style="plateStyle(ps)"
+              />
               <StageItem
                 v-for="item in sortByTrack(fe.entry.scene.visuals)"
                 :key="item._id"
@@ -434,8 +500,15 @@ const contextLabel = computed(() => {
                 :time="fe.localT"
                 :context-duration="fe.entry.duration"
                 :interactive="false"
+                :group-fx="fe.groupFx?.styleById.get(item._id) ?? null"
               />
             </div>
+            <div
+              v-for="(ps, i) in overlayGroupFx?.plates ?? []"
+              :key="`oplate-${i}`"
+              class="fx-plate"
+              :style="plateStyle(ps)"
+            />
             <StageItem
               v-for="item in overlayVisuals"
               :key="item._id"
@@ -443,11 +516,19 @@ const contextLabel = computed(() => {
               :time="editor.playhead"
               :context-duration="contextDuration"
               :interactive="false"
+              :group-fx="overlayGroupFx?.styleById.get(item._id) ?? null"
             />
           </template>
 
           <!-- normal editing context -->
           <template v-else>
+            <!-- video↔video transition plates (full-frame xfade canvas) -->
+            <div
+              v-for="(ps, i) in contextGroupFx?.plates ?? []"
+              :key="`cplate-${i}`"
+              class="fx-plate"
+              :style="plateStyle(ps)"
+            />
             <StageItem
               v-for="item in displayedVisuals"
               :key="item._id"
@@ -455,6 +536,7 @@ const contextLabel = computed(() => {
               :time="editor.playhead"
               :context-duration="contextDuration"
               :interactive="true"
+              :group-fx="contextGroupFx?.styleById.get(item._id) ?? null"
             />
           </template>
 
@@ -593,6 +675,11 @@ const contextLabel = computed(() => {
 .scene-group {
   position: absolute;
   inset: 0;
+}
+.fx-plate {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
 }
 /* guides sit over arbitrary video content — pair light dashes with a dark
    halo so they read on any footage, in either app theme */

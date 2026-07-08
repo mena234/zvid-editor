@@ -4,7 +4,14 @@ import type { VisualDoc } from '~/shared/schema/types'
 import { canonicalVisualType } from '~/shared/schema/types'
 import { effectiveLayout, resolveVisualTiming } from '~/utils/itemGeometry'
 import { topLeftToAnchor } from '~/shared/schema/defaults'
-import { xfadeToCss, type AnimStyle } from '~/utils/xfadeCss'
+import {
+  xfadeFrame,
+  layerStyle,
+  plateStyle,
+  deviceScale,
+  type XfadeFrameCss,
+  type XfadeLayerCss,
+} from '~/utils/xfade'
 import { useEditorStore } from '~/stores/editor'
 import { useProjectStore } from '~/stores/project'
 import { round3 } from '~/utils/time'
@@ -14,6 +21,8 @@ const props = defineProps<{
   time: number
   contextDuration: number
   interactive: boolean
+  /** active video↔video xfade layer style (computed by StageView) */
+  groupFx?: XfadeLayerCss | null
 }>()
 
 const editor = useEditorStore()
@@ -32,15 +41,29 @@ const visible = computed(
   () => props.time >= timing.value.enterBegin && props.time <= timing.value.exitEnd
 )
 
-/* enter/exit xfade animation approximation */
-const animStyle = computed<AnimStyle>(() => {
+/* enter/exit animation — exact xfade composite (item vs transparent canvas
+ * the size of the item box, mirroring package getAnimationFilter) */
+const OPAQUE_TYPES = new Set(['VIDEO', 'IMAGE', 'GIF'])
+
+const animFx = computed<{ frame: XfadeFrameCss; role: 'a' | 'b' } | null>(() => {
   const t = props.time
   const tm = timing.value
   const item = props.item
+  const L = layout.value
+  const base = {
+    canvasW: L.width,
+    canvasH: L.height,
+    contentOpaque: OPAQUE_TYPES.has(type.value ?? ''),
+    rasterScale: deviceScale(stageCtx.scale),
+  }
   if (item.enterAnimation && t >= tm.enterBegin && t < tm.enterEnd) {
     const p = (t - tm.enterBegin) / Math.max(0.001, tm.enterEnd - tm.enterBegin)
-    return xfadeToCss(item.enterAnimation, p)
+    return {
+      frame: xfadeFrame(item.enterAnimation, p, { mode: 'enter', ...base }),
+      role: 'b',
+    }
   }
+  // the renderer suppresses the exit animation when a transition is linked
   const transitionSuppressed = !!(item.transition && item.transitionId)
   if (
     item.exitAnimation &&
@@ -49,10 +72,29 @@ const animStyle = computed<AnimStyle>(() => {
     t <= tm.exitEnd
   ) {
     const p = (t - tm.exitBegin) / Math.max(0.001, tm.exitEnd - tm.exitBegin)
-    return xfadeToCss(item.exitAnimation, 1 - p)
+    return {
+      frame: xfadeFrame(item.exitAnimation, p, { mode: 'exit', ...base }),
+      role: 'a',
+    }
   }
-  return {}
+  return null
 })
+
+const animLayerStyle = computed(() => {
+  const fx = animFx.value
+  if (!fx) return {}
+  const layer = fx.role === 'b' ? fx.frame.b : fx.frame.a
+  if (layer.visibility === 'hidden') return { visibility: 'hidden' as const }
+  return layerStyle(layer)
+})
+
+const animPlateStyle = computed(() =>
+  animFx.value?.frame.plate ? plateStyle(animFx.value.frame.plate) : null
+)
+
+const animClips = computed(() => !!animFx.value?.frame.clip)
+
+const groupFxStyle = computed(() => layerStyle(props.groupFx))
 
 /* Ken Burns zoom progress (getZoomFilter: 1 → depth across visible window) */
 const zoomScale = computed(() => {
@@ -195,32 +237,28 @@ const isSelected = computed(
   <div
     v-show="visible"
     class="stage-item"
-    :class="{ selected: isSelected, interactive }"
+    :class="{ selected: isSelected, interactive, clipping: animClips }"
     :style="wrapperStyle"
     :data-item-id="item._id"
     @pointerdown="onPointerDown"
     @contextmenu="onContextMenu"
   >
-    <div
-      class="anim-wrap"
-      :style="{
-        opacity: animStyle.opacity,
-        clipPath: animStyle.clipPath,
-        transform: animStyle.transform,
-        filter: animStyle.filter,
-      }"
-    >
-      <div
-        class="zoom-wrap"
-        :style="zoomScale !== 1 ? { transform: `scale(${zoomScale})` } : undefined"
-      >
-        <StageItemContent
-          :item="item"
-          :time="time"
-          :context-duration="contextDuration"
-          :width="layout.width"
-          :height="layout.height"
-        />
+    <div class="group-fx-wrap" :style="groupFxStyle">
+      <!-- fade-through-color plate of the enter/exit xfade (item-box canvas) -->
+      <div v-if="animPlateStyle" class="anim-plate" :style="animPlateStyle" />
+      <div class="anim-wrap" :style="animLayerStyle">
+        <div
+          class="zoom-wrap"
+          :style="zoomScale !== 1 ? { transform: `scale(${zoomScale})` } : undefined"
+        >
+          <StageItemContent
+            :item="item"
+            :time="time"
+            :context-duration="contextDuration"
+            :width="layout.width"
+            :height="layout.height"
+          />
+        </div>
       </div>
     </div>
     <div v-if="item.chromaKey" class="fx-chip" title="Chroma key applied at render time">
@@ -244,16 +282,30 @@ const isSelected = computed(
   outline: 1.5px solid color-mix(in srgb, var(--accent) 60%, transparent);
   pointer-events: none;
 }
+.group-fx-wrap,
 .anim-wrap,
 .zoom-wrap {
   width: 100%;
   height: 100%;
+}
+.group-fx-wrap {
+  position: relative;
 }
 .zoom-wrap {
   transform-origin: center center;
 }
 .anim-wrap {
   overflow: visible;
+  position: relative;
+}
+/* slides/zoom xfades move layers inside the item's canvas — clip to it */
+.stage-item.clipping {
+  overflow: hidden;
+}
+.anim-plate {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
 }
 .fx-chip {
   position: absolute;

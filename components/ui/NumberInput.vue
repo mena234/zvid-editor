@@ -124,7 +124,7 @@ function nudge(dir: 1 | -1, e: KeyboardEvent) {
 </script>
 
 <template>
-  <span class="num-wrap" :class="{ 'has-menu': varOptions.length }">
+  <span class="num-wrap" :class="{ 'has-menu': varAllowed }">
     <input
       ref="inputEl"
       v-model="text"
@@ -146,10 +146,11 @@ function nudge(dir: 1 | -1, e: KeyboardEvent) {
     />
     <span v-if="unit && !isVar" class="unit">{{ unit }}</span>
     <UiVarMenu
-      v-if="varOptions.length"
+      v-if="varAllowed"
       class="embed"
       :options="varOptions"
       title="Use a number variable"
+      empty-text="No number variables yet."
       @insert="setVar($event)"
     />
   </span>

@@ -113,31 +113,29 @@ function patch(p: Record<string, any>) {
     </UiSection>
 
     <UiSection title="Mix">
-      <div class="grid-2">
-        <UiField label="Volume">
-          <UiNumberInput
-            :model-value="audio.volume"
-            :min="0"
-            :max="2"
-            :step="0.05"
-            placeholder="1"
-            clearable
-            @update:model-value="patch({ volume: $event })"
-          />
-        </UiField>
-        <UiField label="Speed (atempo)">
-          <UiNumberInput
-            :model-value="audio.speed"
-            :min="0.5"
-            :max="2"
-            :step="0.05"
-            placeholder="1"
-            clearable
-            unit="×"
-            @update:model-value="patch({ speed: $event })"
-          />
-        </UiField>
-      </div>
+      <UiField label="Volume">
+        <UiSlider
+          :model-value="audio.volume"
+          :min="0"
+          :max="2"
+          :step="0.05"
+          placeholder="1"
+          clearable
+          @update:model-value="patch({ volume: $event })"
+        />
+      </UiField>
+      <UiField label="Speed (atempo)">
+        <UiSlider
+          :model-value="audio.speed"
+          :min="0.5"
+          :max="2"
+          :step="0.05"
+          placeholder="1"
+          clearable
+          unit="×"
+          @update:model-value="patch({ speed: $event })"
+        />
+      </UiField>
       <UiField label="Track">
         <UiNumberInput
           :model-value="audio.track"

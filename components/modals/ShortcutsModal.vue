@@ -8,7 +8,7 @@ const GROUPS = [
     items: [
       ['Space', 'Play / pause'],
       ['← / →', 'Step one frame (Shift: 1 s) — or nudge the selected element'],
-      ['Home / End', 'Jump to start / end'],
+      ['Home / End', 'Jump to previous / next start point (elements & scenes)'],
       ['L', 'Toggle loop'],
       ['M', 'Toggle mute'],
     ],

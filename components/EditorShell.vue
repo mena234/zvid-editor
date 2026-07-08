@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { onMounted, computed, watch } from 'vue'
 import { useEditorContext } from '~/composables/useEditorContext'
+import { usePlayheadJumps } from '~/composables/usePlayheadJumps'
 import { usePlayback } from '~/composables/usePlayback'
 import { useCloud } from '~/composables/useCloud'
 
 const { project, editor, contextDuration } = useEditorContext()
+const { jumpBack, jumpForward } = usePlayheadJumps()
 const cloud = useCloud()
 
 usePlayback(() => contextDuration.value)
@@ -123,10 +125,10 @@ function onKeyDown(e: KeyboardEvent) {
       if (nudge(0, 1)) e.preventDefault()
       break
     case 'Home':
-      editor.seek(0)
+      jumpBack()
       break
     case 'End':
-      editor.seek(contextDuration.value, contextDuration.value)
+      jumpForward()
       break
     case 'Delete':
     case 'Backspace':

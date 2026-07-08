@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { useEditorContext } from '~/composables/useEditorContext'
+import { usePlayheadJumps } from '~/composables/usePlayheadJumps'
 import { resolveVisualTiming, resolveAudioTiming } from '~/shared/schema/defaults'
 import { useMediaProbe } from '~/composables/useMediaProbe'
 import { formatTime, clamp, round3 } from '~/utils/time'
@@ -14,6 +15,7 @@ const {
   activeScene,
 } = useEditorContext()
 const { probe } = useMediaProbe()
+const { jumpBack, jumpForward } = usePlayheadJumps()
 
 /* ---------------- geometry ---------------- */
 const HEADER_W = 148
@@ -200,7 +202,11 @@ const hasScenes = computed(() => !!project.doc.scenes?.length)
     <!-- transport -->
     <div class="transport">
       <div class="tp-left">
-        <button class="icon-btn" title="Jump to start (Home)" @click="editor.seek(0)">
+        <button
+          class="icon-btn"
+          title="Previous start point (Home)"
+          @click="jumpBack()"
+        >
           <UiIcon name="skip-start" />
         </button>
         <button
@@ -212,8 +218,8 @@ const hasScenes = computed(() => !!project.doc.scenes?.length)
         </button>
         <button
           class="icon-btn"
-          title="Jump to end (End)"
-          @click="editor.seek(contextDuration, contextDuration)"
+          title="Next start point (End)"
+          @click="jumpForward()"
         >
           <UiIcon name="skip-end" />
         </button>

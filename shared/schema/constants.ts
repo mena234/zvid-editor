@@ -52,9 +52,13 @@ export const XFADE_EFFECTS = [
 
 export type XFadeEffect = (typeof XFADE_EFFECTS)[number]
 
-/** Groups used by the animation picker UI. */
+/**
+ * Groups used by the animation picker UI. `distance` is intentionally not
+ * offered (schema still accepts it on imported projects) — its per-pixel
+ * color gate has no faithful DOM preview.
+ */
 export const XFADE_GROUPS: Record<string, XFadeEffect[]> = {
-  Fades: ['fade', 'fadeblack', 'fadewhite', 'fadegrays', 'dissolve', 'distance'],
+  Fades: ['fade', 'fadeblack', 'fadewhite', 'fadegrays', 'dissolve'],
   Slides: ['slideleft', 'slideright', 'slideup', 'slidedown'],
   Wipes: [
     'wipeleft',
@@ -212,6 +216,11 @@ export const PROJECT_DEFAULTS = {
 } as const
 
 export const MAX_CUSTOM_CODE_ANIMATION_DURATION = 15
+/**
+ * Design Studio elements animate through customCode, so their on-screen
+ * window (enterBegin → exitEnd) is capped to the same ceiling.
+ */
+export const MAX_DESIGN_ELEMENT_DURATION = MAX_CUSTOM_CODE_ANIMATION_DURATION
 export const DEFAULT_SCENE_TRANSITION_DURATION = 0.5
 export const DEFAULT_SCENE_DURATION = 10
 export const TEXT_DEFAULT_FONT_FAMILY = 'Poppins'

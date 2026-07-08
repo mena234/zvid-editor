@@ -28,9 +28,14 @@ export function effectiveLayout(
     intrinsic = item.src ? intrinsicOf('image', item.src) : null
   else if (type === 'TEXT' || type === 'SVG') intrinsic = getMeasured(item._id)
 
-  // cropParams redefine the source rect; the item w/h defaults to the crop size
+  // cropParams redefine the source rect; the item w/h defaults to the crop
+  // size. "{{placeholder}}" crop values keep the probed intrinsic (the
+  // variables preview substitutes real numbers before this runs).
   if ((type === 'VIDEO' || type === 'IMAGE' || type === 'GIF') && item.cropParams) {
-    intrinsic = { width: item.cropParams.width, height: item.cropParams.height }
+    const { width: cw, height: ch } = item.cropParams
+    if (typeof cw === 'number' && typeof ch === 'number') {
+      intrinsic = { width: cw, height: ch }
+    }
   }
 
   return resolveVisualLayout(item, projectWidth, projectHeight, intrinsic)

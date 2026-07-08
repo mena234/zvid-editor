@@ -176,6 +176,7 @@ function linkTransition(targetEditorId: string) {
             </optgroup>
           </select>
         </UiField>
+        <InspectorXfadePreview :effect="item.transition" direction="transition" />
         <UiField label="Overlap duration">
           <UiNumberInput
             :model-value="item.transitionDuration ?? 0.5"

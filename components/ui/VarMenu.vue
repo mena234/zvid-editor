@@ -9,6 +9,8 @@ import { useEditorStore } from '~/stores/editor'
 const props = defineProps<{
   options: string[]
   title?: string
+  /** shown when `options` is empty (e.g. no variables of the right type yet) */
+  emptyText?: string
 }>()
 const emit = defineEmits<{ insert: [placeholder: string] }>()
 
@@ -57,7 +59,7 @@ function manageVariables() {
           {{ '\{\{' }}{{ name }}{{ '\}\}' }}
         </button>
       </template>
-      <p v-else class="vm-empty hint">No variables defined yet.</p>
+      <p v-else class="vm-empty hint">{{ emptyText ?? 'No variables defined yet.' }}</p>
       <div class="vm-sep" />
       <button class="vm-item manage" type="button" @click="manageVariables">
         Manage variables…

@@ -3,6 +3,7 @@ import {
   SUPPORTED_FORMATS,
   SUPPORTED_IMAGE_FORMATS,
   MAX_CUSTOM_CODE_ANIMATION_DURATION,
+  MAX_DESIGN_ELEMENT_DURATION,
 } from './constants'
 import { canonicalVisualType } from './types'
 import type { ProjectDoc, VisualDoc, SceneDoc } from './types'
@@ -65,14 +66,18 @@ function checkVisual(
     exitBegin: v.exitBegin ?? contextDuration,
     exitEnd: v.exitEnd ?? contextDuration,
   }
-  if (v.enterEnd !== undefined && raw.enterEnd < raw.enterBegin) {
+  // Ordering checks only apply to concrete numbers — comparing two
+  // "{{placeholder}}" strings would be lexicographic noise.
+  const timingIsVar =
+    hasVar(v.enterBegin) || hasVar(v.enterEnd) || hasVar(v.exitBegin) || hasVar(v.exitEnd)
+  if (!timingIsVar && v.enterEnd !== undefined && raw.enterEnd < raw.enterBegin) {
     issues.push({
       level: 'error',
       path,
       message: `enterEnd (${raw.enterEnd}) is before enterBegin (${raw.enterBegin}).`,
     })
   }
-  if (v.exitBegin !== undefined && v.exitEnd !== undefined && raw.exitBegin > raw.exitEnd) {
+  if (!timingIsVar && v.exitBegin !== undefined && v.exitEnd !== undefined && raw.exitBegin > raw.exitEnd) {
     issues.push({
       level: 'error',
       path,
@@ -91,6 +96,20 @@ function checkVisual(
       level: 'warning',
       path,
       message: `enterBegin (${t.enterBegin}s) is beyond the timeline duration (${contextDuration}s).`,
+    })
+  }
+  if (
+    // the cap exemption covers only the two fields the window is made of —
+    // a var elsewhere (enterEnd/exitBegin) must not mute the warning
+    !hasVar(v.enterBegin) &&
+    !hasVar(v.exitEnd) &&
+    (v as any).designer &&
+    t.exitEnd - t.enterBegin > MAX_DESIGN_ELEMENT_DURATION
+  ) {
+    issues.push({
+      level: 'warning',
+      path,
+      message: `Design studio elements can stay on screen for at most ${MAX_DESIGN_ELEMENT_DURATION}s (this one runs ${Math.round((t.exitEnd - t.enterBegin) * 100) / 100}s) — the animation freezes past that; shorten the element's window.`,
     })
   }
 
@@ -176,6 +195,8 @@ function checkVisual(
     if (
       v.videoBegin !== undefined &&
       v.videoEnd !== undefined &&
+      !hasVar(v.videoBegin) &&
+      !hasVar(v.videoEnd) &&
       v.videoEnd <= v.videoBegin
     ) {
       issues.push({
@@ -427,8 +448,23 @@ export function validateProjectDoc(doc: ProjectDoc): ValidationIssue[] {
     })
   }
 
+  // root visuals of a scenes project overlay the WHOLE movie — resolve their
+  // open-ended timing against the total, not the (often unset) doc duration
+  const rootDuration = doc.scenes?.length
+    ? Math.max(
+        defaults.duration,
+        doc.scenes.reduce(
+          (sum, s) =>
+            sum +
+            (typeof s.duration === 'number' && s.duration > 0
+              ? s.duration
+              : defaults.duration),
+          0
+        )
+      )
+    : defaults.duration
   doc.visuals.forEach((v, i) =>
-    checkVisual(v, `visuals[${i}]`, defaults.duration, issues)
+    checkVisual(v, `visuals[${i}]`, rootDuration, issues)
   )
   doc.audios.forEach((a, i) => {
     if (!a.src)
@@ -439,14 +475,25 @@ export function validateProjectDoc(doc: ProjectDoc): ValidationIssue[] {
         path: `audios[${i}].src`,
         message: `"${a.src}" is a local path — it must exist on the render machine.`,
       })
-    if (a.exit !== undefined && a.enter !== undefined && a.exit <= a.enter) {
+    if (
+      a.exit !== undefined &&
+      a.enter !== undefined &&
+      !hasVar(a.exit) &&
+      !hasVar(a.enter) &&
+      a.exit <= a.enter
+    ) {
       issues.push({
         level: 'error',
         path: `audios[${i}]`,
         message: `exit (${a.exit}) must be after enter (${a.enter}).`,
       })
     }
-    if (a.audioEnd !== undefined && (a.audioBegin ?? 0) >= a.audioEnd) {
+    if (
+      a.audioEnd !== undefined &&
+      !hasVar(a.audioEnd) &&
+      !hasVar(a.audioBegin) &&
+      (a.audioBegin ?? 0) >= a.audioEnd
+    ) {
       issues.push({
         level: 'error',
         path: `audios[${i}]`,
@@ -458,9 +505,24 @@ export function validateProjectDoc(doc: ProjectDoc): ValidationIssue[] {
   doc.scenes?.forEach((s, i) => {
     checkScene(s, i, doc.scenes!, issues)
     const sceneDuration = s.duration && s.duration > 0 ? s.duration : defaults.duration
-    s.visuals.forEach((v, j) =>
+    const sceneIsAuto = !(typeof s.duration === 'number' && s.duration > 0)
+    s.visuals.forEach((v, j) => {
       checkVisual(v, `scenes[${i}].visuals[${j}]`, sceneDuration, issues)
-    )
+      // an auto scene's real length comes from media probes, so an
+      // open-ended design window cannot be checked against the 15s cap here
+      if (
+        sceneIsAuto &&
+        (v as any).designer &&
+        v.exitEnd === undefined &&
+        !hasVar(v.enterBegin)
+      ) {
+        issues.push({
+          level: 'warning',
+          path: `scenes[${i}].visuals[${j}]`,
+          message: `Design studio element has no explicit end inside an auto-duration scene — the ${MAX_DESIGN_ELEMENT_DURATION}s cap cannot be verified; set "exitEnd".`,
+        })
+      }
+    })
   })
 
   const captions = doc.subtitle?.captions ?? []

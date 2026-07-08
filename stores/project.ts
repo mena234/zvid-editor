@@ -14,7 +14,12 @@ import {
   newProjectDoc,
   makeId,
 } from '~/shared/schema/normalize'
-import { resolveProjectDefaults, resolveVisualTiming } from '~/shared/schema/defaults'
+import {
+  resolveProjectDefaults,
+  resolveVisualTiming,
+  clampDesignTiming,
+} from '~/shared/schema/defaults'
+import { DEFAULT_SCENE_DURATION } from '~/shared/schema/constants'
 import { resolveDocPreview, hasTemplateMarkers } from '~/shared/template/engine'
 import { useEditorStore } from '~/stores/editor'
 
@@ -100,6 +105,40 @@ export const useProjectStore = defineStore('project', {
     sceneByEditorId(state) {
       return (id: string): SceneDoc | undefined =>
         state.doc.scenes?.find((s) => s._id === id)
+    },
+    /** Editing context ('root' or scene _id) a visual lives in. */
+    contextOfVisual(state) {
+      return (id: string): string => {
+        for (const s of state.doc.scenes ?? [])
+          if (s.visuals.some((v) => v._id === id)) return s._id
+        return 'root'
+      }
+    },
+    /**
+     * Store-side duration of an editing context — static fields only (no
+     * media probes), for edit-time invariants like the design-element cap.
+     * Returns -1 for scenes whose duration is only knowable from probes
+     * (auto "-1" / placeholder); the root of a scenes project approximates
+     * the total movie length.
+     */
+    contextDurationOf(state) {
+      const sceneDuration = (s: SceneDoc) =>
+        typeof s.duration === 'number' && s.duration > 0 ? s.duration : -1
+      return (context: string): number => {
+        if (context !== 'root') {
+          const s = state.doc.scenes?.find((x) => x._id === context)
+          if (s) return sceneDuration(s)
+        }
+        const base = resolveProjectDefaults(state.doc).duration
+        if (context === 'root' && state.doc.scenes?.length) {
+          const total = state.doc.scenes.reduce((sum, s) => {
+            const d = sceneDuration(s)
+            return sum + (d > 0 ? d : DEFAULT_SCENE_DURATION)
+          }, 0)
+          return Math.max(base, total)
+        }
+        return base
+      }
     },
     /** Template variable defaults (live in the export-passthrough `extra`). */
     variables(state): Record<string, unknown> {
@@ -207,6 +246,11 @@ export const useProjectStore = defineStore('project', {
     /* ---------------- project settings ---------------- */
     patchProject(patch: Partial<ProjectDoc>) {
       Object.assign(this.doc, patch)
+      if (!this.isImage && 'duration' in patch) {
+        // a longer timeline must not stretch design elements past their cap
+        const ctx = this.contextDurationOf('root')
+        for (const v of this.doc.visuals) clampDesignTiming(v, ctx)
+      }
       this.commit()
     },
 
@@ -259,7 +303,17 @@ export const useProjectStore = defineStore('project', {
         // image projects: everything is "always on" — timing/transition
         // fields are rejected by orch/package, so never let them in
         for (const k of IMAGE_STRIPPED_ITEM_FIELDS) delete (doc as any)[k]
+      } else if (doc.track === undefined) {
+        const editor = useEditorStore()
+        const track = nextFreeTrack(
+          this.visualsOf(context).map((v) =>
+            typeof v.track === 'number' ? v.track : 0
+          ),
+          editor.extraVisualTracks
+        )
+        if (track > 0) doc.track = track
       }
+      if (!this.isImage) clampDesignTiming(doc, this.contextDurationOf(context))
       this.visualsOf(context).push(doc)
       this.commit()
       return doc
@@ -269,6 +323,16 @@ export const useProjectStore = defineStore('project', {
       // image projects have no audio — the panels are hidden, this is the
       // backstop (returned doc is simply not attached to the document)
       if (this.isImage) return doc
+      if (doc.track === undefined) {
+        const editor = useEditorStore()
+        const track = nextFreeTrack(
+          this.audiosOf(context).map((a) =>
+            typeof a.track === 'number' ? a.track : 0
+          ),
+          editor.extraAudioTracks
+        )
+        if (track > 0) doc.track = track
+      }
       this.audiosOf(context).push(doc)
       this.commit()
       return doc
@@ -280,6 +344,13 @@ export const useProjectStore = defineStore('project', {
       for (const [k, val] of Object.entries(patch)) {
         if (val === undefined) delete (v as any)[k]
         else (v as any)[k] = val
+      }
+      if (!this.isImage) {
+        // when only the start edge moved, keep the (user-set) end and pull
+        // the start instead of silently moving the edge they didn't touch
+        const prefer =
+          'enterBegin' in patch && !('exitEnd' in patch) ? 'start' : 'end'
+        clampDesignTiming(v, this.contextDurationOf(this.contextOfVisual(id)), prefer)
       }
       if (commit) this.commit()
     },
@@ -305,6 +376,9 @@ export const useProjectStore = defineStore('project', {
       if (!replaceIn(this.doc.visuals)) {
         for (const s of this.doc.scenes ?? []) if (replaceIn(s.visuals)) break
       }
+      const replaced = this.visualById(id)
+      if (replaced && !this.isImage)
+        clampDesignTiming(replaced, this.contextDurationOf(this.contextOfVisual(id)))
       this.commit()
     },
 
@@ -355,6 +429,8 @@ export const useProjectStore = defineStore('project', {
         copy.anchor = copy.anchor ?? (copy.position as any)
         copy.position = 'custom'
       }
+      if (!this.isImage)
+        clampDesignTiming(copy, this.contextDurationOf(this.contextOfVisual(id)))
       arr.push(copy)
       this.commit()
       return copy
@@ -382,17 +458,19 @@ export const useProjectStore = defineStore('project', {
     splitVisualAt(id: string, t: number): VisualDoc | undefined {
       const v = this.visualById(id)
       if (!v) return
-      const duration = this.defaults.duration
-      const timing = resolveVisualTiming(v, duration)
+      const ctx = this.contextDurationOf(this.contextOfVisual(id))
+      // open-ended timing resolves against the visual's own context — the
+      // project default would refuse splits past 10s inside longer scenes
+      const timing = resolveVisualTiming(v, ctx > 0 ? ctx : this.defaults.duration)
       if (t <= timing.enterBegin + 0.01 || t >= timing.exitEnd - 0.01) return
 
       const right = { ...clone(v), _id: makeId('vis') } as VisualDoc
-      // left keeps enter*, gets cut at t
-      this.patchVisual(
-        id,
-        { exitEnd: round3(t), exitBegin: Math.min(timing.exitBegin, round3(t)) },
-        false
-      )
+      // left keeps enter*, gets cut at t; when the design cap has to shrink
+      // an over-long half, pull the far edge so the cut stays where the user
+      // split — patchVisual's clamp would move the cut edge instead
+      v.exitEnd = round3(t)
+      v.exitBegin = Math.min(timing.exitBegin, round3(t))
+      if (!this.isImage) clampDesignTiming(v, ctx, 'start')
       // right starts at t
       right.enterBegin = round3(t)
       right.enterEnd = round3(t)
@@ -403,6 +481,7 @@ export const useProjectStore = defineStore('project', {
         right.videoBegin = round3(vb + (t - timing.enterBegin) * speed)
         if (right.id) right.id = `${right.id}-b`
       }
+      if (!this.isImage) clampDesignTiming(right, ctx, 'end')
       const arr = this.doc.visuals.find((x) => x._id === id)
         ? this.doc.visuals
         : (this.doc.scenes ?? []).find((s) => s.visuals.some((x) => x._id === id))
@@ -449,6 +528,13 @@ export const useProjectStore = defineStore('project', {
     },
 
     /* ---------------- scenes ---------------- */
+    /** Root overlays span the whole movie — re-pin design elements whenever
+     *  an action changes the movie's total length. */
+    clampRootDesignVisuals() {
+      if (this.isImage) return
+      const ctx = this.contextDurationOf('root')
+      for (const v of this.doc.visuals) clampDesignTiming(v, ctx)
+    },
     addScene(afterIndex?: number): SceneDoc {
       if (!this.doc.scenes) this.doc.scenes = []
       const scenes = this.doc.scenes
@@ -462,6 +548,7 @@ export const useProjectStore = defineStore('project', {
       const at = afterIndex === undefined ? scenes.length : afterIndex + 1
       scenes.splice(at, 0, scene)
       this.reconcileSceneTransitions()
+      this.clampRootDesignVisuals()
       this.commit()
       return scene
     },
@@ -472,6 +559,7 @@ export const useProjectStore = defineStore('project', {
       if (i >= 0) scenes.splice(i, 1)
       if (!scenes.length) delete this.doc.scenes
       else this.reconcileSceneTransitions()
+      this.clampRootDesignVisuals()
       this.commit()
     },
     moveScene(editorId: string, delta: number) {
@@ -494,6 +582,13 @@ export const useProjectStore = defineStore('project', {
       }
       if (patch.transition !== undefined || patch.id !== undefined)
         this.reconcileSceneTransitions()
+      if (!this.isImage && 'duration' in patch) {
+        // a longer scene must not stretch design elements past their cap —
+        // neither inside the scene nor for root overlays spanning the movie
+        const ctx = this.contextDurationOf(editorId)
+        for (const v of s.visuals) clampDesignTiming(v, ctx)
+        this.clampRootDesignVisuals()
+      }
       if (commit) this.commit()
     },
     /** Keep every scene's transitionId pointing at the next scene. */
@@ -532,14 +627,25 @@ export const useProjectStore = defineStore('project', {
       if (!scenes?.length) return
       for (const s of scenes) {
         const offset = startsBySceneId[s._id] ?? 0
+        // a scene-bounded design window must stay pinned to ITS scene's end
+        // once it resolves against the whole movie (-1 = unknowable → ceiling)
+        const sceneEnd =
+          typeof s.duration === 'number' && s.duration > 0
+            ? offset + s.duration
+            : -1
         for (const v of s.visuals) {
+          // template-string timing ("{{var}}") resolves at render — shifting
+          // would corrupt it to NaN, so placeholders are left alone
           const shift = (k: string) => {
-            if ((v as any)[k] !== undefined) (v as any)[k] = round3((v as any)[k] + offset)
+            if (typeof (v as any)[k] === 'number')
+              (v as any)[k] = round3((v as any)[k] + offset)
           }
-          v.enterBegin = round3((v.enterBegin ?? 0) + offset)
+          if (typeof v.enterBegin !== 'string')
+            v.enterBegin = round3(((v.enterBegin as number) ?? 0) + offset)
           shift('enterEnd')
           shift('exitBegin')
           shift('exitEnd')
+          if (!this.isImage) clampDesignTiming(v, sceneEnd)
           this.doc.visuals.push(v)
         }
         for (const a of s.audios) {
@@ -556,6 +662,18 @@ export const useProjectStore = defineStore('project', {
 
 function round3(v: number) {
   return Math.round(v * 1000) / 1000
+}
+
+/**
+ * Lane for a newly added clip: the lowest empty lane visible in the timeline
+ * (lane 0 fallback + manually added extra lanes), or a fresh lane above the
+ * topmost occupied one when every lane already has a clip.
+ */
+function nextFreeTrack(used: number[], extraLanes: number[]): number {
+  const occupied = new Set(used)
+  const empty = [0, ...extraLanes].filter((t) => !occupied.has(t))
+  if (empty.length) return Math.min(...empty)
+  return used.length ? Math.max(...used) + 1 : 0
 }
 
 function uniqueSceneId(scenes: SceneDoc[]): string {

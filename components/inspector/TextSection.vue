@@ -86,6 +86,18 @@ function pickFont(f: string) {
   fontQuery.value = ''
 }
 
+/** Design Studio / custom-code elements style themselves via their own
+ *  CSS/JS, so the plain typography controls below are overridden. */
+const typographyWarning = computed(() => {
+  const cc = props.item.customCode
+  const parts = [cc?.css && 'CSS', cc?.js && 'JS'].filter(Boolean)
+  if (!parts.length) return null
+  return (
+    `This element has custom ${parts.join(' + ')} code — the typography settings below have no effect because the custom code overrides them.` +
+    (props.item.designer ? ' Edit the look in the Design Studio instead.' : '')
+  )
+})
+
 const fontSizePx = computed(() => {
   const raw = style.value.fontSize
   if (!raw) return undefined
@@ -150,6 +162,7 @@ const FONT_WEIGHTS = ['300', '400', '500', '600', '700', '800', '900', 'bold', '
     </UiSection>
 
     <UiSection title="Typography">
+      <p v-if="typographyWarning" class="hint warn">⚠ {{ typographyWarning }}</p>
       <UiField label="Font family (Google Fonts)">
         <div class="font-picker">
           <button class="ctl font-btn" @click="fontOpen = !fontOpen">
@@ -323,6 +336,9 @@ const FONT_WEIGHTS = ['300', '400', '500', '600', '700', '800', '900', 'bold', '
 .code {
   font-size: 11px;
   line-height: 1.5;
+}
+.warn {
+  color: var(--yellow);
 }
 .grid-2 {
   display: grid;
