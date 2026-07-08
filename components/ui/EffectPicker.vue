@@ -1,16 +1,9 @@
 <script setup lang="ts">
-import {
-  ref,
-  computed,
-  provide,
-  watch,
-  onMounted,
-  onBeforeUnmount,
-  nextTick,
-} from 'vue'
+import { ref, computed, provide, onBeforeUnmount } from 'vue'
 import { XFADE_GROUPS } from '~/shared/schema/constants'
 import type { XfadeMode } from '~/utils/xfade'
 import { EFFECT_CLOCK, effectLabel } from '~/utils/effectMeta'
+import { useGalleryList, type GalleryGroup } from '~/composables/useGalleryList'
 
 /**
  * Visual replacement for the xfade `<select>`: a searchable gallery of
@@ -19,10 +12,9 @@ import { EFFECT_CLOCK, effectLabel } from '~/utils/effectMeta'
  * effect id (or `undefined` for "none"). `direction` picks the preview mode:
  * enter/exit animations show one stream, transitions show both.
  *
- * Accessibility: the gallery is an ARIA listbox with roving tabindex, so it
- * is a single tab stop with arrow-key navigation and the selected effect is
- * exposed via aria-selected — matching the reachability of the native
- * <select> it replaced.
+ * Accessibility (shared with AnimPicker via useGalleryList): the gallery is an
+ * ARIA listbox with roving tabindex — a single tab stop with arrow-key
+ * navigation and aria-selected state, matching the native <select> it replaced.
  */
 const props = withDefaults(
   defineProps<{
@@ -75,113 +67,39 @@ function stopClock() {
     raf = 0
   }
 }
+onBeforeUnmount(() => stopClock())
 
-/* ---------------- search + grouping ----------------
- * `indexed` produces the grouped rows for display AND a flat value array so
- * roving-tabindex keyboard navigation can address every tile by one running
- * index (None first, then each group in order). */
+/* ---------------- search + grouping ---------------- */
 const q = ref('')
-const indexed = computed(() => {
+const filteredGroups = computed<GalleryGroup[]>(() => {
   const needle = q.value.trim().toLowerCase()
   const match = (fx: string) =>
     !needle ||
     fx.includes(needle) ||
     effectLabel(fx).toLowerCase().includes(needle)
+  const toItems = (effects: string[]) =>
+    effects.filter(match).map((fx) => ({ value: fx, label: effectLabel(fx) }))
 
-  const groups: { group: string; items: { effect: string; index: number }[] }[] =
-    []
-  const flat: (string | undefined)[] = []
-  let i = 0
-  const noneIndex = props.allowNone ? (flat.push(undefined), i++) : -1
-
-  const pushGroup = (group: string, effects: string[]) => {
-    const items = effects.map((effect) => {
-      flat.push(effect)
-      return { effect, index: i++ }
-    })
-    groups.push({ group, items })
-  }
-
+  const out: GalleryGroup[] = []
   // surface an effect an imported project may carry that isn't in the
   // standard groups (e.g. `distance`) so the current value stays selectable
   const known = new Set(Object.values(XFADE_GROUPS).flat() as string[])
   if (props.modelValue && !known.has(props.modelValue) && match(props.modelValue)) {
-    pushGroup('Current', [props.modelValue])
+    out.push({ group: 'Current', items: [{ value: props.modelValue, label: effectLabel(props.modelValue) }] })
   }
   for (const [group, effects] of Object.entries(XFADE_GROUPS)) {
-    const f = effects.filter(match)
-    if (f.length) pushGroup(group, f)
+    const items = toItems(effects)
+    if (items.length) out.push({ group, items })
   }
-  return { noneIndex, groups, flat, count: i }
-})
-const empty = computed(() => indexed.value.groups.length === 0)
-
-/** flat index of the current selection (for roving focus + scroll-into-view) */
-const selectedIndex = computed(() => {
-  const at = indexed.value.flat.findIndex((v) => v === props.modelValue)
-  if (at >= 0) return at
-  return indexed.value.noneIndex >= 0 ? indexed.value.noneIndex : 0
+  return out
 })
 
-/* roving tabindex: exactly one tile is tabbable at a time */
-const activeIndex = ref(0)
-watch(
-  () => indexed.value.count,
-  (n) => {
-    if (activeIndex.value >= n) activeIndex.value = Math.max(0, n - 1)
-  }
-)
-
-function choose(fx: string | undefined, index: number) {
-  activeIndex.value = index
-  emit('update:modelValue', fx)
-}
-
-const scrollEl = ref<HTMLElement>()
-function focusIndex(i: number) {
-  nextTick(() => {
-    scrollEl.value
-      ?.querySelector<HTMLElement>(`[data-idx="${i}"]`)
-      ?.focus()
-  })
-}
-function onKey(e: KeyboardEvent) {
-  const n = indexed.value.count
-  if (!n) return
-  let i = activeIndex.value
-  switch (e.key) {
-    case 'ArrowRight':
-    case 'ArrowDown':
-      i = (i + 1) % n
-      break
-    case 'ArrowLeft':
-    case 'ArrowUp':
-      i = (i - 1 + n) % n
-      break
-    case 'Home':
-      i = 0
-      break
-    case 'End':
-      i = n - 1
-      break
-    default:
-      return
-  }
-  e.preventDefault()
-  activeIndex.value = i
-  focusIndex(i)
-  // Enter/Space still select the focused tile via the button's native click
-}
-
-onMounted(async () => {
-  activeIndex.value = selectedIndex.value
-  // bring the current selection into view within the gallery
-  await nextTick()
-  scrollEl.value
-    ?.querySelector('.ep-cell.sel')
-    ?.scrollIntoView({ block: 'nearest' })
+const { indexed, empty, activeIndex, scrollEl, choose, onKey } = useGalleryList({
+  groups: () => filteredGroups.value,
+  allowNone: () => props.allowNone,
+  selected: () => props.modelValue,
+  onSelect: (v) => emit('update:modelValue', v),
 })
-onBeforeUnmount(() => stopClock())
 </script>
 
 <template>
@@ -238,19 +156,19 @@ onBeforeUnmount(() => stopClock())
         <div class="ep-grid" role="presentation">
           <button
             v-for="it in grp.items"
-            :key="it.effect"
+            :key="it.value"
             class="ep-cell"
-            :class="{ sel: modelValue === it.effect }"
+            :class="{ sel: modelValue === it.value }"
             type="button"
             role="option"
-            :aria-selected="modelValue === it.effect"
+            :aria-selected="modelValue === it.value"
             :tabindex="activeIndex === it.index ? 0 : -1"
             :data-idx="it.index"
-            :title="effectLabel(it.effect)"
-            @click="choose(it.effect, it.index)"
+            :title="it.label"
+            @click="choose(it.value, it.index)"
           >
-            <UiEffectTile :effect="it.effect" :mode="direction" />
-            <span class="ep-label">{{ effectLabel(it.effect) }}</span>
+            <UiEffectTile :effect="it.value" :mode="direction" />
+            <span class="ep-label">{{ it.label }}</span>
           </button>
         </div>
       </template>

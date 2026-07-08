@@ -6,7 +6,7 @@ import type {
   LayerAnim,
   TextLayer,
 } from '~/utils/designer/types'
-import { ANIM_GROUPS, ANIM_PRESETS, EASINGS, animPreset } from '~/utils/designer/animations'
+import { ANIM_PRESETS, EASINGS, animPreset } from '~/utils/designer/animations'
 import { SHAPES, SHAPE_GROUPS, shapeDef, shapePreviewSvg } from '~/utils/designer/shapes'
 import { POPULAR_GOOGLE_FONTS, loadGoogleFont } from '~/utils/fonts'
 import { useEditorContext } from '~/composables/useEditorContext'
@@ -56,19 +56,9 @@ function insertSrcPlaceholder(placeholder: string) {
 }
 
 /* ---------------- animation ---------------- */
-const presetGroups = computed(() => {
-  const kind = props.layer?.kind ?? 'text'
-  return ANIM_GROUPS.map((g) => ({
-    group: g,
-    presets: Object.values(ANIM_PRESETS).filter(
-      (p) => p.group === g && (kind === 'text' || !p.textOnly)
-    ),
-  })).filter((g) => g.presets.length)
-})
-
 const currentPreset = computed(() => animPreset(props.layer?.anim?.preset))
 
-function onPresetChange(id: string) {
+function onPresetChange(id?: string) {
   if (!props.layer) return
   if (!id) {
     patchL({ anim: null })
@@ -587,16 +577,11 @@ function patchBg(part: Record<string, any>) {
 
       <!-- ---------- animation ---------- -->
       <UiSection title="Animation">
-        <select
-          class="ctl"
-          :value="layer.anim?.preset ?? ''"
-          @change="onPresetChange(($event.target as HTMLSelectElement).value)"
-        >
-          <option value="">None (static)</option>
-          <optgroup v-for="g in presetGroups" :key="g.group" :label="g.group">
-            <option v-for="p in g.presets" :key="p.id" :value="p.id">{{ p.label }}</option>
-          </optgroup>
-        </select>
+        <UiAnimPicker
+          :model-value="layer.anim?.preset"
+          :kind="layer.kind"
+          @update:model-value="onPresetChange($event)"
+        />
         <p v-if="currentPreset" class="hint">{{ currentPreset.hint }}</p>
 
         <template v-if="layer.anim && currentPreset">
