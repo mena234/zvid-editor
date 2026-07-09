@@ -165,6 +165,14 @@ export function useTemplateVars() {
     const scope = scopeFor(scene)
     PLACEHOLDER_RE.lastIndex = 0
     const matches = [...raw.matchAll(PLACEHOLDER_RE)]
+    // an opener left over after removing all complete placeholders is a typo
+    // like "{{arr" — reject instead of committing it as a literal string
+    if (raw.replace(PLACEHOLDER_RE, '').includes('{{')) {
+      return {
+        ok: false,
+        message: 'Unclosed {{ placeholder — add the closing }}',
+      }
+    }
     if (!matches.length) return { ok: true }
 
     for (const m of matches) {

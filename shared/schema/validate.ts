@@ -469,7 +469,8 @@ export function validateProjectDoc(doc: ProjectDoc): ValidationIssue[] {
   doc.audios.forEach((a, i) => {
     if (!a.src)
       issues.push({ level: 'error', path: `audios[${i}]`, message: 'Audio item is missing "src".' })
-    else if (!isRemote(a.src))
+    // {{placeholder}} srcs resolve at render time — same guard as visuals
+    else if (!isRemote(a.src) && !hasVar(a.src))
       issues.push({
         level: 'warning',
         path: `audios[${i}].src`,

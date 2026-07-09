@@ -66,9 +66,15 @@ function retimeWordsEvenly(i: number) {
 }
 
 function patchWord(ci: number, wi: number, patch: Record<string, any>) {
-  const w = captions.value[ci]?.words?.[wi]
+  const c = captions.value[ci]
+  const w = c?.words?.[wi]
   if (!w) return
   Object.assign(w, patch)
+  // keep caption-level text in sync so normal mode and word-driven modes
+  // render the same content after a word edit
+  if (patch.text !== undefined) {
+    c.text = (c.words ?? []).map((x: any) => x.text).filter(Boolean).join(' ')
+  }
   project.commit()
 }
 

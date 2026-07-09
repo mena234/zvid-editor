@@ -16,7 +16,20 @@ function patch(p: Record<string, any>) {
   project.patchVisual(props.item._id, p)
 }
 
-/** Strict markup commit: unresolvable placeholders are rejected untouched. */
+function parsesAsSvg(markup: string): boolean {
+  try {
+    const doc = new DOMParser().parseFromString(markup, 'image/svg+xml')
+    return (
+      doc.documentElement.tagName.toLowerCase() === 'svg' &&
+      !doc.querySelector('parsererror')
+    )
+  } catch {
+    return false
+  }
+}
+
+/** Strict markup commit: unresolvable placeholders and markup that does not
+ *  parse as SVG are rejected (the renderer would produce nothing). */
 function commitSvg(e: Event) {
   const el = e.target as HTMLTextAreaElement
   const v = el.value
@@ -27,6 +40,12 @@ function commitSvg(e: Event) {
       el.value = props.item.svg ?? ''
       return
     }
+  }
+  // placeholders are values, not structure — substitute a benign token so
+  // {{color}} etc. don't fail the parse check
+  if (!parsesAsSvg(v.replace(/\{\{[^}]*\}\}/g, 'x'))) {
+    editor.notify('Markup does not parse as SVG — not applied', 'error')
+    return
   }
   patch({ svg: v })
 }

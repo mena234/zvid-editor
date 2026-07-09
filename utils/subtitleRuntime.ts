@@ -105,15 +105,19 @@ export function renderCaptionWords(
   mode: string,
   styles?: Record<string, any>
 ): RenderedWord[] {
-  const words: RawWord[] =
+  // Captions without word timings get the same proportional distribution the
+  // import path uses, so word-driven modes (one-word/karaoke/progressive…)
+  // animate instead of never finding an active word.
+  let words: RawWord[] =
     caption.words?.length > 0
       ? caption.words
-      : (caption.text ?? '')
-          .split(/\s+/)
-          .filter(Boolean)
-          .map((w) => ({ start: caption.start, end: caption.end, text: w }))
+      : distributeWords(caption.text ?? '', caption.start, caption.end)
+  if (!words.length && (caption.text ?? '').trim()) {
+    // degenerate caption (end <= start): show the text as one static word
+    words = [{ start: caption.start, end: caption.end, text: caption.text!.trim() }]
+  }
 
-  const idx = activeWordIndex(caption, t)
+  const idx = activeWordIndex({ ...caption, words }, t)
   const groupEnd = words[words.length - 1]?.end ?? caption.end
 
   return words.map((w, i) => {

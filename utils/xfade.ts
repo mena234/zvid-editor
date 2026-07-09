@@ -412,10 +412,21 @@ export function xfadeFrame(
     }
   }
 
-  /** binary B-region as a clip-path (exact, no alpha subtleties) */
+  /** binary B-region as a clip-path (exact, no alpha subtleties).
+   *  Enter/exit run against xfade's "transparent" color canvas, which the
+   *  render pipeline flattens to opaque BLACK — so for opaque content the
+   *  complement region gets a black plate (verified against real renders:
+   *  an exiting wipe leaves a black box, not the backdrop). */
   const applyClip = (clipFor: (rect: Rect, invert: boolean) => string) => {
-    if (mode === 'exit') out.a.clipPath = clipFor(rectA, true)
-    else out.b.clipPath = clipFor(rectB, false)
+    if (mode === 'exit') {
+      out.a.clipPath = clipFor(rectA, true)
+      if (opaque) out.plate = { color: '#000', opacity: 1, clipPath: clipFor(rectA, false) }
+    } else {
+      out.b.clipPath = clipFor(rectB, false)
+      if (single && opaque) {
+        out.plate = { color: '#000', opacity: 1, clipPath: clipFor(rectB, true) }
+      }
+    }
   }
 
   /**
@@ -1020,6 +1031,19 @@ export function xfadeFrame(
       else if (mode === 'enter') applyFlat(t * t, P)
       else applyFlat(P * P, t)
       break
+  }
+
+  // slides run against the flattened-black canvas too: for enter/exit the
+  // vacated region shows BLACK in the render (same alpha flattening as the
+  // clip family), not the backdrop — plate the whole item canvas under the
+  // translated layer for opaque content
+  if (
+    single &&
+    opaque &&
+    !out.plate &&
+    /^slide(left|right|up|down)$/.test(effect)
+  ) {
+    out.plate = { color: '#000', opacity: 1 }
   }
 
   return out

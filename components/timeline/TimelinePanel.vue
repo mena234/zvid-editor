@@ -21,8 +21,10 @@ const { jumpBack, jumpForward } = usePlayheadJumps()
 const HEADER_W = 148
 const pxPerSec = computed(() => editor.pxPerSec)
 
-const contentEnd = computed(() => {
-  let end = contextDuration.value
+/** Where the last clip actually ends (0 when the context is empty). An item
+ *  without an explicit exitEnd legitimately runs to contextDuration. */
+const lastClipEnd = computed(() => {
+  let end = 0
   for (const v of contextVisuals.value) {
     end = Math.max(end, resolveVisualTiming(v, contextDuration.value).exitEnd)
   }
@@ -35,6 +37,10 @@ const contentEnd = computed(() => {
   }
   return end
 })
+
+const contentEnd = computed(() =>
+  Math.max(contextDuration.value, lastClipEnd.value)
+)
 
 const contentWidth = computed(
   () => Math.max(contentEnd.value, contextDuration.value) * pxPerSec.value + 260
@@ -184,12 +190,18 @@ watch(
 
 /* ---------------- transport actions ---------------- */
 function fitDurationToContent() {
-  if (activeScene.value) {
-    project.patchScene(activeScene.value._id, { duration: round3(contentEnd.value) })
-  } else {
-    project.patchProject({ duration: round3(contentEnd.value) })
+  // fit to the real last clip end so the duration can shrink, not only grow
+  const target = round3(lastClipEnd.value)
+  if (target <= 0) {
+    editor.notify('Nothing on the timeline to fit the duration to', 'info')
+    return
   }
-  editor.notify(`Duration set to ${round3(contentEnd.value)}s`, 'success')
+  if (activeScene.value) {
+    project.patchScene(activeScene.value._id, { duration: target })
+  } else {
+    project.patchProject({ duration: target })
+  }
+  editor.notify(`Duration set to ${target}s`, 'success')
 }
 
 const overDuration = computed(() => contentEnd.value > contextDuration.value + 0.001)

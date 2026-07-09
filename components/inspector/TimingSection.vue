@@ -52,6 +52,38 @@ const sourceDuration = computed(() => {
 function patch(p: Record<string, any>) {
   project.patchVisual(props.item._id, p)
 }
+
+type TimingField = 'enterBegin' | 'enterEnd' | 'exitBegin' | 'exitEnd'
+
+/** Commit a timing field clamped into enterBegin ≤ enterEnd ≤ exitBegin ≤
+ *  exitEnd (against the explicit neighbor values), so the UI enforces the
+ *  order its hint promises. Cleared values and {{placeholders}} pass through
+ *  untouched — template-driven timing resolves at render. */
+function patchTiming(field: TimingField, v: number | string | undefined) {
+  if (v === undefined || typeof v === 'string') {
+    patch({ [field]: v })
+    return
+  }
+  const num = (x: unknown): number | undefined =>
+    typeof x === 'number' && Number.isFinite(x) ? x : undefined
+  const it = props.item
+  let val = v
+  if (field === 'enterBegin') {
+    const hi = num(it.enterEnd) ?? num(it.exitBegin) ?? num(it.exitEnd)
+    if (hi !== undefined) val = Math.min(val, hi)
+  } else if (field === 'enterEnd') {
+    const hi = num(it.exitBegin) ?? num(it.exitEnd)
+    val = Math.max(val, num(it.enterBegin) ?? 0)
+    if (hi !== undefined) val = Math.min(val, hi)
+  } else if (field === 'exitBegin') {
+    const lo = num(it.enterEnd) ?? num(it.enterBegin) ?? 0
+    const hi = num(it.exitEnd) ?? timing.value.exitEnd
+    val = Math.min(Math.max(val, lo), hi)
+  } else {
+    val = Math.max(val, num(it.exitBegin) ?? num(it.enterEnd) ?? num(it.enterBegin) ?? 0)
+  }
+  patch({ [field]: round3(val) })
+}
 </script>
 
 <template>
@@ -66,7 +98,7 @@ function patch(p: Record<string, any>) {
             placeholder="0"
             clearable
             unit="s"
-            @update:model-value="patch({ enterBegin: $event })"
+            @update:model-value="patchTiming('enterBegin', $event)"
           />
         </UiField>
         <UiField
@@ -81,7 +113,7 @@ function patch(p: Record<string, any>) {
             :placeholder="String(timing.exitEnd)"
             clearable
             unit="s"
-            @update:model-value="patch({ exitEnd: $event })"
+            @update:model-value="patchTiming('exitEnd', $event)"
           />
         </UiField>
       </div>
@@ -97,7 +129,7 @@ function patch(p: Record<string, any>) {
             :placeholder="String(timing.enterBegin)"
             clearable
             unit="s"
-            @update:model-value="patch({ enterEnd: $event })"
+            @update:model-value="patchTiming('enterEnd', $event)"
           />
         </UiField>
         <UiField
@@ -111,7 +143,7 @@ function patch(p: Record<string, any>) {
             :placeholder="String(timing.exitEnd)"
             clearable
             unit="s"
-            @update:model-value="patch({ exitBegin: $event })"
+            @update:model-value="patchTiming('exitBegin', $event)"
           />
         </UiField>
       </div>

@@ -121,15 +121,22 @@ export function buildScenePlan(
   }
 }
 
-/** Total preview duration for a project (scenes-aware). */
+/** Total preview duration for a project (scenes-aware).
+ *
+ *  Mirrors package buildSyntheticProject: a scene project runs exactly the
+ *  scenes total; an explicit root duration only applies when it is ≥ that
+ *  total (extending the movie, e.g. for longer global overlays), and the
+ *  10s default duration never applies to scene projects. */
 export function projectTotalDuration(
   doc: ProjectDoc,
   probeDuration: ProbeDurationFn
 ): number {
-  const base = doc.duration ?? 10
   if (doc.scenes?.length) {
     const plan = buildScenePlan(doc, probeDuration)
-    return Math.max(base, plan.totalScenesDuration)
+    const explicit = typeof doc.duration === 'number' ? doc.duration : undefined
+    return explicit !== undefined && explicit >= plan.totalScenesDuration
+      ? explicit
+      : plan.totalScenesDuration
   }
-  return base
+  return doc.duration ?? 10
 }

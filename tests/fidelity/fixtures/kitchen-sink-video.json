@@ -1,0 +1,120 @@
+{
+  "name": "kitchen-sink-video",
+  "width": 640,
+  "height": 360,
+  "frameRate": 30,
+  "backgroundColor": "#1b2233",
+  "scenes": [
+    {
+      "id": "geometry",
+      "duration": 3,
+      "backgroundColor": "#204080",
+      "visuals": [
+        { "type": "IMAGE", "src": "http://127.0.0.1:4598/image.png", "resize": "contain", "opacity": 0.25, "track": 0 },
+        { "type": "IMAGE", "src": "http://127.0.0.1:4598/image.png", "x": 320, "y": 180, "width": 200, "height": 150, "anchor": "center-center", "track": 1 },
+        { "type": "IMAGE", "src": "http://127.0.0.1:4598/image.png", "position": "bottom-right", "width": 160, "height": 120, "opacity": 0.6, "track": 2 },
+        { "type": "IMAGE", "src": "http://127.0.0.1:4598/image.png", "x": 30, "y": 24, "width": 140, "height": 105, "flipH": true, "flipV": true, "track": 3 }
+      ],
+      "audios": [],
+      "transition": "fade",
+      "transitionId": "media-fx",
+      "transitionDuration": 1
+    },
+    {
+      "id": "media-fx",
+      "duration": 3,
+      "backgroundColor": "#3a2a4d",
+      "visuals": [
+        { "type": "IMAGE", "src": "http://127.0.0.1:4598/image.png", "x": 40, "y": 40, "width": 150, "height": 110, "cropParams": { "x": 40, "y": 30, "width": 150, "height": 110 }, "track": 1 },
+        { "type": "IMAGE", "src": "http://127.0.0.1:4598/image.png", "x": 240, "y": 40, "width": 160, "height": 120, "radius": { "tl": 30, "tr": 30, "bl": 30, "br": 30 }, "track": 1 },
+        { "type": "IMAGE", "src": "http://127.0.0.1:4598/image.png", "x": 450, "y": 40, "width": 150, "height": 112, "filter": { "colorTint": "#aa4422" }, "track": 1 },
+        { "type": "IMAGE", "src": "http://127.0.0.1:4598/image.png", "x": 240, "y": 200, "width": 160, "height": 120, "filter": { "invert": 1 }, "track": 1 }
+      ],
+      "audios": []
+    },
+    {
+      "id": "filters",
+      "duration": 3,
+      "backgroundColor": "#233b28",
+      "visuals": [
+        { "type": "IMAGE", "src": "http://127.0.0.1:4598/image.png", "x": 20, "y": 40, "width": 140, "height": 105, "filter": { "brightness": 30 }, "track": 1 },
+        { "type": "IMAGE", "src": "http://127.0.0.1:4598/image.png", "x": 180, "y": 40, "width": 140, "height": 105, "filter": { "contrast": 20 }, "track": 1 },
+        { "type": "IMAGE", "src": "http://127.0.0.1:4598/image.png", "x": 340, "y": 40, "width": 140, "height": 105, "filter": { "saturate": 50 }, "track": 1 },
+        { "type": "IMAGE", "src": "http://127.0.0.1:4598/image.png", "x": 500, "y": 40, "width": 130, "height": 98, "filter": { "hue-rotate": "90deg" }, "track": 1 },
+        { "type": "IMAGE", "src": "http://127.0.0.1:4598/image.png", "x": 180, "y": 200, "width": 140, "height": 105, "filter": { "blur": 8 }, "track": 1 }
+      ],
+      "audios": []
+    },
+    {
+      "id": "video",
+      "duration": 4,
+      "backgroundColor": "#101820",
+      "visuals": [
+        { "type": "VIDEO", "id": "vidA", "src": "http://127.0.0.1:4598/clip.mp4", "x": 160, "y": 90, "width": 320, "height": 180, "videoBegin": 0.4, "volume": 0, "enterBegin": 0, "exitEnd": 2.5, "transition": "wiperight", "transitionId": "vidB", "transitionDuration": 1 },
+        { "type": "VIDEO", "id": "vidB", "src": "http://127.0.0.1:4598/clip-b.mp4", "x": 160, "y": 90, "width": 320, "height": 180, "speed": 0.5, "volume": 0, "enterBegin": 1.5, "exitEnd": 4 }
+      ],
+      "audios": []
+    },
+    {
+      "id": "text",
+      "duration": 3,
+      "backgroundColor": "#2d2d2d",
+      "visuals": [
+        { "type": "TEXT", "text": "Plain default text", "x": 40, "y": 40, "track": 1 },
+        { "type": "TEXT", "text": "Styled headline", "x": 40, "y": 140, "style": { "fontSize": "54px", "color": "#ffcc33", "fontWeight": "700", "letterSpacing": "2px" }, "track": 1 },
+        { "type": "TEXT", "html": "<div style=\"font-size:30px;color:#7fd4ff\">HTML <b>bold</b> span</div>", "x": 40, "y": 250, "track": 1 }
+      ],
+      "audios": []
+    },
+    {
+      "id": "svg-gif",
+      "duration": 3,
+      "backgroundColor": "#403020",
+      "visuals": [
+        { "type": "SVG", "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" width=\"100\" height=\"100\"><circle cx=\"50\" cy=\"50\" r=\"45\" fill=\"#7c5cff\"/><rect x=\"30\" y=\"30\" width=\"40\" height=\"40\" fill=\"#ffffff\"/></svg>", "x": 60, "y": 60, "width": 180, "height": 180, "track": 1 },
+        { "type": "GIF", "src": "http://127.0.0.1:4598/static.gif", "x": 340, "y": 80, "width": 240, "height": 180, "track": 1 }
+      ],
+      "audios": []
+    },
+    {
+      "id": "anim",
+      "duration": 3,
+      "backgroundColor": "#1d3a3a",
+      "visuals": [
+        { "type": "IMAGE", "src": "http://127.0.0.1:4598/image.png", "x": 20, "y": 40, "width": 140, "height": 105, "enterBegin": 0, "enterEnd": 1, "enterAnimation": "fade", "track": 1 },
+        { "type": "IMAGE", "src": "http://127.0.0.1:4598/image.png", "x": 180, "y": 40, "width": 140, "height": 105, "enterBegin": 0, "enterEnd": 1, "enterAnimation": "wiperight", "track": 1 },
+        { "type": "IMAGE", "src": "http://127.0.0.1:4598/image.png", "x": 340, "y": 40, "width": 140, "height": 105, "enterBegin": 0, "exitBegin": 2, "exitEnd": 3, "exitAnimation": "wipeleft", "track": 1 },
+        { "type": "IMAGE", "src": "http://127.0.0.1:4598/image.png", "x": 500, "y": 40, "width": 130, "height": 98, "enterBegin": 0, "exitBegin": 2, "exitEnd": 3, "exitAnimation": "slideleft", "track": 1 }
+      ],
+      "audios": []
+    },
+    {
+      "id": "chroma-zoom",
+      "duration": 3,
+      "backgroundColor": "#552244",
+      "visuals": [
+        { "type": "IMAGE", "src": "http://127.0.0.1:4598/image.png", "x": 60, "y": 80, "width": 220, "height": 165, "chromaKey": { "color": "#22aa66", "similarity": 30, "blend": 10 }, "track": 1 },
+        { "type": "IMAGE", "src": "http://127.0.0.1:4598/image.png", "x": 340, "y": 80, "width": 220, "height": 165, "zoom": { "depth": 1.5 }, "track": 1 }
+      ],
+      "audios": []
+    }
+  ],
+  "subtitle": {
+    "captions": [
+      {
+        "start": 12.4,
+        "end": 14.4,
+        "text": "Subtitle parity check",
+        "words": [
+          { "start": 12.4, "end": 13.0, "text": "Subtitle" },
+          { "start": 13.0, "end": 13.7, "text": "parity" },
+          { "start": 13.7, "end": 14.4, "text": "check" }
+        ]
+      }
+    ],
+    "styles": { "fontSize": 34, "color": "#ffffff", "background": "#000000aa", "mode": "normal" }
+  },
+  "audios": [
+    { "src": "http://127.0.0.1:4598/tone.mp3", "enter": 0, "exit": 8, "volume": 0.4 }
+  ]
+}

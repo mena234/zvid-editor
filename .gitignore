@@ -4,3 +4,6 @@ node_modules
 dist
 .render-output
 *.log
+tests/e2e/.results
+playwright-report
+tests/fidelity/.artifacts

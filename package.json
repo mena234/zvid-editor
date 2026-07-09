@@ -11,6 +11,10 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "test": "vitest run",
+    "test:e2e": "playwright test --project=e2e",
+    "test:fidelity": "playwright test --project=fidelity",
+    "test:real-e2e": "playwright test --project=real-e2e",
+    "test:all": "vitest run && playwright test --project=e2e",
     "ts-check": "nuxt typecheck"
   },
   "dependencies": {
@@ -30,6 +34,8 @@
     "zod": "^3.25.76"
   },
   "devDependencies": {
+    "@playwright/test": "^1.61.1",
+    "socket.io": "^4.8.3",
     "vitest": "^3.2.4"
   }
 }

@@ -1,0 +1,17 @@
+{
+  "name": "kitchen-sink-image",
+  "type": "image",
+  "outputFormat": "png",
+  "width": 640,
+  "height": 360,
+  "backgroundColor": "#e8e2d6",
+  "visuals": [
+    { "type": "IMAGE", "src": "http://127.0.0.1:4598/image.png", "resize": "contain", "opacity": 0.15, "track": 0 },
+    { "type": "IMAGE", "src": "http://127.0.0.1:4598/image.png", "x": 30, "y": 30, "width": 150, "height": 110, "cropParams": { "x": 40, "y": 30, "width": 150, "height": 110 }, "track": 1 },
+    { "type": "IMAGE", "src": "http://127.0.0.1:4598/image.png", "x": 210, "y": 30, "width": 160, "height": 120, "radius": { "tl": 24, "tr": 24, "bl": 24, "br": 24 }, "track": 1 },
+    { "type": "IMAGE", "src": "http://127.0.0.1:4598/image.png", "x": 400, "y": 30, "width": 150, "height": 112, "filter": { "colorTint": "#aa4422" }, "track": 1 },
+    { "type": "IMAGE", "src": "http://127.0.0.1:4598/image.png", "position": "bottom-right", "width": 140, "height": 105, "opacity": 0.7, "flipH": true, "track": 2 },
+    { "type": "SVG", "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" width=\"100\" height=\"100\"><circle cx=\"50\" cy=\"50\" r=\"45\" fill=\"#7c5cff\"/><rect x=\"30\" y=\"30\" width=\"40\" height=\"40\" fill=\"#ffffff\"/></svg>", "x": 40, "y": 200, "width": 130, "height": 130, "track": 2 },
+    { "type": "TEXT", "text": "Image mode headline", "x": 400, "y": 200, "style": { "fontSize": "28px", "color": "#20303c", "fontWeight": "700" }, "track": 2 }
+  ]
+}

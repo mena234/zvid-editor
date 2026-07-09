@@ -179,6 +179,9 @@ function startRename(name: string) {
 }
 
 function commitRename(oldName: string) {
+  // Enter commits and unmounts the input, whose blur fires a second commit
+  // (and Esc-cancel fires one too) — only the first active call may run.
+  if (renamingName.value !== oldName) return
   const next = renameValue.value.trim()
   renamingName.value = ''
   if (!next || next === oldName) return
