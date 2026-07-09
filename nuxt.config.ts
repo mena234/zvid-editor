@@ -51,6 +51,9 @@ export default defineNuxtConfig({
     define: {
       __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: 'false',
     },
+    // jassub's worker contains dynamic imports; vite's default iife worker
+    // format can't code-split, so production builds fail without this.
+    worker: { format: 'es' },
     optimizeDeps: {
       // jassub resolves its worker/wasm via `new URL(..., import.meta.url)`;
       // pre-bundling would break those relative asset URLs.
