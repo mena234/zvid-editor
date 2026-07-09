@@ -5,7 +5,7 @@
   "type": "module",
   "description": "Zvid visual editor — compose videos on a stage + timeline, export automation-ready JSON, render in the Zvid cloud",
   "scripts": {
-    "dev": "nuxt dev",
+    "dev": "nuxt dev --port 3003",
     "build": "nuxt build",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
