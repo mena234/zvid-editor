@@ -94,7 +94,7 @@ describe('jumpPoints', () => {
     expect(jumpPoints.value).toEqual([0, 4, 11])
   })
 
-  it('scene-preview mode "scene" omits scene starts at root', () => {
+  it('overlay mode ("scene") keeps the same scene stops — the movie is the backdrop', () => {
     const { project, editor } = stores()
     project.doc.scenes = [
       { _id: 's1', id: 'scene-0', duration: 5, visuals: [], audios: [] } as any,
@@ -102,8 +102,8 @@ describe('jumpPoints', () => {
     ]
     editor.scenePreviewMode = 'scene'
     const { jumpPoints } = usePlayheadJumps()
-    // context falls back to the project default duration
-    expect(jumpPoints.value).toEqual([0, 10])
+    // root always spans the whole movie now, in both preview modes
+    expect(jumpPoints.value).toEqual([0, 5, 12])
   })
 
   it('inside a scene, points come from THAT scene on its local timeline', () => {

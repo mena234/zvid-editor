@@ -26,7 +26,7 @@ import {
  *   ScenesSettings  -> .scene-settings, UiField .field/.field-label/.field-ctl,
  *                      .cond-row input.ctl, .state-chip
  *   SceneStrip      -> .scene-block (dblclick = edit scene), .scene-local-note
- *   StageView       -> .scene-group (full preview), .stage-item[data-item-id]
+ *   StageView       -> .scene-group (root movie backdrop/preview), .stage-item[data-item-id]
  *   VariablesPanel  -> .add-row, .var-row, .var-name, .chip, .cm-content (JSON),
  *                      .problem, label.toggle input (preview)
  *   UiNumberInput   -> span.num-wrap > input.num + .var-menu .vm-btn
@@ -384,11 +384,19 @@ test('global overlays: the root card edits movie-wide visuals', async ({ page })
   await expect(global).toHaveClass(/active/)
   expect(await store(page, 'editor', 'context')).toBe('root')
 
-  // overlays mode shows just the root track on the stage (no scene groups)
+  // overlays mode: the editable root track renders over the full movie
   await page.locator('.tp-right .seg button', { hasText: 'overlays' }).click()
-  await expect(page.locator('.scene-group')).toHaveCount(0)
-  await expect(page.locator('.stage-item', { hasText: 'OVERLAY-TXT' })).toBeVisible()
-  await expect(page.locator('.stage-item', { hasText: 'INSIDE-TXT' })).toHaveCount(0)
+  await expect(page.locator('.scene-group')).toHaveCount(1)
+  await expect(
+    page.locator('.stage-item.interactive', { hasText: 'OVERLAY-TXT' })
+  ).toBeVisible()
+  // scene content shows underneath but is not editable here
+  await expect(
+    page.locator('.scene-group .stage-item', { hasText: 'INSIDE-TXT' })
+  ).toBeVisible()
+  await expect(
+    page.locator('.stage-item.interactive', { hasText: 'INSIDE-TXT' })
+  ).toHaveCount(0)
 
   // adding an element in the root context extends the global overlays
   await openPanel(page, 'Text')
@@ -421,7 +429,8 @@ test('full-movie preview: scene groups follow the overlap-adjusted plan and tota
   // plan: A starts 0 (4s), B starts 4-1=3 (3s) -> total 6s (> project 5s)
   const seg = page.locator('.tp-right .seg')
   await seg.locator('button', { hasText: 'overlays' }).click()
-  await expect(page.locator('.scene-group')).toHaveCount(0)
+  // the movie backdrop renders in overlays mode too (scene A at t=0)
+  await expect(page.locator('.scene-group')).toHaveCount(1)
   await seg.locator('button', { hasText: 'full movie' }).click()
 
   await expect(page.locator('.tl-panel .time-total')).toHaveText('/ 0:06.00')

@@ -33,13 +33,9 @@ export function usePlayheadJumps() {
         round3(resolveAudioTiming(a, contextDuration.value, src?.duration).enter)
       )
     }
-    // root full-preview lays scenes out as blocks — their starts are stops too
-    if (
-      !activeScene.value &&
-      project.doc.scenes?.length &&
-      editor.scenePreviewMode === 'full' &&
-      scenePlan.value
-    ) {
+    // the root context lays scenes out as blocks (backdrop in overlay mode,
+    // the movie itself in full preview) — their starts are stops too
+    if (!activeScene.value && project.doc.scenes?.length && scenePlan.value) {
       for (const e of scenePlan.value.entries) pts.add(round3(e.start))
     }
     return [...pts]

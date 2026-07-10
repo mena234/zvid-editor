@@ -166,13 +166,13 @@ describe('editor store', () => {
       expect(s.playing).toBe(false)
     })
 
-    it('scenePreviewMode defaults to full-movie preview and is switchable', () => {
+    it('scenePreviewMode defaults to overlay editing and is switchable', () => {
       const s = useEditorStore()
-      expect(s.scenePreviewMode).toBe('full')
-      s.scenePreviewMode = 'scene'
       expect(s.scenePreviewMode).toBe('scene')
       s.scenePreviewMode = 'full'
       expect(s.scenePreviewMode).toBe('full')
+      s.scenePreviewMode = 'scene'
+      expect(s.scenePreviewMode).toBe('scene')
     })
   })
 

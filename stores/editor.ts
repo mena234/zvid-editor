@@ -36,8 +36,9 @@ export const useEditorStore = defineStore('editor', {
 
     /* editing context: 'root' or scene _id */
     context: 'root' as string,
-    /** scenes projects: preview the whole movie vs the active scene */
-    scenePreviewMode: 'full' as 'scene' | 'full',
+    /** scenes projects at root: 'scene' edits the global overlay track over
+     *  the full movie; 'full' is the read-only full-movie preview */
+    scenePreviewMode: 'scene' as 'scene' | 'full',
 
     /* playback */
     playhead: 0,

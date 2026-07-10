@@ -48,7 +48,9 @@ export function useEditorContext() {
     if (activeScene.value) {
       return activeScenePlanEntry.value?.duration ?? 10
     }
-    if (project.doc.scenes?.length && editor.scenePreviewMode === 'full') {
+    // root of a scenes project always spans the whole movie — the stage shows
+    // the scenes in both preview modes, and global overlays run against it
+    if (project.doc.scenes?.length) {
       return projectTotalDuration(displayDoc.value, probeDuration)
     }
     return displayDefaults.value.duration

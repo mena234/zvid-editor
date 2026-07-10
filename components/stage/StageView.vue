@@ -70,12 +70,15 @@ function onWheel(e: WheelEvent) {
   }
 }
 
-/* ---------------- full-movie preview (scenes) ---------------- */
+/* ---------------- full-movie backdrop (scenes) ----------------
+ * The root context of a scenes project always renders the movie itself:
+ * in 'scene' (overlays) mode as a read-only backdrop under the editable
+ * global overlay track, in 'full' mode as the whole read-only preview. */
+const hasMovieBackdrop = computed(
+  () => !!project.doc.scenes?.length && editor.context === 'root'
+)
 const isFullPreview = computed(
-  () =>
-    !!project.doc.scenes?.length &&
-    editor.context === 'root' &&
-    editor.scenePreviewMode === 'full'
+  () => hasMovieBackdrop.value && editor.scenePreviewMode === 'full'
 )
 
 interface FullEntry {
@@ -88,7 +91,7 @@ interface FullEntry {
 }
 
 const fullPreview = computed(() => {
-  if (!isFullPreview.value || !scenePlan.value)
+  if (!hasMovieBackdrop.value || !scenePlan.value)
     return { entries: [] as FullEntry[], plates: [] as Record<string, any>[] }
   const t = editor.playhead
   const entries = scenePlan.value.entries
@@ -444,6 +447,10 @@ const contextLabel = computed(() => {
         ><span class="sep">·</span> full-movie preview (read-only) — pick a scene to
         edit</template
       >
+      <template v-else-if="hasMovieBackdrop"
+        ><span class="sep">·</span> editable over the full movie — pick a scene to
+        edit its content</template
+      >
     </div>
     <div
       ref="scrollEl"
@@ -468,12 +475,12 @@ const contextLabel = computed(() => {
             width: `${projW}px`,
             height: `${projH}px`,
             transform: `scale(${scale})`,
-            background: isFullPreview ? 'transparent' : displayContextBg,
+            background: hasMovieBackdrop ? 'transparent' : displayContextBg,
           }"
           @pointerdown="onFramePointerDown"
         >
-          <!-- full movie preview: scene groups + global overlays -->
-          <template v-if="isFullPreview">
+          <!-- the movie itself: scene groups, always under the overlay track -->
+          <template v-if="hasMovieBackdrop">
             <!-- scene-transition fade-through-color plates (under both scenes) -->
             <div
               v-for="(ps, i) in scenePlates"
@@ -503,6 +510,10 @@ const contextLabel = computed(() => {
                 :group-fx="fe.groupFx?.styleById.get(item._id) ?? null"
               />
             </div>
+          </template>
+
+          <!-- global overlays, read-only (full-movie preview) -->
+          <template v-if="isFullPreview">
             <div
               v-for="(ps, i) in overlayGroupFx?.plates ?? []"
               :key="`oplate-${i}`"
@@ -520,7 +531,7 @@ const contextLabel = computed(() => {
             />
           </template>
 
-          <!-- normal editing context -->
+          <!-- editing context (flat project, a scene, or the overlay track) -->
           <template v-else>
             <!-- video↔video transition plates (full-frame xfade canvas) -->
             <div
@@ -675,6 +686,9 @@ const contextLabel = computed(() => {
 .scene-group {
   position: absolute;
   inset: 0;
+  /* scenes are read-only here — let clicks fall through to the editable
+     overlay items and the frame (marquee / deselect) */
+  pointer-events: none;
 }
 .fx-plate {
   position: absolute;

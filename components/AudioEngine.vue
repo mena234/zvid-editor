@@ -24,11 +24,10 @@ interface ActiveAudio {
   contextDuration: number
 }
 
-const isFullPreview = computed(
-  () =>
-    !!project.doc.scenes?.length &&
-    editor.context === 'root' &&
-    editor.scenePreviewMode === 'full'
+/* root context of a scenes project plays the whole movie's audio — the stage
+   shows the scenes in both the overlay-editing mode and the full preview */
+const isFullMovie = computed(
+  () => !!project.doc.scenes?.length && editor.context === 'root'
 )
 
 /** display copies with {{placeholders}} resolved so previewed srcs play */
@@ -38,7 +37,7 @@ function displayAudios(items: AudioDoc[], scene?: Record<string, any>): AudioDoc
 }
 
 const audioSet = computed<ActiveAudio[]>(() => {
-  if (isFullPreview.value && scenePlan.value) {
+  if (isFullMovie.value && scenePlan.value) {
     // The preview scene plan is already resolved/expanded/pruned when the
     // variables preview is on — its audios are used verbatim.
     const out: ActiveAudio[] = []
