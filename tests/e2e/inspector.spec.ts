@@ -60,12 +60,15 @@ async function clickTab(page: Page, label: string) {
   await page.locator('.insp-tabs button', { hasText: label }).click()
 }
 
-/** Select the i-th root visual via the bridge; returns its editor _id. */
+/** Select the i-th root visual via the bridge; returns its editor _id.
+ *  openInspector mirrors a stage/timeline click: the shared side panel
+ *  swaps to the selection's properties. */
 async function selectVisual(page: Page, index = 0): Promise<string> {
   return page.evaluate((i) => {
     const t = (window as any).__zvidTest
     const v = t.project.doc.visuals[i]
     t.editor.selectVisual(v._id)
+    t.editor.openInspector()
     return v._id
   }, index)
 }
@@ -75,6 +78,7 @@ async function selectAudio(page: Page, index = 0): Promise<string> {
     const t = (window as any).__zvidTest
     const a = t.project.doc.audios[i]
     t.editor.selectAudio(a._id)
+    t.editor.openInspector()
     return a._id
   }, index)
 }
@@ -705,8 +709,8 @@ test('project: stats reflect the doc; validation issue appears and clears', asyn
     ],
     audios: [{ src: fx('tone.mp3') }],
   })
-  // nothing selected -> project inspector
-  await page.evaluate(() => (window as any).__zvidTest.editor.clearSelection())
+  // empty-stage click -> project settings in the shared panel
+  await page.evaluate(() => (window as any).__zvidTest.editor.openProjectSettings())
   await expect(sec(page, 'Overview')).toBeVisible()
   await expect(page.locator('.insp-body .stat b')).toHaveText(['2', '1', '0', '0'])
 

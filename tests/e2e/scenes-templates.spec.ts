@@ -39,7 +39,12 @@ import {
 
 /** Open a left-rail panel by tab title. */
 async function openPanel(page: Page, tab: 'Scenes' | 'Variables' | 'Text') {
-  await page.click(`.rail-tab[title="${tab}"]`)
+  // via the bridge — clicking an already-active rail tab would collapse
+  // the shared panel (Veed-style toggle)
+  await page.evaluate(
+    (p) => (window as any).__zvidTest.editor.openPanel(p),
+    tab.toLowerCase()
+  )
   await expect(page.locator('.rail-panel')).toBeVisible()
 }
 
@@ -92,12 +97,15 @@ async function setJson(row: Locator, text: string) {
   await row.page().keyboard.insertText(text)
 }
 
-/** Select the i-th root visual via the bridge; returns its editor _id. */
+/** Select the i-th root visual via the bridge; returns its editor _id.
+ *  openInspector mirrors a stage/timeline click: the shared side panel
+ *  swaps to the selection's properties. */
 async function selectVisual(page: Page, index = 0): Promise<string> {
   return page.evaluate((i) => {
     const t = (window as any).__zvidTest
     const v = t.project.doc.visuals[i]
     t.editor.selectVisual(v._id)
+    t.editor.openInspector()
     return v._id
   }, index)
 }
@@ -766,6 +774,9 @@ test('element condition: chip tracks the var, falsy dims on stage, full preview 
   // but still present/selectable in the editing context
   await openPanel(page, 'Variables')
   await varRow(page, 'show').locator('.check input[type="checkbox"]').uncheck()
+  // the shared panel now shows Variables — swap back to the element's
+  // properties (still selected) to read the Template chip
+  await page.evaluate(() => (window as any).__zvidTest.editor.openInspector())
   await expect(tpl.locator('.state-chip')).toHaveText('off')
   await expect(item).toHaveCSS('opacity', '0.3')
 

@@ -39,7 +39,7 @@ const undeclared = computed(() =>
 
 function openVariablesPanel() {
   editor.closeModal()
-  editor.leftPanel = 'variables'
+  editor.openPanel('variables')
 }
 
 const name = ref(project.doc.name || '')

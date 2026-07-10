@@ -33,7 +33,7 @@ function pick(name: string) {
 
 function manageVariables() {
   open.value = false
-  editor.leftPanel = 'variables'
+  editor.openPanel('variables')
 }
 </script>
 

@@ -190,7 +190,7 @@ const searchPlaceholder = computed(() =>
       : `Search ${stock.kind}s…`
 )
 
-const showProviderChips = computed(() => stock.kindProviders.length > 1)
+const showProviderChips = computed(() => stock.availableProviders.length > 1)
 // providers loaded from orch but none configured for this kind (e.g. no
 // JAMENDO_CLIENT_ID yet) — show a neutral notice instead of a red search error
 const noProviders = computed(
@@ -232,7 +232,7 @@ const skeletons = 8
         All
       </button>
       <button
-        v-for="p in stock.kindProviders"
+        v-for="p in stock.availableProviders"
         :key="p"
         class="chip"
         :class="{ active: stock.current.provider === p }"
@@ -240,17 +240,6 @@ const skeletons = 8
       >
         {{ PROVIDER_LABELS[p] ?? p }}
       </button>
-    </div>
-
-    <div v-if="stock.current.providerErrors" class="provider-warn">
-      <UiIcon name="warning" :size="12" />
-      <span>
-        <template v-for="(msg, p, i) in stock.current.providerErrors" :key="p"
-          ><template v-if="i > 0">, </template
-          >{{ PROVIDER_LABELS[p] ?? p }} unavailable{{ /429|rate limit/i.test(msg) ? ' (rate limit)' : '' }}</template
-        >
-        — showing the other providers.
-      </span>
     </div>
 
     <p v-if="noProviders" class="state-box hint">
@@ -496,22 +485,6 @@ const skeletons = 8
   to {
     background-position: -80% 0;
   }
-}
-.provider-warn {
-  display: flex;
-  align-items: flex-start;
-  gap: 6px;
-  padding: 6px 9px;
-  border: 1px solid color-mix(in srgb, var(--yellow) 40%, transparent);
-  border-radius: var(--radius-m);
-  background: color-mix(in srgb, var(--yellow) 8%, transparent);
-  color: var(--yellow);
-  font-size: 10.5px;
-  line-height: 1.45;
-}
-.provider-warn :deep(svg) {
-  flex: 0 0 auto;
-  margin-top: 1px;
 }
 .state-box {
   padding: 10px;

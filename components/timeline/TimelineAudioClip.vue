@@ -24,7 +24,10 @@ const editor = useEditorStore()
 function onContextMenu(e: MouseEvent) {
   e.preventDefault()
   e.stopPropagation()
-  if (!selected.value) editor.selectAudio(props.audio._id)
+  if (!selected.value) {
+    editor.selectAudio(props.audio._id)
+    editor.openInspector()
+  }
   emit('ctxmenu', e)
 }
 const { probe } = useMediaProbe()
@@ -127,6 +130,7 @@ function beginGesture(e: PointerEvent, mode: Mode) {
   e.stopPropagation()
   e.preventDefault()
   editor.selectAudio(props.audio._id)
+  editor.openInspector()
   gesture = {
     mode,
     startX: e.clientX,

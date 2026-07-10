@@ -311,7 +311,8 @@ function onFramePointerDown(e: PointerEvent) {
   const p = framePoint(e)
   marquee.value = { x0: p.x, y0: p.y, x1: p.x, y1: p.y }
   marqueeActive = true
-  editor.clearSelection()
+  // empty-stage click: the shared panel shows the project settings
+  editor.openProjectSettings()
 }
 
 function onWindowPointerMove(e: PointerEvent) {
@@ -348,6 +349,7 @@ function onWindowPointerUp() {
         editor.selectionKind = 'visual'
         editor.selectedIds = hits
         editor.selectedId = hits[hits.length - 1]
+        editor.openInspector()
       }
     }
   }
@@ -409,6 +411,7 @@ function onStockDrop(e: DragEvent) {
   })
   const added = project.addVisual(editor.context, visual)
   editor.selectVisual(added._id)
+  editor.openInspector()
   editor.notify(
     `${payload.kind === 'GIF' ? 'GIF' : payload.kind.toLowerCase()} added${project.isImage ? '' : ' at the playhead'}`,
     'success'
@@ -638,6 +641,7 @@ const contextLabel = computed(() => {
   display: flex;
   flex-direction: column;
   min-width: 0;
+  min-height: 0;
   position: relative;
   background: var(--bg-0);
 }

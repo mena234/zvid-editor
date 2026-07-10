@@ -42,10 +42,17 @@ const activeTab = computed({
 </script>
 
 <template>
-  <aside class="inspector">
+  <div class="inspector">
     <!-- visual item -->
     <template v-if="visual">
       <header class="insp-head">
+        <button
+          class="icon-btn back-btn"
+          title="Back to library"
+          @click="editor.closeInspector()"
+        >
+          <UiIcon name="chevron_left" :size="15" />
+        </button>
         <span class="type-chip" :data-type="type">{{ type }}</span>
         <span class="insp-title">{{
           type === 'TEXT'
@@ -102,6 +109,13 @@ const activeTab = computed({
     <!-- audio item -->
     <template v-else-if="audio">
       <header class="insp-head">
+        <button
+          class="icon-btn back-btn"
+          title="Back to library"
+          @click="editor.closeInspector()"
+        >
+          <UiIcon name="chevron_left" :size="15" />
+        </button>
         <span class="type-chip" data-type="AUDIO">AUDIO</span>
         <span class="insp-title">{{ audio.src?.split('/').pop() ?? 'audio' }}</span>
         <button
@@ -120,15 +134,22 @@ const activeTab = computed({
     <!-- caption selected -->
     <template v-else-if="editor.selectionKind === 'caption'">
       <header class="insp-head">
+        <button
+          class="icon-btn back-btn"
+          title="Back to library"
+          @click="editor.closeInspector()"
+        >
+          <UiIcon name="chevron_left" :size="15" />
+        </button>
         <span class="type-chip" data-type="CC">CAPTION</span>
         <span class="insp-title">Caption {{ editor.selectedCaptionIndex + 1 }}</span>
       </header>
       <div class="insp-body">
         <p class="hint">
           Edit caption text, timings and word-level timing in the
-          <b>Subtitles</b> panel on the left.
+          <b>Subtitles</b> panel.
         </p>
-        <button class="btn" @click="editor.leftPanel = 'subtitles'">
+        <button class="btn" @click="editor.openPanel('subtitles')">
           <UiIcon name="subtitles" :size="14" /> Open subtitles panel
         </button>
       </div>
@@ -137,6 +158,13 @@ const activeTab = computed({
     <!-- scene selected -->
     <template v-else-if="editor.selectionKind === 'scene'">
       <header class="insp-head">
+        <button
+          class="icon-btn back-btn"
+          title="Back to library"
+          @click="editor.closeInspector()"
+        >
+          <UiIcon name="chevron_left" :size="15" />
+        </button>
         <span class="type-chip" data-type="SCENE">SCENE</span>
         <span class="insp-title">Scene settings</span>
       </header>
@@ -148,6 +176,13 @@ const activeTab = computed({
     <!-- nothing selected: project -->
     <template v-else>
       <header class="insp-head">
+        <button
+          class="icon-btn back-btn"
+          title="Back to library"
+          @click="editor.closeInspector()"
+        >
+          <UiIcon name="chevron_left" :size="15" />
+        </button>
         <span class="type-chip" data-type="PROJECT">PROJECT</span>
         <span class="insp-title">{{ project.doc.name ?? 'untitled' }}</span>
       </header>
@@ -155,18 +190,22 @@ const activeTab = computed({
         <InspectorProjectSection />
       </div>
     </template>
-  </aside>
+  </div>
 </template>
 
 <style scoped>
+/* fills the shared side panel (LeftRail's .rail-panel.bare) */
 .inspector {
-  width: 312px;
-  flex: 0 0 312px;
+  flex: 1;
   display: flex;
   flex-direction: column;
-  border-left: 1px solid var(--border-0);
   background: var(--bg-1);
   min-height: 0;
+  min-width: 0;
+}
+.back-btn {
+  flex: 0 0 auto;
+  margin-left: -4px;
 }
 .insp-head {
   display: flex;

@@ -84,9 +84,14 @@ async function visualIds(page: Page): Promise<string[]> {
   return visuals.map((v: any) => v._id)
 }
 
-/** Open the URL-add form of a media rail tab and submit a fixture URL. */
+/** Open the URL-add form of a media rail tab and submit a fixture URL.
+ *  Opens the panel via the bridge — clicking an already-active rail tab
+ *  would collapse the shared panel (Veed-style toggle). */
 async function addByUrl(page: Page, tabTitle: string, url: string) {
-  await page.click(`.rail-tab[title="${tabTitle}"]`)
+  const id = { Images: 'images', Videos: 'videos', Audio: 'audio', GIFs: 'gifs' }[
+    tabTitle
+  ]
+  await page.evaluate((p) => (window as any).__zvidTest.editor.openPanel(p), id)
   await page.click('.url-toggle')
   await page.fill('.url-form input[type="text"]', url)
   await page.click('.url-form button[type="submit"]')

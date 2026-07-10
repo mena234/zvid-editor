@@ -1,6 +1,11 @@
 import { defineStore } from 'pinia'
+import { useProjectStore } from '~/stores/project'
+import { canonicalVisualType } from '~/shared/schema/types'
 
 export type SelectionKind = 'visual' | 'audio' | 'caption' | 'scene' | null
+/** Which face of the shared side panel is showing: the tab's library
+ *  content, or the properties (inspector) of the current selection. */
+export type PanelView = 'main' | 'inspector'
 export type LeftPanel =
   | 'images'
   | 'videos'
@@ -72,8 +77,11 @@ export const useEditorStore = defineStore('editor', {
     /* appearance */
     theme: 'light' as 'light' | 'dark',
 
-    /* panels */
-    leftPanel: 'images' as LeftPanel,
+    /* panels — a single shared side panel (Veed-style): `leftPanel` is the
+       active rail tab (null = collapsed), `panelView` flips between the
+       tab's library content and the selection's properties */
+    leftPanel: 'images' as LeftPanel | null,
+    panelView: 'main' as PanelView,
     modal: null as ModalKind,
     /** modal to reopen after a successful sign-in (save gating) */
     postAuthModal: null as ModalKind,
@@ -148,6 +156,79 @@ export const useEditorStore = defineStore('editor', {
       this.selectedId = null
       this.selectedIds = []
       this.selectedCaptionIndex = -1
+      // the shared panel falls back to the tab's library content
+      if (this.panelView === 'inspector') this.panelView = 'main'
+    },
+
+    /* ---- shared side panel ---- */
+
+    /** Rail tab click: same tab collapses the panel, any other opens its
+     *  library content. */
+    togglePanel(tab: LeftPanel) {
+      if (this.leftPanel === tab) {
+        this.leftPanel = null
+      } else {
+        this.leftPanel = tab
+        this.panelView = 'main'
+      }
+    },
+
+    /** Programmatic "open this tab's library content" (deep links etc.). */
+    openPanel(tab: LeftPanel) {
+      this.leftPanel = tab
+      this.panelView = 'main'
+    },
+
+    /**
+     * Show the current selection's properties in the shared panel, switching
+     * to the rail tab that matches the selected element's type (clicking an
+     * image on the stage/timeline opens it inside the Images tab, etc.).
+     */
+    openInspector() {
+      if (this.selectionKind === 'caption') {
+        // captions are edited in the Subtitles panel itself
+        this.openPanel('subtitles')
+        return
+      }
+      this.leftPanel = this.panelTabForSelection() ?? this.leftPanel ?? 'images'
+      this.panelView = 'inspector'
+    },
+
+    /** Clicking the empty stage: project settings in the shared panel. */
+    openProjectSettings() {
+      this.clearSelection()
+      if (this.leftPanel) this.panelView = 'inspector'
+    },
+
+    /** Back button in the properties header → the tab's library content. */
+    closeInspector() {
+      this.panelView = 'main'
+    },
+
+    /** The rail tab that owns the currently selected element. */
+    panelTabForSelection(): LeftPanel | null {
+      if (this.selectionKind === 'audio') return 'audio'
+      if (this.selectionKind === 'scene') return 'scenes'
+      if (this.selectionKind === 'caption') return 'subtitles'
+      if (this.selectionKind !== 'visual' || !this.selectedId) return null
+      const project = useProjectStore()
+      const v = project.visualById(this.selectedId)
+      if (!v) return null
+      switch (canonicalVisualType(v.type)) {
+        case 'IMAGE':
+          return 'images'
+        case 'VIDEO':
+          return 'videos'
+        case 'GIF':
+          return 'gifs'
+        case 'TEXT':
+          return (v as any).designer ? 'design' : 'text'
+        case 'SVG':
+          return 'shape'
+        default:
+          // custom/canvas-coded elements
+          return 'canvas'
+      }
     },
 
     setContext(ctx: string) {

@@ -28,7 +28,8 @@ const tabs = computed(() =>
 watch(
   () => project.isImage,
   (isImage) => {
-    if (isImage && HIDDEN_IN_IMAGE_MODE.has(editor.leftPanel)) editor.leftPanel = 'images'
+    if (isImage && editor.leftPanel && HIDDEN_IN_IMAGE_MODE.has(editor.leftPanel))
+      editor.openPanel('images')
   },
   { immediate: true }
 )
@@ -44,6 +45,9 @@ const mediaKind = computed(
   () => MEDIA_KIND[editor.leftPanel as keyof typeof MEDIA_KIND] ?? null
 )
 
+/** the panel shows the selection's properties instead of the tab content */
+const showInspector = computed(() => editor.panelView === 'inspector')
+
 const captionCount = computed(() => project.doc.subtitle?.captions?.length ?? 0)
 const sceneCount = computed(() => project.doc.scenes?.length ?? 0)
 const variableCount = computed(() => Object.keys(project.variables).length)
@@ -58,7 +62,7 @@ const variableCount = computed(() => Object.keys(project.variables).length)
         class="rail-tab"
         :class="{ active: editor.leftPanel === tab.id }"
         :title="tab.label"
-        @click="editor.leftPanel = tab.id as any"
+        @click="editor.togglePanel(tab.id as any)"
       >
         <UiIcon :name="tab.icon" :size="17" />
         <span>{{ tab.label }}</span>
@@ -71,15 +75,18 @@ const variableCount = computed(() => Object.keys(project.variables).length)
         }}</span>
       </button>
     </nav>
-    <div class="rail-panel">
-      <PanelsMediaPanel v-if="mediaKind" :key="mediaKind" :kind="mediaKind" />
-      <PanelsTextPanel v-else-if="editor.leftPanel === 'text'" />
-      <PanelsDesignPanel v-else-if="editor.leftPanel === 'design'" />
-      <PanelsShapePanel v-else-if="editor.leftPanel === 'shape'" />
-      <PanelsCanvasPanel v-else-if="editor.leftPanel === 'canvas'" />
-      <PanelsScenesPanel v-else-if="editor.leftPanel === 'scenes'" />
-      <PanelsSubtitlesPanel v-else-if="editor.leftPanel === 'subtitles'" />
-      <PanelsVariablesPanel v-else-if="editor.leftPanel === 'variables'" />
+    <div v-if="editor.leftPanel" class="rail-panel" :class="{ bare: showInspector }">
+      <InspectorPanel v-if="showInspector" />
+      <template v-else>
+        <PanelsMediaPanel v-if="mediaKind" :key="mediaKind" :kind="mediaKind" />
+        <PanelsTextPanel v-else-if="editor.leftPanel === 'text'" />
+        <PanelsDesignPanel v-else-if="editor.leftPanel === 'design'" />
+        <PanelsShapePanel v-else-if="editor.leftPanel === 'shape'" />
+        <PanelsCanvasPanel v-else-if="editor.leftPanel === 'canvas'" />
+        <PanelsScenesPanel v-else-if="editor.leftPanel === 'scenes'" />
+        <PanelsSubtitlesPanel v-else-if="editor.leftPanel === 'subtitles'" />
+        <PanelsVariablesPanel v-else-if="editor.leftPanel === 'variables'" />
+      </template>
     </div>
   </aside>
 </template>
@@ -87,11 +94,15 @@ const variableCount = computed(() => Object.keys(project.variables).length)
 <style scoped>
 .left-rail {
   display: flex;
-  width: 326px;
-  flex: 0 0 326px;
+  flex: 0 0 auto;
   border-right: 1px solid var(--border-0);
   background: var(--bg-1);
   min-height: 0;
+}
+/* collapsed: only the tab strip remains */
+.left-rail:has(.rail-panel) {
+  width: 326px;
+  flex: 0 0 326px;
 }
 .rail-tabs {
   display: flex;
@@ -148,5 +159,12 @@ const variableCount = computed(() => Object.keys(project.variables).length)
   padding: 13px;
   min-width: 0;
   background: var(--bg-1);
+}
+/* inspector view brings its own header/scroll structure */
+.rail-panel.bare {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  overflow: hidden;
 }
 </style>

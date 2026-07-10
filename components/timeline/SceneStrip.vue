@@ -42,7 +42,7 @@ function openScene(scene: Record<string, any>) {
           }"
           :title="`${e.scene.id} · ${e.duration}s — double-click to edit`"
           @dblclick="openScene(e.scene)"
-          @click="editor.selectScene(sourceIdOf(e.scene))"
+          @click="editor.selectScene(sourceIdOf(e.scene)); editor.openInspector()"
         >
           <span class="scene-name">{{ e.scene.id }}</span>
           <span class="scene-dur mono">{{ e.duration }}s</span>

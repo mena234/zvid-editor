@@ -28,7 +28,7 @@ function beginGesture(e: PointerEvent, index: number, mode: Mode) {
   e.stopPropagation()
   const c = captions.value[index]
   editor.selectCaption(index)
-  editor.leftPanel = 'subtitles'
+  editor.openPanel('subtitles')
   gesture = {
     mode,
     index,
@@ -82,7 +82,7 @@ function onUp() {
       <button
         class="icon-btn sm-btn"
         title="Open the subtitles panel"
-        @click="editor.leftPanel = 'subtitles'"
+        @click="editor.openPanel('subtitles')"
       >
         <UiIcon name="subtitles" :size="13" />
       </button>

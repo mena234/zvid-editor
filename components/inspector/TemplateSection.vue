@@ -86,7 +86,7 @@ function commitCondition(e: Event) {
       <UiIcon name="json" :size="12" />
       {{ placeholderCount }} placeholder{{ placeholderCount > 1 ? 's' : '' }} in this
       element —
-      <button class="linkish" @click="editor.leftPanel = 'variables'">
+      <button class="linkish" @click="editor.openPanel('variables')">
         manage variables
       </button>. Editing a field replaces its placeholder.
     </p>

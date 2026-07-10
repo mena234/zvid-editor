@@ -204,11 +204,12 @@ const toastIcon = computed(() =>
     <AdminExampleBanner />
     <div class="shell-main">
       <LeftRail />
-      <StageView />
-      <InspectorPanel />
+      <div class="stage-col">
+        <StageView />
+        <!-- image mode: no timeline — the stage takes the full height -->
+        <TimelinePanel v-if="!isImage" />
+      </div>
     </div>
-    <!-- image mode: no timeline/audio — the stage takes the full height -->
-    <TimelinePanel v-if="!isImage" />
     <AudioEngine v-if="!isImage" />
 
     <ModalsExportModal v-if="editor.modal === 'export'" />
@@ -243,6 +244,14 @@ const toastIcon = computed(() =>
 .shell-main {
   flex: 1;
   display: flex;
+  min-height: 0;
+}
+/* stage + timeline stack to the right of the full-height sidebar */
+.stage-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
   min-height: 0;
 }
 .toast {

@@ -143,6 +143,7 @@ function onPointerDown(e: PointerEvent) {
     (editor.selectedIds.includes(props.item._id) || editor.selectedId === props.item._id)
 
   if (!alreadySelected || additive) editor.selectVisual(props.item._id, additive)
+  editor.openInspector()
   if (additive) return
 
   const ids = editor.selectedIds.length ? editor.selectedIds : [props.item._id]
@@ -221,6 +222,7 @@ function onContextMenu(e: MouseEvent) {
     )
   ) {
     editor.selectVisual(props.item._id)
+    editor.openInspector()
   }
   stageCtx.openContextMenu(e, props.item._id)
 }

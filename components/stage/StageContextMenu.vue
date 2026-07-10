@@ -49,6 +49,7 @@ function duplicate() {
     const copy = project.duplicateVisual(props.itemId)
     if (copy) editor.selectVisual(copy._id)
   }
+  editor.openInspector()
 }
 function remove() {
   if (isAudio.value) project.removeAudio(props.itemId)

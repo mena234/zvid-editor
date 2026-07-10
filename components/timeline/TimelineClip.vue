@@ -24,7 +24,10 @@ const editor = useEditorStore()
 function onContextMenu(e: MouseEvent) {
   e.preventDefault()
   e.stopPropagation()
-  if (!selected.value) editor.selectVisual(props.item._id)
+  if (!selected.value) {
+    editor.selectVisual(props.item._id)
+    editor.openInspector()
+  }
   emit('ctxmenu', e)
 }
 
@@ -126,6 +129,7 @@ function beginGesture(e: PointerEvent, mode: Mode) {
   e.stopPropagation()
   e.preventDefault()
   editor.selectVisual(props.item._id, e.shiftKey)
+  editor.openInspector()
   gesture = {
     mode,
     startX: e.clientX,

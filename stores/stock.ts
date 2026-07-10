@@ -35,6 +35,9 @@ interface KindState {
   error: string | null
   /** per-provider failures from the last page (e.g. one provider rate-limited) */
   providerErrors: Record<string, string> | null
+  /** providers that failed at least once this session — their tab is hidden
+   *  instead of showing a warning; `retry()` gives them another chance */
+  unavailable: Record<string, string>
   /** guards against out-of-order responses */
   requestId: number
   /** first load already triggered for this kind */
@@ -60,6 +63,7 @@ function emptyKindState(): KindState {
     loading: false,
     error: null,
     providerErrors: null,
+    unavailable: {},
     requestId: 0,
     initialized: false,
   }
@@ -84,6 +88,11 @@ export const useStockStore = defineStore('stock', {
     },
     kindProviders(state): string[] {
       return state.providers?.[state.kind] ?? FALLBACK_PROVIDERS[state.kind]
+    },
+    /** configured providers minus the ones that failed this session */
+    availableProviders(state): string[] {
+      const dead = state.byKind[state.kind].unavailable
+      return this.kindProviders.filter((p: string) => !(p in dead))
     },
   },
 
@@ -136,6 +145,7 @@ export const useStockStore = defineStore('stock', {
     async retry() {
       const s = this.byKind[this.kind]
       s.error = null
+      s.unavailable = {} // give hidden providers another chance
       if (s.items.length) await this.loadMore()
       else await this.refresh()
     },
@@ -172,6 +182,16 @@ export const useStockStore = defineStore('stock', {
         s.page += 1
         s.hasMore = !!res.hasMore && (res.items?.length ?? 0) > 0
         s.providerErrors = res.providerErrors ?? null
+        if (res.providerErrors) {
+          // failed providers lose their tab (no warning banner); if the
+          // active tab just died, fall back to All and reload
+          s.unavailable = { ...s.unavailable, ...res.providerErrors }
+          if (s.provider !== 'all' && s.provider in s.unavailable) {
+            s.provider = 'all'
+            void this.refresh()
+            return
+          }
+        }
       } catch (e: any) {
         if (rid !== s.requestId) return
         s.error =
