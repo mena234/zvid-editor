@@ -14,10 +14,12 @@ import {
   categoryKeyForPack,
   exampleCategory,
 } from '~/data/exampleCategories'
+import { useCloud } from '~/composables/useCloud'
 
 const project = useProjectStore()
 const editor = useEditorStore()
 const auth = useAuthStore()
+const cloud = useCloud()
 const dashUrl = useRuntimeConfig().public.dashUrl as string
 
 const items = ref<LibraryItem[]>([])
@@ -229,6 +231,19 @@ function onEnter(slug: string) {
 function onLeave(slug: string) {
   if (hoverSlug.value === slug) hoverSlug.value = ''
 }
+
+/** Admins can open any example for editing + re-publishing (bypasses locks). */
+const isAdmin = computed(() => !!auth.user?.isAdmin)
+async function editExample(item: LibraryItem) {
+  if (loadingSlug.value) return
+  loadingSlug.value = item.slug
+  try {
+    const ok = await cloud.openExampleForEditing(item.slug)
+    if (ok) editor.closeModal()
+  } finally {
+    loadingSlug.value = ''
+  }
+}
 </script>
 
 <template>
@@ -368,6 +383,18 @@ function onLeave(slug: string) {
               />
               <span v-if="ex.meta?.premium" class="pro-badge">
                 <template v-if="isLocked(ex)">🔒 </template>PRO
+              </span>
+              <span
+                v-if="isAdmin"
+                class="edit-badge"
+                role="button"
+                tabindex="0"
+                title="Edit this example and re-publish"
+                @click.stop="editExample(ex)"
+                @keydown.enter.stop="editExample(ex)"
+                @mousedown.stop
+              >
+                ✎ Edit
               </span>
               <span v-if="ex.meta?.duration" class="shot-badge mono">
                 {{ ex.meta.duration }}s
@@ -602,6 +629,28 @@ function onLeave(slug: string) {
   font-size: 9px;
   font-weight: 800;
   letter-spacing: 0.06em;
+}
+/* Admin-only: opens the example for editing + re-publishing. */
+.edit-badge {
+  position: absolute;
+  right: 6px;
+  top: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 9.5px;
+  font-weight: 700;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.12s;
+}
+.card:hover .edit-badge,
+.edit-badge:focus-visible {
+  opacity: 1;
 }
 .pro-chip {
   display: inline-block;

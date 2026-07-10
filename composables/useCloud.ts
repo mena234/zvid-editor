@@ -3,6 +3,11 @@ import { useAuthStore } from '~/stores/auth'
 import { useEditorStore } from '~/stores/editor'
 import { useProjectStore } from '~/stores/project'
 import type { ModalKind } from '~/stores/editor'
+import {
+  fetchLibraryContent,
+  fetchLibraryList,
+  libraryErrorMessage,
+} from '~/composables/useLibrary'
 
 export interface CloudProjectRow {
   id: string
@@ -102,12 +107,14 @@ export function useCloud() {
     const params = new URLSearchParams(window.location.search)
     const projectId = params.get('project')
     const templateId = params.get('template')
-    if (!projectId && !templateId) return
+    const exampleSlug = params.get('example')
+    if (!projectId && !templateId && !exampleSlug) return
 
     const strip = () => {
       const url = new URL(window.location.href)
       url.searchParams.delete('project')
       url.searchParams.delete('template')
+      url.searchParams.delete('example')
       history.replaceState(
         history.state,
         '',
@@ -175,6 +182,9 @@ export function useCloud() {
         } else if (!handleExpired(r, null)) {
           editor.notify(r.error || 'Could not load the template', 'error')
         }
+      } else if (exampleSlug) {
+        // Admin deep link from the dash Examples page: edit + republish.
+        await openExampleForEditing(exampleSlug)
       }
     } catch {
       editor.notify('Could not open the link — try again.', 'error')
@@ -190,6 +200,63 @@ export function useCloud() {
     if (requireAuth('saveTemplate')) editor.openModal('saveTemplate')
   }
 
+  /* ---------------- admin: edit + republish library examples ------------- */
+
+  /** True when the session belongs to an admin (gates the example-edit flow). */
+  function isAdmin(): boolean {
+    return !!auth.user?.isAdmin
+  }
+
+  /**
+   * Admin-only: load a library example's content into the editor and remember
+   * its slug so the Publish flow can re-render + republish that exact row. The
+   * orch /content route lets admins fetch even premium examples.
+   */
+  async function openExampleForEditing(slug: string): Promise<boolean> {
+    if (!auth.user) {
+      editor.postAuthModal = null
+      editor.openModal('auth')
+      editor.notify('Sign in as an admin to edit examples', 'info')
+      return false
+    }
+    if (!isAdmin()) {
+      editor.notify('Editing examples requires an admin account', 'error')
+      return false
+    }
+    try {
+      const list = await fetchLibraryList('examples')
+      const item = list.find((i) => i.slug === slug)
+      if (!item) {
+        editor.notify(`Example “${slug}” was not found`, 'error')
+        return false
+      }
+      const content = await fetchLibraryContent('examples', slug)
+      project.loadRaw(content)
+      editor.setCloudProject(null)
+      editor.setSourceExample({ slug, title: item.title, meta: item.meta })
+      editor.setContext('root')
+      editor.clearSelection()
+      editor.notify(
+        `Editing example “${item.title}” — Publish to re-render it`,
+        'success'
+      )
+      return true
+    } catch (e) {
+      editor.notify(libraryErrorMessage(e), 'error')
+      return false
+    }
+  }
+
+  /** Open the Publish-example modal (re-render + republish the current row). */
+  function publishExample() {
+    if (!editor.sourceExample) return
+    if (!isAdmin()) {
+      editor.notify('Publishing examples requires an admin account', 'error')
+      return
+    }
+    editor.openModal('publishExample')
+  }
+
   return {
     requireAuth,
     currentPayload,
@@ -198,5 +265,8 @@ export function useCloud() {
     openFromQuery,
     openProjects,
     openSaveTemplate,
+    isAdmin,
+    openExampleForEditing,
+    publishExample,
   }
 }

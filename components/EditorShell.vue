@@ -201,6 +201,7 @@ const toastIcon = computed(() =>
 <template>
   <div class="shell">
     <TopBar />
+    <AdminExampleBanner />
     <div class="shell-main">
       <LeftRail />
       <StageView />
@@ -220,6 +221,7 @@ const toastIcon = computed(() =>
     <ModalsSaveProjectModal v-if="editor.modal === 'saveProject'" />
     <ModalsProjectsModal v-if="editor.modal === 'projects'" />
     <ModalsSaveTemplateModal v-if="editor.modal === 'saveTemplate'" />
+    <ModalsPublishExampleModal v-if="editor.modal === 'publishExample'" />
 
     <Transition name="fade">
       <div v-if="editor.toast" class="toast" :class="editor.toast.kind">

@@ -25,6 +25,14 @@ export type ModalKind =
   | 'auth'
   | 'saveProject'
   | 'saveTemplate'
+  | 'publishExample'
+
+/** The library example an admin opened for editing (drives the Publish flow). */
+export interface SourceExample {
+  slug: string
+  title: string
+  meta: Record<string, any> | null
+}
 
 export const useEditorStore = defineStore('editor', {
   state: () => ({
@@ -71,6 +79,8 @@ export const useEditorStore = defineStore('editor', {
     postAuthModal: null as ModalKind,
     /** cloud project the current document is linked to (null = unsaved) */
     cloudProject: null as null | { id: string; name: string },
+    /** library example being edited by an admin (null = not editing one) */
+    sourceExample: null as null | SourceExample,
     /** visual _id being edited in the Design Studio (null = create new) */
     designerTargetId: null as string | null,
     inspectorTab: 'design',
@@ -180,6 +190,10 @@ export const useEditorStore = defineStore('editor', {
 
     setCloudProject(link: null | { id: string; name: string }) {
       this.cloudProject = link
+    },
+
+    setSourceExample(ex: null | SourceExample) {
+      this.sourceExample = ex
     },
   },
 })
