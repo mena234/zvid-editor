@@ -4,6 +4,7 @@ import { useAuthStore } from '~/stores/auth'
 import { useStockStore } from '~/stores/stock'
 import { useUploadsStore } from '~/stores/uploads'
 import { useDesignsStore } from '~/stores/designs'
+import { useTourStore } from '~/stores/tour'
 import {
   importProject,
   exportProject,
@@ -51,6 +52,9 @@ export default defineNuxtPlugin((nuxtApp) => {
     },
     get designs() {
       return useDesignsStore(pinia)
+    },
+    get tour() {
+      return useTourStore(pinia)
     },
     /** Exported (minimal, render-ready) JSON of the current document. */
     exportedDoc() {

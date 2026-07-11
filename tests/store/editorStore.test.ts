@@ -157,6 +157,15 @@ describe('editor store', () => {
       expect(s.pxPerSec).toBe(120)
     })
 
+    it('toggleTimeline flips timelineCollapsed', () => {
+      const s = useEditorStore()
+      expect(s.timelineCollapsed).toBe(false)
+      s.toggleTimeline()
+      expect(s.timelineCollapsed).toBe(true)
+      s.toggleTimeline()
+      expect(s.timelineCollapsed).toBe(false)
+    })
+
     it('togglePlay flips playing', () => {
       const s = useEditorStore()
       expect(s.playing).toBe(false)

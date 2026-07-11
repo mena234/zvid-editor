@@ -1,0 +1,8 @@
+{
+  "name": "cdn-example-doc",
+  "duration": 6,
+  "frameRate": 30,
+  "visuals": [
+    { "type": "TEXT", "text": "from-cdn-example", "position": "center-center" }
+  ]
+}

@@ -205,9 +205,9 @@ const toastIcon = computed(() =>
     <div class="shell-main">
       <LeftRail />
       <div class="stage-col">
-        <StageView />
+        <StageView data-tour="stage" />
         <!-- image mode: no timeline — the stage takes the full height -->
-        <TimelinePanel v-if="!isImage" />
+        <TimelinePanel v-if="!isImage" data-tour="timeline" />
       </div>
     </div>
     <AudioEngine v-if="!isImage" />
@@ -223,6 +223,8 @@ const toastIcon = computed(() =>
     <ModalsProjectsModal v-if="editor.modal === 'projects'" />
     <ModalsSaveTemplateModal v-if="editor.modal === 'saveTemplate'" />
     <ModalsPublishExampleModal v-if="editor.modal === 'publishExample'" />
+
+    <ProductTour />
 
     <Transition name="fade">
       <div v-if="editor.toast" class="toast" :class="editor.toast.kind">

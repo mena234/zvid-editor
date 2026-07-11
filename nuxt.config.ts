@@ -44,7 +44,7 @@ export default defineNuxtConfig({
       // orch base URL the browser connects to directly (render websocket).
       orchUrl: process.env.NUXT_PUBLIC_ORCH_URL || 'http://localhost:4000',
       // Dashboard app URL (register / forgot-password / template management links).
-      dashUrl: process.env.NUXT_PUBLIC_DASH_URL || 'http://localhost:3002',
+      dashUrl: process.env.NUXT_PUBLIC_DASH_URL || 'http://localhost:3001',
     },
   },
   vite: {

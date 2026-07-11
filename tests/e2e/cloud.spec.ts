@@ -427,6 +427,40 @@ test('deep links: ?project= loads and links, ?template= loads without linking, q
     .toBeNull()
 })
 
+test('public deep link: ?exampleUrl= loads from a trusted host without auth, rejects other hosts, query stripped', async ({
+  page,
+}) => {
+  await resetMockOrch()
+
+  // A trusted loopback URL (the fixture server) loads its payload as a fresh,
+  // unsaved doc — no sign-in, no cloud link (the marketing-site "Open in editor").
+  await openEditor(page, {
+    query: `?exampleUrl=${encodeURIComponent(`${FIXTURES}/example-doc.json`)}`,
+  })
+  await expect
+    .poll(async () => (await exportedDoc(page)).name)
+    .toBe('cdn-example-doc')
+  expect((await exportedDoc(page)).visuals[0]).toMatchObject({
+    type: 'TEXT',
+    text: 'from-cdn-example',
+  })
+  expect(await store(page, 'auth', 'user')).toBe(null)
+  expect(await store(page, 'editor', 'cloudProject')).toBe(null)
+  await expect(page.locator('.toast', { hasText: 'Example loaded' })).toBeVisible()
+  await expect
+    .poll(() => new URL(page.url()).searchParams.get('exampleUrl'))
+    .toBeNull()
+
+  // An untrusted host is refused: the crafted payload never loads.
+  await openEditor(page, {
+    query: `?exampleUrl=${encodeURIComponent('https://evil.example.com/x.json')}`,
+  })
+  await expect(
+    page.locator('.toast', { hasText: 'not from a trusted source' })
+  ).toBeVisible()
+  expect((await exportedDoc(page)).name).not.toBe('cdn-example-doc')
+})
+
 test('New and Import both clear the cloud link and its localStorage mirror', async ({
   page,
 }) => {

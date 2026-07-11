@@ -461,6 +461,28 @@ test('prev/next jump between clip start points; fit sets duration to content end
   await expect.poll(async () => (await exportedDoc(page)).duration).toBeCloseTo(6, 3)
 })
 
+test('collapse toggle hides the lanes and gives the stage the height', async ({ page }) => {
+  await seed(page)
+
+  const stageH = async () => (await page.locator('.stage-wrap').boundingBox())!.height
+  const before = await stageH()
+  await expect(page.locator('.tl-scroll')).toBeVisible()
+
+  await page.locator('button[title="Collapse timeline"]').click()
+  await expect(page.locator('.tl-scroll')).toBeHidden()
+  expect(await store(page, 'editor', 'timelineCollapsed')).toBe(true)
+  // the zoom slider hides with the lanes; playback controls stay usable
+  await expect(page.locator('.tp-right input[type="range"]')).toHaveCount(0)
+  await expect(page.locator('.play-btn')).toBeVisible()
+  // the stage absorbs the freed lane height (292px panel -> transport only)
+  await expect.poll(stageH).toBeGreaterThan(before + 200)
+
+  await page.locator('button[title="Expand timeline"]').click()
+  await expect(page.locator('.tl-scroll')).toBeVisible()
+  await expect(page.locator('.tp-right input[type="range"]')).toHaveCount(1)
+  await expect.poll(stageH).toBeCloseTo(before, 0)
+})
+
 /* ------------------------------------------------------------------ */
 /* 13. subtitle lane                                                   */
 /* ------------------------------------------------------------------ */

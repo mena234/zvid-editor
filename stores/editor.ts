@@ -64,6 +64,8 @@ export const useEditorStore = defineStore('editor', {
     pxPerSec: 60,
     timelineScroll: 0,
     snapping: true,
+    /** collapsed = only the transport bar shows; the stage takes the space */
+    timelineCollapsed: false,
     extraVisualTracks: [] as number[],
     extraAudioTracks: [] as number[],
 
@@ -247,6 +249,10 @@ export const useEditorStore = defineStore('editor', {
 
     setZoom(pxPerSec: number) {
       this.pxPerSec = Math.min(600, Math.max(8, pxPerSec))
+    },
+
+    toggleTimeline() {
+      this.timelineCollapsed = !this.timelineCollapsed
     },
 
     notify(message: string, kind: 'info' | 'error' | 'success' = 'info') {

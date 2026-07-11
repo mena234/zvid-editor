@@ -55,7 +55,7 @@ const variableCount = computed(() => Object.keys(project.variables).length)
 
 <template>
   <aside class="left-rail">
-    <nav class="rail-tabs">
+    <nav class="rail-tabs" data-tour="rail-tabs">
       <button
         v-for="tab in tabs"
         :key="tab.id"
@@ -75,7 +75,12 @@ const variableCount = computed(() => Object.keys(project.variables).length)
         }}</span>
       </button>
     </nav>
-    <div v-if="editor.leftPanel" class="rail-panel" :class="{ bare: showInspector }">
+    <div
+      v-if="editor.leftPanel"
+      class="rail-panel"
+      :class="{ bare: showInspector }"
+      data-tour="rail-panel"
+    >
       <InspectorPanel v-if="showInspector" />
       <template v-else>
         <PanelsMediaPanel v-if="mediaKind" :key="mediaKind" :kind="mediaKind" />

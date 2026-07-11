@@ -210,7 +210,7 @@ const hasScenes = computed(() => !!project.doc.scenes?.length)
 </script>
 
 <template>
-  <div class="tl-panel">
+  <div class="tl-panel" :class="{ collapsed: editor.timelineCollapsed }">
     <!-- transport -->
     <div class="transport">
       <div class="tp-left">
@@ -292,20 +292,29 @@ const hasScenes = computed(() => !!project.doc.scenes?.length)
             </button>
           </div>
         </template>
-        <UiIcon name="zoom" :size="13" class="dim" />
-        <input
-          type="range"
-          min="8"
-          max="400"
-          :value="editor.pxPerSec"
-          title="Timeline zoom (Ctrl+scroll)"
-          @input="editor.setZoom(Number(($event.target as HTMLInputElement).value))"
-        />
+        <template v-if="!editor.timelineCollapsed">
+          <UiIcon name="zoom" :size="13" class="dim" />
+          <input
+            type="range"
+            min="8"
+            max="400"
+            :value="editor.pxPerSec"
+            title="Timeline zoom (Ctrl+scroll)"
+            @input="editor.setZoom(Number(($event.target as HTMLInputElement).value))"
+          />
+        </template>
+        <button
+          class="icon-btn"
+          :title="editor.timelineCollapsed ? 'Expand timeline' : 'Collapse timeline'"
+          @click="editor.toggleTimeline()"
+        >
+          <UiIcon :name="editor.timelineCollapsed ? 'chevron_up' : 'chevron_down'" />
+        </button>
       </div>
     </div>
 
     <!-- lanes -->
-    <div ref="scrollEl" class="tl-scroll" @wheel="onWheel">
+    <div v-show="!editor.timelineCollapsed" ref="scrollEl" class="tl-scroll" @wheel="onWheel">
       <div class="tl-content" :style="{ width: `${contentWidth + HEADER_W}px` }">
         <!-- ruler row -->
         <div class="tl-row ruler-row">
@@ -443,6 +452,10 @@ const hasScenes = computed(() => !!project.doc.scenes?.length)
   background: var(--bg-1);
   flex: 0 0 auto;
 }
+/* collapsed: only the transport bar remains; the stage gets the height */
+.tl-panel.collapsed {
+  height: auto;
+}
 .transport {
   display: flex;
   align-items: center;
@@ -451,6 +464,9 @@ const hasScenes = computed(() => !!project.doc.scenes?.length)
   padding: 0 10px;
   border-bottom: 1px solid var(--border-0);
   flex: 0 0 auto;
+}
+.tl-panel.collapsed .transport {
+  border-bottom: none;
 }
 .tp-left,
 .tp-right {

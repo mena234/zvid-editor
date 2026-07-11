@@ -2,6 +2,7 @@
 import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
 import { useProjectStore } from '~/stores/project'
 import { useEditorStore } from '~/stores/editor'
+import { useTourStore } from '~/stores/tour'
 import { useCloud } from '~/composables/useCloud'
 import {
   RESOLUTION_PRESET_NAMES,
@@ -12,6 +13,7 @@ import {
 const project = useProjectStore()
 const editor = useEditorStore()
 const cloud = useCloud()
+const tour = useTourStore()
 
 const dims = computed(() => project.defaults)
 const isImage = computed(() => project.isImage)
@@ -85,7 +87,7 @@ function setResolution(e: Event) {
       @change="project.patchProject({ name: ($event.target as HTMLInputElement).value || undefined })"
     />
 
-    <div class="settings">
+    <div class="settings" data-tour="project-settings">
       <select
         class="ctl"
         :value="project.doc.resolution ?? 'custom'"
@@ -202,9 +204,18 @@ function setResolution(e: Event) {
       <UiIcon name="keyboard" />
     </button>
 
+    <button class="icon-btn" title="Product tour" @click="tour.start()">
+      <UiIcon name="compass" />
+    </button>
+
     <div class="divider" />
 
-    <button class="btn ghost" title="Load an example project" @click="editor.openModal('examples')">
+    <button
+      class="btn ghost"
+      title="Load an example project"
+      data-tour="examples"
+      @click="editor.openModal('examples')"
+    >
       <UiIcon name="folder" :size="14" /> Examples
     </button>
     <div ref="newMenuRoot" class="new-wrap">
@@ -223,27 +234,29 @@ function setResolution(e: Event) {
     <button class="btn" @click="editor.openModal('import')">
       <UiIcon name="upload" :size="14" /> Import
     </button>
-    <button
-      class="btn"
-      :title="
-        editor.cloudProject
-          ? `Save to “${editor.cloudProject.name}” in your account`
-          : 'Save this project to your Zvid account'
-      "
-      @click="cloud.saveToCloud()"
-    >
-      <UiIcon name="save" :size="14" /> Save
-    </button>
-    <button
-      class="btn"
-      :title="`Render this project to ${isImage ? 'an image' : 'a video'} in the Zvid cloud`"
-      @click="editor.openModal('render')"
-    >
-      <UiIcon name="render" :size="14" /> Render
-    </button>
-    <button class="btn primary" title="Export the zvid JSON" @click="editor.openModal('export')">
-      <UiIcon name="export" :size="14" /> Export
-    </button>
+    <div class="output-actions" data-tour="output">
+      <button
+        class="btn"
+        :title="
+          editor.cloudProject
+            ? `Save to “${editor.cloudProject.name}” in your account`
+            : 'Save this project to your Zvid account'
+        "
+        @click="cloud.saveToCloud()"
+      >
+        <UiIcon name="save" :size="14" /> Save
+      </button>
+      <button
+        class="btn"
+        :title="`Render this project to ${isImage ? 'an image' : 'a video'} in the Zvid cloud`"
+        @click="editor.openModal('render')"
+      >
+        <UiIcon name="render" :size="14" /> Render
+      </button>
+      <button class="btn primary" title="Export the zvid JSON" @click="editor.openModal('export')">
+        <UiIcon name="export" :size="14" /> Export
+      </button>
+    </div>
 
     <div class="divider" />
     <AccountMenu />
@@ -376,6 +389,12 @@ function setResolution(e: Event) {
 }
 .new-wrap {
   position: relative;
+}
+/* keeps the topbar's 8px rhythm while giving the tour one box to spotlight */
+.output-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 .new-menu {
   position: absolute;

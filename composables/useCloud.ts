@@ -25,6 +25,30 @@ export interface CloudFailure {
 }
 
 /**
+ * Hosts the public `?exampleUrl=` deep link may fetch a render payload from:
+ * the content CDN (production) plus loopback (dev + tests). Anything else is
+ * rejected so a crafted link can't make the editor load JSON from a hostile
+ * origin. Returns the normalized URL when trusted, otherwise null.
+ */
+const TRUSTED_EXAMPLE_HOSTS = new Set([
+  'cdn.zvid.io',
+  'localhost',
+  '127.0.0.1',
+  '[::1]',
+])
+
+export function trustedExampleUrl(raw: string): string | null {
+  let url: URL
+  try {
+    url = new URL(raw)
+  } catch {
+    return null
+  }
+  if (url.protocol !== 'https:' && url.protocol !== 'http:') return null
+  return TRUSTED_EXAMPLE_HOSTS.has(url.hostname) ? url.href : null
+}
+
+/**
  * Cloud save actions shared by the TopBar and the account menu. The editor
  * itself never requires an account — these helpers gate only the save
  * paths, opening the sign-in modal and remembering which modal to reopen
@@ -98,8 +122,33 @@ export function useCloud() {
   }
 
   /**
+   * Public deep link (marketing site "Open in editor"): fetch a curated
+   * example's render payload straight from the content CDN and load it as a
+   * fresh, unsaved document. No account required — mirrors ExamplesModal's
+   * load path. The URL is host-checked first (see trustedExampleUrl).
+   */
+  async function openExampleFromUrl(rawUrl: string): Promise<void> {
+    const href = trustedExampleUrl(rawUrl)
+    if (!href) {
+      editor.notify('That example link is not from a trusted source', 'error')
+      return
+    }
+    try {
+      const config = await $fetch(href, { responseType: 'json' })
+      project.loadRaw(config)
+      editor.setCloudProject(null)
+      editor.setContext('root')
+      editor.clearSelection()
+      editor.notify('Example loaded — start editing', 'success')
+    } catch {
+      editor.notify('Could not open that example — try again.', 'error')
+    }
+  }
+
+  /**
    * Dashboard deep links: /?project=prj_… opens a cloud project,
    * /?template=tpl_… loads a template's JSON as the working document.
+   * /?exampleUrl=… loads a curated example from the CDN (public, see above).
    * Called once at boot AFTER the autosave restore so the link wins; the
    * query is stripped afterwards so a manual reload keeps local edits.
    */
@@ -108,18 +157,29 @@ export function useCloud() {
     const projectId = params.get('project')
     const templateId = params.get('template')
     const exampleSlug = params.get('example')
-    if (!projectId && !templateId && !exampleSlug) return
+    const exampleUrl = params.get('exampleUrl')
+    if (!projectId && !templateId && !exampleSlug && !exampleUrl) return
 
     const strip = () => {
       const url = new URL(window.location.href)
       url.searchParams.delete('project')
       url.searchParams.delete('template')
       url.searchParams.delete('example')
+      url.searchParams.delete('exampleUrl')
       history.replaceState(
         history.state,
         '',
         url.pathname + url.search + url.hash
       )
+    }
+
+    // Public "Open in editor" link from the marketing site: load a curated
+    // example straight from the content CDN. No account required, so it runs
+    // ahead of the auth gate below.
+    if (exampleUrl && !projectId && !templateId && !exampleSlug) {
+      await openExampleFromUrl(exampleUrl)
+      strip()
+      return
     }
 
     // The boot plugin fires the session fetch; wait for it to settle.
@@ -263,6 +323,7 @@ export function useCloud() {
     handleExpired,
     saveToCloud,
     openFromQuery,
+    openExampleFromUrl,
     openProjects,
     openSaveTemplate,
     isAdmin,
