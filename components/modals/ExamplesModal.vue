@@ -54,9 +54,13 @@ function pickMode(m: 'video' | 'image') {
   activeCat.value = 'all'
 }
 
-/** Premium templates need a paid plan; everyone can still hover-preview them. */
+/**
+ * Premium templates need a paid plan; everyone can still hover-preview them.
+ * Admins are never locked out — they can open any example (orch's /content
+ * route grants them premium access too, so they can edit + republish).
+ */
 function isLocked(item: LibraryItem): boolean {
-  return !!item.meta?.premium && !auth.isPaid
+  return !!item.meta?.premium && !auth.isPaid && !auth.user?.isAdmin
 }
 const hasLocked = computed(() => modeItems.value.some(isLocked))
 

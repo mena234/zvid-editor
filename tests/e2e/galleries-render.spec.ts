@@ -241,6 +241,43 @@ test('premium example is PRO-locked for a logged-out user and clicking it opens 
   await expect(page.locator('.modal-backdrop')).toBeVisible()
 })
 
+test('admin session bypasses the PRO lock even without a paid plan', async ({ page }) => {
+  // Admins can open any example (to edit + republish it) — meta.premium must
+  // not lock them out even when their own plan is free.
+  const adminSeed = {
+    user: { id: 'usr_9', email: 'admin@zvid.io', isAdmin: true },
+    plan: { name: 'Free', isPaid: false },
+    library: LIBRARY,
+    libraryContent: {
+      ...LIBRARY_CONTENT,
+      'examples/ex-fin-pulse': {
+        name: 'premium-example',
+        duration: 6,
+        visuals: [{ type: 'TEXT', text: 'premium text', position: 'center-center' }],
+      },
+    },
+  }
+  await resetMockOrch(adminSeed)
+  await openEditor(page, { authed: true })
+  await resetMockOrch(adminSeed) // same re-seed guard as openExamples()
+  await page.getByRole('button', { name: 'Examples' }).click()
+  await expect(page.locator('.ex-tools')).toBeVisible()
+
+  // the premium card renders unlocked: PRO badge without the 🔒, no upsell chip
+  await expect(page.locator('.card.locked')).toHaveCount(0)
+  await expect(page.locator('.pro-chip')).toHaveCount(0)
+  const pro = page.locator('.card', { hasText: 'Market Pulse' })
+  await expect(pro.locator('.pro-badge')).toHaveText('PRO')
+
+  await pro.click()
+  await expect(page.locator('.modal-backdrop')).toHaveCount(0)
+  await expect(page.locator('.toast')).toContainText('Example loaded')
+
+  const doc = await exportedDoc(page)
+  expect(doc.name).toBe('premium-example')
+  expect(doc.visuals[0]).toMatchObject({ type: 'TEXT', text: 'premium text' })
+})
+
 test('clicking a free example loads its project JSON into the editor', async ({ page }) => {
   await seed()
   await openEditor(page)
