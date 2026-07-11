@@ -437,8 +437,9 @@ test('full-movie preview: scene groups follow the overlap-adjusted plan and tota
   // plan: A starts 0 (4s), B starts 4-1=3 (3s) -> total 6s (> project 5s)
   const seg = page.locator('.tp-right .seg')
   await seg.locator('button', { hasText: 'overlays' }).click()
-  // the movie backdrop renders in overlays mode too (scene A at t=0)
-  await expect(page.locator('.scene-group')).toHaveCount(1)
+  // the movie backdrop renders in overlays mode too (scene A at t=0);
+  // every scene stays mounted (media preloading) — off-plan ones are hidden
+  await expect(page.locator('.scene-group:visible')).toHaveCount(1)
   await seg.locator('button', { hasText: 'full movie' }).click()
 
   await expect(page.locator('.tl-panel .time-total')).toHaveText('/ 0:06.00')
@@ -459,16 +460,16 @@ test('full-movie preview: scene groups follow the overlap-adjusted plan and tota
   )
 
   // playhead 0: only scene A on stage
-  await expect(page.locator('.scene-group')).toHaveCount(1)
+  await expect(page.locator('.scene-group:visible')).toHaveCount(1)
   await expect(page.locator('.scene-group', { hasText: 'SCENE-A' })).toBeVisible()
 
   // playhead 3.5: inside the 1s overlap -> both scenes render
   await page.evaluate(() => (window as any).__zvidTest.editor.seek(3.5))
-  await expect(page.locator('.scene-group')).toHaveCount(2)
+  await expect(page.locator('.scene-group:visible')).toHaveCount(2)
 
   // playhead 5: only scene B remains
   await page.evaluate(() => (window as any).__zvidTest.editor.seek(5))
-  await expect(page.locator('.scene-group')).toHaveCount(1)
+  await expect(page.locator('.scene-group:visible')).toHaveCount(1)
   await expect(page.locator('.scene-group', { hasText: 'SCENE-B' })).toBeVisible()
 })
 

@@ -424,3 +424,89 @@ test('video and image load without errors and the probe resolves dims', async ({
   // no failure overlay on either element
   await expect(page.locator('.media-error')).toHaveCount(0)
 })
+
+test('media preloader warms every doc URL, earliest-needed first', async ({ page }) => {
+  await loadProject(
+    page,
+    baseDoc([
+      // deliberately out of timeline order — the queue must sort by need time
+      {
+        type: 'IMAGE',
+        src: fx('image.png'),
+        enterBegin: 5,
+        exitEnd: 10,
+        x: 0,
+        y: 0,
+        width: 100,
+        height: 100,
+      },
+      { type: 'VIDEO', src: fx('clip.mp4'), exitEnd: 4, x: 0, y: 0, width: 640, height: 360 },
+      {
+        type: 'GIF',
+        src: fx('anim.gif'),
+        enterBegin: 8,
+        exitEnd: 10,
+        x: 0,
+        y: 0,
+        width: 100,
+        height: 100,
+      },
+    ])
+  )
+  const pre = page.locator('.media-preload > *')
+  // the t=0 video is stage-owned (its stage element fetches at full
+  // priority) — the preloader must NOT duplicate it; the rest queue in
+  // need order: image (t=5) before gif (t=8)
+  await expect(pre).toHaveCount(2)
+  const order = await pre.evaluateAll((els) =>
+    els.map((el: any) => (el.currentSrc || el.src).split('/').pop()?.split('?')[0])
+  )
+  expect(order).toEqual(['image.png', 'anim.gif'])
+
+  // preloaded entries end up fully buffered…
+  await expect
+    .poll(() =>
+      pre.evaluateAll((els) =>
+        els.every((el: any) => (el.tagName === 'IMG' ? el.complete : el.readyState === 4))
+      )
+    )
+    .toBe(true)
+  // …and the stage video buffered itself without the preloader's help
+  await expect
+    .poll(() =>
+      page.locator('.stage-frame video').evaluate((el: any) => el.readyState)
+    )
+    .toBeGreaterThanOrEqual(2)
+})
+
+test('playback clock holds until visible media can render (no run-ahead)', async ({
+  page,
+}) => {
+  // the fixture server defers this response 1.5s — a slow first video
+  await loadProject(
+    page,
+    baseDoc([
+      {
+        type: 'VIDEO',
+        src: fx('clip.mp4?delay=1500'),
+        x: 0,
+        y: 0,
+        width: 640,
+        height: 360,
+      },
+    ])
+  )
+  await page.evaluate(() => ((window as any).__zvidTest.editor.playing = true))
+
+  // while the video is still buffering the clock must not advance, and the
+  // skeleton placeholder tells the user it's loading (not hung)
+  await expect(page.locator('.stage-frame .media-loading')).toBeVisible()
+  await page.waitForTimeout(700)
+  expect(await store(page, 'editor', 'playhead')).toBeLessThan(0.15)
+
+  // once the video can render, playback proceeds and the skeleton is gone
+  await expect
+    .poll(() => store(page, 'editor', 'playhead'), { timeout: 15_000 })
+    .toBeGreaterThan(0.5)
+  await expect(page.locator('.stage-frame .media-loading')).toHaveCount(0)
+})

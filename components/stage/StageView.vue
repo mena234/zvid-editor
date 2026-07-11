@@ -136,7 +136,9 @@ const fullPreview = computed(() => {
       deviceScale(scale.value)
     )
   }
-  return { entries: list.filter((e) => e.visible), plates }
+  // every scene stays mounted (hidden via v-show) so its media elements
+  // keep their buffers — playback never waits on a scene-entry remount
+  return { entries: list, plates }
 })
 
 const fullEntries = computed(() => fullPreview.value.entries)
@@ -493,6 +495,7 @@ const contextLabel = computed(() => {
             />
             <div
               v-for="fe in fullEntries"
+              v-show="fe.visible"
               :key="fe.key"
               class="scene-group"
               :style="{ background: fe.entry.backgroundColor, ...fe.layer }"

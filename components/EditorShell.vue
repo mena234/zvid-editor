@@ -211,6 +211,7 @@ const toastIcon = computed(() =>
       </div>
     </div>
     <AudioEngine v-if="!isImage" />
+    <MediaPreload />
 
     <ModalsExportModal v-if="editor.modal === 'export'" />
     <ModalsImportModal v-if="editor.modal === 'import'" />

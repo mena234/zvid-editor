@@ -131,7 +131,9 @@ watch(
     audioSet,
   ],
   sync,
-  { deep: false }
+  // immediate: elements exist (and preload) from mount, not from the first
+  // playhead tick — pressing play never races the initial buffer
+  { deep: false, immediate: true }
 )
 
 onBeforeUnmount(() => {

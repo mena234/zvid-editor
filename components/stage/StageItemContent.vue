@@ -41,9 +41,16 @@ const probeEntry = computed(() => {
 /* error overlay tracks the displayed element itself — the probe cache can
    fail (CORS metadata, codecs) while the element still plays fine */
 const mediaFailed = ref(false)
+/* skeleton placeholder until the element can render a frame — the playback
+   clock holds for buffering media (usePlayback), so the stage must show
+   "loading" rather than looking hung */
+const mediaReady = ref(false)
 watch(
   () => props.item.src,
-  () => (mediaFailed.value = false)
+  () => {
+    mediaFailed.value = false
+    mediaReady.value = false
+  }
 )
 
 const cssFilter = computed(() =>
@@ -80,6 +87,7 @@ const cropInnerStyle = computed(() => {
 
 /* ---------------- video playback sync ---------------- */
 const videoEl = ref<HTMLVideoElement>()
+const imgEl = ref<HTMLImageElement>()
 
 const targetMediaTime = computed(() => {
   if (type.value !== 'VIDEO') return 0
@@ -92,6 +100,15 @@ const targetMediaTime = computed(() => {
 
 const isItemVisible = computed(
   () => props.time >= timing.value.enterBegin && props.time <= timing.value.exitEnd
+)
+
+/* offscreen videos hold at preload=metadata so they never contend with the
+   media that must render right now; a 3s lookahead flips them to auto just
+   before they enter (data is usually already in the HTTP cache thanks to
+   MediaPreload, so the flip is a cheap cache read) */
+const shouldBufferVideo = computed(
+  () =>
+    props.time >= timing.value.enterBegin - 3 && props.time <= timing.value.exitEnd
 )
 
 function syncVideo() {
@@ -181,6 +198,9 @@ watch(
 )
 onMounted(() => {
   if (type.value === 'SVG') measureSvg()
+  // cached media can be renderable before Vue attaches the event listeners
+  if (videoEl.value && videoEl.value.readyState >= 2) mediaReady.value = true
+  if (imgEl.value?.complete && imgEl.value.naturalWidth > 0) mediaReady.value = true
 })
 onBeforeUnmount(() => ro?.disconnect())
 
@@ -251,12 +271,16 @@ const iframeDoc = computed(() => {
       class="media"
       :src="item.src"
       :style="cropInnerStyle ?? undefined"
-      preload="auto"
+      :preload="shouldBufferVideo ? 'auto' : 'metadata'"
       playsinline
       @loadedmetadata="mediaFailed = false; syncVideo()"
+      @loadeddata="mediaReady = true"
       @error="mediaFailed = true"
     />
     <div v-if="tint" class="tint" :style="{ background: tint }" />
+    <div v-if="!mediaReady && !mediaFailed" class="media-loading">
+      <UiIcon name="video" :size="20" />
+    </div>
     <div v-if="mediaFailed" class="media-error">
       <UiIcon name="warning" :size="18" />
       <span>video failed to load</span>
@@ -270,14 +294,19 @@ const iframeDoc = computed(() => {
     :style="{ filter: cssFilter || undefined, borderRadius: radiusStyle }"
   >
     <img
+      ref="imgEl"
       class="media"
       :src="item.src"
       :style="cropInnerStyle ?? undefined"
+      :fetchpriority="isItemVisible ? 'high' : 'low'"
       draggable="false"
-      @load="mediaFailed = false"
+      @load="mediaFailed = false; mediaReady = true"
       @error="mediaFailed = true"
     />
     <div v-if="tint" class="tint" :style="{ background: tint }" />
+    <div v-if="!mediaReady && !mediaFailed" class="media-loading">
+      <UiIcon name="image" :size="20" />
+    </div>
     <div v-if="mediaFailed" class="media-error">
       <UiIcon name="warning" :size="18" />
       <span>image failed to load</span>
@@ -373,6 +402,37 @@ const iframeDoc = computed(() => {
   inset: 0;
   mix-blend-mode: multiply;
   pointer-events: none;
+}
+/* skeleton shown while the media element buffers — a placeholder, not a
+   spinner: neutral panel + shimmer sweep + faint media-type icon */
+.media-loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-2);
+  color: var(--text-3);
+  overflow: hidden;
+  pointer-events: none;
+}
+.media-loading::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    transparent 32%,
+    color-mix(in srgb, var(--text-3) 14%, transparent) 50%,
+    transparent 68%
+  );
+  transform: translateX(-100%);
+  animation: media-shimmer 1.3s ease-in-out infinite;
+}
+@keyframes media-shimmer {
+  to {
+    transform: translateX(100%);
+  }
 }
 .media-error {
   position: absolute;
