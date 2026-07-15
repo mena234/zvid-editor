@@ -223,6 +223,288 @@ export const EXAMPLE_CATEGORIES: ExampleCategory[] = [
       'seller', 'buyer', 'secondhand', 'rental', 'gig', 'peer-to-peer',
     ],
   },
+  {
+    key: 'hotel',
+    label: 'Hotel / hospitality',
+    blurb: 'Rooms, offers and guest communications for hotels',
+    keywords: [
+      'hotel', 'hospitality', 'resort', 'room', 'guest', 'booking', 'spa',
+      'check-in', 'checkout', 'concierge', 'suite', 'stay',
+    ],
+  },
+  {
+    key: 'health',
+    label: 'Healthcare / clinic',
+    blurb: 'Appointments, services and clinic updates',
+    keywords: [
+      'healthcare', 'clinic', 'doctor', 'medical', 'patient', 'appointment',
+      'dental', 'dentist', 'pharmacy', 'telehealth', 'hospital', 'checkup',
+    ],
+  },
+  {
+    key: 'beauty',
+    label: 'Beauty / salon / spa',
+    blurb: 'Treatments, bookings and offers for salons and spas',
+    keywords: [
+      'beauty', 'salon', 'spa', 'hair', 'nails', 'skincare', 'makeup',
+      'stylist', 'barber', 'treatment', 'manicure', 'facial',
+    ],
+  },
+  {
+    key: 'recipe',
+    label: 'Recipes / cooking',
+    blurb: 'Recipe cards, ingredients and cooking tips',
+    keywords: [
+      'recipe', 'recipes', 'cooking', 'ingredients', 'baking', 'meal prep',
+      'kitchen', 'dish', 'cuisine', 'nutrition', 'vegetarian', 'chef',
+    ],
+  },
+  {
+    key: 'language',
+    label: 'Language learning',
+    blurb: 'Vocabulary, grammar and daily practice cards',
+    keywords: [
+      'language', 'vocabulary', 'grammar', 'translation', 'word of the day',
+      'phrase', 'idiom', 'pronunciation', 'bilingual', 'learn english',
+    ],
+  },
+  {
+    key: 'books',
+    label: 'Books / publishing',
+    blurb: 'Releases, quotes and promos for books and authors',
+    keywords: [
+      'book', 'books', 'author', 'publishing', 'reading', 'novel', 'ebook',
+      'audiobook', 'bestseller', 'bookclub', 'library', 'literature',
+    ],
+  },
+  {
+    key: 'music',
+    label: 'Music / audio',
+    blurb: 'Releases, concerts and playlists for artists',
+    keywords: [
+      'music', 'song', 'album', 'artist', 'concert', 'playlist', 'dj',
+      'festival', 'streaming', 'track', 'band', 'tour',
+    ],
+  },
+  {
+    key: 'podcast',
+    label: 'Podcast',
+    blurb: 'Episodes, guests and clips for shows',
+    keywords: [
+      'podcast', 'episode', 'guest', 'audiogram', 'show', 'listener',
+      'season', 'clip', 'interview', 'host', 'subscribe',
+    ],
+  },
+  {
+    key: 'gaming',
+    label: 'Gaming / esports',
+    blurb: 'Streams, tournaments and player stats',
+    keywords: [
+      'gaming', 'game', 'esports', 'stream', 'streamer', 'tournament',
+      'twitch', 'leaderboard', 'clan', 'patch', 'giveaway', 'gamer',
+    ],
+  },
+  {
+    key: 'construction',
+    label: 'Construction / architecture',
+    blurb: 'Projects, renovations and property development',
+    keywords: [
+      'construction', 'architecture', 'renovation', 'contractor', 'builder',
+      'interior design', 'floor plan', 'development', 'engineering', 'remodel',
+    ],
+  },
+  {
+    key: 'legal',
+    label: 'Legal / professional',
+    blurb: 'Legal services, consultations and firm updates',
+    keywords: [
+      'legal', 'law', 'lawyer', 'attorney', 'firm', 'consultation',
+      'contract', 'immigration', 'tax', 'compliance', 'notary', 'court',
+    ],
+  },
+  {
+    key: 'insurance',
+    label: 'Insurance',
+    blurb: 'Policies, renewals and claims communications',
+    keywords: [
+      'insurance', 'policy', 'coverage', 'claim', 'premium', 'renewal',
+      'broker', 'insurer', 'deductible', 'quote', 'protection',
+    ],
+  },
+  {
+    key: 'logistics',
+    label: 'Logistics / delivery',
+    blurb: 'Shipping updates, tracking and courier promos',
+    keywords: [
+      'logistics', 'delivery', 'shipping', 'courier', 'tracking', 'parcel',
+      'package', 'freight', 'warehouse', 'fleet', 'customs', 'shipment',
+    ],
+  },
+  {
+    key: 'industrial',
+    label: 'Manufacturing / industrial',
+    blurb: 'Production, quality and factory communications',
+    keywords: [
+      'manufacturing', 'industrial', 'factory', 'production', 'machinery',
+      'quality control', 'supplier', 'plant', 'engineering', 'b2b',
+    ],
+  },
+  {
+    key: 'agriculture',
+    label: 'Agriculture / farming',
+    blurb: 'Crops, harvests and farm-to-market updates',
+    keywords: [
+      'agriculture', 'farming', 'farm', 'crop', 'harvest', 'livestock',
+      'organic', 'produce', 'tractor', 'irrigation', 'agri', 'farmer',
+    ],
+  },
+  {
+    key: 'nonprofit',
+    label: 'Nonprofit / charity',
+    blurb: 'Appeals, impact reports and volunteer drives',
+    keywords: [
+      'nonprofit', 'charity', 'donation', 'fundraising', 'volunteer', 'ngo',
+      'cause', 'impact', 'donor', 'campaign', 'giving', 'foundation',
+    ],
+  },
+  {
+    key: 'government',
+    label: 'Government / public services',
+    blurb: 'Public announcements, services and civic updates',
+    keywords: [
+      'government', 'public', 'municipality', 'city', 'civic', 'permit',
+      'election', 'announcement', 'road closure', 'utility', 'citizen',
+    ],
+  },
+  {
+    key: 'community',
+    label: 'Faith / community',
+    blurb: 'Gatherings, schedules and community programs',
+    keywords: [
+      'community', 'religious', 'faith', 'mosque', 'church', 'prayer',
+      'gathering', 'congregation', 'charity', 'youth', 'volunteer',
+    ],
+  },
+  {
+    key: 'weddings',
+    label: 'Weddings / celebrations',
+    blurb: 'Invitations, save-the-dates and event cards',
+    keywords: [
+      'wedding', 'weddings', 'celebration', 'invitation', 'save the date',
+      'anniversary', 'birthday', 'baby shower', 'graduation', 'party', 'rsvp',
+    ],
+  },
+  {
+    key: 'adpromo',
+    label: 'Ads & commercials',
+    blurb: 'Punchy promos, funny commercials and sale ads for any business',
+    keywords: [
+      'commercial', 'promo', 'ad', 'ads', 'sale', 'flash sale', 'discount',
+      'funny', 'retro', '80s', 'mascot', 'offer', 'advert', 'campaign',
+    ],
+  },
+  {
+    key: 'explainer',
+    label: 'Explainers',
+    blurb: 'Explain your business, service, app or process step by step',
+    keywords: [
+      'explainer', 'explain', 'how it works', 'how to', 'tutorial',
+      'walkthrough', 'steps', 'character', 'mascot', 'service', 'process',
+    ],
+  },
+  {
+    key: 'infographic',
+    label: 'Infographics',
+    blurb: 'Animated stats, charts and data stories',
+    keywords: [
+      'infographic', 'infographics', 'stats', 'statistics', 'data', 'chart',
+      'graph', 'numbers', 'facts', 'percent', 'animated',
+    ],
+  },
+  {
+    key: 'birthday',
+    label: 'Birthdays',
+    blurb: 'Birthday cards, greetings and team celebrations',
+    keywords: [
+      'birthday', 'bday', 'cake', 'celebration', 'greetings', 'party',
+      'balloons', 'wishes', 'staff birthday', 'team birthday',
+    ],
+  },
+  {
+    key: 'welcome',
+    label: 'Intros & welcomes',
+    blurb: 'Introduce new hires and meet-the-team videos',
+    keywords: [
+      'welcome', 'intro', 'introduction', 'new hire', 'new employee',
+      'meet the team', 'team', 'teammate', 'introduce', 'aboard',
+    ],
+  },
+  {
+    key: 'recruiting',
+    label: 'Hiring & job ads',
+    blurb: "We're-hiring posts, job ads and video resumes",
+    keywords: [
+      'hiring', "we're hiring", 'job', 'job ad', 'recruiting', 'recruitment',
+      'vacancy', 'career', 'resume', 'cv', 'apply', 'talent', 'job offer',
+    ],
+  },
+  {
+    key: 'praise',
+    label: 'Praise & thanks',
+    blurb: 'Shout-outs, kudos and employee recognition',
+    keywords: [
+      'praise', 'thanks', 'thank you', 'kudos', 'shout-out', 'recognition',
+      'great job', 'you rock', 'employee of the month', 'appreciation',
+    ],
+  },
+  {
+    key: 'updates',
+    label: 'Updates & reports',
+    blurb: 'Weekly updates, quarterly results and company news',
+    keywords: [
+      'update', 'weekly', 'monthly', 'quarterly', 'results', 'report',
+      'briefing', 'newsletter', 'all-hands', 'board meeting', 'year in review',
+      'status', 'company update',
+    ],
+  },
+  {
+    key: 'internalcomms',
+    label: 'Internal comms & training',
+    blurb: 'Announcements, policies, onboarding and training',
+    keywords: [
+      'internal', 'policy', 'onboarding', 'training', 'wellness',
+      'mental health', 'leadership', 'mission', 'culture', 'workplace',
+      'announcement', 'hybrid work',
+    ],
+  },
+  {
+    key: 'launch',
+    label: 'Launches & demos',
+    blurb: 'Product launches, app demos and case studies',
+    keywords: [
+      'launch', 'product launch', 'demo', 'product demo', 'app demo',
+      'release', 'case study', 'showcase', 'reveal',
+    ],
+  },
+  {
+    key: 'occasions',
+    label: 'Holidays & slideshows',
+    blurb: 'Holiday cards, event slideshows and presentations',
+    keywords: [
+      'holiday', 'holidays', 'christmas', 'wedding invitation', 'slideshow',
+      'party', 'event', 'presentation', 'end of year', 'school', 'quiz night',
+      'office party',
+    ],
+  },
+  {
+    key: 'fun',
+    label: 'Fun & trailers',
+    blurb: 'Character fun, book trailers and movie credits',
+    keywords: [
+      'fun', 'funny', 'trailer', 'book trailer', 'film', 'movie', 'credits',
+      'superhero', 'celebrate', 'character', 'cinematic',
+    ],
+  },
 ]
 
 /** Catch-all for legacy/demo templates that carry no meta.pack. */

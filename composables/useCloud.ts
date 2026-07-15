@@ -285,7 +285,16 @@ export function useCloud() {
     }
     try {
       const list = await fetchLibraryList('examples')
-      const item = list.find((i) => i.slug === slug)
+      let item: { slug: string; title: string; meta: any } | undefined =
+        list.find((i) => i.slug === slug)
+      if (!item) {
+        // Admin-hidden examples are absent from the public list — the admin
+        // endpoint still serves them so they stay editable.
+        const r = await $fetch<any>(
+          `/api/admin/library/${encodeURIComponent(slug)}`
+        ).catch(() => null)
+        if (r?.success) item = r
+      }
       if (!item) {
         editor.notify(`Example “${slug}” was not found`, 'error')
         return false

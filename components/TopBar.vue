@@ -63,19 +63,16 @@ function setResolution(e: Event) {
 <template>
   <header class="topbar">
     <div class="brand" title="Zvid Editor">
-      <span class="brand-mark">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
-          <path
-            d="M6 8h12l-8 8h8"
-            stroke="#fff"
-            stroke-width="3"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            fill="none"
-          />
-        </svg>
+      <span class="brand-logo-wrap">
+        <img
+          class="brand-logo"
+          src="https://cdn.zvid.io/assets/logo.svg"
+          alt="Zvid"
+          width="78"
+          height="24"
+        />
       </span>
-      <span class="brand-name">zvid<b>editor</b></span>
+      <span class="brand-name">editor</span>
     </div>
 
     <input
@@ -282,24 +279,27 @@ function setResolution(e: Event) {
   user-select: none;
   margin-right: 2px;
 }
-.brand-mark {
+.brand-logo-wrap {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
-  border-radius: 9px;
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  height: 32px;
+  padding: 2px 8px;
+  border-radius: 8px;
+  background: #100c1d;
   box-shadow: 0 2px 6px color-mix(in srgb, var(--accent) 35%, transparent);
+}
+.brand-logo {
+  display: block;
+  width: 78px;
+  height: 24px;
+  object-fit: contain;
 }
 .brand-name {
   font-size: 14px;
-  color: var(--text-1);
-  letter-spacing: -0.01em;
-}
-.brand-name b {
   color: var(--text-0);
   font-weight: 700;
+  letter-spacing: -0.01em;
 }
 .name-input {
   width: 170px;
