@@ -17,6 +17,8 @@ export interface LibraryItem {
   version: number
   sortOrder: number
   contentUrl: string
+  /** First-publish time (ISO). Absent from orch responses cached pre-rollout. */
+  createdAt?: string | null
 }
 
 export interface LibraryPage {

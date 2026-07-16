@@ -64,6 +64,14 @@ function isLocked(item: LibraryItem): boolean {
 }
 const hasLocked = computed(() => modeItems.value.some(isLocked))
 
+/** Examples first published within the last week get a NEW badge. */
+const NEW_WINDOW_MS = 7 * 24 * 60 * 60 * 1000
+const openedAt = Date.now()
+function isNew(item: LibraryItem): boolean {
+  const t = item.createdAt ? Date.parse(item.createdAt) : NaN
+  return Number.isFinite(t) && openedAt - t < NEW_WINDOW_MS
+}
+
 /** Which display category an item belongs to (by meta.pack, OTHER as fallback). */
 function catKeyOf(item: LibraryItem): string {
   return categoryKeyForPack(item.meta?.pack)
@@ -385,8 +393,11 @@ async function editExample(item: LibraryItem) {
                 loop
                 playsinline
               />
-              <span v-if="ex.meta?.premium" class="pro-badge">
-                <template v-if="isLocked(ex)">🔒 </template>PRO
+              <span class="corner-badges">
+                <span v-if="isNew(ex)" class="new-badge">NEW</span>
+                <span v-if="ex.meta?.premium" class="pro-badge">
+                  <template v-if="isLocked(ex)">🔒 </template>PRO
+                </span>
               </span>
               <span
                 v-if="isAdmin"
@@ -622,10 +633,25 @@ async function editExample(item: LibraryItem) {
   color: #fff;
   font-size: 9.5px;
 }
-.pro-badge {
+/* NEW + PRO share the top-left corner and stay readable side by side. */
+.corner-badges {
   position: absolute;
   left: 6px;
   top: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.new-badge {
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: linear-gradient(120deg, #16a34a, #4ade80);
+  color: #052e14;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+.pro-badge {
   padding: 2px 7px;
   border-radius: 999px;
   background: linear-gradient(120deg, #d4af37, #f0d98c);

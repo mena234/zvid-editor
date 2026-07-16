@@ -54,6 +54,10 @@ const lib = (kind: string, slug: string, title: string, meta: Record<string, any
   ...extra,
 })
 
+/** createdAt seeds for the NEW badge (shown when < 7 days old). */
+const DAY_MS = 24 * 60 * 60 * 1000
+const daysAgo = (n: number) => new Date(Date.now() - n * DAY_MS).toISOString()
+
 /**
  * Examples: 5 video items across 3 known packs + the Other bucket, 1 image
  * item. Titles are chosen so the search-rule assertions can't collide with
@@ -61,9 +65,9 @@ const lib = (kind: string, slug: string, title: string, meta: Record<string, any
  */
 const LIBRARY = {
   examples: [
-    lib('examples', 'ex-fin-growth', 'Crypto Growth Report', { pack: 'finance', resolution: '1080×1920', duration: 8 }),
-    lib('examples', 'ex-fin-pulse', 'Market Pulse', { pack: 'finance', premium: true, duration: 6 }),
-    lib('examples', 'ex-shop-drop', 'Sneaker Drop Promo', { pack: 'ecommerce', duration: 12 }),
+    lib('examples', 'ex-fin-growth', 'Crypto Growth Report', { pack: 'finance', resolution: '1080×1920', duration: 8 }, { createdAt: daysAgo(30) }),
+    lib('examples', 'ex-fin-pulse', 'Market Pulse', { pack: 'finance', premium: true, duration: 6 }, { createdAt: daysAgo(1) }),
+    lib('examples', 'ex-shop-drop', 'Sneaker Drop Promo', { pack: 'ecommerce', duration: 12 }, { createdAt: daysAgo(2) }),
     lib('examples', 'ex-saas-launch', 'Feature Launch Teaser', { pack: 'saas', duration: 9 }),
     lib('examples', 'ex-classic-starter', 'Classic Starter', {}), // no pack → Other
     lib('examples', 'ex-img-cover', 'Podcast Cover Art', { pack: 'thumbnail', type: 'image', format: 'png', size: '1280×720' }),
@@ -151,6 +155,15 @@ test('Examples modal groups items into category sections with counts', async ({ 
   // chip row: All + one chip per non-empty category, with match counts
   await expect(page.locator('.ex-cat')).toHaveCount(5)
   await expect(page.locator('.ex-cat', { hasText: 'Finance / crypto' }).locator('.ex-cat-n')).toHaveText('2')
+
+  // NEW badge: items first published < 7 days ago (seeded 1d + 2d) get it;
+  // the 30-day-old item and the ones without createdAt don't. A premium item
+  // shows NEW and PRO side by side in the same corner.
+  await expect(page.locator('.new-badge')).toHaveCount(2)
+  const pulseCard = page.locator('.card', { hasText: 'Market Pulse' })
+  await expect(pulseCard.locator('.new-badge')).toBeVisible()
+  await expect(pulseCard.locator('.pro-badge')).toBeVisible()
+  await expect(page.locator('.card', { hasText: 'Crypto Growth Report' }).locator('.new-badge')).toHaveCount(0)
 
   await page.click('.modal-backdrop button[aria-label="Close"]')
 })
