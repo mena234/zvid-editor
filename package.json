@@ -26,6 +26,8 @@
     "@codemirror/view": "^6.43.5",
     "@lezer/highlight": "^1.2.3",
     "@pinia/nuxt": "^0.11.2",
+    "@sentry/nuxt": "^10.66.0",
+    "import-in-the-middle": "^3.3.1",
     "jassub": "^2.5.6",
     "nuxt": "3.19.2",
     "pinia": "^3.0.3",
@@ -37,5 +39,10 @@
     "@playwright/test": "^1.61.1",
     "socket.io": "^4.8.3",
     "vitest": "^3.2.4"
+  },
+  "pnpm": {
+    "overrides": {
+      "@vercel/nft": "^0.27.4"
+    }
   }
 }

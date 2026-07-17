@@ -2,8 +2,9 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-01',
   ssr: false,
   devtools: { enabled: false },
-  modules: ['@pinia/nuxt'],
+  modules: ['@pinia/nuxt', '@sentry/nuxt/module'],
   css: ['~/assets/css/main.css'],
+
   app: {
     head: {
       title: 'Zvid Editor',
@@ -49,6 +50,7 @@ export default defineNuxtConfig({
       ],
     },
   },
+
   runtimeConfig: {
     // Base URL of the orch API service (server-side proxies: stock, projects…).
     orchUrl: process.env.ORCH_URL || 'http://localhost:4000',
@@ -59,6 +61,7 @@ export default defineNuxtConfig({
       dashUrl: process.env.NUXT_PUBLIC_DASH_URL || 'http://localhost:3001',
     },
   },
+
   vite: {
     define: {
       __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: 'false',
@@ -79,5 +82,14 @@ export default defineNuxtConfig({
         'jassub > abslink/w3c',
       ],
     },
+  },
+
+  sentry: {
+    org: 'zvid',
+    project: 'javascript-nuxt',
+  },
+
+  sourcemap: {
+    client: 'hidden',
   },
 })
