@@ -35,11 +35,12 @@ watch(
 /* The ASS content comes from shared/ass/buildAssContent — the same    */
 /* builder the renderer uses — and is rasterized by the same libass,   */
 /* so font sizing, margins, wrapping, and per-line boxes are pixel-    */
-/* faithful to the FFmpeg output. The DOM word-span approximation      */
-/* below stays as a fallback when WASM/worker init fails.              */
+/* faithful to the FFmpeg output. Init is retried with a fresh worker  */
+/* and canvas on transient failures; the DOM word-span approximation   */
+/* below stays as a fallback only when every attempt fails.            */
 /* ------------------------------------------------------------------ */
 
-const canvasEl = ref<HTMLCanvasElement | null>(null)
+const assHostEl = ref<HTMLDivElement | null>(null)
 const assReady = ref(false)
 let jassub: any = null
 let destroyed = false
@@ -47,35 +48,115 @@ let rebuildToken = 0
 let assFailed = false
 const loadedFontKeys = new Set<string>()
 
+// abslink's wrap() only listens for `message` events, so a worker that dies
+// while booting (aborted wasm fetch, dev-server restart) leaves `ready`
+// pending FOREVER — guard it with worker-error listeners and a hard timeout.
+const INIT_ATTEMPTS = 3
+const INIT_TIMEOUT_MS = 20_000
+const INIT_RETRY_DELAY_MS = 750
+
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
+
+/** Await instance.ready, but reject on worker error or timeout instead of hanging. */
+function waitAssReady(instance: any): Promise<void> {
+  return new Promise<void>((resolve, reject) => {
+    const worker: Worker | undefined = instance._worker
+    let done = false
+    const finish = (err?: unknown) => {
+      if (done) return
+      done = true
+      clearTimeout(timer)
+      worker?.removeEventListener('error', onError)
+      worker?.removeEventListener('messageerror', onError)
+      if (err === undefined) resolve()
+      else reject(err instanceof Error ? err : new Error(String(err)))
+    }
+    const onError = (e: any) =>
+      finish(new Error(`worker failed: ${e?.message || e?.type || 'error'}`))
+    const timer = setTimeout(
+      () => finish(new Error(`init timed out after ${INIT_TIMEOUT_MS}ms`)),
+      INIT_TIMEOUT_MS
+    )
+    worker?.addEventListener('error', onError)
+    worker?.addEventListener('messageerror', onError)
+    Promise.resolve(instance.ready).then(
+      () => finish(),
+      (e: unknown) => finish(e ?? new Error('jassub init failed'))
+    )
+  })
+}
+
+/**
+ * Tear down without JASSUB.destroy(): destroy() awaits `ready`, which never
+ * settles when the worker failed to boot, so the worker (and its wasm memory)
+ * would leak. Direct termination is also safe for healthy instances.
+ */
+function hardDestroy(instance: any) {
+  if (!instance) return
+  instance._destroyed = true
+  try {
+    instance._ro?.disconnect()
+  } catch {}
+  try {
+    instance._worker?.terminate()
+  } catch {}
+  try {
+    instance._canvas?.remove()
+  } catch {}
+}
+
 async function initAss(): Promise<boolean> {
   if (jassub) return true
-  const canvas = canvasEl.value
-  if (!canvas || typeof Worker === 'undefined' || assFailed) return false
-  try {
-    const { default: JASSUB } = await import('jassub')
-    canvas.width = project.defaults.width
-    canvas.height = project.defaults.height
-    jassub = new JASSUB({
-      // jassub ships its own newer lib.dom types; structurally identical
-      canvas: canvas as any,
-      subContent: '[Script Info]\nScriptType: v4.00+\n',
-      // its bundled default.woff2 is missing from the dist — an empty map +
-      // explicit defaultFont avoids a broken fetch; real families are always
-      // added by ensureFonts before a track is set
-      availableFonts: {},
-      defaultFont: 'liberation sans',
-    })
-    await jassub.ready
-    if (destroyed) return false
-    assReady.value = true
-    return true
-  } catch (e) {
-    console.warn('[subtitles] native ASS preview unavailable, using DOM fallback:', e)
+  if (!assHostEl.value || typeof Worker === 'undefined' || assFailed || destroyed)
+    return false
+
+  for (let attempt = 1; attempt <= INIT_ATTEMPTS && !destroyed; attempt++) {
+    let instance: any = null
+    try {
+      const { default: JASSUB } = await import('jassub')
+      const host = assHostEl.value
+      if (!host || destroyed) return false
+      // transferControlToOffscreen() is one-shot and destroy() removes the
+      // canvas from the DOM, so every attempt needs a fresh canvas element
+      const canvas = document.createElement('canvas')
+      canvas.width = project.defaults.width
+      canvas.height = project.defaults.height
+      host.replaceChildren(canvas)
+      instance = new JASSUB({
+        // jassub ships its own newer lib.dom types; structurally identical
+        canvas: canvas as any,
+        subContent: '[Script Info]\nScriptType: v4.00+\n',
+        // its bundled default.woff2 is missing from the dist — an empty map +
+        // explicit defaultFont avoids a broken fetch; real families are always
+        // added by ensureFonts before a track is set
+        availableFonts: {},
+        defaultFont: 'liberation sans',
+      })
+      await waitAssReady(instance)
+      if (destroyed) {
+        hardDestroy(instance)
+        return false
+      }
+      jassub = instance
+      // fonts live in the worker — a fresh worker starts with none
+      loadedFontKeys.clear()
+      assReady.value = true
+      return true
+    } catch (e) {
+      hardDestroy(instance)
+      console.warn(
+        `[subtitles] jassub init attempt ${attempt}/${INIT_ATTEMPTS} failed:`,
+        e
+      )
+      if (attempt < INIT_ATTEMPTS) await sleep(INIT_RETRY_DELAY_MS * attempt)
+    }
+  }
+  if (!destroyed) {
+    console.warn('[subtitles] native ASS preview unavailable, using DOM fallback')
     assFailed = true
     assReady.value = false
-    jassub = null
-    return false
   }
+  return false
 }
 
 /**
@@ -152,9 +233,7 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   destroyed = true
-  try {
-    jassub?.destroy()
-  } catch {}
+  hardDestroy(jassub)
   jassub = null
 })
 
@@ -247,12 +326,13 @@ function untypedPart(w: RenderedWord): string {
 </script>
 
 <template>
-  <!-- native ASS canvas: rasterized by libass (jassub), identical to renders -->
+  <!-- native ASS canvas: rasterized by libass (jassub), identical to renders.
+       The canvas itself is created per init attempt (see initAss). -->
   <div v-show="assReady && hasCaptions" class="subtitle-overlay ass-layer">
-    <canvas ref="canvasEl" class="ass-canvas"></canvas>
+    <div ref="assHostEl" class="ass-host"></div>
   </div>
 
-  <!-- DOM approximation fallback (only when WASM init fails) -->
+  <!-- DOM approximation fallback (only when every WASM init attempt fails) -->
   <div v-if="!assReady && active" class="subtitle-overlay" :style="containerStyle">
     <div class="subtitle-text" :style="textStyle">
       <div class="line-stack">
@@ -303,7 +383,12 @@ function untypedPart(w: RenderedWord): string {
   inset: 0;
   pointer-events: none;
 }
-.ass-canvas {
+.ass-host {
+  position: absolute;
+  inset: 0;
+}
+/* the canvas is inserted dynamically, so scoped selectors need :deep() */
+.ass-host :deep(canvas) {
   width: 100%;
   height: 100%;
   display: block;
