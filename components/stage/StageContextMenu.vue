@@ -108,12 +108,23 @@ const style = computed(() => ({
         <UiIcon name="copy" :size="13" /> Duplicate <kbd>Ctrl+D</kbd>
       </button>
       <template v-if="!isAudio">
-        <button @click="run(() => project.bumpTrack(itemId, 1))">
-          <UiIcon name="chevron_up" :size="13" /> Bring forward (track +1)
-        </button>
-        <button @click="run(() => project.bumpTrack(itemId, -1))">
-          <UiIcon name="chevron_down" :size="13" /> Send backward (track −1)
-        </button>
+        <!-- image mode: no timeline lanes — reorder the layer stack directly -->
+        <template v-if="project.isImage">
+          <button @click="run(() => project.moveLayer(itemId, 1))">
+            <UiIcon name="chevron_up" :size="13" /> Bring forward
+          </button>
+          <button @click="run(() => project.moveLayer(itemId, -1))">
+            <UiIcon name="chevron_down" :size="13" /> Send backward
+          </button>
+        </template>
+        <template v-else>
+          <button @click="run(() => project.bumpTrack(itemId, 1))">
+            <UiIcon name="chevron_up" :size="13" /> Bring forward (track +1)
+          </button>
+          <button @click="run(() => project.bumpTrack(itemId, -1))">
+            <UiIcon name="chevron_down" :size="13" /> Send backward (track −1)
+          </button>
+        </template>
       </template>
       <div class="sep" />
       <template v-if="type === 'TEXT'">
@@ -122,6 +133,11 @@ const style = computed(() => ({
           {{ (item as any)?.designer ? 'Edit in Design Studio' : 'Open in Design Studio' }}
         </button>
         <div class="sep" />
+      </template>
+      <template v-if="type === 'IMAGE'">
+        <button @click="run(() => editor.startReplaceImage(itemId))">
+          <UiIcon name="image" :size="13" /> Replace image…
+        </button>
       </template>
       <template v-if="type === 'VIDEO' || type === 'IMAGE' || type === 'GIF'">
         <button @click="run(() => fit('cover'))">Fill frame (cover)</button>

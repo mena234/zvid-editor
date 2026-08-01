@@ -175,7 +175,8 @@ function onKeyDown(e: KeyboardEvent) {
       editor.openModal('shortcuts')
       break
     case 'Escape':
-      editor.clearSelection()
+      if (editor.replaceTargetId) editor.cancelReplace()
+      else editor.clearSelection()
       break
     case '=':
     case '+':

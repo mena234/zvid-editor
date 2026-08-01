@@ -8,6 +8,7 @@ import type { VisualDoc } from '~/shared/schema/types'
 import { xfadeFrame, layerStyle, plateStyle, deviceScale } from '~/utils/xfade'
 import { activeGroupFx, type GroupFxResult } from '~/utils/groupTransitions'
 import { isStockDrag, parseStockDragData, buildStockVisual } from '~/utils/stockDrag'
+import { useMediaReplace } from '~/composables/useMediaReplace'
 
 const {
   project,
@@ -19,6 +20,7 @@ const {
   activeScene,
   displayDefaults,
 } = useEditorContext()
+const { tryReplace } = useMediaReplace()
 
 /* ---------------- scale / fit ---------------- */
 const scrollEl = ref<HTMLElement>()
@@ -399,6 +401,9 @@ function onStockDrop(e: DragEvent) {
     )
     return
   }
+  // replace mode armed: the drop swaps the target's src (the replaced
+  // element keeps its own position, so the drop point is ignored)
+  if (payload.kind === 'IMAGE' && tryReplace('image', payload.src)) return
   const rect = frameEl.value.getBoundingClientRect()
   const at = {
     x: clamp((e.clientX - rect.left) / scale.value, 0, projW.value),
@@ -481,6 +486,9 @@ const contextLabel = computed(() => {
             height: `${projH}px`,
             transform: `scale(${scale})`,
             background: hasMovieBackdrop ? 'transparent' : displayContextBg,
+            // children rendered in screen-size units (subtitle warning chip)
+            // divide this back out
+            '--stage-scale': String(scale),
           }"
           @pointerdown="onFramePointerDown"
         >

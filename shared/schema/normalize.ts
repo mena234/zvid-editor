@@ -167,6 +167,7 @@ const VISUAL_KEY_ORDER = [
   'svg',
   'width',
   'height',
+  'fitToBox',
   'x',
   'y',
   'position',

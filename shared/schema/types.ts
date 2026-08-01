@@ -149,6 +149,11 @@ export const textItemSchema = z
     style: z.record(z.string(), z.any()).optional(),
     customCode: customCodeSchema.optional(),
     imageSrc: strOpt,
+    /**
+     * Scale the typography down (floor 0.5×) until the painted glyphs fit the
+     * declared width/height. TEXT only — no-op without a declared box.
+     */
+    fitToBox: boolOpt,
     ...commonVisualFields,
   })
   .passthrough()

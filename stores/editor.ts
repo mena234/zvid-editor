@@ -7,6 +7,7 @@ export type SelectionKind = 'visual' | 'audio' | 'caption' | 'scene' | null
  *  content, or the properties (inspector) of the current selection. */
 export type PanelView = 'main' | 'inspector'
 export type LeftPanel =
+  | 'layers'
   | 'images'
   | 'videos'
   | 'audio'
@@ -98,6 +99,9 @@ export const useEditorStore = defineStore('editor', {
     /* transient UI */
     toast: null as { message: string; kind: 'info' | 'error' | 'success' } | null,
     dragState: null as null | { type: string },
+    /** visual _id armed for media replacement — the next image picked in the
+     *  Images tab swaps this visual's src instead of adding a new element */
+    replaceTargetId: null as string | null,
   }),
 
   getters: {
@@ -173,12 +177,26 @@ export const useEditorStore = defineStore('editor', {
         this.leftPanel = tab
         this.panelView = 'main'
       }
+      // replace mode only survives while the Images tab stays visible
+      if (this.leftPanel !== 'images') this.replaceTargetId = null
     },
 
     /** Programmatic "open this tab's library content" (deep links etc.). */
     openPanel(tab: LeftPanel) {
       this.leftPanel = tab
       this.panelView = 'main'
+      if (tab !== 'images') this.replaceTargetId = null
+    },
+
+    /** Arm replace mode for an IMAGE visual: the Images tab opens and the
+     *  next image picked swaps its src — every other attribute (size,
+     *  position, effects, animations) is kept. */
+    startReplaceImage(id: string) {
+      this.openPanel('images')
+      this.replaceTargetId = id
+    },
+    cancelReplace() {
+      this.replaceTargetId = null
     },
 
     /**

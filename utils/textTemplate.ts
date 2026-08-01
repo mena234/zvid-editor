@@ -1,4 +1,5 @@
-import { googleFontCssUrl } from './fonts'
+import { extractFontFamilies, googleFontCssUrls } from './fonts'
+import { fitScriptSource } from './fitTextToBox'
 import {
   TEXT_DEFAULT_FONT_FAMILY,
   TEXT_DEFAULT_FONT_SIZE,
@@ -31,6 +32,8 @@ export interface TextTemplateOptions {
   /** explicit container size (px) or fit-content */
   width?: number
   height?: number
+  /** TEXT `fitToBox`: shrink typography until the glyphs fit the declared box */
+  fitToBox?: boolean
 }
 
 /** Full HTML document for the sandboxed iframe (TEXT + SVG customCode). */
@@ -41,10 +44,35 @@ export function buildIframeDoc(opts: TextTemplateOptions): string {
   const cssProps = styleObjectToCss(style)
   const body = opts.svg ?? opts.html ?? escapeHtml(opts.text ?? '')
 
+  // The iframe is its own document: the document-level <link>s the stage
+  // injects do not reach it, so every family the element references — style,
+  // inline html, customCode css — needs its own link here.
+  const fontLinks = googleFontCssUrls(
+    extractFontFamilies({
+      style: { ...style, fontFamily },
+      html: opts.html,
+      css: opts.customCss,
+    })
+  )
+    .map((url) => `<link rel="stylesheet" href="${url}">`)
+    .join('\n')
+
+  const fitBox = {
+    width: typeof opts.width === 'number' && opts.width > 0 ? opts.width : null,
+    height:
+      typeof opts.height === 'number' && opts.height > 0 ? opts.height : null,
+  }
+  // Runs after customCode.js, like the renderer: the fit must see the DOM the
+  // custom script produced.
+  const fitScript =
+    opts.fitToBox && (fitBox.width || fitBox.height)
+      ? `<script>${fitScriptSource(fitBox)}<\/script>`
+      : ''
+
   return `<!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" href="${googleFontCssUrl(fontFamily)}">
+${fontLinks}
 <style>
   * { margin: 0; padding: 0; box-sizing: content-box; background: transparent; }
   html, body { overflow: hidden; }
@@ -61,6 +89,7 @@ export function buildIframeDoc(opts: TextTemplateOptions): string {
 <body>
 <div class="container">${body}</div>
 ${opts.customJs ? `<script>try{${opts.customJs}}catch(e){console.error(e)}<\/script>` : ''}
+${fitScript}
 </body>
 </html>`
 }

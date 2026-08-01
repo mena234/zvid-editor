@@ -1,7 +1,7 @@
 /**
  * utils/textTemplate.ts (iframe doc builder), utils/snippets.ts (automation
  * handoff snippets), utils/effectMeta.ts (gallery labels) and
- * utils/fonts.ts googleFontCssUrl (pure URL builder).
+ * utils/fonts.ts pure helpers (URL builders + the font-family extractor).
  */
 import { describe, it, expect } from 'vitest'
 import {
@@ -11,7 +11,11 @@ import {
 } from '../../utils/textTemplate'
 import { nodeSnippet, cliSnippet, fetchSnippet } from '../../utils/snippets'
 import { effectLabel } from '../../utils/effectMeta'
-import { googleFontCssUrl } from '../../utils/fonts'
+import {
+  googleFontCssUrl,
+  googleFontCssUrls,
+  extractFontFamilies,
+} from '../../utils/fonts'
 
 /* ------------------------------ textTemplate ----------------------------- */
 
@@ -103,6 +107,48 @@ describe('buildIframeDoc', () => {
   it('no script tag without customJs', () => {
     expect(buildIframeDoc({ text: 'x' })).not.toContain('<script>')
   })
+
+  /* the iframe is a separate document: the stage's document-level font links
+     do not reach it, so it carries one <link> per referenced family */
+  it('emits one font link per referenced family (style + html + customCss)', () => {
+    const doc = buildIframeDoc({
+      html: '<span style="font-family: Kanit">hi</span>',
+      style: { fontFamily: 'Inter' },
+      customCss: ".b { font-family: 'Lobster', cursive; }",
+    })
+    expect(doc).toContain(`href="${googleFontCssUrl('Inter')}"`)
+    expect(doc).toContain(`href="${googleFontCssUrl('Kanit')}"`)
+    expect(doc).toContain(`href="${googleFontCssUrl('Lobster')}"`)
+    expect(doc.match(/<link rel="stylesheet"/g)?.length).toBe(3)
+  })
+
+  it('still emits exactly one link when nothing else is referenced', () => {
+    const doc = buildIframeDoc({ text: 'x', style: { fontFamily: 'Inter' } })
+    expect(doc.match(/<link rel="stylesheet"/g)?.length).toBe(1)
+  })
+
+  it('fitToBox injects the fit bootstrap after customJs, and only with a box', () => {
+    const fitted = buildIframeDoc({
+      text: 'x',
+      fitToBox: true,
+      width: 300,
+      height: 120,
+      customJs: 'console.log(1)',
+    })
+    expect(fitted).toContain("document.querySelector('.container')")
+    expect(fitted).toContain('"width":300')
+    expect(fitted.indexOf('console.log(1)')).toBeLessThan(
+      fitted.indexOf("document.querySelector('.container')")
+    )
+    // no declared box → nothing to fit to
+    expect(
+      buildIframeDoc({ text: 'x', fitToBox: true })
+    ).not.toContain("document.querySelector('.container')")
+    // opt-in only
+    expect(
+      buildIframeDoc({ text: 'x', width: 300, height: 120 })
+    ).not.toContain('<script>')
+  })
 })
 
 /* -------------------------------- snippets ------------------------------- */
@@ -180,5 +226,108 @@ describe('googleFontCssUrl', () => {
     expect(googleFontCssUrl('  Inter ')).toBe(
       `https://fonts.googleapis.com/css2?family=Inter${SUFFIX}`
     )
+  })
+})
+
+describe('googleFontCssUrls', () => {
+  it('maps each family to the single-family URL and drops duplicates', () => {
+    expect(googleFontCssUrls(['Inter', 'Kanit', 'Inter', ''])).toEqual([
+      googleFontCssUrl('Inter'),
+      googleFontCssUrl('Kanit'),
+    ])
+  })
+})
+
+/**
+ * Mirrors referencedFamilies() in package/src/lib/texts/buildHtmlContent.ts —
+ * the renderer loads every family a TEXT element names, not just
+ * style.fontFamily, so the preview must resolve exactly the same set.
+ */
+describe('extractFontFamilies', () => {
+  it('collects style.fontFamily plus every family in the html and the css', () => {
+    expect(
+      extractFontFamilies({
+        style: { fontFamily: 'Inter', color: 'red' },
+        html: `<span style="font-family: 'Space Grotesk', sans-serif">a</span>`,
+        css: '.b { font-family: Lobster; }',
+      })
+    ).toEqual(['Inter', 'Space Grotesk', 'Lobster'])
+  })
+
+  it('accepts a bare stack and keeps only the first family', () => {
+    expect(extractFontFamilies({ style: "'Bebas Neue', Impact, sans-serif" })).toEqual(
+      ['Bebas Neue']
+    )
+  })
+
+  it('drops generic keywords, css-wide keywords and var() references', () => {
+    expect(
+      extractFontFamilies({
+        style: { fontFamily: 'sans-serif' },
+        css: [
+          '.a { font-family: monospace; }',
+          '.b { font-family: system-ui; }',
+          '.c { font-family: inherit; }',
+          '.d { font-family: var(--brand-font); }',
+        ].join('\n'),
+      })
+    ).toEqual([])
+  })
+
+  it('dedupes case-insensitively, keeping the first spelling', () => {
+    expect(
+      extractFontFamilies({
+        style: { fontFamily: 'Inter' },
+        html: '<b style="font-family: inter">x</b>',
+        css: '.c { font-family: INTER; }',
+      })
+    ).toEqual(['Inter'])
+  })
+
+  it('caps at four families per element', () => {
+    expect(
+      extractFontFamilies({
+        style: { fontFamily: 'Inter' },
+        css: ['A', 'B', 'C', 'D', 'E']
+          .map((n) => `.${n} { font-family: ${n}; }`)
+          .join('\n'),
+      })
+    ).toEqual(['Inter', 'A', 'B', 'C'])
+  })
+
+  it('missing sources yield nothing', () => {
+    expect(extractFontFamilies({})).toEqual([])
+    expect(extractFontFamilies({ style: {}, html: '<b>x</b>' })).toEqual([])
+  })
+
+  /**
+   * getTextImage.ts feeds buildHtmlContent `html.replace(/\\/g, '')`, so the
+   * renderer only ever matches font-family against de-escaped markup. Reading
+   * the raw html here made an escaped quote resolve a different family than the
+   * render loads.
+   */
+  it('de-escapes the html first, exactly like getTextImage does', () => {
+    expect(
+      extractFontFamilies({
+        style: { fontFamily: 'Inter' },
+        html: `<span style=\\"font-family: 'Lobster'\\">a</span>`,
+      })
+    ).toEqual(['Inter', 'Lobster'])
+
+    expect(
+      extractFontFamilies({
+        html: `<b style="font-family: \\'Bebas Neue\\', Impact">x</b>`,
+      })
+    ).toEqual(['Bebas Neue'])
+  })
+
+  /**
+   * customCode.css reaches buildHtmlContent untouched (as `animationCss`), so
+   * de-escaping it here would resolve a family the render never asks for.
+   */
+  it('leaves the css escaped, exactly like animationCss stays escaped', () => {
+    expect(
+      extractFontFamilies({ css: `.a { font-family: \\'Lobster\\'; }` })
+    ).toEqual([`\\'Lobster\\`])
   })
 })

@@ -23,7 +23,9 @@ import { SUBTITLE_MODES } from '../../shared/schema/constants'
  * NETWORK: the native jassub/ASS preview path would fetch fonts through
  * /api/fonts (external). Every test aborts the jassub module request so the
  * overlay deterministically uses its DOM word-span fallback and no external
- * font traffic ever happens.
+ * font traffic ever happens. The §6b recovery tests unroute jassub again to
+ * exercise the retry path — those also abort /api/fonts so font lookups
+ * resolve null locally (loadRenderFont never throws).
  */
 
 const FIXTURES_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), 'fixtures')
@@ -586,6 +588,84 @@ test('one-word mode renders only the word being spoken', async ({ page }) => {
 
   await setPlayhead(page, 1.2)
   await expect(spans).toHaveText('world')
+})
+
+/* ------- 6b. native preview failure: warning chip + retry ------- */
+
+test('warning chip appears when the native preview fails; dismiss hides it', async ({
+  page,
+}) => {
+  await loadProject(page, baseDoc({ captions: [CAP3] }))
+  await setPlayhead(page, 0.5)
+
+  // jassub is blocked by beforeEach → init exhausts its retries → chip
+  await expect(page.locator('.ass-warning')).toBeVisible({ timeout: 20_000 })
+  await expect(page.locator('.ass-warning')).toContainText('failed to load')
+  await expect(page.locator('.ass-warning')).toContainText('browser')
+  await expect(page.locator('.ass-warning .warn-retry')).toBeVisible()
+
+  // the DOM approximation still previews the caption underneath
+  await expect(page.locator(OVERLAY)).toBeVisible()
+
+  await page.click('.ass-warning .warn-close')
+  await expect(page.locator('.ass-warning')).toHaveCount(0)
+  // still previewing via the fallback after dismissing
+  await expect(page.locator(OVERLAY)).toBeVisible()
+})
+
+/**
+ * Recovery setup: a failed page-side `import('jassub')` is cached by the
+ * browser's module map (not retriable), so the recovery tests model the
+ * realistic transient class instead — the worker/wasm boot fetches, which
+ * ARE refetched on every attempt. The module itself loads from the local
+ * dev server; /api/fonts is aborted so font lookups resolve null locally.
+ */
+async function blockJassubWorker(page: Page): Promise<{ lift: () => void }> {
+  await page.unroute('**/*jassub*') // allow the module chunk itself
+  let blocked = true
+  await page.route(/jassub.*worker/i, (route) =>
+    blocked ? route.abort() : route.continue()
+  )
+  await page.route('**/api/fonts**', (route) => route.abort())
+  return { lift: () => (blocked = false) }
+}
+
+test('Retry button boots the native preview once the network recovers', async ({
+  page,
+}) => {
+  const worker = await blockJassubWorker(page)
+  await loadProject(page, baseDoc({ captions: [CAP3] }))
+  await setPlayhead(page, 0.5)
+
+  await expect(page.locator('.ass-warning .warn-retry')).toBeVisible({
+    timeout: 20_000,
+  })
+  worker.lift() // "network recovered"
+  await page.click('.ass-warning .warn-retry')
+
+  await expect(page.locator('.ass-layer')).toBeVisible({ timeout: 30_000 })
+  await expect(page.locator('.ass-warning')).toHaveCount(0)
+  // native canvas active → DOM approximation retired
+  await expect(page.locator(OVERLAY)).toHaveCount(0)
+})
+
+test('captions (re)arriving after a failed init trigger an automatic retry', async ({
+  page,
+}) => {
+  const worker = await blockJassubWorker(page)
+  await loadProject(page, baseDoc({ captions: [CAP3] }))
+  await setPlayhead(page, 0.5)
+  await expect(page.locator('.ass-warning')).toBeVisible({ timeout: 20_000 })
+
+  worker.lift()
+  // captions transition to 0 and back → hasCaptions watch retries on its own
+  await loadProject(page, baseDoc())
+  await expect(page.locator('.ass-warning')).toHaveCount(0)
+  await loadProject(page, baseDoc({ captions: [CAP3] }))
+  await setPlayhead(page, 0.5)
+
+  await expect(page.locator('.ass-layer')).toBeVisible({ timeout: 30_000 })
+  await expect(page.locator('.ass-warning')).toHaveCount(0)
 })
 
 /* ---------------- 7. timeline lane ---------------- */

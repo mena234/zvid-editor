@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onBeforeUnmount, nextTick } from 'vue'
 import { useEditorContext } from '~/composables/useEditorContext'
+import { useMediaReplace } from '~/composables/useMediaReplace'
 import { useStockStore, type StockKind, type StockItem } from '~/stores/stock'
 import {
   setStockDragData,
@@ -13,6 +14,7 @@ import {
 const props = defineProps<{ kind: StockKind }>()
 
 const { project, editor, contextDuration } = useEditorContext()
+const { tryReplace } = useMediaReplace()
 const stock = useStockStore()
 stock.setKind(props.kind)
 
@@ -112,6 +114,7 @@ function onDragStart(e: DragEvent, item: StockItem) {
 }
 
 function addItem(item: StockItem) {
+  if (item.kind === 'image' && tryReplace('image', item.src)) return
   if (item.kind === 'audio') {
     const added = project.addAudio(editor.context, { src: item.src })
     editor.selectAudio(added._id)

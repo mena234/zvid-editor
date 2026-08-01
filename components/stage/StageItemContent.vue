@@ -7,7 +7,14 @@ import { filterToCss, tintOverlayColor } from '~/utils/cssFilter'
 import { useEditorStore } from '~/stores/editor'
 import { useMediaProbe } from '~/composables/useMediaProbe'
 import { useMeasuredDims } from '~/composables/useMeasuredDims'
-import { loadGoogleFont } from '~/utils/fonts'
+import { extractFontFamilies, loadGoogleFonts } from '~/utils/fonts'
+import {
+  applyFitFactor,
+  applyRendererWhiteSpace,
+  fitActiveFor,
+  fitBoxOf,
+  measureFitFactor,
+} from '~/utils/fitTextToBox'
 import { buildIframeDoc, styleObjectToCss, escapeHtml } from '~/utils/textTemplate'
 import {
   TEXT_DEFAULT_FONT_FAMILY,
@@ -145,10 +152,21 @@ watch(
 const fontFamily = computed(
   () => props.item.style?.fontFamily ?? TEXT_DEFAULT_FONT_FAMILY
 )
+/* The renderer loads every family the element references — style.fontFamily
+   plus every font-family declared in its inline html and its customCode css
+   (first family of each stack, generics dropped, capped at 4). Loading only
+   style.fontFamily left the rest in whatever fallback the container had. */
+const textFontFamilies = computed(() =>
+  extractFontFamilies({
+    style: { ...(props.item.style ?? {}), fontFamily: fontFamily.value },
+    html: props.item.html,
+    css: props.item.customCode?.css,
+  })
+)
 watch(
-  fontFamily,
-  (f) => {
-    if (type.value === 'TEXT') loadGoogleFont(f)
+  textFontFamilies,
+  (families) => {
+    if (type.value === 'TEXT') loadGoogleFonts(families)
   },
   { immediate: true }
 )
@@ -177,6 +195,50 @@ const textHtml = computed(() => {
   return escapeHtml(props.item.text ?? '')
 })
 
+/* ---------------- fitToBox (plain DOM path) ----------------
+   Mirrors package/src/lib/texts/fitTextToBox.ts: one factor in [0.5, 1] over
+   font-size / line-height / letter-spacing / word-spacing, judged on painted
+   ink. Factor 1 touches nothing, so an item that fits previews unchanged. */
+const fitActive = computed(() => type.value === 'TEXT' && fitActiveFor(props.item))
+const fitFactor = ref(1)
+
+function runTextFit() {
+  const el = textMeasureEl.value
+  if (!el || type.value !== 'TEXT') return
+  // restore first: a re-run must start from the author's typography, never
+  // compound on top of the previous factor
+  applyFitFactor(el, 1)
+  fitFactor.value = 1
+  if (!fitActive.value) return
+  const factor = measureFitFactor((host) => {
+    // measured on a transform-free copy — the stage's scale/rotation would
+    // distort client rects (a rotated box reports its axis-aligned bounds)
+    const clone = el.cloneNode(true) as HTMLElement
+    host.appendChild(clone)
+    // `.text-inner` paints with `white-space: pre-wrap`; the renderer's
+    // container has no such rule, and pre-wrap keeps runs of whitespace at the
+    // wrap point — measuring under it reads wider ink and picks a smaller
+    // factor than the render. The clone measures under the renderer's value;
+    // the painted element keeps pre-wrap.
+    applyRendererWhiteSpace(clone, props.item)
+    return clone
+  }, fitBoxOf(props.item))
+  fitFactor.value = factor
+  if (factor < 1) applyFitFactor(el, factor)
+}
+
+/**
+ * A fit-scaled size must never reach useMeasuredDims: it feeds effectiveLayout,
+ * which feeds the item box. With both axes declared the measurement is unused
+ * for layout anyway.
+ */
+function skipTextMeasure() {
+  if (!fitActive.value) return false
+  const box = fitBoxOf(props.item)
+  if (box.width && box.height) return true
+  return fitFactor.value < 1
+}
+
 /* measurement for auto-sized TEXT (plain DOM path) */
 const textMeasureEl = ref<HTMLElement>()
 let ro: ResizeObserver | null = null
@@ -187,22 +249,57 @@ watch(
     ro = null
     if (el && type.value === 'TEXT') {
       ro = new ResizeObserver(() => {
+        if (skipTextMeasure()) return
         // offsetWidth/Height are unscaled layout px (stage scale is a transform)
         setMeasured(props.item._id, el.offsetWidth, el.offsetHeight)
       })
       ro.observe(el)
-      setMeasured(props.item._id, el.offsetWidth, el.offsetHeight)
+      if (!skipTextMeasure()) setMeasured(props.item._id, el.offsetWidth, el.offsetHeight)
     }
   },
   { immediate: true }
 )
+
+/* re-fit whenever the box, the copy or the typography changes — after the DOM
+   patch, since v-html replaces the children the factor was applied to */
+watch(
+  () => [
+    fitActive.value,
+    props.item.width,
+    props.item.height,
+    textHtml.value,
+    JSON.stringify(props.item.style ?? {}),
+    textMeasureEl.value,
+  ],
+  () => runTextFit(),
+  { flush: 'post' }
+)
+
+/* a font swapping in changes the glyph metrics the fit was measured against */
+function onFontsLoaded() {
+  runTextFit()
+}
 onMounted(() => {
   if (type.value === 'SVG') measureSvg()
   // cached media can be renderable before Vue attaches the event listeners
   if (videoEl.value && videoEl.value.readyState >= 2) mediaReady.value = true
   if (imgEl.value?.complete && imgEl.value.naturalWidth > 0) mediaReady.value = true
+  runTextFit()
+  try {
+    document.fonts?.ready.then(onFontsLoaded).catch(() => {})
+    document.fonts?.addEventListener?.('loadingdone', onFontsLoaded)
+  } catch {
+    /* no FontFaceSet — the fit just uses the metrics it has */
+  }
 })
-onBeforeUnmount(() => ro?.disconnect())
+onBeforeUnmount(() => {
+  ro?.disconnect()
+  try {
+    document.fonts?.removeEventListener?.('loadingdone', onFontsLoaded)
+  } catch {
+    /* ignore */
+  }
+})
 
 /* ---------------- SVG ---------------- */
 const svgMarkup = computed(() => props.item.svg ?? '')
@@ -253,6 +350,8 @@ const iframeDoc = computed(() => {
     customJs: props.item.customCode?.js,
     width: props.item.width,
     height: props.item.height,
+    // the iframe owns its document, so it fits itself (same routine)
+    fitToBox: type.value === 'TEXT' && props.item.fitToBox === true,
   })
 })
 </script>
@@ -331,6 +430,7 @@ const iframeDoc = computed(() => {
       :custom-css="item.customCode?.css"
       :explicit-width="item.width"
       :explicit-height="item.height"
+      :fit-to-box="item.fitToBox === true"
     />
     <div
       v-else

@@ -2,16 +2,31 @@
 // One media-type tab (Images / Videos / Audio / GIFs): an optional "add by
 // URL" row, the user's uploads, then the stock library (Jamendo for audio,
 // Pexels/Pixabay/Unsplash/Giphy for visuals).
-import { ref, computed } from 'vue'
+import { ref, computed, watchEffect } from 'vue'
 import { useEditorContext } from '~/composables/useEditorContext'
 import { useTemplateVars } from '~/composables/useTemplateVars'
+import { useMediaReplace } from '~/composables/useMediaReplace'
 import { round3 } from '~/utils/time'
+import { visualLabel } from '~/utils/visualLabel'
 import type { UploadKind } from '~/stores/uploads'
 
 const props = defineProps<{ kind: UploadKind }>()
 
 const { project, editor, contextDuration, activeScene } = useEditorContext()
 const tvars = useTemplateVars()
+const { tryReplace } = useMediaReplace()
+
+/* ---------------- replace-image mode ---------------- */
+const replaceTarget = computed(() =>
+  props.kind === 'image' && editor.replaceTargetId
+    ? project.visualById(editor.replaceTargetId)
+    : undefined
+)
+// the armed visual disappeared (deleted / project switched) — disarm
+watchEffect(() => {
+  if (editor.replaceTargetId && !project.visualById(editor.replaceTargetId))
+    editor.cancelReplace()
+})
 
 const VISUAL_TYPE: Record<UploadKind, 'IMAGE' | 'VIDEO' | 'GIF' | 'AUDIO'> = {
   image: 'IMAGE',
@@ -53,6 +68,11 @@ function addFromUrl() {
     }
   }
   const type = VISUAL_TYPE[props.kind]
+  if (type === 'IMAGE' && tryReplace('image', src)) {
+    mediaUrl.value = ''
+    showUrl.value = false
+    return
+  }
   if (type === 'AUDIO') {
     const added = project.addAudio(editor.context, { src })
     editor.selectAudio(added._id)
@@ -75,6 +95,15 @@ function addFromUrl() {
 
 <template>
   <div class="media-panel">
+    <div v-if="replaceTarget" class="replace-banner">
+      <UiIcon name="info" :size="14" class="replace-icon" />
+      <p class="replace-text">
+        Replacing <strong>{{ visualLabel(replaceTarget, 24) }}</strong> — pick a
+        new image below. It keeps the old image's size, position and effects.
+      </p>
+      <button class="btn ghost sm" @click="editor.cancelReplace()">Cancel</button>
+    </div>
+
     <div class="url-add">
       <button class="url-toggle" @click="showUrl = !showUrl">
         <UiIcon name="link" :size="13" />
@@ -119,6 +148,31 @@ function addFromUrl() {
   flex-direction: column;
   gap: 10px;
   min-height: 0;
+}
+.replace-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  padding: 9px 10px;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-m);
+  background: var(--accent-soft);
+  font-size: 10.5px;
+  color: var(--text-1);
+}
+.replace-icon {
+  flex: 0 0 auto;
+  margin-top: 1px;
+  color: var(--accent);
+}
+.replace-text {
+  flex: 1;
+  margin: 0;
+  line-height: 1.45;
+  word-break: break-word;
+}
+.replace-banner .btn {
+  flex: 0 0 auto;
 }
 .url-add {
   display: flex;

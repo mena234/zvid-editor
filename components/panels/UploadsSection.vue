@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
 import { useEditorContext } from '~/composables/useEditorContext'
+import { useMediaReplace } from '~/composables/useMediaReplace'
 import { useAuthStore } from '~/stores/auth'
 import { useUploadsStore, type UploadKind, type UploadItem } from '~/stores/uploads'
 import { setStockDragData, buildStockVisual, type StockDragPayload } from '~/utils/stockDrag'
@@ -8,6 +9,7 @@ import { setStockDragData, buildStockVisual, type StockDragPayload } from '~/uti
 const props = defineProps<{ kind: UploadKind }>()
 
 const { project, editor, contextDuration } = useEditorContext()
+const { tryReplace } = useMediaReplace()
 const auth = useAuthStore()
 const uploads = useUploadsStore()
 
@@ -79,6 +81,7 @@ function onDragStart(e: DragEvent, item: UploadItem) {
 }
 
 function addItem(item: UploadItem) {
+  if (item.kind === 'image' && tryReplace('image', item.url)) return
   if (item.kind === 'audio') {
     const added = project.addAudio(editor.context, { src: item.url })
     editor.selectAudio(added._id)

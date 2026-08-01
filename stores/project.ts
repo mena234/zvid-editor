@@ -454,6 +454,47 @@ export const useProjectStore = defineStore('project', {
       this.commit()
     },
 
+    /* ---------------- image-mode layer order ---------------- */
+    /** Visuals of a context in paint order (bottom → top) — the same stable
+     *  track-then-start sort the stage and the renderer apply. */
+    zOrderOf(context: string): VisualDoc[] {
+      return [...this.visualsOf(context)].sort(
+        (a, b) =>
+          (a.track ?? 0) - (b.track ?? 0) ||
+          ((a as any).enterBegin ?? 0) - ((b as any).enterBegin ?? 0)
+      )
+    },
+
+    /** Image projects: set the paint order outright (bottom → top).
+     *  The array order becomes the z-order and per-item `track` is dropped,
+     *  so the array alone drives stacking in the stage and the renderer
+     *  (both sort stably). Video projects keep track/timeline semantics. */
+    applyLayerOrder(context: string, orderedIds: string[]) {
+      if (!this.isImage) return
+      const arr = this.visualsOf(context)
+      if (orderedIds.length !== arr.length) return
+      const byId = new Map(arr.map((v) => [v._id, v]))
+      if (orderedIds.some((id, i) => !byId.has(id) || orderedIds.indexOf(id) !== i))
+        return
+      const next = orderedIds.map((id) => byId.get(id)!)
+      for (const v of next) delete (v as any).track
+      arr.splice(0, arr.length, ...next)
+      this.commit()
+    },
+
+    /** Image projects: move one layer a step toward the front (dir 1) or
+     *  the back (dir -1) of the stack. */
+    moveLayer(id: string, dir: 1 | -1) {
+      if (!this.isImage) return
+      const context = this.contextOfVisual(id)
+      const order = this.zOrderOf(context).map((v) => v._id)
+      const i = order.indexOf(id)
+      const j = i + dir
+      if (i < 0 || j < 0 || j >= order.length) return
+      ;[order[i], order[j]] = [order[j], order[i]]
+      this.applyLayerOrder(context, order)
+    },
+
     /* ---------------- split at playhead ---------------- */
     splitVisualAt(id: string, t: number): VisualDoc | undefined {
       const v = this.visualById(id)

@@ -1,3 +1,26 @@
+/**
+ * jassub 2.5.6 auto-picks a WebGL renderer in its worker, which rasterizes to
+ * a fully INVISIBLE canvas on some Windows/ANGLE GPU stacks — no error, no
+ * fallback, subtitles just never appear (verified 2026-07-27 with compositor
+ * screenshot A/B: WebGL = 0 painted pixels, Canvas2D = correct captions).
+ * Throwing before its renderer probe drops it into the try/catch's
+ * Canvas2DRenderer path, which paints correctly everywhere; libass does the
+ * heavy rasterizing in wasm either way, the renderer only blits bitmaps.
+ * The transform is a no-op if the probe line changes in a future jassub —
+ * re-verify rendering when upgrading the package.
+ */
+const JASSUB_GL_PROBE = 'const testCanvas = new OffscreenCanvas(1, 1);'
+const forceJassubCanvas2D = {
+  name: 'zvid:jassub-force-canvas2d',
+  transform(code: string, id: string) {
+    if (!id.includes('jassub') || !code.includes(JASSUB_GL_PROBE)) return
+    return code.replace(
+      JASSUB_GL_PROBE,
+      `throw new Error('zvid: forcing Canvas2D renderer'); ${JASSUB_GL_PROBE}`
+    )
+  },
+}
+
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-01',
   ssr: false,
@@ -66,9 +89,12 @@ export default defineNuxtConfig({
     define: {
       __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: 'false',
     },
+    // dev serves the worker file through the main transform pipeline…
+    plugins: [forceJassubCanvas2D],
     // jassub's worker contains dynamic imports; vite's default iife worker
     // format can't code-split, so production builds fail without this.
-    worker: { format: 'es' },
+    // …but production bundles workers with their own plugin list.
+    worker: { format: 'es', plugins: () => [forceJassubCanvas2D] },
     optimizeDeps: {
       // jassub resolves its worker/wasm via `new URL(..., import.meta.url)`;
       // pre-bundling would break those relative asset URLs.

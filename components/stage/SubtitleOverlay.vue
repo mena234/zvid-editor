@@ -42,11 +42,26 @@ watch(
 
 const assHostEl = ref<HTMLDivElement | null>(null)
 const assReady = ref(false)
+// reactive: the warning chip below offers Retry when init/build failed
+const assFailed = ref(false)
+// browser lacks Worker/OffscreenCanvas — retrying is pointless, only a
+// different browser helps
+const assUnsupported = ref(false)
+const warningDismissed = ref(false)
 let jassub: any = null
 let destroyed = false
 let rebuildToken = 0
-let assFailed = false
 const loadedFontKeys = new Set<string>()
+
+function assSupported(): boolean {
+  return (
+    typeof Worker !== 'undefined' &&
+    typeof WebAssembly !== 'undefined' &&
+    typeof OffscreenCanvas !== 'undefined' &&
+    typeof HTMLCanvasElement !== 'undefined' &&
+    !!HTMLCanvasElement.prototype.transferControlToOffscreen
+  )
+}
 
 // abslink's wrap() only listens for `message` events, so a worker that dies
 // while booting (aborted wasm fetch, dev-server restart) leaves `ready`
@@ -107,8 +122,13 @@ function hardDestroy(instance: any) {
 
 async function initAss(): Promise<boolean> {
   if (jassub) return true
-  if (!assHostEl.value || typeof Worker === 'undefined' || assFailed || destroyed)
+  if (!assHostEl.value || assFailed.value || destroyed) return false
+  if (!assSupported()) {
+    console.warn('[subtitles] browser lacks Worker/OffscreenCanvas — DOM fallback only')
+    assUnsupported.value = true
+    assFailed.value = true
     return false
+  }
 
   for (let attempt = 1; attempt <= INIT_ATTEMPTS && !destroyed; attempt++) {
     let instance: any = null
@@ -153,10 +173,18 @@ async function initAss(): Promise<boolean> {
   }
   if (!destroyed) {
     console.warn('[subtitles] native ASS preview unavailable, using DOM fallback')
-    assFailed = true
+    assFailed.value = true
     assReady.value = false
   }
   return false
+}
+
+/** Manual retry (warning chip) — clears the failed state and re-inits. */
+function retryNativePreview() {
+  if (assUnsupported.value || destroyed) return
+  assFailed.value = false
+  warningDismissed.value = false
+  scheduleRebuild()
 }
 
 /**
@@ -187,15 +215,21 @@ function scheduleRebuild() {
 }
 
 async function rebuild(token: number) {
-  if (assFailed || destroyed || token !== rebuildToken) return
-  if (!(await initAss())) return
+  if (assFailed.value || destroyed || token !== rebuildToken) return
   const sub = subtitle.value
   const st = sub?.styles ?? {}
   if (!sub?.captions?.length) {
-    await jassub.renderer.setTrack('[Script Info]\nScriptType: v4.00+\n')
-    renderFrame(true)
+    // No captions → nothing to rasterize. Clear an already-running track but
+    // never boot the worker for an empty document: deep-linked projects load
+    // AFTER mount, and init must not burn its retry attempts (or 2MB of wasm)
+    // before real captions exist.
+    if (jassub) {
+      await jassub.renderer.setTrack('[Script Info]\nScriptType: v4.00+\n')
+      renderFrame(true)
+    }
     return
   }
+  if (!(await initAss())) return
   try {
     await ensureFonts(st)
     // deep clone: buildAssContent mutates captions/styles like the package does
@@ -209,7 +243,7 @@ async function rebuild(token: number) {
     renderFrame(true)
   } catch (e: any) {
     console.warn('[subtitles] ASS build failed, using DOM fallback:', String(e?.stack || e))
-    assFailed = true
+    assFailed.value = true
     assReady.value = false
   }
 }
@@ -249,6 +283,13 @@ watch(
   },
   { deep: true }
 )
+
+// Deep-linked projects load AFTER mount: if the mount-time init failed (e.g.
+// a transient network error before any caption existed), give it one fresh
+// round of attempts when captions actually arrive.
+watch(hasCaptions, (has, had) => {
+  if (has && !had && assFailed.value && !assUnsupported.value) retryNativePreview()
+})
 
 /* ------------------------------------------------------------------ */
 /* DOM fallback (pre-jassub approximation)                             */
@@ -332,6 +373,31 @@ function untypedPart(w: RenderedWord): string {
     <div ref="assHostEl" class="ass-host"></div>
   </div>
 
+  <!-- captions exist but the exact preview couldn't load: warn + offer retry -->
+  <div
+    v-if="assFailed && hasCaptions && !warningDismissed"
+    class="ass-warning"
+    @pointerdown.stop
+    @mousedown.stop
+    @click.stop
+  >
+    <span class="warn-icon" aria-hidden="true">⚠</span>
+    <span v-if="assUnsupported" class="warn-text">
+      This browser can't show the exact subtitle preview — an approximation is
+      shown. Please switch to a recent Chrome, Edge, or Firefox.
+    </span>
+    <span v-else class="warn-text">
+      The exact subtitle preview failed to load — an approximation is shown.
+      If retrying doesn't help, try a different browser (Chrome or Edge).
+    </span>
+    <button v-if="!assUnsupported" class="warn-retry" @click="retryNativePreview">
+      Retry
+    </button>
+    <button class="warn-close" aria-label="Dismiss" @click="warningDismissed = true">
+      ×
+    </button>
+  </div>
+
   <!-- DOM approximation fallback (only when every WASM init attempt fails) -->
   <div v-if="!assReady && active" class="subtitle-overlay" :style="containerStyle">
     <div class="subtitle-text" :style="textStyle">
@@ -392,6 +458,63 @@ function untypedPart(w: RenderedWord): string {
   width: 100%;
   height: 100%;
   display: block;
+}
+/* Warning chip: lives inside the scale()d stage frame, so it divides the
+   stage scale back out (--stage-scale set by StageView) to keep a constant
+   on-screen size at any zoom. */
+.ass-warning {
+  position: absolute;
+  left: 50%;
+  top: calc(10px / var(--stage-scale, 1));
+  transform: translateX(-50%) scale(calc(1 / var(--stage-scale, 1)));
+  transform-origin: top center;
+  z-index: 1200;
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: min(560px, calc(92% * var(--stage-scale, 1)));
+  padding: 7px 10px;
+  border-radius: 8px;
+  background: rgba(15, 17, 22, 0.92);
+  border: 1px solid rgba(251, 191, 36, 0.45);
+  color: #e6e8ee;
+  font-size: 12.5px;
+  line-height: 1.35;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+}
+.warn-icon {
+  color: #fbbf24;
+  flex: 0 0 auto;
+}
+.warn-text {
+  min-width: 0;
+}
+.warn-retry {
+  flex: 0 0 auto;
+  border: 1px solid var(--accent, #6366f1);
+  background: transparent;
+  color: var(--accent, #a5b4fc);
+  border-radius: 6px;
+  padding: 3px 10px;
+  font-size: 12px;
+  cursor: pointer;
+}
+.warn-retry:hover {
+  background: rgba(99, 102, 241, 0.15);
+}
+.warn-close {
+  flex: 0 0 auto;
+  border: none;
+  background: transparent;
+  color: #9aa1ad;
+  font-size: 15px;
+  line-height: 1;
+  padding: 2px 4px;
+  cursor: pointer;
+}
+.warn-close:hover {
+  color: #e6e8ee;
 }
 .subtitle-text {
   max-width: 100%;

@@ -22,14 +22,19 @@ const TABS = [
 
 /** image projects compose static sources only (D2) — no time-domain tabs */
 const HIDDEN_IN_IMAGE_MODE = new Set(['videos', 'audio', 'gifs', 'scenes', 'subtitles'])
+/** image projects have no timeline — the Layers tab is their structure view */
+const LAYERS_TAB = { id: 'layers', icon: 'layers', label: 'Layers' } as const
 const tabs = computed(() =>
-  project.isImage ? TABS.filter((t) => !HIDDEN_IN_IMAGE_MODE.has(t.id)) : TABS
+  project.isImage
+    ? [LAYERS_TAB, ...TABS.filter((t) => !HIDDEN_IN_IMAGE_MODE.has(t.id))]
+    : TABS
 )
 watch(
   () => project.isImage,
   (isImage) => {
     if (isImage && editor.leftPanel && HIDDEN_IN_IMAGE_MODE.has(editor.leftPanel))
       editor.openPanel('images')
+    if (!isImage && editor.leftPanel === 'layers') editor.openPanel('images')
   },
   { immediate: true }
 )
@@ -51,6 +56,7 @@ const showInspector = computed(() => editor.panelView === 'inspector')
 const captionCount = computed(() => project.doc.subtitle?.captions?.length ?? 0)
 const sceneCount = computed(() => project.doc.scenes?.length ?? 0)
 const variableCount = computed(() => Object.keys(project.variables).length)
+const layerCount = computed(() => project.doc.visuals.length)
 </script>
 
 <template>
@@ -67,6 +73,7 @@ const variableCount = computed(() => Object.keys(project.variables).length)
         <UiIcon :name="tab.icon" :size="17" />
         <span>{{ tab.label }}</span>
         <span v-if="tab.id === 'scenes' && sceneCount" class="count">{{ sceneCount }}</span>
+        <span v-if="tab.id === 'layers' && layerCount" class="count">{{ layerCount }}</span>
         <span v-if="tab.id === 'subtitles' && captionCount" class="count">{{
           captionCount
         }}</span>
@@ -84,6 +91,7 @@ const variableCount = computed(() => Object.keys(project.variables).length)
       <InspectorPanel v-if="showInspector" />
       <template v-else>
         <PanelsMediaPanel v-if="mediaKind" :key="mediaKind" :kind="mediaKind" />
+        <PanelsLayersPanel v-else-if="editor.leftPanel === 'layers'" />
         <PanelsTextPanel v-else-if="editor.leftPanel === 'text'" />
         <PanelsDesignPanel v-else-if="editor.leftPanel === 'design'" />
         <PanelsShapePanel v-else-if="editor.leftPanel === 'shape'" />
