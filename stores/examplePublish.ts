@@ -37,6 +37,11 @@ const POLL_INTERVAL_MS = 10_000
 let activeSocket: Socket | null = null
 const boundEvents: [string, (data: any) => void][] = []
 let pollTimer: ReturnType<typeof setInterval> | null = null
+// Consecutive 404s from the status poll. A snapshot that stays missing can
+// never turn terminal (orch lost it, or it expired), so after a few strikes
+// the publish is failed instead of polling a zombie forever.
+let statusLostStrikes = 0
+const STATUS_LOST_STRIKES_MAX = 3
 
 export const useExamplePublishStore = defineStore('examplePublish', {
   state: () => ({
@@ -129,7 +134,15 @@ export const useExamplePublishStore = defineStore('examplePublish', {
       } catch {
         return // transient — the socket path is still primary
       }
-      if (!r?.success) return // 404 = snapshot expired/orch predates the route
+      if (!r?.success) {
+        if (r?.status === 404 && ++statusLostStrikes >= STATUS_LOST_STRIKES_MAX) {
+          this._fail(
+            'The publish status was lost (service restarted?). Check the library list and retry if the example did not update.'
+          )
+        }
+        return
+      }
+      statusLostStrikes = 0
       if (r.state === 'published') {
         this._succeed(r.item)
       } else if (r.state === 'failed') {
@@ -156,6 +169,7 @@ export const useExamplePublishStore = defineStore('examplePublish', {
       const auth = useAuthStore()
 
       this.$reset()
+      statusLostStrikes = 0
       this.slug = source.slug
       this.title = source.title
       this.status = 'connecting'

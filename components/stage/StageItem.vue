@@ -14,6 +14,7 @@ import {
 } from '~/utils/xfade'
 import { useEditorStore } from '~/stores/editor'
 import { useProjectStore } from '~/stores/project'
+import { isInlineEditableText } from '~/utils/textTemplate'
 import { round3 } from '~/utils/time'
 
 const props = defineProps<{
@@ -189,6 +190,9 @@ function pointerOverSelection(e: PointerEvent): boolean {
 
 function onPointerDown(e: PointerEvent) {
   if (!props.interactive || e.button !== 0) return
+  // in-place text editing: leave the pointer to the contenteditable (caret
+  // placement, text selection) instead of starting a drag
+  if (isEditingText.value) return
   e.stopPropagation()
 
   const additive = e.shiftKey
@@ -288,8 +292,25 @@ function onDragUp() {
   dragStart = null
 }
 
+function onDblClick(e: MouseEvent) {
+  if (!props.interactive) return
+  // only the real doc entry is editable (iterate clones carry display ids)
+  const raw = project.visualById(props.item._id)
+  if (!raw) return
+  if (isInlineEditableText(raw)) {
+    e.stopPropagation()
+    editor.startTextEdit(props.item._id)
+  } else if ((raw as any).designer) {
+    // designer texts render generated markup — edit them in the Design Studio
+    e.stopPropagation()
+    editor.openDesigner(props.item._id)
+  }
+}
+
 function onContextMenu(e: MouseEvent) {
   if (!props.interactive) return
+  // while editing, the native menu (copy/paste/spellcheck) is the useful one
+  if (isEditingText.value) return
   e.preventDefault()
   e.stopPropagation()
   if (
@@ -311,16 +332,26 @@ const isSelected = computed(
     editor.selectionKind === 'visual' &&
     (editor.selectedId === props.item._id || editor.selectedIds.includes(props.item._id))
 )
+
+const isEditingText = computed(
+  () => props.interactive && editor.editingTextId === props.item._id
+)
 </script>
 
 <template>
   <div
     v-show="visible"
     class="stage-item"
-    :class="{ selected: isSelected, interactive, clipping: animClips || zoomActive }"
+    :class="{
+      selected: isSelected,
+      interactive,
+      clipping: animClips || zoomActive,
+      editing: isEditingText,
+    }"
     :style="wrapperStyle"
     :data-item-id="item._id"
     @pointerdown="onPointerDown"
+    @dblclick="onDblClick"
     @contextmenu="onContextMenu"
   >
     <div class="group-fx-wrap" :style="groupFxStyle">
@@ -355,6 +386,10 @@ const isSelected = computed(
 }
 .stage-item.interactive {
   cursor: move;
+}
+.stage-item.editing {
+  cursor: text;
+  user-select: text;
 }
 .stage-item.interactive:hover::after {
   content: '';

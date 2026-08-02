@@ -618,6 +618,28 @@ test('render task failure surfaces the task error message', async ({ page }) => 
   await expect(err).toContainText('Mock render exploded')
 })
 
+test('a lost taskComplete is recovered by the HTTP status poll', async ({ page }) => {
+  // 'silent': the mock emits progress but never the terminal socket event;
+  // the render "completes" only in GET /api/jobs/:id, so the modal must reach
+  // the done state via its 5s poll fallback instead of hanging forever
+  await seed({ renderMode: 'silent', renderResultUrl: fx('clip.mp4') })
+  await openEditor(page, { authed: true })
+  await waitBridge(page, 't.auth.loaded === true && !!t.auth.user')
+  await openRenderModal(page)
+  // re-assert the render mode right before submitting (foreign-reset guard)
+  await seed({ renderMode: 'silent', renderResultUrl: fx('clip.mp4') })
+
+  await page.getByRole('button', { name: /Start render/ }).click()
+  // socket progress still flows (the modal shows rendering), then goes quiet
+  await expect(page.locator('.modal-backdrop')).toContainText('Rendering in the cloud')
+
+  // the poll fires every 5s; give it two cycles of headroom
+  const video = page.locator('video.result')
+  await expect(video).toBeVisible({ timeout: 15000 })
+  await expect(video).toHaveAttribute('src', fx('clip.mp4'))
+  await expect(page.locator('a[download]')).toHaveAttribute('href', fx('clip.mp4'))
+})
+
 /* ------------------------------------------------------------------ */
 /* 8. Image project render options                                     */
 /* ------------------------------------------------------------------ */

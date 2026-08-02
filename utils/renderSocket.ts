@@ -33,9 +33,14 @@ export function connectRenderSocket(clientKey: string): Promise<Socket> {
       auth: { clientKey },
       transports: ['websocket', 'polling'],
       withCredentials: true,
+      // Keep retrying forever: a render can outlive an orch restart/deploy,
+      // and a socket that gives up permanently leaves the modals deaf to the
+      // terminal events (the HTTP status polls only cover the outcome, not
+      // live progress).
       reconnection: true,
-      reconnectionAttempts: 5,
+      reconnectionAttempts: Infinity,
       reconnectionDelay: 1000,
+      reconnectionDelayMax: 10000,
     })
   }
 

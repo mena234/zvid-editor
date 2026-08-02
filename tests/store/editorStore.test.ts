@@ -119,6 +119,44 @@ describe('editor store', () => {
       expect(s.selectedCaptionIndex).toBe(-1)
     })
 
+    it('startTextEdit selects the visual, pauses playback and stores the seed', () => {
+      const s = useEditorStore()
+      s.playing = true
+      s.startTextEdit('t1', 'H')
+      expect(s.selectionKind).toBe('visual')
+      expect(s.selectedId).toBe('t1')
+      expect(s.playing).toBe(false)
+      expect(s.editingTextId).toBe('t1')
+      expect(s.editingTextSeed).toBe('H')
+    })
+
+    it('stopTextEdit with an id only ends that visual\'s edit', () => {
+      const s = useEditorStore()
+      s.startTextEdit('t1')
+      s.stopTextEdit('other')
+      expect(s.editingTextId).toBe('t1')
+      s.stopTextEdit('t1')
+      expect(s.editingTextId).toBeNull()
+      expect(s.editingTextSeed).toBeNull()
+    })
+
+    it('selecting elsewhere ends an in-place text edit; re-selecting the same id keeps it', () => {
+      const s = useEditorStore()
+      s.startTextEdit('t1')
+      s.selectVisual('t1')
+      expect(s.editingTextId).toBe('t1')
+      s.selectVisual('b')
+      expect(s.editingTextId).toBeNull()
+
+      s.startTextEdit('t1')
+      s.selectAudio('aud1')
+      expect(s.editingTextId).toBeNull()
+
+      s.startTextEdit('t1')
+      s.clearSelection()
+      expect(s.editingTextId).toBeNull()
+    })
+
     it('setContext clears the selection and resets playback', () => {
       const s = useEditorStore()
       s.selectVisual('a')

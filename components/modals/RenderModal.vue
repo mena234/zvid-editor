@@ -65,12 +65,71 @@ function unbindAll() {
   boundEvents.length = 0
 }
 
+/* HTTP fallback for the terminal outcome: the render keeps running in the
+   cloud, so a dropped socket (orch restart, network blip) must not leave the
+   modal stuck at 100% with the finished video invisible. */
+const POLL_INTERVAL_MS = 5000
+let pollTimer: ReturnType<typeof setInterval> | null = null
+
+function stopPolling() {
+  if (pollTimer) clearInterval(pollTimer)
+  pollTimer = null
+}
+
+function startPolling() {
+  stopPolling()
+  pollTimer = setInterval(() => void pollStatus(), POLL_INTERVAL_MS)
+}
+
+async function pollStatus() {
+  if (!taskId.value) return
+  if (status.value !== 'queued' && status.value !== 'rendering') {
+    stopPolling()
+    return
+  }
+  let r: any
+  try {
+    r = await $fetch(`/api/render-status/${encodeURIComponent(taskId.value)}`)
+  } catch {
+    return // transient; the socket path is still primary
+  }
+  if (!r?.success) return
+  if (r.state === 'completed') {
+    finish(typeof r.result === 'string' ? r.result : (r.result?.url ?? ''))
+  } else if (r.state === 'failed') {
+    unbindAll()
+    stopPolling()
+    fail(r.failedReason || 'Render failed')
+    auth.fetchSession()
+  } else {
+    // Keep the bar honest while the socket is down; never move it backwards
+    // (DB-sourced snapshots carry no progress).
+    const p =
+      typeof r.progress === 'number' ? r.progress : r.progress?.percentage
+    if (typeof p === 'number') {
+      progress.value = Math.max(progress.value, Math.min(100, Math.round(p)))
+    }
+  }
+}
+
+/** Terminal success, shared by the socket event and the status poll. */
+function finish(url: string) {
+  unbindAll()
+  stopPolling()
+  progress.value = 100
+  videoUrl.value = url
+  status.value = 'done'
+  // reserved vs actual credits get reconciled server-side: refresh balance
+  auth.fetchSession()
+}
+
 function signIn() {
   editor.postAuthModal = 'render'
   editor.openModal('auth')
 }
 
 function fail(message: string, details: any[] = []) {
+  stopPolling()
   status.value = 'error'
   errorMsg.value = message
   errorDetails.value = Array.isArray(details) ? details : []
@@ -130,6 +189,7 @@ async function start() {
   queueAhead.value = ack.queueAhead ?? 0
   creditsReserved.value = ack.creditsReserved ?? null
   status.value = 'queued'
+  startPolling()
 
   const mine = (data: any) => data?.taskId === taskId.value
 
@@ -148,12 +208,7 @@ async function start() {
 
   bind(socket, 'taskComplete', (data) => {
     if (!mine(data)) return
-    unbindAll()
-    progress.value = 100
-    videoUrl.value = data.result?.url ?? ''
-    status.value = 'done'
-    // reserved vs actual credits get reconciled server-side — refresh balance
-    auth.fetchSession()
+    finish(data.result?.url ?? '')
   })
 
   bind(socket, 'taskFailed', (data) => {
@@ -175,7 +230,10 @@ const fileName = computed(() => {
   }
 })
 
-onBeforeUnmount(unbindAll)
+onBeforeUnmount(() => {
+  unbindAll()
+  stopPolling()
+})
 </script>
 
 <template>

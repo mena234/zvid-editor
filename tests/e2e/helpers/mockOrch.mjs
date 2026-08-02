@@ -37,9 +37,16 @@ const defaultState = () => ({
   /** stockPages[kind] = [[items page0], [page1], …] */
   stockPages: {},
   stockError: null,
-  /** render behavior: 'progress' (queue→progress→complete), 'fail-ack', 'fail-task' */
+  /**
+   * render behavior: 'progress' (queue→progress→complete), 'fail-ack',
+   * 'fail-task', 'silent' (progress but NO terminal socket event; the
+   * completion is only visible via GET /api/jobs/:id, exercising the
+   * RenderModal poll fallback)
+   */
   renderMode: 'progress',
   renderResultUrl: 'http://127.0.0.1:4598/clip.mp4',
+  /** jobs[taskId] = { state, progress?, result?, failedReason? } for /api/jobs/:id */
+  jobs: {},
   nextId: 1,
 })
 
@@ -215,6 +222,24 @@ export function startMockOrch(port) {
       return send(200, { deleted: true })
     }
 
+    // ---- job status (RenderModal poll fallback) ----
+    const jobMatch = path.match(/^\/api\/jobs\/([^/]+)$/)
+    if (jobMatch && method === 'GET') {
+      if (!requireAuth()) return
+      const id = decodeURIComponent(jobMatch[1])
+      const job = state.jobs[id]
+      if (!job) return send(404, { error: 'Job not found' })
+      return send(200, {
+        id,
+        state: 'active',
+        progress: 0,
+        result: null,
+        failedReason: null,
+        ts: {},
+        ...job,
+      })
+    }
+
     // ---- stock ----
     if (path === '/api/stock/providers') return send(200, state.stockProviders)
     if (path === '/api/stock/search') {
@@ -272,14 +297,29 @@ export function startMockOrch(port) {
       }
       const taskId = `task_${state.nextId++}`
       ack({ taskId, queued: true, queueAhead: 0, creditsReserved: 2 })
+      state.jobs[taskId] = { state: 'active', progress: 0 }
       const emit = (ev, data) => socket.emit(ev, data)
       setTimeout(() => emit('taskAssigned', { taskId }), 50)
       setTimeout(() => emit('taskProgress', { taskId, progress: 30 }), 120)
       setTimeout(() => emit('taskProgress', { taskId, progress: 75 }), 220)
       setTimeout(() => {
         if (state.renderMode === 'fail-task') {
+          state.jobs[taskId] = { state: 'failed', failedReason: 'Mock render exploded' }
           emit('taskFailed', { taskId, error: 'Mock render exploded' })
+        } else if (state.renderMode === 'silent') {
+          // Lost terminal event: the job completes but the socket never says
+          // so; only the /api/jobs/:id snapshot knows.
+          state.jobs[taskId] = {
+            state: 'completed',
+            progress: 100,
+            result: state.renderResultUrl,
+          }
         } else {
+          state.jobs[taskId] = {
+            state: 'completed',
+            progress: 100,
+            result: state.renderResultUrl,
+          }
           emit('taskComplete', {
             taskId,
             result: { url: state.renderResultUrl, thumbnailUrl: null },

@@ -4,6 +4,23 @@ import {
   TEXT_DEFAULT_FONT_FAMILY,
   TEXT_DEFAULT_FONT_SIZE,
 } from '~/shared/schema/constants'
+import { canonicalVisualType } from '~/shared/schema/types'
+
+/**
+ * TEXT visuals editable in place on the stage: only the plain DOM path.
+ * customCode content renders in a sandboxed iframe or a shadow root, where a
+ * contenteditable would edit generated markup, not the source text.
+ */
+export function isInlineEditableText(item: {
+  type?: string
+  customCode?: { css?: string | null; js?: string | null } | null
+}): boolean {
+  return (
+    canonicalVisualType(item.type ?? '') === 'TEXT' &&
+    !item.customCode?.css &&
+    !item.customCode?.js
+  )
+}
 
 /**
  * Replicates package/src/lib/texts/buildHtmlContent.ts so the stage's TEXT

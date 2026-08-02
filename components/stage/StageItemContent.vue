@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { computed, ref, watch, onMounted, onBeforeUnmount } from 'vue'
+import { computed, ref, watch, onMounted, onBeforeUnmount, nextTick } from 'vue'
 import type { VisualDoc } from '~/shared/schema/types'
 import { canonicalVisualType } from '~/shared/schema/types'
 import { resolveVisualTiming } from '~/utils/itemGeometry'
 import { filterToCss, tintOverlayColor } from '~/utils/cssFilter'
 import { useEditorStore } from '~/stores/editor'
+import { useProjectStore } from '~/stores/project'
 import { useMediaProbe } from '~/composables/useMediaProbe'
 import { useMeasuredDims } from '~/composables/useMeasuredDims'
 import { extractFontFamilies, loadGoogleFonts } from '~/utils/fonts'
@@ -33,6 +34,7 @@ const props = defineProps<{
 }>()
 
 const editor = useEditorStore()
+const project = useProjectStore()
 const { probe, intrinsicOf } = useMediaProbe()
 const { setMeasured } = useMeasuredDims()
 
@@ -282,6 +284,134 @@ watch(
   { flush: 'post' }
 )
 
+/* ---------------- in-place text editing ----------------
+   The plain-DOM text div becomes a contenteditable while this item is the
+   store's editingTextId. During the edit the v-html binding is frozen (Vue
+   only rewrites innerHTML when the bound value changes — a rewrite would
+   reset the caret), every input patches the doc without committing, and one
+   history entry lands when editing ends. */
+const isEditing = computed(
+  () =>
+    editor.editingTextId === props.item._id &&
+    type.value === 'TEXT' &&
+    !hasCustomCode.value
+)
+
+/** what the editable shows: the RAW doc content — with variables preview on,
+ *  the stage otherwise displays resolved copies, and committing a resolved
+ *  string back would destroy the {{placeholders}} */
+const editFrozenHtml = ref('')
+const editAsHtml = ref(false)
+let editSnapshot: { text: string | null; html: string | null } | null = null
+
+let ptoSupport: boolean | null = null
+function plaintextOnlySupported(): boolean {
+  if (ptoSupport === null) {
+    const d = document.createElement('div')
+    try {
+      d.contentEditable = 'plaintext-only'
+      ptoSupport = d.contentEditable === 'plaintext-only'
+    } catch {
+      ptoSupport = false
+    }
+  }
+  return ptoSupport
+}
+
+const editableAttr = computed<boolean | 'plaintext-only'>(() => {
+  if (!isEditing.value) return false
+  if (editAsHtml.value) return true
+  // plain text stays plain while typing; falls back to rich CE where
+  // unsupported (innerText still reads back plain)
+  return plaintextOnlySupported() ? 'plaintext-only' : true
+})
+
+function selectAllIn(el: HTMLElement) {
+  const sel = window.getSelection()
+  if (!sel) return
+  const range = document.createRange()
+  range.selectNodeContents(el)
+  sel.removeAllRanges()
+  sel.addRange(range)
+}
+
+function beginEdit() {
+  const raw = project.visualById(props.item._id)
+  if (!raw) {
+    // display-only clones (iterate) have no doc entry to edit
+    editor.stopTextEdit(props.item._id)
+    return
+  }
+  editAsHtml.value = raw.html != null
+  editSnapshot = { text: raw.text ?? null, html: raw.html ?? null }
+  editFrozenHtml.value = raw.html ?? escapeHtml(raw.text ?? '')
+  nextTick(() => {
+    const el = textMeasureEl.value
+    if (!el || !isEditing.value) return
+    el.focus()
+    selectAllIn(el)
+    const seed = editor.editingTextSeed
+    if (seed) {
+      // type-to-edit: the key that started the edit replaces the content
+      editor.editingTextSeed = null
+      try {
+        document.execCommand('insertText', false, seed)
+      } catch {
+        el.textContent = seed
+      }
+      onEditInput()
+    }
+  })
+}
+
+/** one undo step per edit session — inputs patched without committing */
+function finishEdit() {
+  const snap = editSnapshot
+  editSnapshot = null
+  if (!snap) return
+  const raw = project.visualById(props.item._id)
+  if (!raw) return
+  if ((raw.text ?? null) !== snap.text || (raw.html ?? null) !== snap.html)
+    project.commit()
+}
+
+watch(isEditing, (on) => (on ? beginEdit() : finishEdit()))
+
+function onEditInput() {
+  const el = textMeasureEl.value
+  if (!el || !editSnapshot) return
+  if (editAsHtml.value) {
+    project.patchVisual(props.item._id, { html: el.innerHTML }, false)
+  } else {
+    // the trailing \n is the CE's placeholder break, not typed content
+    project.patchVisual(
+      props.item._id,
+      { text: el.innerText.replace(/\n$/, '') },
+      false
+    )
+  }
+}
+
+function onEditBlur() {
+  editor.stopTextEdit(props.item._id)
+}
+
+function onEditKeydown(e: KeyboardEvent) {
+  if (e.key === 'Escape') {
+    e.preventDefault()
+    e.stopPropagation()
+    ;(e.target as HTMLElement).blur()
+  }
+}
+
+onBeforeUnmount(() => {
+  // item unmounting mid-edit (scene switch, undo) — land the pending commit
+  if (isEditing.value) {
+    finishEdit()
+    editor.stopTextEdit(props.item._id)
+  }
+})
+
 /* a font swapping in changes the glyph metrics the fit was measured against */
 function onFontsLoaded() {
   runTextFit()
@@ -443,8 +573,14 @@ const iframeDoc = computed(() => {
       v-else
       ref="textMeasureEl"
       class="text-inner"
+      :class="{ editing: isEditing }"
       :style="textInnerStyle"
-      v-html="textHtml"
+      :contenteditable="editableAttr"
+      spellcheck="false"
+      @input="onEditInput"
+      @blur="onEditBlur"
+      @keydown="onEditKeydown"
+      v-html="isEditing ? editFrozenHtml : textHtml"
     />
     <!-- shadow-DOM measurer for the iframe path -->
     <StageMeasureGhost
@@ -568,6 +704,15 @@ const iframeDoc = computed(() => {
 .text-inner.ghost {
   visibility: hidden;
   pointer-events: none;
+}
+.text-inner.editing {
+  cursor: text;
+  user-select: text;
+  outline: none;
+  caret-color: currentColor;
+  /* an emptied text still needs a visible caret slot */
+  min-width: 4px;
+  min-height: 1em;
 }
 .svg-box {
   position: relative;

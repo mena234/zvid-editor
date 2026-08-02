@@ -96,6 +96,12 @@ export const useEditorStore = defineStore('editor', {
     designerTargetId: null as string | null,
     inspectorTab: 'design',
 
+    /* inline text editing on the stage */
+    /** visual _id being edited in place (contenteditable on the canvas) */
+    editingTextId: null as string | null,
+    /** printable key that triggered type-to-edit — replaces the content */
+    editingTextSeed: null as string | null,
+
     /* transient UI */
     toast: null as { message: string; kind: 'info' | 'error' | 'success' } | null,
     dragState: null as null | { type: string },
@@ -128,6 +134,7 @@ export const useEditorStore = defineStore('editor', {
     },
 
     selectVisual(id: string, additive = false) {
+      if (this.editingTextId && this.editingTextId !== id) this.stopTextEdit()
       this.selectionKind = 'visual'
       if (additive && this.selectedId) {
         const set = new Set(this.selectedIds.length ? this.selectedIds : [this.selectedId])
@@ -142,22 +149,26 @@ export const useEditorStore = defineStore('editor', {
       }
     },
     selectAudio(id: string) {
+      this.stopTextEdit()
       this.selectionKind = 'audio'
       this.selectedId = id
       this.selectedIds = []
     },
     selectCaption(index: number) {
+      this.stopTextEdit()
       this.selectionKind = 'caption'
       this.selectedId = String(index)
       this.selectedCaptionIndex = index
       this.selectedIds = []
     },
     selectScene(editorId: string) {
+      this.stopTextEdit()
       this.selectionKind = 'scene'
       this.selectedId = editorId
       this.selectedIds = []
     },
     clearSelection() {
+      this.stopTextEdit()
       this.selectionKind = null
       this.selectedId = null
       this.selectedIds = []
@@ -249,6 +260,23 @@ export const useEditorStore = defineStore('editor', {
           // custom/canvas-coded elements
           return 'canvas'
       }
+    },
+
+    /* ---- inline text editing on the stage ---- */
+
+    /** Start editing a TEXT visual in place. `seed` (a printable key that
+     *  triggered type-to-edit) replaces the whole content once focused. */
+    startTextEdit(id: string, seed: string | null = null) {
+      if (this.selectionKind !== 'visual' || this.selectedId !== id) this.selectVisual(id)
+      this.playing = false
+      this.editingTextId = id
+      this.editingTextSeed = seed
+    },
+    /** End inline editing; with `id`, only if that visual is the one editing. */
+    stopTextEdit(id?: string) {
+      if (id && this.editingTextId !== id) return
+      this.editingTextId = null
+      this.editingTextSeed = null
     },
 
     setContext(ctx: string) {

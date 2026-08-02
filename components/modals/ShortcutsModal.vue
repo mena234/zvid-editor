@@ -22,6 +22,8 @@ const GROUPS = [
       ['S', 'Split the selected clip at the playhead'],
       ['Shift+click', 'Multi-select on the canvas'],
       ['↑↓←→', 'Nudge selected element 1 px (Shift: 10 px)'],
+      ['Double-click', 'Edit a text element in place on the canvas'],
+      ['Enter', 'Edit the selected text in place — or just start typing'],
     ],
   },
   {

@@ -4,6 +4,8 @@ import { useEditorContext } from '~/composables/useEditorContext'
 import { usePlayheadJumps } from '~/composables/usePlayheadJumps'
 import { usePlayback } from '~/composables/usePlayback'
 import { useCloud } from '~/composables/useCloud'
+import { isVisibleAt } from '~/utils/itemGeometry'
+import { isInlineEditableText } from '~/utils/textTemplate'
 
 const { project, editor, contextDuration } = useEditorContext()
 const { jumpBack, jumpForward } = usePlayheadJumps()
@@ -75,6 +77,36 @@ function onKeyDown(e: KeyboardEvent) {
   if (editor.modal) {
     if (e.key === 'Escape') editor.closeModal()
     return
+  }
+
+  // type-to-edit: with a single TEXT element selected, a printable key (or
+  // Enter) starts editing it in place on the stage — the key replaces the
+  // content, Enter keeps it (all selected). Space stays play/pause.
+  if (
+    !mod &&
+    !e.altKey &&
+    editor.selectionKind === 'visual' &&
+    editor.selectedId &&
+    editor.selectedIds.length <= 1 &&
+    (e.key === 'Enter' || (e.key.length === 1 && e.key !== ' '))
+  ) {
+    const v = project.visualById(editor.selectedId)
+    if (
+      v &&
+      isInlineEditableText(v) &&
+      isVisibleAt(v, editor.playhead, contextDuration.value)
+    ) {
+      e.preventDefault()
+      if (editor.editingTextId === v._id) {
+        // edit already starting, contenteditable focus still pending — fold
+        // fast keystrokes into the unconsumed seed so none are lost
+        if (editor.editingTextSeed !== null && e.key.length === 1)
+          editor.editingTextSeed += e.key
+      } else {
+        editor.startTextEdit(v._id, e.key === 'Enter' ? null : e.key)
+      }
+      return
+    }
   }
 
   const fps = project.defaults.frameRate
