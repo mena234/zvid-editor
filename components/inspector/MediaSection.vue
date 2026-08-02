@@ -127,7 +127,7 @@ const chromaEnabled = computed(() => !!props.item.chromaKey)
         <template v-else-if="probed">loading…</template>
       </p>
 
-      <UiField label="Resize mode" hint="Fits the media to the project frame; overrides width/height">
+      <UiField label="Resize mode" hint="Fits the media to the project frame (clears width/height); with an explicit box it object-fits into the box instead">
         <select
           class="ctl"
           :value="item.resize ?? ''"

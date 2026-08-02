@@ -309,13 +309,23 @@ describe('resolveVisualLayout', () => {
     expect(r.height).toBe(200)
   })
 
-  it('resize + intrinsic overrides explicit dimensions on media items', () => {
+  it('resize with an explicit box keeps the box (media object-fits into it)', () => {
     const r = resolveVisualLayout(
       vis({ width: 50, height: 50, resize: 'cover' }),
       1000,
       500,
       { width: 100, height: 200 }
     )
+    // the author's box wins; the media is cover-cropped INTO it (package parity)
+    expect(r.width).toBe(50)
+    expect(r.height).toBe(50)
+  })
+
+  it('resize without a box sizes cover against the project frame', () => {
+    const r = resolveVisualLayout(vis({ resize: 'cover' }), 1000, 500, {
+      width: 100,
+      height: 200,
+    })
     // cover of a 1:2 source into 2:1 frame → width pinned, height overflows
     expect(r.width).toBe(1000)
     expect(r.height).toBe(2000)
@@ -330,8 +340,14 @@ describe('resolveVisualLayout', () => {
     expect(r.height).toBe(500)
   })
 
-  it('resize without an intrinsic size falls back to the full frame', () => {
+  it('resize with an explicit box keeps the box even without an intrinsic size', () => {
     const r = resolveVisualLayout(vis({ width: 50, height: 50, resize: 'contain' }), W, H, null)
+    expect(r.width).toBe(50)
+    expect(r.height).toBe(50)
+  })
+
+  it('resize without a box or intrinsic size falls back to the full frame', () => {
+    const r = resolveVisualLayout(vis({ resize: 'contain' }), W, H, null)
     expect(r.width).toBe(W)
     expect(r.height).toBe(H)
   })

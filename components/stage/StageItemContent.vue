@@ -80,6 +80,27 @@ const radiusStyle = computed(() => {
   return `${r.tl ?? 0}px ${r.tr ?? 0}px ${r.br ?? 0}px ${r.bl ?? 0}px`
 })
 
+/* package parity for aspect-mismatched media: resize on an explicit box
+   object-fits INTO the box (cover/contain); plain images are screenshot by
+   the renderer with object-fit cover; videos/GIFs are scale-stretched.
+   cropParams bypass this — the crop math below owns the geometry. */
+const mediaFit = computed(() => {
+  if (props.item.cropParams) return undefined
+  const boxed =
+    typeof props.item.width === 'number' &&
+    typeof props.item.height === 'number'
+  if (
+    boxed &&
+    (props.item.resize === 'cover' || props.item.resize === 'contain')
+  )
+    return props.item.resize
+  if (type.value === 'IMAGE') return 'cover'
+  return undefined /* .media default: fill */
+})
+const mediaFitStyle = computed(() =>
+  mediaFit.value ? { objectFit: mediaFit.value } : undefined
+)
+
 /** crop math: map cropParams source rect onto the item box */
 const cropInnerStyle = computed(() => {
   const crop = props.item.cropParams
@@ -529,7 +550,7 @@ const iframeDoc = computed(() => {
       ref="videoEl"
       class="media"
       :src="item.src"
-      :style="cropInnerStyle ?? undefined"
+      :style="cropInnerStyle ?? mediaFitStyle"
       :preload="shouldBufferVideo ? 'auto' : 'metadata'"
       playsinline
       @loadedmetadata="mediaFailed = false; syncVideo()"
@@ -556,7 +577,7 @@ const iframeDoc = computed(() => {
       ref="imgEl"
       class="media"
       :src="item.src"
-      :style="cropInnerStyle ?? undefined"
+      :style="cropInnerStyle ?? mediaFitStyle"
       :fetchpriority="isItemVisible ? 'high' : 'low'"
       draggable="false"
       @load="mediaFailed = false; mediaReady = true"
@@ -660,7 +681,8 @@ const iframeDoc = computed(() => {
 .media {
   width: 100%;
   height: 100%;
-  object-fit: fill; /* package scales input to exactly w×h */
+  object-fit: fill; /* videos/GIFs are scale-stretched by the package;
+                       images and boxed resize override via mediaFitStyle */
   display: block;
 }
 .tint {

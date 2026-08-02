@@ -296,6 +296,11 @@ export function resolveVisualLayout(
   let width = typeof item.width === 'number' ? item.width : undefined
   let height = typeof item.height === 'number' ? item.height : undefined
 
+  // An author-supplied box wins over resize: the media object-fits INTO it
+  // (package applyItemDefaults parity). Canvas-relative resize only applies
+  // when no box was given.
+  const hasExplicitBox = width !== undefined && height !== undefined
+
   const type = canonicalVisualType(item.type)
   const mediaLike = type === 'VIDEO' || type === 'IMAGE' || type === 'GIF' || type === 'SVG'
 
@@ -309,7 +314,7 @@ export function resolveVisualLayout(
     }
   }
 
-  if (mediaLike && item.resize && intrinsic) {
+  if (mediaLike && item.resize && !hasExplicitBox && intrinsic) {
     const r = calculateResize(
       item.resize as 'contain' | 'cover',
       intrinsic.width,
@@ -319,7 +324,7 @@ export function resolveVisualLayout(
     )
     width = r.width
     height = r.height
-  } else if (mediaLike && item.resize && !intrinsic) {
+  } else if (mediaLike && item.resize && !hasExplicitBox && !intrinsic) {
     width = projectWidth
     height = projectHeight
   }
