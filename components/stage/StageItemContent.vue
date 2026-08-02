@@ -16,7 +16,12 @@ import {
   fitBoxOf,
   measureFitFactor,
 } from '~/utils/fitTextToBox'
-import { buildIframeDoc, styleObjectToCss, escapeHtml } from '~/utils/textTemplate'
+import {
+  buildIframeDoc,
+  styleObjectToCss,
+  escapeHtml,
+  isAutoHugText,
+} from '~/utils/textTemplate'
 import {
   TEXT_DEFAULT_FONT_FAMILY,
   TEXT_DEFAULT_FONT_SIZE,
@@ -302,7 +307,13 @@ const isEditing = computed(
  *  string back would destroy the {{placeholders}} */
 const editFrozenHtml = ref('')
 const editAsHtml = ref(false)
-let editSnapshot: { text: string | null; html: string | null } | null = null
+let editSnapshot: {
+  text: string | null
+  html: string | null
+  /** declared height to drop on the first change (box re-hugs the copy) */
+  height: number | null
+} | null = null
+let editHeightCleared = false
 
 let ptoSupport: boolean | null = null
 function plaintextOnlySupported(): boolean {
@@ -343,7 +354,13 @@ function beginEdit() {
     return
   }
   editAsHtml.value = raw.html != null
-  editSnapshot = { text: raw.text ?? null, html: raw.html ?? null }
+  editSnapshot = {
+    text: raw.text ?? null,
+    html: raw.html ?? null,
+    height:
+      isAutoHugText(raw) && typeof raw.height === 'number' ? raw.height : null,
+  }
+  editHeightCleared = false
   editFrozenHtml.value = raw.html ?? escapeHtml(raw.text ?? '')
   nextTick(() => {
     const el = textMeasureEl.value
@@ -371,8 +388,13 @@ function finishEdit() {
   if (!snap) return
   const raw = project.visualById(props.item._id)
   if (!raw) return
-  if ((raw.text ?? null) !== snap.text || (raw.html ?? null) !== snap.html)
+  if ((raw.text ?? null) !== snap.text || (raw.html ?? null) !== snap.html) {
     project.commit()
+  } else if (editHeightCleared && snap.height != null) {
+    // typed and typed it back — restore the box so the session is a no-op
+    project.patchVisual(props.item._id, { height: snap.height }, false)
+  }
+  editHeightCleared = false
 }
 
 watch(isEditing, (on) => (on ? beginEdit() : finishEdit()))
@@ -380,16 +402,17 @@ watch(isEditing, (on) => (on ? beginEdit() : finishEdit()))
 function onEditInput() {
   const el = textMeasureEl.value
   if (!el || !editSnapshot) return
-  if (editAsHtml.value) {
-    project.patchVisual(props.item._id, { html: el.innerHTML }, false)
-  } else {
-    // the trailing \n is the CE's placeholder break, not typed content
-    project.patchVisual(
-      props.item._id,
-      { text: el.innerText.replace(/\n$/, '') },
-      false
-    )
+  const patch: Record<string, any> = editAsHtml.value
+    ? { html: el.innerHTML }
+    : // the trailing \n is the CE's placeholder break, not typed content
+      { text: el.innerText.replace(/\n$/, '') }
+  if (editSnapshot.height != null && !editHeightCleared) {
+    // first change drops the declared height: the box hugs the copy while
+    // typing (measured dims take over) instead of overflowing a stale box
+    patch.height = undefined
+    editHeightCleared = true
   }
+  project.patchVisual(props.item._id, patch, false)
 }
 
 function onEditBlur() {

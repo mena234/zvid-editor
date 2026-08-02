@@ -4,11 +4,16 @@ import type { VisualDoc } from '~/shared/schema/types'
 import { effectiveLayout } from '~/utils/itemGeometry'
 import { topLeftToAnchor } from '~/shared/schema/defaults'
 import { useProjectStore } from '~/stores/project'
+import { isAutoHugText } from '~/utils/textTemplate'
+import { TEXT_DEFAULT_FONT_SIZE } from '~/shared/schema/constants'
 import { round3 } from '~/utils/time'
 
 const props = defineProps<{ item: VisualDoc; primary: boolean }>()
 const project = useProjectStore()
 const stageCtx = inject<any>('stageCtx')
+
+/** Text boxes hug their wrapped copy: sides re-wrap, corners scale the type. */
+const hugText = computed(() => isAutoHugText(props.item))
 
 const layout = computed(() =>
   effectiveLayout(props.item, stageCtx.projW, stageCtx.projH)
@@ -37,7 +42,14 @@ const HANDLES = [
   { dir: 'w', x: 0, y: 0.5, cursor: 'ew-resize' },
 ] as const
 
+/* a hugging text has no fixed height to drag — n/s handles would only pin one */
+const handles = computed(() =>
+  hugText.value ? HANDLES.filter((h) => h.dir !== 'n' && h.dir !== 's') : HANDLES
+)
+
 /* ---------------- resize ---------------- */
+const TYPE_SCALE_KEYS = ['fontSize', 'lineHeight', 'letterSpacing', 'wordSpacing']
+
 let resizeStart: {
   dir: string
   px: number
@@ -48,6 +60,11 @@ let resizeStart: {
   h: number
   anchor: any
   shift: boolean
+  hug: boolean
+  /** RAW doc style at drag start (corner scale must never compound or bake
+   *  resolved {{placeholders}} back into the doc); null = don't scale type */
+  scaleStyle: Record<string, any> | null
+  fontPx: number
 } | null = null
 
 function onHandleDown(e: PointerEvent, dir: string) {
@@ -55,6 +72,22 @@ function onHandleDown(e: PointerEvent, dir: string) {
   e.stopPropagation()
   e.preventDefault()
   const L = layout.value
+  const hug = hugText.value
+  let scaleStyle: Record<string, any> | null = null
+  let fontPx = parseFloat(TEXT_DEFAULT_FONT_SIZE)
+  if (hug && dir.length === 2) {
+    const raw = project.visualById(props.item._id)
+    const style = { ...(raw?.style ?? {}) }
+    // a {{var}} in a scalable key would be replaced by a baked number — skip
+    const templated = TYPE_SCALE_KEYS.some(
+      (k) => typeof style[k] === 'string' && style[k].includes('{{')
+    )
+    if (raw && !templated) {
+      scaleStyle = style
+      const declared = parseFloat(String(style.fontSize ?? ''))
+      if (isFinite(declared) && declared > 0) fontPx = declared
+    }
+  }
   resizeStart = {
     dir,
     px: e.clientX,
@@ -65,9 +98,29 @@ function onHandleDown(e: PointerEvent, dir: string) {
     h: L.height,
     anchor: L.anchor,
     shift: false,
+    hug,
+    scaleStyle,
+    fontPx,
   }
   window.addEventListener('pointermove', onResizeMove)
   window.addEventListener('pointerup', onResizeUp)
+}
+
+/** Scale the px-valued typography of a style snapshot by one factor (unitless
+ *  line-height and em spacings follow the font size on their own). */
+function scaleTypography(style: Record<string, any>, factor: number) {
+  const next = { ...style }
+  for (const key of TYPE_SCALE_KEYS) {
+    const raw = next[key]
+    if (raw == null) {
+      if (key === 'fontSize')
+        next[key] = `${round3(parseFloat(TEXT_DEFAULT_FONT_SIZE) * factor)}px`
+      continue
+    }
+    const m = String(raw).match(/^(-?\d*\.?\d+)px$/)
+    if (m) next[key] = `${round3(parseFloat(m[1]) * factor)}px`
+  }
+  return next
 }
 
 function onResizeMove(e: PointerEvent) {
@@ -77,29 +130,34 @@ function onResizeMove(e: PointerEvent) {
   const dy = (e.clientY - s.py) / stageCtx.scale
 
   let { left, top, w, h } = s
-  const keepRatio = e.shiftKey && s.dir.length === 2
+  const corner = s.dir.length === 2
+  // text corners always scale proportionally (Canva-style); others on Shift
+  const keepRatio = corner && (s.hug || e.shiftKey)
   const ratio = s.w / Math.max(1, s.h)
 
   if (s.dir.includes('e')) w = s.w + dx
-  if (s.dir.includes('w')) {
-    w = s.w - dx
-    left = s.left + dx
-  }
+  if (s.dir.includes('w')) w = s.w - dx
   if (s.dir.includes('s')) h = s.h + dy
-  if (s.dir.includes('n')) {
-    h = s.h - dy
-    top = s.top + dy
-  }
+  if (s.dir.includes('n')) h = s.h - dy
 
   if (keepRatio) {
     if (Math.abs(dx) > Math.abs(dy)) h = w / ratio
     else w = h * ratio
-    if (s.dir.includes('w')) left = s.left + (s.w - w)
-    if (s.dir.includes('n')) top = s.top + (s.h - h)
   }
 
   w = Math.max(8, w)
   h = Math.max(8, h)
+
+  let factor = 1
+  if (s.hug && corner) {
+    // one factor drives width AND type, so the wrap points stay identical
+    factor = Math.max(w / s.w, 4 / s.fontPx)
+    w = s.w * factor
+    h = s.h * factor
+  }
+
+  if (s.dir.includes('w')) left = s.left + (s.w - w)
+  if (s.dir.includes('n')) top = s.top + (s.h - h)
 
   const { x, y } = topLeftToAnchor(left, top, w, h, s.anchor)
   const patch: Record<string, any> = {
@@ -109,6 +167,11 @@ function onResizeMove(e: PointerEvent) {
     height: Math.round(h),
     anchor: s.anchor,
     resize: undefined, // manual size overrides contain/cover
+  }
+  if (s.hug) {
+    // the box hugs the wrapped copy — the measured height takes over
+    patch.height = undefined
+    if (corner && s.scaleStyle) patch.style = scaleTypography(s.scaleStyle, factor)
   }
   if (props.item.position && props.item.position !== 'custom') patch.position = 'custom'
   project.patchVisual(props.item._id, patch, false)
@@ -160,7 +223,7 @@ function onRotateUp() {
   <div class="sel-box" :class="{ primary }" :style="boxStyle">
     <template v-if="primary">
       <span
-        v-for="hd in HANDLES"
+        v-for="hd in handles"
         :key="hd.dir"
         class="handle"
         :style="{

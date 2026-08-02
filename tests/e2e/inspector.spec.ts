@@ -466,6 +466,53 @@ test('typography: font search+pick, size/weight/color/transform, customCode over
   await expect(typo.locator('.hint.warn')).toContainText('custom CSS')
 })
 
+test('reflow edits re-hug a fixed text box; color keeps it', async ({ page }) => {
+  await loadProject(page, {
+    ...BASE,
+    visuals: [
+      {
+        type: 'TEXT',
+        text: 'wrap me tighter',
+        width: 300,
+        height: 200,
+        style: { fontSize: '40px' },
+      },
+    ],
+  })
+  await selectVisual(page)
+  const typo = sec(page, 'Typography')
+
+  // color cannot reflow the copy — the declared box stays
+  const color = field(typo, 'Color').locator('input[type="text"]')
+  await color.fill('#00ff00')
+  await color.blur()
+  await expect.poll(async () => (await vis(page)).style?.color).toBe('#00ff00')
+  expect((await vis(page)).height).toBe(200)
+
+  // a new font size reflows — the box re-hugs (declared height dropped)
+  await setNum(typo, 'Size', '60')
+  await expect.poll(async () => (await vis(page)).style?.fontSize).toBe('60px')
+  expect((await vis(page)).height).toBeUndefined()
+
+  // pin a height again, then a new wrap width re-hugs it too
+  await openSec(page, 'Layout') // the Layout section starts collapsed
+  const layout = sec(page, 'Layout')
+  await setNum(layout, 'Height', '180')
+  await expect.poll(async () => (await vis(page)).height).toBe(180)
+  await setNum(layout, 'Width', '260')
+  await expect.poll(async () => (await vis(page)).width).toBe(260)
+  expect((await vis(page)).height).toBeUndefined()
+
+  // content edits re-hug as well
+  await setNum(layout, 'Height', '160')
+  await expect.poll(async () => (await vis(page)).height).toBe(160)
+  const plain = sec(page, 'Content').locator('textarea')
+  await plain.fill('now a much longer copy that wraps onto several lines')
+  await plain.blur()
+  await expect.poll(async () => (await vis(page)).text).toContain('longer copy')
+  expect((await vis(page)).height).toBeUndefined()
+})
+
 /* ------------------------------------------------------------------ */
 /* 6. CustomCodeSection                                                 */
 /* ------------------------------------------------------------------ */

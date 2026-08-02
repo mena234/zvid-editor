@@ -8,6 +8,7 @@ import {
   styleObjectToCss,
   buildIframeDoc,
   escapeHtml,
+  isAutoHugText,
 } from '../../utils/textTemplate'
 import { nodeSnippet, cliSnippet, fetchSnippet } from '../../utils/snippets'
 import { effectLabel } from '../../utils/effectMeta'
@@ -18,6 +19,19 @@ import {
 } from '../../utils/fonts'
 
 /* ------------------------------ textTemplate ----------------------------- */
+
+describe('isAutoHugText', () => {
+  it('is true for plain TEXT, with or without a declared box', () => {
+    expect(isAutoHugText({ type: 'TEXT' })).toBe(true)
+    expect(isAutoHugText({ type: 'text', fitToBox: false })).toBe(true)
+  })
+  it('is false for fitToBox, customCode and non-TEXT items', () => {
+    expect(isAutoHugText({ type: 'TEXT', fitToBox: true })).toBe(false)
+    expect(isAutoHugText({ type: 'TEXT', customCode: { css: '.x{}' } })).toBe(false)
+    expect(isAutoHugText({ type: 'TEXT', customCode: { js: 'x()' } })).toBe(false)
+    expect(isAutoHugText({ type: 'IMAGE' })).toBe(false)
+  })
+})
 
 describe('styleObjectToCss', () => {
   it('returns an empty string for undefined', () => {

@@ -160,6 +160,68 @@ test('an html text edits its markup in place', async ({ page }) => {
   expect(doc.visuals[0].text).toBeUndefined()
 })
 
+/** A fixed 500x120 box centered on the full-hd stage (center 960,540). */
+const FIXED_BOX_ITEM = {
+  type: 'TEXT',
+  text: 'short',
+  x: 710,
+  y: 480,
+  width: 500,
+  height: 120,
+  style: { fontSize: '60px', color: '#ffffff' },
+}
+
+test('editing a fixed-box text drops the height so the box hugs the copy', async ({
+  page,
+}) => {
+  await openEditor(page)
+  await loadProject(page, baseDoc([FIXED_BOX_ITEM]))
+  await selectFirst(page)
+
+  const c = await stageCenter(page)
+  await page.mouse.dblclick(c.x, c.y)
+  await expect(page.locator(EDITABLE)).toBeVisible()
+
+  // entering selects all — the long replacement wraps to several lines
+  await page.keyboard.type('This is a much longer copy that wraps to many lines')
+  // the declared height is dropped on the first change…
+  await expect
+    .poll(async () => (await store(page, 'project', 'doc.visuals'))[0].height)
+    .toBe(undefined)
+  // …and the box grows with the wrapped copy instead of overflowing 120px
+  await expect
+    .poll(() =>
+      page
+        .locator('.stage-frame .stage-item')
+        .evaluate((el) => (el as HTMLElement).offsetHeight)
+    )
+    .toBeGreaterThan(130)
+
+  await page.keyboard.press('Escape')
+  expect((await exportedDoc(page)).visuals[0].height).toBeUndefined()
+
+  // still one undo step: text AND box come back together
+  await page.keyboard.press('Control+z')
+  const undone = (await exportedDoc(page)).visuals[0]
+  expect(undone.text).toBe('short')
+  expect(undone.height).toBe(120)
+})
+
+test('an untouched edit session keeps the declared box', async ({ page }) => {
+  await openEditor(page)
+  await loadProject(page, baseDoc([FIXED_BOX_ITEM]))
+  await selectFirst(page)
+
+  await page.keyboard.press('Enter')
+  await expect(page.locator(EDITABLE)).toBeVisible()
+  await page.keyboard.press('Escape')
+  await expect(page.locator(EDITABLE)).toHaveCount(0)
+
+  const v = (await exportedDoc(page)).visuals[0]
+  expect(v.text).toBe('short')
+  expect(v.height).toBe(120)
+})
+
 test('customCode texts are not editable in place', async ({ page }) => {
   await openEditor(page)
   await loadProject(

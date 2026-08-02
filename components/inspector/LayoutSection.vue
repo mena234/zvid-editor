@@ -4,6 +4,7 @@ import type { VisualDoc } from '~/shared/schema/types'
 import { useProjectStore } from '~/stores/project'
 import { POSITION_PRESETS } from '~/shared/schema/constants'
 import { effectiveLayout } from '~/utils/itemGeometry'
+import { isAutoHugText } from '~/utils/textTemplate'
 
 const props = defineProps<{ item: VisualDoc }>()
 const project = useProjectStore()
@@ -14,6 +15,18 @@ const layout = computed(() =>
 
 function patch(p: Record<string, any>) {
   project.patchVisual(props.item._id, p)
+}
+
+function setWidth(v?: number) {
+  const p: Record<string, any> = {
+    width: v,
+    resize: v !== undefined ? undefined : props.item.resize,
+  }
+  // a new wrap width re-hugs a plain text box; the Height field below stays
+  // the way to pin one explicitly
+  if (isAutoHugText(props.item) && typeof props.item.height === 'number')
+    p.height = undefined
+  patch(p)
 }
 </script>
 
@@ -73,7 +86,7 @@ function patch(p: Record<string, any>) {
             :placeholder="String(Math.round(layout.width))"
             clearable
             unit="px"
-            @update:model-value="patch({ width: $event, resize: $event !== undefined ? undefined : item.resize })"
+            @update:model-value="setWidth($event)"
           />
         </UiField>
         <UiField label="Height">

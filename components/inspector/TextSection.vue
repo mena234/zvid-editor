@@ -6,6 +6,7 @@ import { useEditorStore } from '~/stores/editor'
 import { useEditorContext } from '~/composables/useEditorContext'
 import { useTemplateVars } from '~/composables/useTemplateVars'
 import { POPULAR_GOOGLE_FONTS, loadGoogleFont } from '~/utils/fonts'
+import { isAutoHugText } from '~/utils/textTemplate'
 
 const props = defineProps<{ item: VisualDoc }>()
 const project = useProjectStore()
@@ -16,6 +17,14 @@ const tvars = useTemplateVars()
 const textEl = ref<HTMLTextAreaElement>()
 const htmlEl = ref<HTMLTextAreaElement>()
 
+/** Reflow edits drop a declared height so the box re-hugs the wrapped copy
+ *  (`fitToBox` keeps its fixed box — the type shrinks into it instead). */
+function hugPatch(p: Record<string, any>): Record<string, any> {
+  if (isAutoHugText(props.item) && typeof props.item.height === 'number')
+    p.height = undefined
+  return p
+}
+
 /** Insert a {{placeholder}} at the caret of the content textarea. */
 function insertPlaceholder(placeholder: string) {
   const el = mode.value === 'text' ? textEl.value : htmlEl.value
@@ -23,7 +32,7 @@ function insertPlaceholder(placeholder: string) {
   const current = (field === 'text' ? props.item.text : props.item.html) ?? ''
   const pos = el ? (el.selectionStart ?? current.length) : current.length
   const next = current.slice(0, pos) + placeholder + current.slice(pos)
-  patch({ [field]: next })
+  patch(hugPatch({ [field]: next }))
 }
 
 /** Strict content commit: unresolvable placeholders are rejected untouched
@@ -39,7 +48,7 @@ function commitContent(field: 'text' | 'html', e: Event) {
       return
     }
   }
-  patch({ [field]: v })
+  patch(hugPatch({ [field]: v }))
 }
 
 const mode = computed<'text' | 'html'>(() =>
@@ -53,9 +62,9 @@ function patch(p: Record<string, any>) {
 function setMode(m: 'text' | 'html') {
   if (m === mode.value) return
   if (m === 'html') {
-    patch({ html: props.item.html ?? `<div>${props.item.text ?? ''}</div>`, text: undefined })
+    patch(hugPatch({ html: props.item.html ?? `<div>${props.item.text ?? ''}</div>`, text: undefined }))
   } else {
-    patch({ text: props.item.text ?? stripTags(props.item.html ?? ''), html: undefined })
+    patch(hugPatch({ text: props.item.text ?? stripTags(props.item.html ?? ''), html: undefined }))
   }
 }
 
@@ -65,11 +74,15 @@ function stripTags(html: string) {
 
 const style = computed(() => props.item.style ?? {})
 
+/** style keys that cannot change the wrapped copy's metrics */
+const NON_REFLOW_STYLE = new Set(['color', 'textAlign', 'textDecoration'])
+
 function setStyle(key: string, value: any) {
   const next = { ...(props.item.style ?? {}) }
   if (value === undefined || value === '' || value === null) delete next[key]
   else next[key] = value
-  patch({ style: Object.keys(next).length ? next : undefined })
+  const p: Record<string, any> = { style: Object.keys(next).length ? next : undefined }
+  patch(NON_REFLOW_STYLE.has(key) ? p : hugPatch(p))
 }
 
 /* font picker with search */

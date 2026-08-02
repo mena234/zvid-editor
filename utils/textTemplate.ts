@@ -23,6 +23,21 @@ export function isInlineEditableText(item: {
 }
 
 /**
+ * Plain TEXT whose box hugs the wrapped content: reflow edits (typing, a new
+ * wrap width, typography changes) drop a declared height so the measured size
+ * takes over, instead of letting the text overflow a stale box the renderer
+ * would clip to. `fitToBox` is the opposite contract — the box is fixed and
+ * the type shrinks into it — and customCode items lay themselves out.
+ */
+export function isAutoHugText(item: {
+  type?: string
+  customCode?: { css?: string | null; js?: string | null } | null
+  fitToBox?: boolean
+}): boolean {
+  return isInlineEditableText(item) && item.fitToBox !== true
+}
+
+/**
  * Replicates package/src/lib/texts/buildHtmlContent.ts so the stage's TEXT
  * rendering (and the customCode iframe) match Puppeteer's capture page.
  */

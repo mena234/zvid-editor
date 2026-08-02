@@ -251,6 +251,87 @@ test('corner-handle resize updates exported width/height', async ({ page }) => {
   expect(Math.abs(v.y - 150)).toBeLessThanOrEqual(1)
 })
 
+/* ---------------- 4b. text boxes hug their wrapped copy ---------------- */
+
+/** A fixed 600x400 box the text does NOT fill — the hug behaviors drop it. */
+const TEXT_BOX = {
+  type: 'TEXT',
+  text: 'The quick brown fox jumps over the lazy dog again and again',
+  x: 200,
+  y: 150,
+  width: 600,
+  height: 400,
+  style: { fontSize: '48px', color: '#ffffff' },
+}
+
+test('TEXT shows corner+side handles only; fitToBox keeps all 8', async ({ page }) => {
+  await loadProject(page, baseDoc([TEXT_BOX]))
+  const m = await metrics(page)
+  await page.mouse.click(...(Object.values(m.toScreen(500, 350)) as [number, number]))
+  await expect(page.locator('.sel-box.primary')).toHaveCount(1)
+  // a hugging text has no fixed height for n/s to drag
+  await expect(page.locator('.sel-box.primary .handle')).toHaveCount(6)
+
+  // fitToBox is the opposite contract (fixed box, type shrinks into it)
+  await page.evaluate(() => {
+    const t = (window as any).__zvidTest
+    t.project.patchVisual(t.project.doc.visuals[0]._id, { fitToBox: true })
+  })
+  await expect(page.locator('.sel-box.primary .handle')).toHaveCount(8)
+})
+
+test('side-handle on a TEXT re-wraps: width changes, the height re-hugs', async ({
+  page,
+}) => {
+  await loadProject(page, baseDoc([TEXT_BOX]))
+  const m = await metrics(page)
+  await page.mouse.click(...(Object.values(m.toScreen(500, 350)) as [number, number]))
+  await expect(page.locator('.sel-box.primary')).toHaveCount(1)
+
+  // filtered TEXT handle order: nw ne e se sw w → nth(2) = e
+  const eHandle = page.locator('.sel-box.primary .handle').nth(2)
+  const box = (await eHandle.boundingBox())!
+  const from = { x: box.x + box.width / 2, y: box.y + box.height / 2 }
+  const to = { x: from.x - 200 * m.scale, y: from.y }
+  await drag(page, from, to)
+
+  const v = (await exportedDoc(page)).visuals[0]
+  expect(Math.abs(v.width - 400)).toBeLessThanOrEqual(3)
+  expect(v.height).toBeUndefined()
+  expect(v.style.fontSize).toBe('48px') // sides re-wrap, they don't scale type
+
+  // the stage box hugs the wrapped copy instead of keeping the stale 400px
+  const itemH = await page
+    .locator('.stage-frame .stage-item')
+    .evaluate((el) => (el as HTMLElement).offsetHeight)
+  expect(itemH).toBeGreaterThan(100)
+  expect(itemH).toBeLessThan(395)
+})
+
+test('corner-handle on a TEXT scales the type with the box', async ({ page }) => {
+  await loadProject(page, baseDoc([TEXT_BOX]))
+  const m = await metrics(page)
+  await page.mouse.click(...(Object.values(m.toScreen(500, 350)) as [number, number]))
+  await expect(page.locator('.sel-box.primary')).toHaveCount(1)
+
+  // filtered TEXT handle order: nw ne e se sw w → nth(3) = se
+  const se = page.locator('.sel-box.primary .handle').nth(3)
+  const box = (await se.boundingBox())!
+  const from = { x: box.x + box.width / 2, y: box.y + box.height / 2 }
+  // +300 project px on the dominant axis → factor 1.5 (ratio is forced)
+  const to = { x: from.x + 300 * m.scale, y: from.y + 10 * m.scale }
+  await drag(page, from, to)
+
+  const v = (await exportedDoc(page)).visuals[0]
+  expect(Math.abs(v.width - 900)).toBeLessThanOrEqual(5)
+  expect(v.height).toBeUndefined()
+  // 48px * 1.5 — width and type share one factor so wrap points are stable
+  expect(Math.abs(parseFloat(v.style.fontSize) - 72)).toBeLessThanOrEqual(1)
+  // top-left anchor: dragging the SE handle keeps x/y in place
+  expect(Math.abs(v.x - 200)).toBeLessThanOrEqual(1)
+  expect(Math.abs(v.y - 150)).toBeLessThanOrEqual(1)
+})
+
 test('rotate handle sets angle; Shift snaps to 15° steps', async ({ page }) => {
   await loadProject(page, baseDoc([ITEM_A]))
   const m = await metrics(page)
