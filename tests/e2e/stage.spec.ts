@@ -264,20 +264,29 @@ const TEXT_BOX = {
   style: { fontSize: '48px', color: '#ffffff' },
 }
 
-test('TEXT shows corner+side handles only; fitToBox keeps all 8', async ({ page }) => {
+test('s-handle on a TEXT pins an explicit height without scaling type', async ({
+  page,
+}) => {
   await loadProject(page, baseDoc([TEXT_BOX]))
   const m = await metrics(page)
   await page.mouse.click(...(Object.values(m.toScreen(500, 350)) as [number, number]))
   await expect(page.locator('.sel-box.primary')).toHaveCount(1)
-  // a hugging text has no fixed height for n/s to drag
-  await expect(page.locator('.sel-box.primary .handle')).toHaveCount(6)
-
-  // fitToBox is the opposite contract (fixed box, type shrinks into it)
-  await page.evaluate(() => {
-    const t = (window as any).__zvidTest
-    t.project.patchVisual(t.project.doc.visuals[0]._id, { fitToBox: true })
-  })
   await expect(page.locator('.sel-box.primary .handle')).toHaveCount(8)
+
+  // HANDLES order in StageSelection.vue: nw n ne e se s sw w → nth(5) = s
+  const sHandle = page.locator('.sel-box.primary .handle').nth(5)
+  const box = (await sHandle.boundingBox())!
+  const from = { x: box.x + box.width / 2, y: box.y + box.height / 2 }
+  const to = { x: from.x, y: from.y + 100 * m.scale }
+  await drag(page, from, to)
+
+  const v = (await exportedDoc(page)).visuals[0]
+  expect(Math.abs(v.height - 500)).toBeLessThanOrEqual(3)
+  expect(Math.abs(v.width - 600)).toBeLessThanOrEqual(3)
+  expect(v.style.fontSize).toBe('48px') // n/s pins the box, it never scales type
+  // top-left anchor: dragging the S handle keeps x/y in place
+  expect(Math.abs(v.x - 200)).toBeLessThanOrEqual(1)
+  expect(Math.abs(v.y - 150)).toBeLessThanOrEqual(1)
 })
 
 test('side-handle on a TEXT re-wraps: width changes, the height re-hugs', async ({
@@ -288,8 +297,8 @@ test('side-handle on a TEXT re-wraps: width changes, the height re-hugs', async 
   await page.mouse.click(...(Object.values(m.toScreen(500, 350)) as [number, number]))
   await expect(page.locator('.sel-box.primary')).toHaveCount(1)
 
-  // filtered TEXT handle order: nw ne e se sw w → nth(2) = e
-  const eHandle = page.locator('.sel-box.primary .handle').nth(2)
+  // HANDLES order: nw n ne e se s sw w → nth(3) = e
+  const eHandle = page.locator('.sel-box.primary .handle').nth(3)
   const box = (await eHandle.boundingBox())!
   const from = { x: box.x + box.width / 2, y: box.y + box.height / 2 }
   const to = { x: from.x - 200 * m.scale, y: from.y }
@@ -314,8 +323,8 @@ test('corner-handle on a TEXT scales the type with the box', async ({ page }) =>
   await page.mouse.click(...(Object.values(m.toScreen(500, 350)) as [number, number]))
   await expect(page.locator('.sel-box.primary')).toHaveCount(1)
 
-  // filtered TEXT handle order: nw ne e se sw w → nth(3) = se
-  const se = page.locator('.sel-box.primary .handle').nth(3)
+  // HANDLES order: nw n ne e se s sw w → nth(4) = se
+  const se = page.locator('.sel-box.primary .handle').nth(4)
   const box = (await se.boundingBox())!
   const from = { x: box.x + box.width / 2, y: box.y + box.height / 2 }
   // +300 project px on the dominant axis → factor 1.5 (ratio is forced)

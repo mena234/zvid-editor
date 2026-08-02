@@ -42,11 +42,6 @@ const HANDLES = [
   { dir: 'w', x: 0, y: 0.5, cursor: 'ew-resize' },
 ] as const
 
-/* a hugging text has no fixed height to drag — n/s handles would only pin one */
-const handles = computed(() =>
-  hugText.value ? HANDLES.filter((h) => h.dir !== 'n' && h.dir !== 's') : HANDLES
-)
-
 /* ---------------- resize ---------------- */
 const TYPE_SCALE_KEYS = ['fontSize', 'lineHeight', 'letterSpacing', 'wordSpacing']
 
@@ -169,8 +164,10 @@ function onResizeMove(e: PointerEvent) {
     resize: undefined, // manual size overrides contain/cover
   }
   if (s.hug) {
-    // the box hugs the wrapped copy — the measured height takes over
-    patch.height = undefined
+    // n/s pins an explicit height (the drag counterpart of the inspector
+    // Height field); every other handle re-wraps, so the measured height
+    // takes over
+    if (s.dir !== 'n' && s.dir !== 's') patch.height = undefined
     if (corner && s.scaleStyle) patch.style = scaleTypography(s.scaleStyle, factor)
   }
   if (props.item.position && props.item.position !== 'custom') patch.position = 'custom'
@@ -223,7 +220,7 @@ function onRotateUp() {
   <div class="sel-box" :class="{ primary }" :style="boxStyle">
     <template v-if="primary">
       <span
-        v-for="hd in handles"
+        v-for="hd in HANDLES"
         :key="hd.dir"
         class="handle"
         :style="{
