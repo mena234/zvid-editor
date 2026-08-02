@@ -224,10 +224,21 @@ async function load(item: LibraryItem) {
   }
   loadingSlug.value = item.slug
   try {
-    const config = await fetchLibraryContent('examples', item.slug)
+    // Admins edit + republish from any entry path, so they must always get
+    // the live content (and the Render & publish banner below).
+    const config = await fetchLibraryContent('examples', item.slug, {
+      fresh: isAdmin.value,
+    })
     project.loadRaw(config)
     editor.setContext('root')
     editor.clearSelection()
+    if (isAdmin.value) {
+      editor.setSourceExample({
+        slug: item.slug,
+        title: item.title,
+        meta: item.meta,
+      })
+    }
     editor.closeModal()
     editor.notify('Example loaded', 'success')
   } catch (e) {

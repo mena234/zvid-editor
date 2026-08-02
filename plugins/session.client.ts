@@ -50,7 +50,14 @@ export default defineNuxtPlugin(() => {
 
   project.$onAction(({ name, after }) => {
     if (name === 'newProject' || name === 'loadRaw') {
-      after(() => editor.setCloudProject(null))
+      after(() => {
+        editor.setCloudProject(null)
+        // Same hygiene for the admin example link: a replaced document must
+        // not stay attached to the previous example, or Render & publish
+        // would overwrite that example with unrelated content. Flows that DO
+        // edit an example set sourceExample right after their loadRaw call.
+        editor.setSourceExample(null)
+      })
     }
   })
 })

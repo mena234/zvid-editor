@@ -5,7 +5,10 @@
  * from Backblaze B2 through the Cloudflare CDN.
  *
  * Lists and content are memoized per session; content is returned as a fresh
- * clone so callers can mutate it freely.
+ * clone so callers can mutate it freely. The memos MUST be dropped when an
+ * admin republishes an item (invalidateLibraryCache) — otherwise the Examples
+ * modal and the edit flow keep serving the pre-publish list/JSON until a full
+ * page reload, which reads as "publish didn't update the example".
  */
 
 export interface LibraryItem {
@@ -33,6 +36,32 @@ export interface LibraryPage {
 const listCache = new Map<string, LibraryItem[]>()
 const pageCache = new Map<string, LibraryPage>()
 const contentCache = new Map<string, any>()
+
+/**
+ * Drop session memos so the next fetch reflects a republished item.
+ * With a slug, drops that item's content plus the kind's lists (item meta —
+ * preview, version — lives in the lists). With only a kind, drops everything
+ * cached for that kind. With no args, drops all library memos.
+ */
+export function invalidateLibraryCache(kind?: string, slug?: string) {
+  if (!kind) {
+    listCache.clear()
+    pageCache.clear()
+    contentCache.clear()
+    return
+  }
+  listCache.delete(kind)
+  for (const key of pageCache.keys()) {
+    if (key.startsWith(`${kind}:`)) pageCache.delete(key)
+  }
+  if (slug) {
+    contentCache.delete(`${kind}/${slug}`)
+  } else {
+    for (const key of contentCache.keys()) {
+      if (key.startsWith(`${kind}/`)) contentCache.delete(key)
+    }
+  }
+}
 
 export async function fetchLibraryList(kind: string): Promise<LibraryItem[]> {
   const hit = listCache.get(kind)
@@ -64,10 +93,11 @@ export async function fetchLibraryPage(
 
 export async function fetchLibraryContent(
   kind: string,
-  slug: string
+  slug: string,
+  opts: { fresh?: boolean } = {}
 ): Promise<any> {
   const key = `${kind}/${slug}`
-  if (!contentCache.has(key)) {
+  if (opts.fresh || !contentCache.has(key)) {
     contentCache.set(key, await $fetch(`/api/library/${kind}/${slug}/content`))
   }
   return JSON.parse(JSON.stringify(contentCache.get(key)))

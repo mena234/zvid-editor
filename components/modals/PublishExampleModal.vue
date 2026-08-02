@@ -1,139 +1,46 @@
 <script setup lang="ts">
-import { computed, ref, onBeforeUnmount } from 'vue'
-import type { Socket } from 'socket.io-client'
+import { computed } from 'vue'
 import { useProjectStore } from '~/stores/project'
 import { useEditorStore } from '~/stores/editor'
-import { useAuthStore } from '~/stores/auth'
+import { useExamplePublishStore } from '~/stores/examplePublish'
 import { validateProjectDoc } from '~/shared/schema/validate'
-import { connectRenderSocket, disconnectRenderSocket } from '~/utils/renderSocket'
 
+/**
+ * Viewer over the examplePublish store. The publish lifecycle (socket
+ * listeners, progress, terminal outcome, status polling) lives in the store,
+ * so this modal can be closed and reopened mid-flight without losing the run —
+ * the banner keeps showing progress and the toast still fires on completion.
+ */
 const project = useProjectStore()
 const editor = useEditorStore()
-const auth = useAuthStore()
+const publish = useExamplePublishStore()
 
 const source = computed(() => editor.sourceExample)
 
-const errors = computed(() => validateProjectDoc(project.doc).filter((i) => i.level === 'error'))
+const errors = computed(() =>
+  validateProjectDoc(project.doc).filter((i) => i.level === 'error')
+)
 
-type Status = 'idle' | 'connecting' | 'rendering' | 'publishing' | 'done' | 'error'
-const status = ref<Status>('idle')
-const progress = ref(0)
-const errorMsg = ref('')
-const errorDetails = ref<{ field?: string; message: string }[]>([])
-const newVersion = ref<number | null>(null)
-const previewUrl = ref('')
-const jobId = ref('')
-
-let activeSocket: Socket | null = null
-const boundEvents: [string, (data: any) => void][] = []
-
-function bind(s: Socket, event: string, handler: (data: any) => void) {
-  s.on(event, handler)
-  boundEvents.push([event, handler])
-}
-function unbindAll() {
-  if (activeSocket) {
-    for (const [event, handler] of boundEvents) activeSocket.off(event, handler)
+// A finished (done/error) run for ANOTHER example is stale context here —
+// treat it as idle so the admin can start publishing the current one.
+const viewStatus = computed(() => {
+  if (publish.slug && source.value && publish.slug !== source.value.slug) {
+    return publish.active ? 'busy-other' : 'idle'
   }
-  boundEvents.length = 0
-}
+  return publish.status
+})
 
-function fail(message: string, details: any[] = []) {
-  status.value = 'error'
-  errorMsg.value = message
-  errorDetails.value = Array.isArray(details) ? details : []
-}
-
-async function start() {
+function start() {
   if (!source.value) return
-  status.value = 'connecting'
-  progress.value = 0
-  errorMsg.value = ''
-  errorDetails.value = []
-
-  const clientKey = String(auth.user?.id ?? 'editor')
-  let socket: Socket
-  try {
-    socket = await connectRenderSocket(clientKey)
-  } catch (e: any) {
-    if (/unauthorized/i.test(e?.message ?? '')) {
-      disconnectRenderSocket()
-      auth.sessionExpired()
-      status.value = 'idle'
-      editor.notify('Your session expired — please sign in again', 'info')
-      editor.closeModal()
-    } else {
-      fail('Could not reach the render service. Check your connection and retry.')
-    }
-    return
-  }
-
-  activeSocket = socket
-  unbindAll()
-
-  // Kick off the server-side render + reupload + republish.
-  let resp: any
-  try {
-    resp = await $fetch(
-      `/api/admin/library/${encodeURIComponent(source.value.slug)}/render-publish`,
-      { method: 'POST', body: { content: project.exportRaw(), clientKey } }
-    )
-  } catch (e: any) {
-    fail(e?.data?.message || e?.message || 'Failed to start the render')
-    return
-  }
-  if (!resp?.success || !resp.jobId) {
-    fail(resp?.error || 'Failed to start the render', resp?.details || [])
-    return
-  }
-
-  jobId.value = resp.jobId
-  status.value = 'rendering'
-  const mineTask = (d: any) => d?.taskId === jobId.value
-  const mineJob = (d: any) => d?.jobId === jobId.value
-
-  bind(socket, 'taskAssigned', (d) => mineTask(d) && (status.value = 'rendering'))
-  bind(socket, 'taskProgress', (d) => {
-    if (!mineTask(d)) return
-    status.value = 'rendering'
-    const p = typeof d.progress === 'number' ? d.progress : d.progress?.progress
-    if (typeof p === 'number') progress.value = Math.min(100, Math.round(p))
-  })
-  // Render finished on the cell; orch is now downscaling + reuploading.
-  bind(socket, 'taskComplete', (d) => {
-    if (!mineTask(d)) return
-    progress.value = 100
-    status.value = 'publishing'
-  })
-  bind(socket, 'taskFailed', (d) => {
-    if (!mineTask(d)) return
-    unbindAll()
-    fail(typeof d.error === 'string' ? d.error : 'Render failed')
-  })
-  // Terminal success/failure of the whole edit→render→reupload→update-DB flow.
-  bind(socket, 'examplePublished', (d) => {
-    if (!mineJob(d)) return
-    unbindAll()
-    status.value = 'done'
-    newVersion.value = d.item?.version ?? null
-    previewUrl.value = d.item?.meta?.preview || d.item?.meta?.thumbnail || ''
-    // Reflect the fresh preview/meta in the in-memory record.
-    if (source.value && d.item) {
-      editor.setSourceExample({
-        slug: source.value.slug,
-        title: d.item.title ?? source.value.title,
-        meta: d.item.meta ?? source.value.meta,
-      })
-    }
-  })
-  bind(socket, 'examplePublishFailed', (d) => {
-    if (!mineJob(d)) return
-    unbindAll()
-    fail(typeof d.error === 'string' ? d.error : 'Publish failed')
-  })
+  publish.start(
+    { slug: source.value.slug, title: source.value.title },
+    project.exportRaw()
+  )
 }
 
-onBeforeUnmount(unbindAll)
+function retry() {
+  publish.reset()
+}
 </script>
 
 <template>
@@ -154,61 +61,71 @@ onBeforeUnmount(unbindAll)
     </div>
 
     <template v-else>
-      <div v-if="status === 'idle'" class="center">
+      <div v-if="viewStatus === 'busy-other'" class="center">
+        <p class="hint">
+          Still publishing “{{ publish.title || publish.slug }}” — wait for it to finish before
+          publishing this example.
+        </p>
+      </div>
+
+      <div v-else-if="viewStatus === 'idle'" class="center">
         <button class="btn primary lg" @click="start">
           <UiIcon name="render" :size="15" /> Render &amp; publish
         </button>
         <p class="hint">
           Rendered at native resolution, then downscaled to a 540p preview. No credits are charged.
+          You can close this dialog — publishing continues and you’ll be notified.
         </p>
       </div>
 
-      <div v-else-if="status === 'connecting'" class="center">
+      <div v-else-if="viewStatus === 'connecting'" class="center">
         <p class="hint">Contacting the render service…</p>
       </div>
 
-      <div v-else-if="status === 'rendering' || status === 'publishing'" class="center">
+      <div v-else-if="viewStatus === 'rendering' || viewStatus === 'publishing'" class="center">
         <div class="progress">
-          <div class="progress-fill" :style="{ width: `${progress}%` }" />
+          <div class="progress-fill" :style="{ width: `${publish.progress}%` }" />
         </div>
-        <p class="progress-label mono">{{ progress }}%</p>
+        <p class="progress-label mono">{{ publish.progress }}%</p>
         <p class="hint">
           {{
-            status === 'publishing'
+            viewStatus === 'publishing'
               ? 'Rendered — reuploading the preview and updating the library…'
               : 'Rendering in the cloud…'
           }}
         </p>
+        <p class="hint">Safe to close — this keeps running and you’ll get a notification.</p>
       </div>
 
-      <div v-else-if="status === 'done'" class="done">
+      <div v-else-if="viewStatus === 'done'" class="done">
         <video
-          v-if="previewUrl && /\.mp4($|\?)/i.test(previewUrl)"
-          :src="previewUrl"
+          v-if="publish.previewUrl && /\.mp4($|\?)/i.test(publish.previewUrl)"
+          :src="publish.previewUrl"
           class="result"
           autoplay
           muted
           loop
           playsinline
         />
-        <img v-else-if="previewUrl" :src="previewUrl" class="result" alt="new preview" />
+        <img v-else-if="publish.previewUrl" :src="publish.previewUrl" class="result" alt="new preview" />
         <p class="ok">
-          ✓ Published<template v-if="newVersion != null"> — now version {{ newVersion }}</template
+          ✓ Published<template v-if="publish.newVersion != null">
+            — now version {{ publish.newVersion }}</template
           >. The updated preview is live on the CDN.
         </p>
-        <button class="btn primary" @click="editor.closeModal()">Done</button>
+        <button class="btn primary" @click="publish.reset(); editor.closeModal()">Done</button>
       </div>
 
       <div v-else class="block err-block">
         <b>Publish failed</b>
-        <pre class="mono">{{ errorMsg }}</pre>
-        <ul v-if="errorDetails.length">
-          <li v-for="(d, i) in errorDetails.slice(0, 5)" :key="i">
+        <pre class="mono">{{ publish.errorMsg }}</pre>
+        <ul v-if="publish.errorDetails.length">
+          <li v-for="(d, i) in publish.errorDetails.slice(0, 5)" :key="i">
             <span v-if="d.field" class="mono">{{ d.field }}</span>
             {{ d.message }}
           </li>
         </ul>
-        <button class="btn" @click="status = 'idle'">Try again</button>
+        <button class="btn" @click="retry">Try again</button>
       </div>
     </template>
   </UiModal>

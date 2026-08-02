@@ -49,6 +49,25 @@ export function trustedExampleUrl(raw: string): string | null {
 }
 
 /**
+ * Derive a library example's slug from its CDN content URL
+ * (…/library/examples/<slug>.<hash>.json). Lets the admin banner attach to
+ * examples opened via the public ?exampleUrl= deep link. Null when the URL
+ * isn't a library-examples content object.
+ */
+export function exampleSlugFromContentUrl(raw: string): string | null {
+  let url: URL
+  try {
+    url = new URL(raw)
+  } catch {
+    return null
+  }
+  const m = url.pathname.match(
+    /\/library\/examples\/([a-z0-9][a-z0-9-]*)\.[0-9a-f]{6,64}\.json$/i
+  )
+  return m ? m[1] : null
+}
+
+/**
  * Cloud save actions shared by the TopBar and the account menu. The editor
  * itself never requires an account — these helpers gate only the save
  * paths, opening the sign-in modal and remembering which modal to reopen
@@ -140,8 +159,60 @@ export function useCloud() {
       editor.setContext('root')
       editor.clearSelection()
       editor.notify('Example loaded — start editing', 'success')
+      // Admins get the edit + republish banner on this public path too. Runs
+      // detached: this path executes ahead of the auth gate, so wait for the
+      // session to settle without delaying the load.
+      void attachAdminSourceExample(href, project.doc)
     } catch {
       editor.notify('Could not open that example — try again.', 'error')
+    }
+  }
+
+  /**
+   * If the signed-in user turns out to be an admin, resolve the example
+   * behind a CDN content URL and mark it as the editing source so the
+   * Render & publish banner appears. Non-fatal on any failure. `loadedDoc`
+   * pins the document this attach belongs to — if another document replaces
+   * it before auth settles, attaching would tie the wrong doc to the example.
+   */
+  async function attachAdminSourceExample(contentUrl: string, loadedDoc: any) {
+    const slug = exampleSlugFromContentUrl(contentUrl)
+    if (!slug) return
+    if (!auth.loaded) {
+      await new Promise<void>((resolve) => {
+        const stop = watch(
+          () => auth.loaded,
+          (loaded) => {
+            if (loaded) {
+              stop()
+              resolve()
+            }
+          }
+        )
+      })
+    }
+    if (!isAdmin()) return
+    if (project.doc !== loadedDoc) return
+    try {
+      const list = await fetchLibraryList('examples')
+      let item: { title: string; meta: any } | undefined = list.find(
+        (i) => i.slug === slug
+      )
+      if (!item) {
+        const r = await $fetch<any>(
+          `/api/admin/library/examples/${encodeURIComponent(slug)}`
+        ).catch(() => null)
+        if (r?.success) item = r
+      }
+      if (!item) return
+      if (project.doc !== loadedDoc) return
+      editor.setSourceExample({ slug, title: item.title, meta: item.meta })
+      editor.notify(
+        `Editing example “${item.title}” — Render & publish when ready`,
+        'info'
+      )
+    } catch {
+      // The example stays editable as a plain document.
     }
   }
 
@@ -299,7 +370,11 @@ export function useCloud() {
         editor.notify(`Example “${slug}” was not found`, 'error')
         return false
       }
-      const content = await fetchLibraryContent('examples', slug)
+      // Always bypass the session memo: editing must start from the LIVE
+      // content, or a republish would silently revert someone's earlier fix.
+      const content = await fetchLibraryContent('examples', slug, {
+        fresh: true,
+      })
       project.loadRaw(content)
       editor.setCloudProject(null)
       editor.setSourceExample({ slug, title: item.title, meta: item.meta })

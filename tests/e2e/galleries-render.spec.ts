@@ -291,6 +291,39 @@ test('admin session bypasses the PRO lock even without a paid plan', async ({ pa
   expect(doc.visuals[0]).toMatchObject({ type: 'TEXT', text: 'premium text' })
 })
 
+test('admin card click enters edit mode: banner + publish button, detached on new doc', async ({ page }) => {
+  // Any example an admin opens — not just via the ✎ Edit button — becomes the
+  // editing source, so the Render & publish banner is always available.
+  const adminSeed = {
+    user: { id: 'usr_9', email: 'admin@zvid.io', isAdmin: true },
+    plan: { name: 'Free', isPaid: false },
+    library: LIBRARY,
+    libraryContent: LIBRARY_CONTENT,
+  }
+  await resetMockOrch(adminSeed)
+  await openEditor(page, { authed: true })
+  await resetMockOrch(adminSeed)
+  await page.getByRole('button', { name: 'Examples' }).click()
+  await expect(page.locator('.ex-tools')).toBeVisible()
+
+  await page.locator('.card', { hasText: 'Crypto Growth Report' }).click()
+  await expect(page.locator('.toast')).toContainText('Example loaded')
+
+  const banner = page.locator('.admin-ex-banner')
+  await expect(banner).toBeVisible()
+  await expect(banner).toContainText('Crypto Growth Report')
+  await expect(banner.locator('.btn.primary')).toContainText('Render & publish')
+  expect(await store(page, 'editor', 'sourceExample')).toMatchObject({
+    slug: 'ex-fin-growth',
+  })
+
+  // Replacing the document must detach the example — publishing after this
+  // would otherwise overwrite ex-fin-growth with unrelated content.
+  await loadProject(page, { name: 'unrelated', duration: 2, visuals: [] })
+  await expect(banner).toHaveCount(0)
+  expect(await store(page, 'editor', 'sourceExample')).toBeNull()
+})
+
 test('clicking a free example loads its project JSON into the editor', async ({ page }) => {
   await seed()
   await openEditor(page)
