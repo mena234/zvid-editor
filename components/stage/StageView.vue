@@ -290,6 +290,8 @@ const stageCtx = reactive({
   collectSnapLines,
   clearGuides: () => (guides.value = []),
   openContextMenu,
+  /** pointer event → project-canvas coordinates */
+  canvasPoint: (e: PointerEvent) => framePoint(e),
 })
 provide('stageCtx', stageCtx)
 
@@ -704,6 +706,11 @@ const contextLabel = computed(() => {
   /* scenes are read-only here — let clicks fall through to the editable
      overlay items and the frame (marquee / deselect) */
   pointer-events: none;
+  /* the renderer composites every scene on its own canvas before the scene
+     xfade, cropping content at the canvas bounds (e.g. resize:cover images
+     wider than the canvas) — without this clip that content bleeds over the
+     neighbouring scene during slide transitions */
+  overflow: hidden;
 }
 .fx-plate {
   position: absolute;

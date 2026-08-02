@@ -551,13 +551,15 @@ describe('resolveScenesForPreview', () => {
     }
     const out = resolveScenesForPreview([scene], ps)
     expect(out).toHaveLength(3)
-    expect(out.map((s) => s.id)).toEqual(['body-0', 'body-1', 'body-2'])
+    expect(out.map((s) => s.id)).toEqual(['body-1', 'body-2', 'body-3'])
     // first clone keeps the source _id, later clones get ~index suffixes
     expect(out.map((s) => s._id)).toEqual(['scn_1', 'scn_1~1', 'scn_1~2'])
     expect(out.map((s) => s._sourceId)).toEqual(['scn_1', 'scn_1', 'scn_1'])
     expect(out.map((s) => s.visuals[0].text)).toEqual(['A #0', 'B #1', 'C #2'])
     // pooled audio elements get distinct _ids on clones
     expect(out.map((s) => s.audios[0]._id)).toEqual(['a1', 'a1~1', 'a1~2'])
+    // visuals too — measured text/svg dims are pooled by _id app-wide
+    expect(out.map((s) => s.visuals[0]._id)).toEqual(['v1', 'v1~1', 'v1~2'])
   })
 
   it('iterate clones chain transitions to each other; last keeps the original', () => {
@@ -572,8 +574,8 @@ describe('resolveScenesForPreview', () => {
       audios: [],
     }
     const out = resolveScenesForPreview([scene], ps)
-    expect(out[0].transitionId).toBe('body-1')
-    expect(out[1].transitionId).toBe('body-2')
+    expect(out[0].transitionId).toBe('body-2')
+    expect(out[1].transitionId).toBe('body-3')
     expect(out[2].transitionId).toBe('outro')
   })
 
@@ -582,8 +584,8 @@ describe('resolveScenesForPreview', () => {
     const intro = { _id: 'A', id: 'intro', transition: 'fade', transitionId: 'body' }
     const body = { _id: 'B', id: 'body', iterate: 'slides', visuals: [], audios: [] }
     const out = resolveScenesForPreview([intro, body], ps)
-    expect(out.map((s) => s.id)).toEqual(['intro', 'body-0', 'body-1'])
-    expect(out[0].transitionId).toBe('body-0')
+    expect(out.map((s) => s.id)).toEqual(['intro', 'body-1', 'body-2'])
+    expect(out[0].transitionId).toBe('body-1')
   })
 
   it('resolves placeholders inside transitionId on plain scenes', () => {
@@ -609,7 +611,7 @@ describe('resolveScenesForPreview', () => {
       audios: [],
     }
     const out = resolveScenesForPreview([scene], ps)
-    expect(out.map((s) => s.id)).toEqual(['sec-0', 'sec-2'])
+    expect(out.map((s) => s.id)).toEqual(['sec-1', 'sec-3'])
     expect(out.map((s) => s._id)).toEqual(['scn', 'scn~2'])
   })
 
@@ -680,7 +682,7 @@ describe('resolveScenesForPreview', () => {
       [{ _id: 's', iterate: 'slides', visuals: [], audios: [] }],
       ps
     )
-    expect(out.map((s) => s.id)).toEqual(['scene-1-0', 'scene-1-1'])
+    expect(out.map((s) => s.id)).toEqual(['scene-1-1', 'scene-1-2'])
   })
 
   it('non-object scene entries pass through untouched', () => {

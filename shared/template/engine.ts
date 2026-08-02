@@ -428,7 +428,9 @@ export function resolveScenesForPreview(
       const cond = previewCondition(scene.condition, itemScope)
       if (cond.resolved && !cond.shown) return
       const clone = resolvePreviewNode(scene, itemScope, undefined, { prune: true })
-      clone.id = `${baseId}-${idx}`
+      // human-facing clone numbering is 1-based, matching orch iterate.js
+      // ({{index}} stays 0-based)
+      clone.id = `${baseId}-${idx + 1}`
       clone._id = idx === 0 ? scene._id : `${scene._id}~${idx}`
       clone._sourceId = scene._id
       // audio elements are pooled by _id app-wide — clones need distinct ones
@@ -437,9 +439,18 @@ export function resolveScenesForPreview(
           a && typeof a === 'object' ? { ...a, _id: `${a._id}~${idx}` } : a
         )
       }
+      // visuals too: measured text/svg dims are pooled by _id app-wide, and
+      // every clone's stage layer stays mounted — shared ids would make the
+      // clones overwrite each other's measurements. Clone visuals are
+      // display-only (never interactive), so the suffix breaks no editing.
+      if (idx > 0 && Array.isArray(clone.visuals)) {
+        clone.visuals = clone.visuals.map((v: any) =>
+          v && typeof v === 'object' ? { ...v, _id: `${v._id}~${idx}` } : v
+        )
+      }
       // orch chains clones to each other; the last keeps the original target
       if (idx < items.length - 1 && clone.transition) {
-        clone.transitionId = `${baseId}-${idx + 1}`
+        clone.transitionId = `${baseId}-${idx + 2}`
       }
       out.push(clone)
     })

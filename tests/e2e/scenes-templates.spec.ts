@@ -186,7 +186,7 @@ test('convert flat timeline -> scenes moves visuals/audios into scene 1 unchange
   expect(doc.scenes).toHaveLength(1)
   const s = doc.scenes[0]
   // convertToScenes wraps the flat timeline: same timings, scene-local now
-  expect(s.id).toBe('scene-0')
+  expect(s.id).toBe('scene-1')
   expect(s.duration).toBe(8) // seeded from the project duration
   expect(s.visuals).toHaveLength(2)
   expect(s.visuals[0]).toMatchObject({ type: 'TEXT', text: 'first', exitEnd: 3 })
@@ -238,7 +238,7 @@ test('scene CRUD: cards show durations (auto computed), add, reorder reconciles 
   await page.locator('.rail-panel button', { hasText: 'Add scene' }).click()
   await expect(cards).toHaveCount(4)
   let doc = await exportedDoc(page)
-  expect(doc.scenes[3]).toMatchObject({ id: 'scene-3', duration: 5 })
+  expect(doc.scenes[3]).toMatchObject({ id: 'scene-4', duration: 5 })
   expect(await store(page, 'editor', 'context')).not.toBe('root')
 
   // remove the added scene again
@@ -845,7 +845,7 @@ test('scene condition + iterate: xN badge, preview expands per item, duration mu
       const t = (window as any).__zvidTest
       return t.project.resolvedPreviewDoc.scenes.map((s: any) => s.id)
     })
-  ).toEqual(['slide-0', 'slide-1', 'slide-2', 'end'])
+  ).toEqual(['slide-1', 'slide-2', 'slide-3', 'end'])
   // the first clone previews the first item on stage
   await expect(page.locator('.scene-group', { hasText: 'A' }).first()).toBeVisible()
 

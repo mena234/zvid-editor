@@ -2,7 +2,7 @@
 import { computed, inject } from 'vue'
 import type { VisualDoc } from '~/shared/schema/types'
 import { canonicalVisualType } from '~/shared/schema/types'
-import { effectiveLayout, resolveVisualTiming } from '~/utils/itemGeometry'
+import { effectiveLayout, isVisibleAt, resolveVisualTiming } from '~/utils/itemGeometry'
 import { topLeftToAnchor } from '~/shared/schema/defaults'
 import {
   xfadeFrame,
@@ -96,15 +96,40 @@ const animClips = computed(() => !!animFx.value?.frame.clip)
 
 const groupFxStyle = computed(() => layerStyle(props.groupFx))
 
-/* Ken Burns zoom progress (getZoomFilter: 1 → depth across visible window) */
+/* Ken Burns zoom progress (getZoomFilter: 1 → depth across visible window).
+ * The renderer only zooms these types, and its perspective filter's output
+ * stays exactly the item box — the media magnifies inside the frame, so the
+ * preview must clip the scaled content to the box. */
+const ZOOMABLE_TYPES = new Set(['VIDEO', 'IMAGE', 'GIF', 'SVG'])
+
+const zoomActive = computed(
+  () => !!props.item.zoom && ZOOMABLE_TYPES.has(type.value ?? '')
+)
+
 const zoomScale = computed(() => {
+  if (!zoomActive.value) return 1
   const z = props.item.zoom
-  if (!z) return 1
   const depth = typeof z === 'object' && z !== null ? (z.depth ?? 1.2) : 1.2
   const tm = timing.value
   const dur = Math.max(0.001, tm.exitEnd - tm.enterBegin)
   const p = Math.min(1, Math.max(0, (props.time - tm.enterBegin) / dur))
   return 1 + (Math.min(10, Math.max(1, depth)) - 1) * p
+})
+
+/* shouldClipRadiusAfterZoom parity: with zoom + radius + explicit w/h and no
+ * rotation, the renderer clips the corners after the zoom — the frame shape
+ * stays fixed while only the media zooms underneath. */
+const clipRadiusAfterZoom = computed(() => {
+  if (!zoomActive.value) return false
+  const r = props.item.radius
+  const hasRadius =
+    !!r && ((r.tl ?? 0) > 0 || (r.tr ?? 0) > 0 || (r.br ?? 0) > 0 || (r.bl ?? 0) > 0)
+  return (
+    hasRadius &&
+    props.item.width !== undefined &&
+    props.item.height !== undefined &&
+    !props.item.angle
+  )
 })
 
 const wrapperStyle = computed(() => {
@@ -114,6 +139,7 @@ const wrapperStyle = computed(() => {
   if (item.flipH) flips.push('scaleX(-1)')
   if (item.flipV) flips.push('scaleY(-1)')
   const rotate = item.angle ? `rotate(${item.angle}deg)` : ''
+  const r = item.radius
   return {
     left: `${L.left}px`,
     top: `${L.top}px`,
@@ -121,6 +147,10 @@ const wrapperStyle = computed(() => {
     height: `${L.height}px`,
     transform: [rotate, ...flips].join(' ') || undefined,
     opacity: item.opacity ?? 1,
+    borderRadius:
+      clipRadiusAfterZoom.value && r
+        ? `${r.tl ?? 0}px ${r.tr ?? 0}px ${r.br ?? 0}px ${r.bl ?? 0}px`
+        : undefined,
     zIndex: undefined as any,
   }
 })
@@ -131,7 +161,31 @@ let dragStart: {
   py: number
   items: { id: string; left: number; top: number; w: number; h: number; anchor: any }[]
   moved: boolean
+  /** top-most item under the pointer, selected on release if no drag happened */
+  deferredSelect: string | null
 } | null = null
+
+/** ids of the current visual selection (empty when nothing visual is selected) */
+function selectedVisualIds(): string[] {
+  if (editor.selectionKind !== 'visual') return []
+  if (editor.selectedIds.length) return editor.selectedIds
+  return editor.selectedId ? [editor.selectedId] : []
+}
+
+/** does the pointer land inside a currently-visible selected item's box? */
+function pointerOverSelection(e: PointerEvent): boolean {
+  const ids = selectedVisualIds()
+  if (!ids.length) return false
+  const p = stageCtx.canvasPoint(e)
+  return ids.some((id) => {
+    const doc = project.visualById(id)
+    if (!doc || !isVisibleAt(doc, props.time, props.contextDuration)) return false
+    const L = effectiveLayout(doc, stageCtx.projW, stageCtx.projH)
+    return (
+      p.x >= L.left && p.x <= L.left + L.width && p.y >= L.top && p.y <= L.top + L.height
+    )
+  })
+}
 
 function onPointerDown(e: PointerEvent) {
   if (!props.interactive || e.button !== 0) return
@@ -142,11 +196,24 @@ function onPointerDown(e: PointerEvent) {
     editor.selectionKind === 'visual' &&
     (editor.selectedIds.includes(props.item._id) || editor.selectedId === props.item._id)
 
-  if (!alreadySelected || additive) editor.selectVisual(props.item._id, additive)
-  editor.openInspector()
-  if (additive) return
+  // An element selected elsewhere (timeline, layers) can sit UNDER this one:
+  // clicking would steal the selection to the top layer and make lower layers
+  // undraggable on the stage. When the pointer lands inside the selected
+  // item's box, keep that selection and drag it; a plain click (no movement)
+  // still falls through to selecting this item on release.
+  const dragSelection = !alreadySelected && !additive && pointerOverSelection(e)
 
-  const ids = editor.selectedIds.length ? editor.selectedIds : [props.item._id]
+  if (!dragSelection) {
+    if (!alreadySelected || additive) editor.selectVisual(props.item._id, additive)
+    editor.openInspector()
+    if (additive) return
+  }
+
+  const ids = dragSelection
+    ? selectedVisualIds()
+    : editor.selectedIds.length
+      ? editor.selectedIds
+      : [props.item._id]
   const items = ids
     .map((id) => {
       const doc = project.visualById(id)
@@ -156,7 +223,13 @@ function onPointerDown(e: PointerEvent) {
     })
     .filter(Boolean) as any[]
 
-  dragStart = { px: e.clientX, py: e.clientY, items, moved: false }
+  dragStart = {
+    px: e.clientX,
+    py: e.clientY,
+    items,
+    moved: false,
+    deferredSelect: dragSelection ? props.item._id : null,
+  }
   stageCtx.collectSnapLines(new Set(ids))
   window.addEventListener('pointermove', onDragMove)
   window.addEventListener('pointerup', onDragUp)
@@ -207,6 +280,11 @@ function onDragUp() {
   window.removeEventListener('pointerup', onDragUp)
   stageCtx.clearGuides()
   if (dragStart?.moved) project.commit()
+  else if (dragStart?.deferredSelect) {
+    // pointer never moved — this was a plain click, not a selection drag
+    editor.selectVisual(dragStart.deferredSelect)
+    editor.openInspector()
+  }
   dragStart = null
 }
 
@@ -239,7 +317,7 @@ const isSelected = computed(
   <div
     v-show="visible"
     class="stage-item"
-    :class="{ selected: isSelected, interactive, clipping: animClips }"
+    :class="{ selected: isSelected, interactive, clipping: animClips || zoomActive }"
     :style="wrapperStyle"
     :data-item-id="item._id"
     @pointerdown="onPointerDown"
@@ -259,6 +337,7 @@ const isSelected = computed(
             :context-duration="contextDuration"
             :width="layout.width"
             :height="layout.height"
+            :suppress-radius="clipRadiusAfterZoom"
           />
         </div>
       </div>
@@ -300,7 +379,8 @@ const isSelected = computed(
   overflow: visible;
   position: relative;
 }
-/* slides/zoom xfades move layers inside the item's canvas — clip to it */
+/* slides/zoom xfades and the Ken Burns zoom move/scale content inside the
+   item's canvas — clip to it */
 .stage-item.clipping {
   overflow: hidden;
 }

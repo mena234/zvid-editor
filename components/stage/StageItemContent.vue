@@ -28,6 +28,8 @@ const props = defineProps<{
   contextDuration: number
   width: number
   height: number
+  /** radius is clipped by the item wrapper instead (zoom parity) */
+  suppressRadius?: boolean
 }>()
 
 const editor = useEditorStore()
@@ -67,7 +69,7 @@ const tint = computed(() => tintOverlayColor(props.item.filter))
 
 const radiusStyle = computed(() => {
   const r = props.item.radius
-  if (!r) return undefined
+  if (!r || props.suppressRadius) return undefined
   return `${r.tl ?? 0}px ${r.tr ?? 0}px ${r.br ?? 0}px ${r.bl ?? 0}px`
 })
 
@@ -250,11 +252,16 @@ watch(
     if (el && type.value === 'TEXT') {
       ro = new ResizeObserver(() => {
         if (skipTextMeasure()) return
+        // a v-show'd scene layer reports 0×0 (display:none) — writing that
+        // would collapse the box of every visible instance sharing the cache
+        // entry; the observer re-fires with real dims when the layer shows
+        if (!el.offsetParent) return
         // offsetWidth/Height are unscaled layout px (stage scale is a transform)
         setMeasured(props.item._id, el.offsetWidth, el.offsetHeight)
       })
       ro.observe(el)
-      if (!skipTextMeasure()) setMeasured(props.item._id, el.offsetWidth, el.offsetHeight)
+      if (!skipTextMeasure() && el.offsetParent)
+        setMeasured(props.item._id, el.offsetWidth, el.offsetHeight)
     }
   },
   { immediate: true }

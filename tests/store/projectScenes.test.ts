@@ -24,17 +24,17 @@ describe('project store — scenes', () => {
     setActivePinia(createPinia())
   })
 
-  it('addScene creates the scenes array with a sequential id and 5s duration', () => {
+  it('addScene creates the scenes array with a sequential 1-based id and 5s duration', () => {
     const store = useProjectStore()
     expect(store.hasScenes).toBe(false)
     const s0 = store.addScene()
     expect(store.hasScenes).toBe(true)
-    expect(s0.id).toBe('scene-0')
+    expect(s0.id).toBe('scene-1')
     expect(s0.duration).toBe(5)
     expect(s0._id).toMatch(/^scn_/)
     const s1 = store.addScene()
-    expect(s1.id).toBe('scene-1')
-    expect(store.doc.scenes!.map((s) => s.id)).toEqual(['scene-0', 'scene-1'])
+    expect(s1.id).toBe('scene-2')
+    expect(store.doc.scenes!.map((s) => s.id)).toEqual(['scene-1', 'scene-2'])
   })
 
   it('addScene(afterIndex) inserts after the given scene', () => {
@@ -47,10 +47,10 @@ describe('project store — scenes', () => {
 
   it('uniqueSceneId skips ids already in use', () => {
     const store = useProjectStore()
-    store.doc.scenes = [scene({ _id: 'scn_a', id: 'scene-1' })]
+    store.doc.scenes = [scene({ _id: 'scn_a', id: 'scene-2' })]
     const added = store.addScene()
-    // length is 1 → candidate scene-1 is taken → bumps to scene-2
-    expect(added.id).toBe('scene-2')
+    // length is 1 → candidate scene-2 is taken → bumps to scene-3
+    expect(added.id).toBe('scene-3')
   })
 
   it('removeScene deletes the scene and drops the array when the last one goes', () => {
@@ -173,7 +173,7 @@ describe('project store — scenes', () => {
     expect(store.doc.visuals).toHaveLength(0)
     expect(store.doc.audios).toHaveLength(0)
     const s = store.doc.scenes![0]
-    expect(s.id).toBe('scene-0')
+    expect(s.id).toBe('scene-1')
     expect(s.duration).toBe(25)
     expect(s.visuals[0]._id).toBe(v._id)
     expect(s.audios[0]._id).toBe(a._id)

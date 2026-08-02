@@ -652,7 +652,7 @@ export const useProjectStore = defineStore('project', {
       if (this.doc.scenes?.length) return
       const scene: SceneDoc = {
         _id: makeId('scn'),
-        id: 'scene-0',
+        id: 'scene-1',
         duration: this.doc.duration ?? 10,
         visuals: this.doc.visuals,
         audios: this.doc.audios,
@@ -718,7 +718,8 @@ function nextFreeTrack(used: number[], extraLanes: number[]): number {
 }
 
 function uniqueSceneId(scenes: SceneDoc[]): string {
-  let i = scenes.length
+  // human-facing numbering starts at 1: scene-1, scene-2, …
+  let i = scenes.length + 1
   let id = `scene-${i}`
   const ids = new Set(scenes.map((s) => s.id))
   while (ids.has(id)) {
