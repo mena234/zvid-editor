@@ -53,6 +53,10 @@ export default defineNuxtConfig({
       meta: [
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         {
+          name: 'robots',
+          content: 'noindex, nofollow, noarchive',
+        },
+        {
           name: 'description',
           content:
             'Visual editor for zvid — compose videos on a stage and timeline, export automation-ready JSON.',
@@ -72,6 +76,18 @@ export default defineNuxtConfig({
         },
       ],
     },
+  },
+
+  routeRules: {
+    '/**': {
+      headers: {
+        'X-Robots-Tag': 'noindex, nofollow, noarchive',
+      },
+    },
+  },
+
+  nitro: {
+    compressPublicAssets: true,
   },
 
   runtimeConfig: {
