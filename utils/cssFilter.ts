@@ -1,8 +1,8 @@
 /**
  * Approximate the package's FFmpeg style filters (getStyleFilters.ts) with
- * CSS filter() for the stage preview. The FFmpeg curves are not identical
- * (contrast maps 0..100 → 1..1000(!), saturation 0..100 → 1..3); we use
- * perceptually similar CSS mappings and label the preview as approximate.
+ * CSS filter() for the stage preview. The FFmpeg curves are not identical,
+ * but contrast and saturation share the same -100..100 normalization used by
+ * the renderer.
  */
 export interface ZvidFilter {
   brightness?: number // -100..100
