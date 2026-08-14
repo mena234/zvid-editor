@@ -4,7 +4,13 @@ import { useEditorContext } from '~/composables/useEditorContext'
 import { useMediaReplace } from '~/composables/useMediaReplace'
 import { useAuthStore } from '~/stores/auth'
 import { useUploadsStore, type UploadKind, type UploadItem } from '~/stores/uploads'
-import { setStockDragData, buildStockVisual, type StockDragPayload } from '~/utils/stockDrag'
+import {
+  setStockDragData,
+  buildStockVisual,
+  mediaEndAtPlayhead,
+  type StockDragPayload,
+} from '~/utils/stockDrag'
+import { round3 } from '~/utils/time'
 
 const props = defineProps<{ kind: UploadKind }>()
 
@@ -30,7 +36,17 @@ const fileInput = ref<HTMLInputElement>()
 const items = computed(() => uploads.ofKind(props.kind))
 const pending = computed(() => uploads.pendingOfKind(props.kind))
 
-onMounted(() => void uploads.load())
+onMounted(() => {
+  // This panel may mount after auth changed while another library was open.
+  // Discard a response cached for the opposite auth state so users can upload
+  // immediately after signing in (and private uploads disappear on logout)
+  // without requiring a page refresh.
+  const cachedForGuest = !!auth.user && uploads.authRequired
+  const cachedForUser =
+    auth.loaded && !auth.user && uploads.items !== null && !uploads.authRequired
+  if (cachedForGuest || cachedForUser) uploads.reset()
+  void uploads.load()
+})
 // refresh after a sign-in / sign-out from anywhere in the editor
 watch(
   () => auth.user?.email,
@@ -72,6 +88,10 @@ function payloadOf(item: UploadItem): StockDragPayload {
     width: item.width ?? undefined,
     height: item.height ?? undefined,
     duration: item.duration ?? undefined,
+    extendTimeline:
+      item.kind === 'video' &&
+      typeof item.duration === 'number' &&
+      item.duration > 0,
   }
 }
 
@@ -82,19 +102,40 @@ function onDragStart(e: DragEvent, item: UploadItem) {
 
 function addItem(item: UploadItem) {
   if (item.kind === 'image' && tryReplace('image', item.url)) return
+  const currentDuration = contextDuration.value
+  const mediaEnd =
+    item.kind === 'video' || item.kind === 'audio'
+      ? mediaEndAtPlayhead(editor.playhead, item.duration)
+      : undefined
+  const addOptions = mediaEnd
+    ? { extendDurationTo: mediaEnd, currentDuration }
+    : undefined
   if (item.kind === 'audio') {
-    const added = project.addAudio(editor.context, { src: item.url })
+    const added = project.addAudio(
+      editor.context,
+      {
+        src: item.url,
+        ...(mediaEnd
+          ? {
+              enter: round3(Math.max(0, editor.playhead)) || undefined,
+              exit: mediaEnd,
+              audioEnd: item.duration!,
+            }
+          : {}),
+      },
+      addOptions
+    )
     editor.selectAudio(added._id)
     editor.notify(`${item.fileName} added to the timeline`, 'success')
     return
   }
   const visual = buildStockVisual(payloadOf(item), {
     playhead: editor.playhead,
-    contextDuration: contextDuration.value,
+    contextDuration: currentDuration,
     projectWidth: project.defaults.width,
     projectHeight: project.defaults.height,
   })
-  const added = project.addVisual(editor.context, visual)
+  const added = project.addVisual(editor.context, visual, addOptions)
   editor.selectVisual(added._id)
   editor.notify(
     `${item.fileName} added — drop on the canvas to place precisely`,

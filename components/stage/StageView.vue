@@ -7,7 +7,12 @@ import { clamp } from '~/utils/time'
 import type { VisualDoc } from '~/shared/schema/types'
 import { xfadeFrame, layerStyle, plateStyle, deviceScale } from '~/utils/xfade'
 import { activeGroupFx, type GroupFxResult } from '~/utils/groupTransitions'
-import { isStockDrag, parseStockDragData, buildStockVisual } from '~/utils/stockDrag'
+import {
+  isStockDrag,
+  parseStockDragData,
+  buildStockVisual,
+  mediaEndAtPlayhead,
+} from '~/utils/stockDrag'
 import { useMediaReplace } from '~/composables/useMediaReplace'
 
 const {
@@ -411,14 +416,24 @@ function onStockDrop(e: DragEvent) {
     x: clamp((e.clientX - rect.left) / scale.value, 0, projW.value),
     y: clamp((e.clientY - rect.top) / scale.value, 0, projH.value),
   }
+  const currentDuration = contextDuration.value
+  const mediaEnd = payload.extendTimeline
+    ? mediaEndAtPlayhead(editor.playhead, payload.duration)
+    : undefined
   const visual = buildStockVisual(payload, {
     playhead: editor.playhead,
-    contextDuration: contextDuration.value,
+    contextDuration: currentDuration,
     projectWidth: projW.value,
     projectHeight: projH.value,
     at,
   })
-  const added = project.addVisual(editor.context, visual)
+  const added = project.addVisual(
+    editor.context,
+    visual,
+    mediaEnd
+      ? { extendDurationTo: mediaEnd, currentDuration }
+      : undefined
+  )
   editor.selectVisual(added._id)
   editor.openInspector()
   editor.notify(

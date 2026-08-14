@@ -1,10 +1,15 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useEditorContext } from '~/composables/useEditorContext'
 import { usePlayheadJumps } from '~/composables/usePlayheadJumps'
 import { resolveVisualTiming, resolveAudioTiming } from '~/shared/schema/defaults'
 import { useMediaProbe } from '~/composables/useMediaProbe'
 import { formatTime, clamp, round3 } from '~/utils/time'
+import {
+  TIMELINE_DEFAULT_MIN_PX_PER_SEC,
+  TIMELINE_HEADER_WIDTH,
+  timelineZoomFloor,
+} from '~/utils/timelineZoom'
 
 const {
   project,
@@ -18,7 +23,7 @@ const { probe } = useMediaProbe()
 const { jumpBack, jumpForward } = usePlayheadJumps()
 
 /* ---------------- geometry ---------------- */
-const HEADER_W = 148
+const HEADER_W = TIMELINE_HEADER_WIDTH
 const pxPerSec = computed(() => editor.pxPerSec)
 
 /** Where the last clip actually ends (0 when the context is empty). An item
@@ -38,13 +43,54 @@ const lastClipEnd = computed(() => {
   return end
 })
 
+/** Subtitles are a root-only lane, so their blocks must participate in the
+ *  root fit calculation even when a caption extends past every media clip. */
+const lastCaptionEnd = computed(() => {
+  if (editor.context !== 'root') return 0
+
+  let end = 0
+  for (const caption of project.doc.subtitle?.captions ?? []) {
+    if (Number.isFinite(caption.end)) end = Math.max(end, caption.end)
+  }
+  return end
+})
+
 const contentEnd = computed(() =>
-  Math.max(contextDuration.value, lastClipEnd.value)
+  Math.max(contextDuration.value, lastClipEnd.value, lastCaptionEnd.value)
 )
 
 const contentWidth = computed(
   () => Math.max(contentEnd.value, contextDuration.value) * pxPerSec.value + 260
 )
+
+/* The old fixed 8px/s floor cannot show a long project end in a normal
+   viewport. Keep 8px/s for short projects, but lower the floor just enough
+   for the real content endpoint to fit (the trailing drag padding may scroll). */
+const timelineViewportWidth = ref(0)
+const minPxPerSec = computed(() =>
+  timelineZoomFloor(timelineViewportWidth.value, contentEnd.value)
+)
+let timelineResizeObserver: ResizeObserver | null = null
+
+function measureTimelineViewport() {
+  const width = scrollEl.value?.clientWidth ?? 0
+  // v-show makes the element width zero while collapsed; retain the last
+  // usable width so collapsing the panel does not reset a user's zoom.
+  if (width > 0) timelineViewportWidth.value = width
+}
+
+onMounted(() => {
+  timelineResizeObserver = new ResizeObserver(measureTimelineViewport)
+  if (scrollEl.value) timelineResizeObserver.observe(scrollEl.value)
+  measureTimelineViewport()
+})
+
+onBeforeUnmount(() => {
+  timelineResizeObserver?.disconnect()
+  editor.setTimelineZoomMin(TIMELINE_DEFAULT_MIN_PX_PER_SEC)
+})
+
+watch(minPxPerSec, (min) => editor.setTimelineZoomMin(min), { immediate: true })
 
 /* ---------------- lanes ---------------- */
 const visualLanes = computed<number[]>(() => {
@@ -296,8 +342,9 @@ const hasScenes = computed(() => !!project.doc.scenes?.length)
           <UiIcon name="zoom" :size="13" class="dim" />
           <input
             type="range"
-            min="8"
+            :min="minPxPerSec"
             max="400"
+            step="any"
             :value="editor.pxPerSec"
             title="Timeline zoom (Ctrl+scroll)"
             @input="editor.setZoom(Number(($event.target as HTMLInputElement).value))"

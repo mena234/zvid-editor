@@ -90,6 +90,48 @@ describe('project store — patch/remove/duplicate/replace', () => {
     expect('opacity' in got).toBe(false)
   })
 
+  it('persists stretched SVG markup on size patches and undoes it atomically', () => {
+    const store = useProjectStore()
+    const source =
+      '<svg viewBox="0 0 100 50" preserveAspectRatio="xMidYMid meet"><rect/></svg>'
+    const v = store.addVisual('root', {
+      type: 'SVG',
+      svg: source,
+      width: 100,
+      height: 50,
+      track: 0,
+    })
+
+    store.patchVisual(v._id, { width: 240 })
+
+    const resized = store.visualById(v._id)!
+    expect(resized.width).toBe(240)
+    expect(resized.svg).toContain('preserveAspectRatio="none"')
+    expect(resized.svg).not.toContain('xMidYMid meet')
+    expect((store.exportRaw().visuals as any[])[0].svg).toBe(resized.svg)
+
+    store.undo()
+    const restored = store.visualById(v._id)!
+    expect(restored.width).toBe(100)
+    expect(restored.svg).toBe(source)
+  })
+
+  it('does not rewrite SVG source for non-size patches', () => {
+    const store = useProjectStore()
+    const source = '<svg viewBox="0 0 10 10"><rect/></svg>'
+    const v = store.addVisual('root', {
+      type: 'SVG',
+      svg: source,
+      width: 10,
+      height: 10,
+      track: 0,
+    })
+
+    store.patchVisual(v._id, { x: 20 })
+
+    expect(store.visualById(v._id)!.svg).toBe(source)
+  })
+
   it('patchVisual/patchAudio are no-ops for unknown ids', () => {
     const store = useProjectStore()
     expect(() => store.patchVisual('nope', { x: 1 })).not.toThrow()

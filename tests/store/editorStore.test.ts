@@ -195,6 +195,25 @@ describe('editor store', () => {
       expect(s.pxPerSec).toBe(120)
     })
 
+    it('setZoom honors a responsive timeline floor below 8px/s', () => {
+      const s = useEditorStore()
+      s.setTimelineZoomMin(2.25)
+      s.setZoom(1)
+      expect(s.pxPerSec).toBe(2.25)
+
+      s.setTimelineZoomMin(4)
+      expect(s.pxPerSec).toBe(4)
+
+      // A user parked at minimum stays at minimum as a resize lowers it.
+      s.setTimelineZoomMin(2)
+      expect(s.pxPerSec).toBe(2)
+
+      // A manually zoomed-in user keeps their chosen scale across a resize.
+      s.setZoom(20)
+      s.setTimelineZoomMin(1.5)
+      expect(s.pxPerSec).toBe(20)
+    })
+
     it('toggleTimeline flips timelineCollapsed', () => {
       const s = useEditorStore()
       expect(s.timelineCollapsed).toBe(false)

@@ -10,6 +10,7 @@ import {
   parseStockDragData,
   isStockDrag,
   buildStockVisual,
+  mediaEndAtPlayhead,
   type StockDragPayload,
 } from '../../utils/stockDrag'
 
@@ -122,6 +123,30 @@ describe('buildStockVisual — timing', () => {
   it('playhead 0 leaves enterBegin undefined (default start)', () => {
     const item = buildStockVisual({ kind: 'IMAGE', src: 's' }, { ...base, playhead: 0 })
     expect(item.enterBegin).toBeUndefined()
+  })
+  it('uploaded videos can extend past the current duration from the exact playhead', () => {
+    const item = buildStockVisual(
+      {
+        kind: 'VIDEO',
+        src: 's',
+        duration: 4.25,
+        extendTimeline: true,
+      },
+      { ...base, playhead: 29.5, contextDuration: 30 }
+    )
+    expect(item.enterBegin).toBe(29.5)
+    expect(item.exitEnd).toBe(33.75)
+  })
+})
+
+describe('mediaEndAtPlayhead', () => {
+  it('returns the rounded absolute end for known media durations', () => {
+    expect(mediaEndAtPlayhead(2.3456, 4.5678)).toBe(6.913)
+  })
+  it('rejects missing, non-finite and non-positive durations', () => {
+    expect(mediaEndAtPlayhead(2, null)).toBeUndefined()
+    expect(mediaEndAtPlayhead(2, 0)).toBeUndefined()
+    expect(mediaEndAtPlayhead(2, Number.POSITIVE_INFINITY)).toBeUndefined()
   })
 })
 

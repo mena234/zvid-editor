@@ -417,6 +417,89 @@ test('ctrl+wheel zooms pxPerSec (clamped 8-600) and clip widths scale', async ({
     .toBeCloseTo(32, 0)
 })
 
+test('slider minimum fits a long project endpoint and follows viewport resizes', async ({
+  page,
+}) => {
+  const duration = 346.8
+  await seed(page, {
+    duration,
+    visuals: [
+      {
+        type: 'VIDEO',
+        id: 'long-video',
+        src: fx('clip.mp4'),
+        track: 0,
+        enterBegin: 0,
+        exitEnd: duration,
+      },
+    ],
+  }, 1)
+
+  const slider = page.locator('.tp-right input[type="range"]')
+  const minAtWideViewport = Number(await slider.getAttribute('min'))
+  expect(minAtWideViewport).toBeLessThan(8)
+
+  await slider.press('Home')
+  await expect.poll(() => pps(page)).toBeCloseTo(minAtWideViewport, 5)
+
+  const endpointFits = async () =>
+    page.evaluate(() => {
+      const scroll = document.querySelector('.tl-scroll') as HTMLElement
+      const endpoint = document.querySelector('.duration-mark') as HTMLElement
+      return endpoint.getBoundingClientRect().right <= scroll.getBoundingClientRect().right
+    })
+  await expect.poll(endpointFits).toBe(true)
+
+  await page.setViewportSize({ width: 1000, height: 1000 })
+  await expect
+    .poll(async () => Number(await slider.getAttribute('min')))
+    .toBeLessThan(minAtWideViewport)
+
+  const minAtNarrowViewport = Number(await slider.getAttribute('min'))
+  // Since the user was parked at minimum, resizing keeps them at the new
+  // responsive minimum instead of leaving the endpoint clipped again.
+  await expect.poll(() => pps(page)).toBeCloseTo(minAtNarrowViewport, 5)
+  await expect.poll(endpointFits).toBe(true)
+})
+
+test('slider minimum includes a root subtitle caption beyond all media', async ({ page }) => {
+  const captionEnd = 346.8
+  await seed(page, {
+    duration: 10,
+    visuals: [],
+    audios: [],
+    subtitle: {
+      captions: [
+        {
+          start: 320,
+          end: captionEnd,
+          text: 'Late caption',
+          words: [],
+        },
+      ],
+    },
+  }, 0)
+
+  const caption = page.locator('.sub-row .caption-block')
+  await expect(caption).toHaveCount(1)
+
+  const slider = page.locator('.tp-right input[type="range"]')
+  const minimum = Number(await slider.getAttribute('min'))
+  expect(minimum).toBeLessThan(8)
+
+  await slider.press('Home')
+  await expect.poll(() => pps(page)).toBeCloseTo(minimum, 5)
+  await expect
+    .poll(() =>
+      page.evaluate(() => {
+        const scroll = document.querySelector('.tl-scroll') as HTMLElement
+        const block = document.querySelector('.sub-row .caption-block') as HTMLElement
+        return block.getBoundingClientRect().right <= scroll.getBoundingClientRect().right
+      })
+    )
+    .toBe(true)
+})
+
 /* ------------------------------------------------------------------ */
 /* 12. transport                                                       */
 /* ------------------------------------------------------------------ */

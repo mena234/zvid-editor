@@ -20,8 +20,14 @@ import {
   clampDesignTiming,
 } from '~/shared/schema/defaults'
 import { DEFAULT_SCENE_DURATION } from '~/shared/schema/constants'
-import { resolveDocPreview, hasTemplateMarkers } from '~/shared/template/engine'
+import { computeSceneAutoDuration } from '~/shared/schema/scenePlan'
+import {
+  resolveDocPreview,
+  hasTemplateMarkers,
+  isValidPath,
+} from '~/shared/template/engine'
 import { useEditorStore } from '~/stores/editor'
+import { stretchSvgToBox } from '~/utils/svgMarkup'
 
 const STORAGE_KEY = 'zvid-editor:autosave'
 const HISTORY_LIMIT = 100
@@ -49,8 +55,81 @@ interface HistoryState {
   index: number
 }
 
+interface AddMediaOptions {
+  /**
+   * Grow the destination timeline to this absolute end time before adding the
+   * item. The growth and insertion are captured by the add action's one
+   * history commit, so a single undo removes both.
+   */
+  extendDurationTo?: number
+  /** Reactive/probe-derived duration of the editing context, when available. */
+  currentDuration?: number
+}
+
 function clone<T>(v: T): T {
   return JSON.parse(JSON.stringify(v))
+}
+
+const EXACT_DURATION_PLACEHOLDER = /^\{\{\s*([^{}]+?)\s*\}\}$/
+
+/**
+ * Raise the numeric default addressed by an exact duration placeholder while
+ * keeping the document's template binding intact. The scope order mirrors the
+ * template engine: a scene variable shadows a project variable with the same
+ * root name, including for nested dot paths.
+ */
+function raiseTemplateDurationDefault(
+  rawDuration: unknown,
+  requiredEnd: number,
+  scopes: unknown[]
+): boolean {
+  if (typeof rawDuration !== 'string') return false
+  const match = EXACT_DURATION_PLACEHOLDER.exec(rawDuration)
+  const path = match?.[1]?.trim()
+  if (!path || !isValidPath(path)) return false
+
+  const segments = path.split('.')
+  const root = segments[0]
+  const scope = scopes.find(
+    (candidate) =>
+      !!candidate &&
+      typeof candidate === 'object' &&
+      !Array.isArray(candidate) &&
+      Object.prototype.hasOwnProperty.call(candidate, root)
+  ) as Record<string, unknown> | undefined
+  if (!scope) return false
+
+  let parent: any = scope
+  for (let i = 0; i < segments.length - 1; i++) {
+    const segment = segments[i]
+    if (
+      !parent ||
+      typeof parent !== 'object' ||
+      !Object.prototype.hasOwnProperty.call(parent, segment)
+    ) {
+      return false
+    }
+    parent = parent[segment]
+  }
+
+  const leaf = segments[segments.length - 1]
+  if (
+    !parent ||
+    typeof parent !== 'object' ||
+    !Object.prototype.hasOwnProperty.call(parent, leaf)
+  ) {
+    return false
+  }
+  const previous = parent[leaf]
+  if (
+    typeof previous !== 'number' ||
+    !Number.isFinite(previous) ||
+    previous >= requiredEnd
+  ) {
+    return false
+  }
+  parent[leaf] = requiredEnd
+  return true
 }
 
 export const useProjectStore = defineStore('project', {
@@ -133,7 +212,12 @@ export const useProjectStore = defineStore('project', {
         if (context === 'root' && state.doc.scenes?.length) {
           const total = state.doc.scenes.reduce((sum, s) => {
             const d = sceneDuration(s)
-            return sum + (d > 0 ? d : DEFAULT_SCENE_DURATION)
+            const staticAutoDuration = computeSceneAutoDuration(
+              s,
+              () => undefined
+            )
+            return sum +
+              (d > 0 ? d : staticAutoDuration || DEFAULT_SCENE_DURATION)
           }, 0)
           return Math.max(base, total)
         }
@@ -297,32 +381,64 @@ export const useProjectStore = defineStore('project', {
       return this.sceneByEditorId(context)?.audios ?? []
     },
 
-    addVisual(context: string, item: Record<string, any>): VisualDoc {
+    addVisual(
+      context: string,
+      item: Record<string, any>,
+      options: AddMediaOptions = {}
+    ): VisualDoc {
       const doc: VisualDoc = { ...item, _id: makeId('vis') } as VisualDoc
       if (this.isImage) {
         // image projects: everything is "always on" — timing/transition
         // fields are rejected by orch/package, so never let them in
         for (const k of IMAGE_STRIPPED_ITEM_FIELDS) delete (doc as any)[k]
-      } else if (doc.track === undefined) {
-        const editor = useEditorStore()
-        const track = nextFreeTrack(
-          this.visualsOf(context).map((v) =>
-            typeof v.track === 'number' ? v.track : 0
-          ),
-          editor.extraVisualTracks
-        )
-        if (track > 0) doc.track = track
+      } else {
+        if (options.extendDurationTo !== undefined) {
+          this.extendContextDuration(
+            context,
+            options.extendDurationTo,
+            options.currentDuration,
+            false
+          )
+        }
+        if (doc.track === undefined) {
+          const editor = useEditorStore()
+          const track = nextFreeTrack(
+            this.visualsOf(context).map((v) =>
+              typeof v.track === 'number' ? v.track : 0
+            ),
+            editor.extraVisualTracks
+          )
+          if (track > 0) doc.track = track
+        }
       }
       if (!this.isImage) clampDesignTiming(doc, this.contextDurationOf(context))
       this.visualsOf(context).push(doc)
+      if (context !== 'root' && options.extendDurationTo !== undefined) {
+        // Auto scenes grow from the inserted item's explicit end. Re-evaluate
+        // root overlays after insertion so that duration change is captured in
+        // the same undo snapshot as the media add.
+        this.clampRootDesignVisuals()
+      }
       this.commit()
       return doc
     },
-    addAudio(context: string, item: Record<string, any>): AudioDoc {
+    addAudio(
+      context: string,
+      item: Record<string, any>,
+      options: AddMediaOptions = {}
+    ): AudioDoc {
       const doc: AudioDoc = { ...item, _id: makeId('aud') } as AudioDoc
       // image projects have no audio — the panels are hidden, this is the
       // backstop (returned doc is simply not attached to the document)
       if (this.isImage) return doc
+      if (options.extendDurationTo !== undefined) {
+        this.extendContextDuration(
+          context,
+          options.extendDurationTo,
+          options.currentDuration,
+          false
+        )
+      }
       if (doc.track === undefined) {
         const editor = useEditorStore()
         const track = nextFreeTrack(
@@ -334,8 +450,86 @@ export const useProjectStore = defineStore('project', {
         if (track > 0) doc.track = track
       }
       this.audiosOf(context).push(doc)
+      if (context !== 'root' && options.extendDurationTo !== undefined) {
+        this.clampRootDesignVisuals()
+      }
       this.commit()
       return doc
+    },
+
+    /**
+     * Extend a flat project or an explicit-duration scene without ever
+     * shortening it. `currentDuration` lets callers supply the probe-derived
+     * duration shown by the timeline (important for scene projects). Auto
+     * scenes remain auto. For an exact {{duration}} placeholder, its scoped
+     * numeric default is raised instead of replacing the template binding.
+     */
+    extendContextDuration(
+      context: string,
+      requiredEnd: number,
+      currentDuration?: number,
+      commit = true
+    ): boolean {
+      if (this.isImage || !Number.isFinite(requiredEnd) || requiredEnd <= 0)
+        return false
+
+      const end = round3(requiredEnd)
+      const suppliedCurrent =
+        typeof currentDuration === 'number' &&
+        Number.isFinite(currentDuration) &&
+        currentDuration > 0
+          ? currentDuration
+          : undefined
+
+      if (context === 'root') {
+        if (typeof this.doc.duration === 'string') {
+          if (
+            !raiseTemplateDurationDefault(this.doc.duration, end, [
+              this.doc.extra?.variables,
+            ])
+          ) {
+            return false
+          }
+        } else {
+          const current = Math.max(
+            suppliedCurrent ?? this.contextDurationOf(context),
+            typeof this.doc.duration === 'number' ? this.doc.duration : 0
+          )
+          if (end <= current) return false
+          this.doc.duration = end
+        }
+        for (const v of this.doc.visuals) clampDesignTiming(v, end)
+      } else {
+        const scene = this.sceneByEditorId(context)
+        if (!scene) return false
+        // The media item itself carries an explicit end, so an auto scene's
+        // planner expands after insertion without replacing its -1 sentinel.
+        if (scene.duration === -1) return false
+        if (typeof scene.duration === 'string') {
+          if (
+            !raiseTemplateDurationDefault(scene.duration, end, [
+              (scene as any).variables,
+              this.doc.extra?.variables,
+            ])
+          ) {
+            return false
+          }
+        } else if (typeof scene.duration === 'number' && scene.duration > 0) {
+          const current = Math.max(
+            suppliedCurrent ?? this.contextDurationOf(context),
+            scene.duration
+          )
+          if (end <= current) return false
+          scene.duration = end
+        } else {
+          return false
+        }
+        for (const v of scene.visuals) clampDesignTiming(v, end)
+        this.clampRootDesignVisuals()
+      }
+
+      if (commit) this.commit()
+      return true
     },
 
     patchVisual(id: string, patch: Record<string, any>, commit = true) {
@@ -344,6 +538,18 @@ export const useProjectStore = defineStore('project', {
       for (const [k, val] of Object.entries(patch)) {
         if (val === undefined) delete (v as any)[k]
         else (v as any)[k] = val
+      }
+      const hasNumericSizePatch =
+        (typeof patch.width === 'number' && Number.isFinite(patch.width)) ||
+        (typeof patch.height === 'number' && Number.isFinite(patch.height))
+      if (
+        hasNumericSizePatch &&
+        canonicalVisualType(v.type) === 'SVG' &&
+        typeof v.svg === 'string'
+      ) {
+        // Persist the viewport mode as part of the same resize transaction so
+        // package rendering matches the editor preview and undo stays atomic.
+        v.svg = stretchSvgToBox(v.svg)
       }
       if (!this.isImage) {
         // when only the start edge moved, keep the (user-set) end and pull

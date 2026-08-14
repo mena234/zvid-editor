@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
+import { watch } from 'vue'
 import { useAuthStore } from '../../stores/auth'
 import { useDesignsStore } from '../../stores/designs'
 import { useUploadsStore } from '../../stores/uploads'
@@ -263,6 +264,147 @@ describe('uploads store', () => {
     // items null → empty, not a crash
     s.items = null
     expect(s.ofKind('image')).toEqual([])
+  })
+
+  it('publishes XHR upload progress through the reactive pending entry', async () => {
+    vi.useFakeTimers()
+    const originalXHR = (globalThis as any).XMLHttpRequest
+
+    class FakeXMLHttpRequest {
+      static latest: FakeXMLHttpRequest | null = null
+      upload: {
+        onprogress: ((event: any) => void) | null
+        onload: (() => void) | null
+      } = {
+        onprogress: null,
+        onload: null,
+      }
+      status = 0
+      response: any = null
+      responseText = ''
+      responseType = ''
+      onload: (() => void) | null = null
+      onerror: (() => void) | null = null
+      onabort: (() => void) | null = null
+      requestHeaders = new Map<string, string>()
+
+      constructor() {
+        FakeXMLHttpRequest.latest = this
+      }
+      open() {}
+      setRequestHeader(name: string, value: string) {
+        this.requestHeaders.set(name, value)
+      }
+      send() {}
+    }
+
+    ;(globalThis as any).XMLHttpRequest = FakeXMLHttpRequest
+    try {
+      const s = useUploadsStore()
+      const observed: Array<number | undefined> = []
+      const stop = watch(
+        () => s.pending[0]?.progress,
+        (progress) => observed.push(progress),
+        { flush: 'sync' }
+      )
+      const result = uploadItem('uploaded', 'video')
+      const promise = s.upload(
+        new File(['test payload'], 'clip.bin', {
+          type: 'application/octet-stream',
+        }),
+        'video'
+      )
+
+      // `upload` yields while probing metadata before creating the request.
+      await Promise.resolve()
+      await Promise.resolve()
+      const xhr = FakeXMLHttpRequest.latest!
+      expect(xhr).toBeTruthy()
+      xhr.upload.onprogress?.({
+        lengthComputable: true,
+        loaded: 4,
+        total: 10,
+      })
+      expect(s.pending[0].progress).toBe(40)
+      // This is the regression assertion: mutating the pre-proxy local object
+      // changes reads but never triggers this watcher/UI repaint.
+      expect(observed).toContain(40)
+
+      xhr.upload.onprogress?.({
+        lengthComputable: true,
+        loaded: 999,
+        total: 1_000,
+      })
+      // Byte progress is honest: there is no synthetic 99%-until-response cap.
+      expect(s.pending[0]).toMatchObject({ progress: 99 })
+
+      xhr.upload.onprogress?.({
+        lengthComputable: true,
+        loaded: 1_000,
+        total: 1_000,
+      })
+      expect(s.pending[0]).toMatchObject({ progress: 100 })
+
+      xhr.upload.onload?.()
+      expect(s.pending[0]).toMatchObject({ progress: 100 })
+      expect(xhr.requestHeaders.get('X-Upload-Size')).toBe('12')
+
+      xhr.status = 200
+      xhr.responseText = JSON.stringify({ upload: result })
+      xhr.onload?.()
+      await expect(promise).resolves.toEqual(result)
+      expect(s.pending).toEqual([])
+      stop()
+    } finally {
+      ;(globalThis as any).XMLHttpRequest = originalXHR
+      vi.clearAllTimers()
+      vi.useRealTimers()
+    }
+  })
+
+  it('cleans up a pending upload after a non-JSON server error', async () => {
+    const originalXHR = (globalThis as any).XMLHttpRequest
+
+    class FakeXMLHttpRequest {
+      static latest: FakeXMLHttpRequest | null = null
+      upload = { onprogress: null, onload: null }
+      status = 0
+      responseText = ''
+      responseType = ''
+      onload: (() => void) | null = null
+      onerror: (() => void) | null = null
+      onabort: (() => void) | null = null
+
+      constructor() {
+        FakeXMLHttpRequest.latest = this
+      }
+      open() {}
+      setRequestHeader() {}
+      send() {}
+    }
+
+    ;(globalThis as any).XMLHttpRequest = FakeXMLHttpRequest
+    try {
+      const s = useUploadsStore()
+      const promise = s.upload(
+        new File(['payload'], 'clip.bin', {
+          type: 'application/octet-stream',
+        }),
+        'video'
+      )
+      await Promise.resolve()
+      await Promise.resolve()
+
+      const xhr = FakeXMLHttpRequest.latest!
+      xhr.status = 502
+      xhr.responseText = 'upstream unavailable'
+      xhr.onload?.()
+
+      await expect(promise).rejects.toThrow('Upload failed (502)')
+      expect(s.pending).toEqual([])
+    } finally {
+      ;(globalThis as any).XMLHttpRequest = originalXHR
+    }
   })
 
   it('remove deletes on the server then filters the local list', async () => {

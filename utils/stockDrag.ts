@@ -15,6 +15,22 @@ export interface StockDragPayload {
   height?: number
   /** seconds — videos only */
   duration?: number
+  /** Uploaded media may grow the destination timeline when it is dropped. */
+  extendTimeline?: boolean
+}
+
+/** Absolute timeline end for media inserted at the current playhead. */
+export function mediaEndAtPlayhead(
+  playhead: number,
+  duration?: number | null
+): number | undefined {
+  if (
+    typeof duration !== 'number' ||
+    !Number.isFinite(duration) ||
+    duration <= 0
+  )
+    return undefined
+  return round3(Math.max(0, playhead) + duration)
 }
 
 export function setStockDragData(e: DragEvent, payload: StockDragPayload) {
@@ -59,14 +75,30 @@ export function buildStockVisual(
   payload: StockDragPayload,
   opts: StockPlacement
 ): Record<string, any> {
-  const t0 = round3(Math.min(opts.playhead, Math.max(0, opts.contextDuration - 1)))
+  const extendTimeline =
+    payload.extendTimeline &&
+    typeof payload.duration === 'number' &&
+    Number.isFinite(payload.duration) &&
+    payload.duration > 0
+  const t0 = round3(
+    extendTimeline
+      ? Math.max(0, opts.playhead)
+      : Math.min(opts.playhead, Math.max(0, opts.contextDuration - 1))
+  )
   const span =
-    payload.kind === 'VIDEO' && payload.duration ? Math.max(1, payload.duration) : 5
+    payload.kind === 'VIDEO' && payload.duration
+      ? extendTimeline
+        ? payload.duration
+        : Math.max(1, payload.duration)
+      : 5
+  const mediaEnd = round3(t0 + span)
   const item: Record<string, any> = {
     type: payload.kind,
     src: payload.src,
     enterBegin: t0 || undefined,
-    exitEnd: round3(Math.min(opts.contextDuration, t0 + span)),
+    exitEnd: extendTimeline
+      ? mediaEnd
+      : round3(Math.min(opts.contextDuration, mediaEnd)),
   }
   if (opts.at) {
     item.anchor = 'center-center'

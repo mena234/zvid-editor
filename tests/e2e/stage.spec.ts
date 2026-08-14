@@ -251,6 +251,60 @@ test('corner-handle resize updates exported width/height', async ({ page }) => {
   expect(Math.abs(v.y - 150)).toBeLessThanOrEqual(1)
 })
 
+test('side-handle resize stretches SVG artwork to fill the authored box', async ({
+  page,
+}) => {
+  await loadProject(
+    page,
+    baseDoc([
+      {
+        type: 'SVG',
+        svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect data-resize-probe="true" width="100" height="100" fill="#7c5cff"/></svg>',
+        x: 200,
+        y: 150,
+        width: 200,
+        height: 200,
+      },
+    ])
+  )
+  const m = await metrics(page)
+  await page.mouse.click(...(Object.values(m.toScreen(300, 250)) as [number, number]))
+
+  // HANDLES order: nw n ne e se s sw w -> nth(3) = e. Widen only the box;
+  // its height and the opposite edge stay fixed.
+  const east = page.locator('.sel-box.primary .handle').nth(3)
+  const handleBox = (await east.boundingBox())!
+  const from = {
+    x: handleBox.x + handleBox.width / 2,
+    y: handleBox.y + handleBox.height / 2,
+  }
+  await drag(page, from, { x: from.x + 200 * m.scale, y: from.y })
+
+  const v = (await exportedDoc(page)).visuals[0]
+  expect(Math.abs(v.width - 400)).toBeLessThanOrEqual(3)
+  expect(Math.abs(v.height - 200)).toBeLessThanOrEqual(2)
+  expect(v.svg).toContain('preserveAspectRatio="none"')
+
+  const painted = await page
+    .locator('.stage-frame .stage-item')
+    .evaluate((item) => {
+      const svg = item.querySelector('.svg-inner > svg') as SVGSVGElement
+      const rect = svg.querySelector('[data-resize-probe]') as SVGGraphicsElement
+      const itemBox = item.getBoundingClientRect()
+      const artworkBox = rect.getBoundingClientRect()
+      return {
+        preserveAspectRatio: svg.getAttribute('preserveAspectRatio'),
+        itemWidth: itemBox.width,
+        itemHeight: itemBox.height,
+        artworkWidth: artworkBox.width,
+        artworkHeight: artworkBox.height,
+      }
+    })
+  expect(painted.preserveAspectRatio).toBe('none')
+  expect(Math.abs(painted.artworkWidth - painted.itemWidth)).toBeLessThan(1)
+  expect(Math.abs(painted.artworkHeight - painted.itemHeight)).toBeLessThan(1)
+})
+
 /* ---------------- 4b. text boxes hug their wrapped copy ---------------- */
 
 /** A fixed 600x400 box the text does NOT fill — the hug behaviors drop it. */

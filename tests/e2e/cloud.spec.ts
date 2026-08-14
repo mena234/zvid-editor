@@ -6,6 +6,7 @@ import {
   store,
   waitBridge,
   resetMockOrch,
+  releaseMockUploadResponses,
   mockOrchCalls,
   FIXTURES,
 } from './helpers/app'
@@ -205,6 +206,27 @@ test('booting with the auth cookie loads the session automatically', async ({
   expect(await store(page, 'auth', 'user.email')).toBe('e2e@zvid.io')
   await expect(page.locator('.account .avatar')).toHaveText('ET')
   await expect(page.locator('.account button', { hasText: 'Sign in' })).toHaveCount(0)
+})
+
+test('uploads refresh when sign-in happens while their panel is unmounted', async ({
+  page,
+}) => {
+  await resetMockOrch()
+  await openEditor(page)
+
+  await expect(page.locator('.uploads-section')).toContainText('Sign in to upload')
+
+  // Leave the uploads component unmounted while the account session changes.
+  await page.getByRole('button', { name: 'Shape', exact: true }).click()
+  await page.locator('.account button', { hasText: 'Sign in' }).click()
+  await loginViaModal(page)
+  await waitBridge(page, 't.auth.loaded && !!t.auth.user')
+
+  await page.getByRole('button', { name: 'Images', exact: true }).click()
+  await expect(page.locator('.uploads-section .upload-btn')).toBeVisible()
+  await expect(page.locator('.uploads-section')).not.toContainText(
+    'Sign in to upload'
+  )
 })
 
 /* ================= 5–9: cloud persistence ================= */
@@ -551,6 +573,135 @@ test('uploads: seeded items render, file upload POSTs to orch, delete confirms a
   await expect
     .poll(async () => (await callsTo('/api/uploads/upl_seed', 'DELETE')).length)
     .toBe(1)
+})
+
+test('upload advances gradually and reaches 100% with streamed storage', async ({
+  page,
+}) => {
+  await resetMockOrch({
+    holdUploadResponse: true,
+    uploadChunkDelayMs: 15,
+  })
+  await openEditor(page, { authed: true })
+  await waitBridge(page, 't.auth.loaded && !!t.auth.user')
+
+  const pendingState = () => store(page, 'uploads', 'pending.0')
+
+  try {
+    const fileSize = 16 * 1024 * 1024
+    await page.setInputFiles('.uploads-section input[type="file"]', {
+      name: 'large-progress.png',
+      mimeType: 'image/png',
+      buffer: Buffer.alloc(fileSize),
+    })
+
+    const samples: number[] = []
+    const visibleSamples: number[] = []
+    const pendingCell = page.locator('.uploads-section .cell.skeleton')
+    const startedAt = Date.now()
+    while (Date.now() - startedAt < 20_000) {
+      const progress = (await pendingState())?.progress
+      if (typeof progress === 'number') samples.push(progress)
+      const label = await pendingCell.textContent().catch(() => null)
+      const visibleProgress = label?.match(/(\d+)%/)?.[1]
+      if (visibleProgress) visibleSamples.push(Number(visibleProgress))
+      const uploaded = (await mockOrchCalls()).some(
+        (call: any) =>
+          call.path === '/api/uploads' && call.method === 'POST'
+      )
+      if (uploaded) break
+      await page.waitForTimeout(100)
+    }
+
+    const distinctIntermediate = [...new Set(samples)].filter(
+      (progress) => progress > 0 && progress < 90
+    )
+    expect(distinctIntermediate.length).toBeGreaterThanOrEqual(2)
+    expect(samples).toEqual([...samples].sort((a, b) => a - b))
+    expect(
+      [...new Set(visibleSamples)].filter(
+        (progress) => progress > 0 && progress < 90
+      ).length
+    ).toBeGreaterThanOrEqual(2)
+    expect(visibleSamples).toEqual(
+      [...visibleSamples].sort((a, b) => a - b)
+    )
+
+    // All request bytes have reached the mock storage consumer, while its
+    // response is deliberately held. The streamed request has genuinely
+    // completed, so 100% is now accurate rather than a synthetic cap.
+    const uploadCalls = (await mockOrchCalls()).filter(
+      (call: any) =>
+        call.path === '/api/uploads' && call.method === 'POST'
+    )
+    expect(uploadCalls).toHaveLength(1)
+    expect(uploadCalls[0].uploadSize).toBe(String(fileSize))
+    await expect.poll(async () => (await pendingState())?.progress).toBe(100)
+    await expect(pendingCell).toBeVisible()
+    await expect(pendingCell).toContainText('100%')
+  } finally {
+    await releaseMockUploadResponses().catch(() => {})
+  }
+
+  await expect(page.locator('.uploads-section .cell.skeleton')).toHaveCount(0)
+  await expect(page.locator('.uploads-section .cell')).toHaveCount(1)
+})
+
+test('uploaded video click and canvas drop extend timing from the playhead', async ({
+  page,
+}) => {
+  await resetMockOrch({
+    uploads: [
+      {
+        ...seedUpload('upl_video', 'clip.mp4'),
+        kind: 'video',
+        mimeType: 'video/mp4',
+        duration: 8,
+        url: `${FIXTURES}/clip.mp4`,
+      },
+    ],
+  })
+  await openEditor(page, { authed: true })
+  await waitBridge(page, 't.auth.loaded && !!t.auth.user')
+  await page.evaluate(() => {
+    const t = (window as any).__zvidTest
+    t.project.patchProject({ duration: 5 })
+    t.editor.playhead = 4
+    t.editor.openPanel('videos')
+  })
+
+  const cell = page.locator('.uploads-section .cell').first()
+  await expect(cell).toBeVisible()
+
+  // Click-to-add: full source duration starts at the playhead and grows the
+  // project. One undo removes the clip and restores the old duration.
+  await cell.click()
+  let doc = await exportedDoc(page)
+  expect(doc.duration).toBe(12)
+  expect(doc.visuals[0]).toMatchObject({
+    type: 'VIDEO',
+    enterBegin: 4,
+    exitEnd: 12,
+  })
+  await page.evaluate(() => (window as any).__zvidTest.project.undo())
+  doc = await exportedDoc(page)
+  expect(doc.duration).toBe(5)
+  // Empty visual arrays are omitted from exported JSON.
+  expect(doc.visuals ?? []).toHaveLength(0)
+
+  // The same duration contract travels with the upload's drag payload.
+  await page.evaluate(() => ((window as any).__zvidTest.editor.playhead = 3))
+  await cell.dragTo(page.locator('.stage-frame'), {
+    targetPosition: { x: 320, y: 180 },
+  })
+  await expect.poll(async () => (await exportedDoc(page)).visuals.length).toBe(1)
+  doc = await exportedDoc(page)
+  expect(doc.duration).toBe(11)
+  expect(doc.visuals[0]).toMatchObject({
+    type: 'VIDEO',
+    enterBegin: 3,
+    exitEnd: 11,
+  })
 })
 
 test('uploads logged out: sign-in hint instead of the upload button', async ({

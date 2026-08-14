@@ -29,6 +29,14 @@ export async function mockOrchCalls(): Promise<any[]> {
   return (await fetch(`${MOCK_ORCH}/__mock/calls`)).json()
 }
 
+/** Release upload responses held by `holdUploadResponse` in the mock orch. */
+export async function releaseMockUploadResponses() {
+  const res = await fetch(`${MOCK_ORCH}/__mock/release-upload`, {
+    method: 'POST',
+  })
+  if (!res.ok) throw new Error('mock orch upload release failed')
+}
+
 export interface OpenOptions {
   /** query string, e.g. '?type=image' or '?project=prj_1' */
   query?: string

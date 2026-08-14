@@ -27,6 +27,10 @@ const defaultState = () => ({
   projects: [],
   templates: [],
   uploads: [],
+  /** Hold upload responses after the multipart body arrives until the test releases them. */
+  holdUploadResponse: false,
+  /** Test-only upload consumer delay per request chunk, used to expose real progress. */
+  uploadChunkDelayMs: 0,
   designs: [],
   usage: { used: 0, limit: 1024 * 1024 * 1024 },
   /** library[kind] = [{ slug, title, description, meta, version, sortOrder, contentUrl }] */
@@ -53,11 +57,25 @@ const defaultState = () => ({
 export function startMockOrch(port) {
   let state = defaultState()
   const calls = []
+  let uploadResponseWaiters = []
 
-  const readBody = (req) =>
+  const releaseUploadResponses = (continueUpload = true) => {
+    const waiters = uploadResponseWaiters
+    uploadResponseWaiters = []
+    for (const release of waiters) release(continueUpload)
+    return waiters.length
+  }
+
+  const readBody = (req, chunkDelayMs = 0) =>
     new Promise((resolve) => {
       const chunks = []
-      req.on('data', (c) => chunks.push(c))
+      req.on('data', (c) => {
+        chunks.push(c)
+        if (chunkDelayMs > 0) {
+          req.pause()
+          setTimeout(() => req.resume(), chunkDelayMs)
+        }
+      })
       req.on('end', () => {
         const raw = Buffer.concat(chunks)
         try {
@@ -72,7 +90,10 @@ export function startMockOrch(port) {
     const url = new URL(req.url, 'http://x')
     const path = url.pathname
     const method = req.method
-    const body = await readBody(req)
+    const body = await readBody(
+      req,
+      path === '/api/uploads' ? state.uploadChunkDelayMs : 0
+    )
     const authHeader = req.headers.authorization || ''
     const token = authHeader.replace(/^Bearer\s+/i, '')
     const authed = token === VALID_TOKEN
@@ -84,14 +105,29 @@ export function startMockOrch(port) {
 
     // ---- control plane ----
     if (path === '/__mock/reset') {
+      // Never strand a request if the previous test failed before releasing it.
+      releaseUploadResponses(false)
       state = { ...defaultState(), ...(body || {}) }
       calls.length = 0
       return send(200, { ok: true })
     }
     if (path === '/__mock/state') return send(200, state)
     if (path === '/__mock/calls') return send(200, calls)
+    if (path === '/__mock/release-upload' && method === 'POST') {
+      state.holdUploadResponse = false
+      return send(200, { released: releaseUploadResponses() })
+    }
 
-    calls.push({ method, path, query: Object.fromEntries(url.searchParams), auth: authed, body })
+    calls.push({
+      method,
+      path,
+      query: Object.fromEntries(url.searchParams),
+      auth: authed,
+      uploadSize: req.headers['x-upload-size'] || null,
+      body: Buffer.isBuffer(body)
+        ? { type: 'Buffer', length: body.length }
+        : body,
+    })
 
     const requireAuth = () => {
       if (!authed) {
@@ -182,6 +218,14 @@ export function startMockOrch(port) {
     }
     if (path === '/api/uploads' && method === 'POST') {
       if (!requireAuth()) return
+      if (state.holdUploadResponse) {
+        const shouldContinue = await new Promise((resolve) =>
+          uploadResponseWaiters.push(resolve)
+        )
+        if (!shouldContinue) {
+          return send(503, { error: 'Upload cancelled by mock reset' })
+        }
+      }
       const up = {
         id: `upl_${state.nextId++}`,
         kind: 'image',

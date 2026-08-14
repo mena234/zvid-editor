@@ -1,6 +1,11 @@
 import { defineStore } from 'pinia'
 import { useProjectStore } from '~/stores/project'
 import { canonicalVisualType } from '~/shared/schema/types'
+import {
+  TIMELINE_ABSOLUTE_MIN_PX_PER_SEC,
+  TIMELINE_DEFAULT_MIN_PX_PER_SEC,
+  TIMELINE_MAX_PX_PER_SEC,
+} from '~/utils/timelineZoom'
 
 export type SelectionKind = 'visual' | 'audio' | 'caption' | 'scene' | null
 /** Which face of the shared side panel is showing: the tab's library
@@ -63,6 +68,8 @@ export const useEditorStore = defineStore('editor', {
 
     /* timeline view */
     pxPerSec: 60,
+    /** Responsive lower bound supplied by the mounted timeline viewport. */
+    timelineMinPxPerSec: TIMELINE_DEFAULT_MIN_PX_PER_SEC,
     timelineScroll: 0,
     snapping: true,
     /** collapsed = only the transport bar shows; the stage takes the space */
@@ -293,8 +300,24 @@ export const useEditorStore = defineStore('editor', {
       this.playing = !this.playing
     },
 
+    setTimelineZoomMin(pxPerSec: number) {
+      const wasAtMinimum =
+        Math.abs(this.pxPerSec - this.timelineMinPxPerSec) < 1e-6
+      const nextMinimum = Math.min(
+        TIMELINE_DEFAULT_MIN_PX_PER_SEC,
+        Math.max(TIMELINE_ABSOLUTE_MIN_PX_PER_SEC, pxPerSec)
+      )
+      this.timelineMinPxPerSec = nextMinimum
+      if (wasAtMinimum || this.pxPerSec < nextMinimum) {
+        this.pxPerSec = nextMinimum
+      }
+    },
+
     setZoom(pxPerSec: number) {
-      this.pxPerSec = Math.min(600, Math.max(8, pxPerSec))
+      this.pxPerSec = Math.min(
+        TIMELINE_MAX_PX_PER_SEC,
+        Math.max(this.timelineMinPxPerSec, pxPerSec)
+      )
     },
 
     toggleTimeline() {

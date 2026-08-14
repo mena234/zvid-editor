@@ -96,7 +96,7 @@ export const useUploadsStore = defineStore('uploads', {
     /** the list endpoint answered 401 — show the sign-in hint */
     authRequired: false,
     error: null as string | null,
-    /** in-flight uploads, newest first (skeleton cells), 0–100 progress */
+    /** in-flight uploads; progress is the real streamed byte percentage */
     pending: [] as {
       key: number
       name: string
@@ -152,8 +152,17 @@ export const useUploadsStore = defineStore('uploads', {
      */
     async upload(file: File, expectedKind: UploadKind): Promise<UploadItem> {
       const key = Date.now() + Math.random()
-      const entry = { key, name: file.name, kind: expectedKind, progress: 0 }
+      const entry = {
+        key,
+        name: file.name,
+        kind: expectedKind,
+        progress: 0,
+      }
       this.pending.unshift(entry)
+      // Vue wraps values inserted into a reactive array, but `entry` remains
+      // the original raw object. XHR callbacks must mutate the proxied entry
+      // so progress changes notify the UI.
+      const pendingEntry = this.pending.find((p) => p.key === key)!
       try {
         const meta = await probeFile(file)
         const form = new FormData()
@@ -165,17 +174,28 @@ export const useUploadsStore = defineStore('uploads', {
         const upload = await new Promise<UploadItem>((resolve, reject) => {
           const xhr = new XMLHttpRequest()
           xhr.open('POST', '/api/uploads')
-          xhr.responseType = 'json'
+          // Keep the response as text and parse it ourselves. Reading
+          // `responseText` in JSON response mode throws when an error response
+          // is empty or malformed, which would strand the pending upload.
+          xhr.responseType = 'text'
           xhr.upload.onprogress = (ev) => {
             if (ev.lengthComputable) {
-              // cap at 99 until the server responds — 100 means "stored"
-              entry.progress = Math.min(99, Math.round((ev.loaded / ev.total) * 100))
+              // The editor and orch proxies stream with backpressure all the
+              // way into object storage, so this byte ratio is the real
+              // transfer progress rather than a buffered local hop.
+              pendingEntry.progress =
+                ev.loaded >= ev.total
+                  ? 100
+                  : Math.floor((ev.loaded / ev.total) * 100)
             }
           }
+          xhr.upload.onload = () => {
+            pendingEntry.progress = 100
+          }
           xhr.onload = () => {
-            const body = xhr.response || safeParse(xhr.responseText)
+            const body = safeParse(xhr.responseText)
             if (xhr.status >= 200 && xhr.status < 300 && body?.upload) {
-              entry.progress = 100
+              pendingEntry.progress = 100
               resolve(body.upload as UploadItem)
             } else {
               const err: any = new Error(
@@ -190,6 +210,7 @@ export const useUploadsStore = defineStore('uploads', {
           }
           xhr.onerror = () => reject(new Error('Network error during upload'))
           xhr.onabort = () => reject(new Error('Upload cancelled'))
+          xhr.setRequestHeader('X-Upload-Size', String(file.size))
           xhr.send(form)
         })
 
