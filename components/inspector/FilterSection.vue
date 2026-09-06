@@ -47,7 +47,7 @@ const invertVal = computed(() => {
       />
       <span class="mono val">{{ filter.brightness ?? 0 }}</span>
     </UiField>
-    <UiField label="Contrast" hint="-100 … 100">
+    <UiField label="Contrast" hint="0 = unchanged; positive values gradually increase contrast">
       <input
         type="range"
         min="-100"
@@ -118,8 +118,7 @@ const invertVal = computed(() => {
       />
     </UiField>
     <p class="hint">
-      Preview uses CSS approximations — FFmpeg's contrast/saturation curves
-      differ slightly at extreme values.
+      Fast playback preview. Paused frames refine with FFmpeg; exports stay full quality.
     </p>
   </UiSection>
 </template>

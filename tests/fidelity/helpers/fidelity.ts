@@ -103,6 +103,14 @@ export async function captureStage(
     undefined,
     { timeout: 30_000 }
   )
+  await page.waitForFunction(
+    () =>
+      [...document.querySelectorAll<HTMLElement>('.stage-frame .filtered-media')]
+        .filter((el) => el.getClientRects().length)
+        .every((el) => el.dataset.filterState === 'ready'),
+    undefined,
+    { timeout: 60_000 }
+  )
   // Webfonts: the app injects Google-Font css2 <link>s on demand and never
   // retries a failed fetch (deduped). Wait for every injected stylesheet to
   // arrive — re-injecting once on timeout — then force-load the families.

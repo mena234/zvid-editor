@@ -114,7 +114,7 @@ export default defineNuxtConfig({
     optimizeDeps: {
       // jassub resolves its worker/wasm via `new URL(..., import.meta.url)`;
       // pre-bundling would break those relative asset URLs.
-      exclude: ['jassub'],
+      exclude: ['jassub', '@ffmpeg/ffmpeg', '@ffmpeg/core'],
       // …but its CommonJS deps still need the ESM interop pre-bundle
       // ("excluded parent > cjs child" form).
       include: [

@@ -1,9 +1,11 @@
 /**
  * Approximate the package's FFmpeg style filters (getStyleFilters.ts) with
- * CSS filter() for the stage preview. The FFmpeg curves are not identical,
+ * CSS filter() for legacy SVG previews only. Image/video/GIF use GPU + FFmpeg WASM.
+ * The FFmpeg curves are not identical,
  * but contrast and saturation share the same -100..100 normalization used by
  * the renderer.
  */
+import { mapFilterGain } from './ffmpegFilterGraph'
 export interface ZvidFilter {
   brightness?: number // -100..100
   contrast?: number // -100..100
@@ -27,12 +29,10 @@ export function filterToCss(
     parts.push(`brightness(${1 + filter.brightness / 100})`)
   }
   if (filter.contrast !== undefined && filter.contrast !== 0) {
-    const c = filter.contrast
-    parts.push(`contrast(${c < 0 ? 1 + c / 100 : 1 + (c / 100) * 2})`)
+    parts.push(`contrast(${mapFilterGain(filter.contrast)})`)
   }
   if (filter.saturate !== undefined && filter.saturate !== 0) {
-    const s = filter.saturate
-    parts.push(`saturate(${s < 0 ? 1 + s / 100 : 1 + (s / 100) * 2})`)
+    parts.push(`saturate(${mapFilterGain(filter.saturate)})`)
   }
   const hue = filter['hue-rotate']
   if (hue !== undefined && hue !== 0 && hue !== '0') {

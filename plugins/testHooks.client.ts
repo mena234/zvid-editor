@@ -35,6 +35,9 @@ export default defineNuxtPlugin((nuxtApp) => {
   const pinia = nuxtApp.$pinia as any
 
   ;(window as any).__zvidTest = {
+    // Lazy, opt-in only: the browser suite benchmarks and compares the real GPU path.
+    filterGpu: () => import('~/utils/gpuFilterPreview'),
+    filterFrame: () => import('~/utils/filterFrame'),
     get project() {
       return useProjectStore(pinia)
     },

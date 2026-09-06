@@ -31,7 +31,31 @@ directly importable in the editor for eyeballing (fixture server :4598 must
 be running). Measured SSIM scores as of 2026-07-09 are in the spec comments —
 recalibrate deliberately when parity improves.
 
-Known caveats baked into thresholds: FFmpeg eq-filter curves vs CSS (~0.92),
+`filters.spec.ts` separately checks the FFmpeg WASM media preview against native
+package renders; see [filter preview](../docs/filter-preview.md) for pixel tests
+and sustained playback coverage.
+
+`gpu-filter-preview.spec.ts` tests the fast playback path separately: native
+FFmpeg pixel comparisons, transparent/cropped/rounded media, exact paused
+refinement, blocked downloads, absent acceleration and lost-context recovery.
+It also generates a temporary 1080p/30 FPS clip and benchmarks brightness, blur
+and combined filters in installed Chrome. The performance gate requires a
+hardware GPU (software rendering explicitly skips it), at least 27 preview FPS,
+normal media time, frame gaps below 200 ms, and zero CPU canvas pixel reads during
+playback. It attaches renderer/timing evidence as `gpu-performance.json`.
+Run with `npx playwright test --project=e2e gpu-filter-preview.spec.ts --retries=0`.
+Do not rebuild Nuxt or run `nuxt prepare` while browser tests are using the dev
+server: regenerated files can trigger reloads mid-test. Production-build QA is
+preferred for final timing and retry tests.
+
+`tests/unit/filterNormalization.test.ts` checks all integer slider positions
+against the real sibling render package, including gradual contrast gains,
+brightness/saturation lookup tables, safe blur steps, degree hue values, numeric
+zero compatibility, and continuous RGB inversion. The native package's
+`tests/styleFilters.test.js` additionally renders gradients to catch perceptual
+regressions such as contrast +1 behaving like a black/white threshold.
+
+Known caveats baked into older kitchen-sink thresholds: legacy CSS filters (~0.92),
 font rasterization (~0.96), librsvg vs browser SVG (~0.96), Ken Burns edge
 crop + the CK badge chip (~0.86). Rotation is excluded: the package flattens
 the rotated item's alpha to an opaque black box (package-side quirk).

@@ -1,0 +1,21 @@
+FFmpeg WebAssembly media-filter preview
+
+@ffmpeg/core 0.12.10
+Copyright the FFmpeg authors and ffmpeg.wasm contributors.
+License: GPL-2.0-or-later
+License text: https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+Corresponding upstream source, Dockerfile and build scripts:
+https://github.com/ffmpegwasm/ffmpeg.wasm/tree/v12.15
+Core package: packages/core (version 0.12.10 in that release).
+The FFmpeg WASM binary is unmodified. Zvid adapts the JavaScript command
+wrapper to allocate command arguments on a temporary aligned stack and
+restore the saved stack after each execution. This does not change filters.
+
+@ffmpeg/ffmpeg 0.12.15
+Copyright ffmpeg.wasm contributors.
+License: MIT
+Source and notices:
+https://github.com/ffmpegwasm/ffmpeg.wasm/tree/v12.15/packages/ffmpeg
+https://github.com/ffmpegwasm/ffmpeg.wasm/blob/v12.15/LICENSE
+
+These components are provided without warranty under their respective licenses.

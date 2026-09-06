@@ -365,6 +365,8 @@ test('filters: sliders write item.filter keys; clearing prunes the filter object
   // keyboard on the range inputs is deterministic (clicks depend on geometry)
   const brightness = field(filters, 'Brightness').locator('input[type="range"]')
   for (let i = 0; i < 3; i++) await brightness.press('ArrowRight') // 0 -> 3
+  const contrast = field(filters, 'Contrast').locator('input[type="range"]')
+  await contrast.press('ArrowRight') // Store normalized +1, not the FFmpeg gain.
   const hue = field(filters, 'Hue rotate').locator('input[type="range"]')
   await hue.press('ArrowRight') // 0 -> 1 -> "1deg"
   const blur = field(filters, 'Blur').locator('input[type="range"]')
@@ -375,10 +377,11 @@ test('filters: sliders write item.filter keys; clearing prunes the filter object
 
   await expect
     .poll(async () => (await vis(page)).filter)
-    .toEqual({ brightness: 3, 'hue-rotate': '1deg', blur: 100, colorTint: '#ff0000' })
+    .toEqual({ brightness: 3, contrast: 1, 'hue-rotate': '1deg', blur: 100, colorTint: '#ff0000' })
 
   // clearing every key returns to a pruned/absent filter
   for (let i = 0; i < 3; i++) await brightness.press('ArrowLeft') // back to 0 -> deleted
+  await contrast.press('ArrowLeft')
   await hue.press('ArrowLeft')
   await blur.press('Home')
   await tint.fill('')

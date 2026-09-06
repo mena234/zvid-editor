@@ -4,6 +4,7 @@ import type { VisualDoc } from '~/shared/schema/types'
 import { canonicalVisualType } from '~/shared/schema/types'
 import { resolveVisualTiming } from '~/utils/itemGeometry'
 import { filterToCss, tintOverlayColor } from '~/utils/cssFilter'
+import { hasMediaFilter } from '~/utils/ffmpegFilterGraph'
 import { useEditorStore } from '~/stores/editor'
 import { useProjectStore } from '~/stores/project'
 import { useMediaProbe } from '~/composables/useMediaProbe'
@@ -73,6 +74,37 @@ const cssFilter = computed(() =>
   filterToCss(props.item.filter, props.width, props.height)
 )
 const tint = computed(() => tintOverlayColor(props.item.filter))
+const filteredMedia = computed(
+  () =>
+    ['VIDEO', 'IMAGE', 'GIF'].includes(type.value ?? '') &&
+    hasMediaFilter(props.item.filter)
+)
+const proxyMedia = ref(false)
+const mediaSrc = computed(() =>
+  proxyMedia.value && props.item.src
+    ? `/api/filter-media?src=${encodeURIComponent(props.item.src)}`
+    : props.item.src
+)
+watch(
+  () => props.item.src,
+  () => {
+    proxyMedia.value = false
+  }
+)
+function onMediaError() {
+  // A canvas needs CORS permission. Public hosts without CORS are retried
+  // through a restricted same-origin media relay, without forwarding cookies.
+  if (
+    filteredMedia.value &&
+    !proxyMedia.value &&
+    /^https?:\/\//i.test(props.item.src ?? '')
+  ) {
+    proxyMedia.value = true
+    mediaReady.value = false
+    return
+  }
+  mediaFailed.value = true
+}
 
 const radiusStyle = computed(() => {
   const r = props.item.radius
@@ -539,25 +571,34 @@ const iframeDoc = computed(() => {
 
 <template>
   <!-- VIDEO -->
-  <div
-    v-if="type === 'VIDEO'"
-    class="media-box"
-    :style="{ filter: cssFilter || undefined, borderRadius: radiusStyle }"
-  >
-    <!-- no crossorigin: CORS-mode loads fail on hosts/redirects without
-         ACAO headers (e.g. pexels /download/ 302s), plain loads play fine -->
+  <div v-if="type === 'VIDEO'" class="media-box" :style="{ borderRadius: radiusStyle }">
     <video
+      :key="`${filteredMedia}:${mediaSrc}`"
       ref="videoEl"
       class="media"
-      :src="item.src"
+      :crossorigin="filteredMedia ? 'anonymous' : undefined"
+      :src="mediaSrc"
+      :class="{ 'filter-source': filteredMedia }"
       :style="cropInnerStyle ?? mediaFitStyle"
       :preload="shouldBufferVideo ? 'auto' : 'metadata'"
       playsinline
       @loadedmetadata="mediaFailed = false; syncVideo()"
       @loadeddata="mediaReady = true"
-      @error="mediaFailed = true"
+      @error="onMediaError"
     />
-    <div v-if="tint" class="tint" :style="{ background: tint }" />
+    <StageFilteredMedia
+      v-if="filteredMedia && !mediaFailed"
+      :media="videoEl"
+      :filter="item.filter!"
+      :width="width"
+      :height="height"
+      :fit="mediaFit"
+      :crop="item.cropParams"
+      :radius="suppressRadius ? undefined : item.radius"
+      :time="time"
+      :playing="editor.playing"
+      :visible="isItemVisible"
+    />
     <div v-if="!mediaReady && !mediaFailed" class="media-loading">
       <UiIcon name="video" :size="20" />
     </div>
@@ -571,19 +612,35 @@ const iframeDoc = computed(() => {
   <div
     v-else-if="type === 'IMAGE' || type === 'GIF'"
     class="media-box"
-    :style="{ filter: cssFilter || undefined, borderRadius: radiusStyle }"
+    :style="{ borderRadius: radiusStyle }"
   >
     <img
+      :key="`${filteredMedia}:${mediaSrc}`"
       ref="imgEl"
       class="media"
-      :src="item.src"
+      :crossorigin="filteredMedia ? 'anonymous' : undefined"
+      :src="mediaSrc"
+      :class="{ 'filter-source': filteredMedia }"
       :style="cropInnerStyle ?? mediaFitStyle"
       :fetchpriority="isItemVisible ? 'high' : 'low'"
       draggable="false"
       @load="mediaFailed = false; mediaReady = true"
-      @error="mediaFailed = true"
+      @error="onMediaError"
     />
-    <div v-if="tint" class="tint" :style="{ background: tint }" />
+    <StageFilteredMedia
+      v-if="filteredMedia && !mediaFailed"
+      :media="imgEl"
+      :filter="item.filter!"
+      :width="width"
+      :height="height"
+      :fit="mediaFit"
+      :crop="item.cropParams"
+      :radius="suppressRadius ? undefined : item.radius"
+      :time="time"
+      :playing="editor.playing"
+      :visible="isItemVisible"
+      :animated="type === 'GIF'"
+    />
     <div v-if="!mediaReady && !mediaFailed" class="media-loading">
       <UiIcon name="image" :size="20" />
     </div>
@@ -690,6 +747,9 @@ const iframeDoc = computed(() => {
   inset: 0;
   mix-blend-mode: multiply;
   pointer-events: none;
+}
+.filter-source {
+  opacity: 0;
 }
 /* skeleton shown while the media element buffers — a placeholder, not a
    spinner: neutral panel + shimmer sweep + faint media-type icon */
