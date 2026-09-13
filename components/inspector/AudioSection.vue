@@ -5,6 +5,7 @@ import { useProjectStore } from '~/stores/project'
 import { useEditorContext } from '~/composables/useEditorContext'
 import { useMediaProbe } from '~/composables/useMediaProbe'
 import { resolveAudioTiming } from '~/shared/schema/defaults'
+import { volumePercent, volumeGain } from '~/utils/volume'
 
 const props = defineProps<{ audio: AudioDoc }>()
 const project = useProjectStore()
@@ -115,13 +116,14 @@ function patch(p: Record<string, any>) {
     <UiSection title="Mix">
       <UiField label="Volume">
         <UiSlider
-          :model-value="audio.volume"
+          :model-value="volumePercent(audio.volume)"
           :min="0"
-          :max="2"
-          :step="0.05"
-          placeholder="1"
+          :max="200"
+          :step="1"
+          placeholder="100"
           clearable
-          @update:model-value="patch({ volume: $event })"
+          unit="%"
+          @update:model-value="patch({ volume: volumeGain($event) })"
         />
       </UiField>
       <UiField label="Speed (atempo)">

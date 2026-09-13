@@ -757,7 +757,7 @@ test('designs: seeded design renders with preview, inserts a designer TEXT visua
 
 /* ================= 12: stock ================= */
 
-test('stock: provider chips, debounced search, infinite scroll to page 2, click adds visual', async ({
+test('stock: unified library, debounced search, infinite scroll to page 2, click adds visual', async ({
   page,
 }) => {
   await resetMockOrch({
@@ -777,11 +777,10 @@ test('stock: provider chips, debounced search, infinite scroll to page 2, click 
   const first = (await callsTo('/api/stock/search'))[0]
   expect(first.query).toMatchObject({ type: 'image', page: '1' })
 
-  // providers endpoint drives the chips (>1 provider for images)
+  // All configured sources are searched through the unified Zvid library.
   expect((await callsTo('/api/stock/providers')).length).toBeGreaterThanOrEqual(1)
-  const chips = page.locator('.stock-panel .chips .chip')
-  await expect(chips).toHaveText(['All', 'Pexels', 'Pixabay'])
-  await expect(chips.first()).toHaveClass(/active/)
+  expect(first.query.provider).toBe('all')
+  await expect(page.locator('.stock-panel')).not.toContainText(/Pexels|Pixabay|Unsplash/)
 
   // debounced search fires one request with the query
   await page.fill('.stock-panel .search-input', 'sunset')
@@ -818,15 +817,6 @@ test('stock: provider chips, debounced search, infinite scroll to page 2, click 
     resize: 'contain',
   })
 
-  // provider chip narrows the search
-  await chips.nth(2).click() // Pixabay
-  await expect
-    .poll(async () =>
-      (await callsTo('/api/stock/search')).filter(
-        (c) => c.query.provider === 'pixabay'
-      ).length
-    )
-    .toBeGreaterThanOrEqual(1)
 })
 
 test('stock provider error: notice shown, auto-load halts, Retry recovers', async ({
@@ -846,7 +836,7 @@ test('stock provider error: notice shown, auto-load halts, Retry recovers', asyn
   await openEditor(page)
 
   const errBox = page.locator('.stock-panel .state-box.error')
-  await expect(errBox).toContainText('boom upstream')
+  await expect(errBox).toContainText("Couldn't load Zvid's stock library")
   await expect
     .poll(() => store(page, 'stock', 'byKind.image.error'))
     .toBe('boom upstream')

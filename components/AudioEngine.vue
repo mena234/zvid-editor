@@ -6,6 +6,11 @@ import { resolveAudioTiming } from '~/shared/schema/defaults'
 import { useMediaProbe } from '~/composables/useMediaProbe'
 import { clamp } from '~/utils/time'
 import type { AudioDoc } from '~/shared/schema/types'
+import {
+  setPreviewVolume,
+  releasePreviewVolume,
+  supportsAmplifiedVolume,
+} from '~/utils/previewVolume'
 
 /**
  * Invisible audio playback engine (M5): one HTMLAudioElement per audio item,
@@ -63,14 +68,36 @@ const elements = new Map<string, HTMLAudioElement>()
 
 function elementFor(doc: AudioDoc): HTMLAudioElement {
   let el = elements.get(doc._id)
+  const amplified = Number(doc.volume) > 1 && supportsAmplifiedVolume()
+  // Reload once in CORS mode when a clip first needs Web Audio. Keeping this
+  // element routed afterwards avoids interruptions while adjusting volume.
+  if (el && amplified && !el.crossOrigin) {
+    el.pause()
+    releasePreviewVolume(el)
+    el.onerror = null
+    el.src = ''
+    elements.delete(doc._id)
+    el = undefined
+  }
   if (!el) {
     el = new Audio()
     el.preload = 'auto'
-    // no crossOrigin: CDNs without ACAO headers (e.g. pixabay) refuse
-    // CORS-mode loads entirely; plain playback needs no CORS clearance
+    if (amplified) {
+      el.crossOrigin = 'anonymous'
+      el.onerror = () => {
+        if (
+          !el?.error || elements.get(doc._id) !== el || el.dataset.proxy ||
+          !/^https?:\/\//i.test(el.dataset.src ?? '')
+        )
+          return
+        el.dataset.proxy = 'true'
+        el.src = `/api/filter-media?src=${encodeURIComponent(el.dataset.src!)}`
+      }
+    }
     el.src = doc.src
     elements.set(doc._id, el)
   } else if (el.dataset.src !== doc.src) {
+    delete el.dataset.proxy
     el.src = doc.src
   }
   el.dataset.src = doc.src
@@ -91,9 +118,7 @@ function sync() {
     const windowDur = timing.exit - timing.enter
     const active = editor.playing && local >= 0 && local < windowDur
 
-    const vol = clamp(timing.volume, 0, 1)
-    el.volume = vol
-    el.muted = editor.muted || vol === 0
+    setPreviewVolume(el, timing.volume, editor.muted, active)
     el.playbackRate = clamp(timing.speed * editor.playbackRate, 0.25, 4)
 
     if (active) {
@@ -116,6 +141,8 @@ function sync() {
   for (const [id, el] of elements) {
     if (!seen.has(id)) {
       el.pause()
+      releasePreviewVolume(el)
+      el.onerror = null
       el.src = ''
       elements.delete(id)
     }
@@ -139,6 +166,8 @@ watch(
 onBeforeUnmount(() => {
   for (const el of elements.values()) {
     el.pause()
+    releasePreviewVolume(el)
+    el.onerror = null
     el.src = ''
   }
   elements.clear()

@@ -229,7 +229,7 @@ test('dragging a selected element updates exported x/y', async ({ page }) => {
 
 /* ---------------- 4. resize + rotate handles ---------------- */
 
-test('corner-handle resize updates exported width/height', async ({ page }) => {
+test('corner-handle resize preserves media aspect ratio without Shift', async ({ page }) => {
   await loadProject(page, baseDoc([ITEM_A]))
   const m = await metrics(page)
   await page.mouse.click(...(Object.values(m.toScreen(400, 300)) as [number, number]))
@@ -245,7 +245,7 @@ test('corner-handle resize updates exported width/height', async ({ page }) => {
 
   const v = (await exportedDoc(page)).visuals[0]
   expect(Math.abs(v.width - 520)).toBeLessThanOrEqual(3)
-  expect(Math.abs(v.height - 380)).toBeLessThanOrEqual(3)
+  expect(Math.abs(v.height - 390)).toBeLessThanOrEqual(3)
   // top-left anchor: dragging the SE handle keeps x/y in place
   expect(Math.abs(v.x - 200)).toBeLessThanOrEqual(1)
   expect(Math.abs(v.y - 150)).toBeLessThanOrEqual(1)

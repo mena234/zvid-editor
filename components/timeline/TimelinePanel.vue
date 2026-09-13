@@ -298,7 +298,7 @@ const hasScenes = computed(() => !!project.doc.scenes?.length)
           <UiIcon :name="editor.muted ? 'mute' : 'volume'" />
         </button>
         <span class="time mono">
-          {{ formatTime(editor.playhead, project.defaults.frameRate) }}
+          {{ formatTime(editor.playhead) }}
           <span class="time-total">/ {{ formatTime(contextDuration) }}</span>
         </span>
         <span

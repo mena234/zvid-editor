@@ -28,14 +28,6 @@ watch(accountScope, (scope) => {
   void stock.refresh()
 })
 
-const PROVIDER_LABELS: Record<string, string> = {
-  pexels: 'Pexels',
-  pixabay: 'Pixabay',
-  unsplash: 'Unsplash',
-  giphy: 'Giphy',
-  jamendo: 'Jamendo',
-}
-
 /* ---------------- search ---------------- */
 const searchText = ref(stock.current.query)
 let debounceTimer: ReturnType<typeof setTimeout> | undefined
@@ -127,10 +119,13 @@ function onDragStart(e: DragEvent, item: StockItem) {
 function addItem(item: StockItem) {
   if (item.kind === 'image' && tryReplace('image', item.src)) return
   if (item.kind === 'audio') {
-    const added = project.addAudio(editor.context, { src: item.src })
+    const added = project.addAudio(editor.context, { src: item.src }, {
+      currentDuration: contextDuration.value,
+      sourceDuration: item.duration,
+    })
     editor.selectAudio(added._id)
     editor.notify(
-      `${item.description || 'Track'} added to the timeline (${PROVIDER_LABELS[item.provider] ?? item.provider})`,
+      `${item.description || 'Track'} added to the timeline`,
       'success'
     )
     return
@@ -144,7 +139,7 @@ function addItem(item: StockItem) {
   const added = project.addVisual(editor.context, visual)
   editor.selectVisual(added._id)
   editor.notify(
-    `${PROVIDER_LABELS[item.provider] ?? item.provider} ${item.kind} added — drop on the canvas to place precisely`,
+    `${item.kind === 'gif' ? 'GIF' : item.kind} added — drop on the canvas to place precisely`,
     'success'
   )
 }
@@ -176,7 +171,7 @@ function toggleAudio(item: StockItem) {
 
 function cellTitle(item: StockItem) {
   const credit = item.credit?.name ? ` — ${item.credit.name}` : ''
-  return `${item.description || item.kind}${credit} (${PROVIDER_LABELS[item.provider] ?? item.provider}). Click to add, or drag onto the canvas.`
+  return `${item.description || item.kind}${credit}. Click to add, or drag onto the canvas.`
 }
 
 function fmtDuration(s?: number) {
@@ -186,16 +181,6 @@ function fmtDuration(s?: number) {
   return `${m}:${String(ss).padStart(2, '0')}`
 }
 
-const attribution = computed(() =>
-  stock.kind === 'gif'
-    ? 'Powered by GIPHY'
-    : stock.kind === 'video'
-      ? 'Free videos from Pexels & Pixabay'
-      : stock.kind === 'audio'
-        ? 'Royalty-free music from Jamendo'
-        : 'Free photos from Pexels, Pixabay & Unsplash'
-)
-
 const searchPlaceholder = computed(() =>
   stock.kind === 'gif'
     ? 'Search GIFs…'
@@ -204,7 +189,6 @@ const searchPlaceholder = computed(() =>
       : `Search ${stock.kind}s…`
 )
 
-const showProviderChips = computed(() => stock.availableProviders.length > 1)
 // providers loaded from orch but none configured for this kind (e.g. no
 // JAMENDO_CLIENT_ID yet) — show a neutral notice instead of a red search error
 const noProviders = computed(
@@ -237,38 +221,18 @@ const skeletons = 8
       </button>
     </div>
 
-    <div v-if="showProviderChips" class="chips">
-      <button
-        class="chip"
-        :class="{ active: stock.current.provider === 'all' }"
-        @click="stock.setProvider('all')"
-      >
-        All
-      </button>
-      <button
-        v-for="p in stock.availableProviders"
-        :key="p"
-        class="chip"
-        :class="{ active: stock.current.provider === p }"
-        @click="stock.setProvider(p)"
-      >
-        {{ PROVIDER_LABELS[p] ?? p }}
-      </button>
-    </div>
-
     <p v-if="noProviders" class="state-box hint">
       <template v-if="stock.kind === 'audio'">
-        Music search isn't set up yet — add a <code>JAMENDO_CLIENT_ID</code> on
-        the server to browse royalty-free tracks. You can still upload your own
-        audio or add one by URL above.
+        Music search is currently unavailable. You can still upload your own
+        audio, add one by URL above, or browse sound effects.
       </template>
       <template v-else>
-        No stock providers are configured for {{ stock.kind }}s on the server.
+        Zvid's stock library is currently unavailable for {{ stock.kind }}s.
       </template>
     </p>
 
     <div v-else-if="stock.current.error" class="state-box error">
-      <p>{{ stock.current.error }}</p>
+      <p>Couldn't load Zvid's stock library. Please try again.</p>
       <button class="btn ghost sm" @click="stock.retry()">Retry</button>
     </div>
 
@@ -289,7 +253,7 @@ const skeletons = 8
       >
         for “{{ stock.current.query }}”</span
       >
-      — try another search term<span v-if="stock.kind !== 'audio'"> or provider</span>.
+      — try another search term.
     </p>
 
     <!-- audio: row list with a preview player; visuals: thumbnail grid -->
@@ -330,7 +294,6 @@ const skeletons = 8
         @click="addItem(item)"
       >
         <img :src="item.preview" loading="lazy" draggable="false" alt="" />
-        <span class="badge provider">{{ PROVIDER_LABELS[item.provider] ?? item.provider }}</span>
         <span v-if="item.duration" class="badge duration">{{ fmtDuration(item.duration) }}</span>
         <span v-if="item.kind === 'video'" class="play-hint"><UiIcon name="play" :size="14" /></span>
       </button>
@@ -354,7 +317,7 @@ const skeletons = 8
     </button>
 
     <p class="attribution">
-      {{ attribution }} ·
+      Zvid's stock library ·
       {{ stock.kind === 'audio' ? 'click to add to the timeline' : 'click or drag onto the canvas' }}
     </p>
   </div>
@@ -408,29 +371,6 @@ const skeletons = 8
 .clear-btn:hover {
   color: var(--text-0);
 }
-.chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-}
-.chip {
-  padding: 3px 9px;
-  border: 1px solid var(--border-1);
-  border-radius: 999px;
-  background: var(--bg-2);
-  color: var(--text-2);
-  font-size: 10px;
-  font-weight: 600;
-}
-.chip:hover {
-  color: var(--text-0);
-  border-color: var(--accent);
-}
-.chip.active {
-  background: var(--accent-soft);
-  border-color: var(--accent);
-  color: var(--accent-strong);
-}
 .grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -472,15 +412,6 @@ const skeletons = 8
   font-weight: 600;
   letter-spacing: 0.2px;
   pointer-events: none;
-}
-.badge.provider {
-  left: 4px;
-  bottom: 4px;
-  opacity: 0;
-  transition: opacity 0.12s;
-}
-.cell:hover .badge.provider {
-  opacity: 1;
 }
 .badge.duration {
   right: 4px;

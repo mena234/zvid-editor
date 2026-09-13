@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { computed, inject, onBeforeUnmount } from 'vue'
 import type { VisualDoc } from '~/shared/schema/types'
+import { canonicalVisualType } from '~/shared/schema/types'
 import { effectiveLayout } from '~/utils/itemGeometry'
+import { useMediaProbe } from '~/composables/useMediaProbe'
+import { mediaResizeSourceRect, resizeMediaBox, type ResizeHandle } from '~/utils/mediaResize'
 import { topLeftToAnchor } from '~/shared/schema/defaults'
 import { useProjectStore } from '~/stores/project'
 import { isAutoHugText } from '~/utils/textTemplate'
@@ -11,6 +14,7 @@ import { round3 } from '~/utils/time'
 const props = defineProps<{ item: VisualDoc; primary: boolean }>()
 const project = useProjectStore()
 const stageCtx = inject<any>('stageCtx')
+const { intrinsicOf } = useMediaProbe()
 
 /** Text boxes hug their wrapped copy: sides re-wrap, corners scale the type. */
 const hugText = computed(() => isAutoHugText(props.item))
@@ -46,7 +50,7 @@ const HANDLES = [
 const TYPE_SCALE_KEYS = ['fontSize', 'lineHeight', 'letterSpacing', 'wordSpacing']
 
 let resizeStart: {
-  dir: string
+  dir: ResizeHandle
   px: number
   py: number
   left: number
@@ -54,7 +58,11 @@ let resizeStart: {
   w: number
   h: number
   anchor: any
-  shift: boolean
+  media: boolean
+  angle: number
+  resize: VisualDoc['resize']
+  crop: VisualDoc['cropParams']
+  changed: boolean
   hug: boolean
   /** RAW doc style at drag start (corner scale must never compound or bake
    *  resolved {{placeholders}} back into the doc); null = don't scale type */
@@ -62,11 +70,25 @@ let resizeStart: {
   fontPx: number
 } | null = null
 
-function onHandleDown(e: PointerEvent, dir: string) {
+function onHandleDown(e: PointerEvent, dir: ResizeHandle) {
   if (e.button !== 0) return
   e.stopPropagation()
   e.preventDefault()
   const L = layout.value
+  const type = canonicalVisualType(props.item.type)
+  const media = type === 'IMAGE' || type === 'VIDEO' || type === 'GIF'
+  // Selection receives the resolved preview; retain any authored crop
+  // placeholders rather than writing their preview values back to the doc.
+  let crop = project.visualById(props.item._id)?.cropParams
+  // Images default to cover in the renderer. Materialize the current source
+  // rectangle once, so a side drag stretches those pixels in preview/export.
+  if (media && dir.length === 1 && !crop && (type === 'IMAGE' || props.item.resize === 'cover')) {
+    const natural = props.item.src && intrinsicOf(type === 'VIDEO' ? 'video' : 'image', props.item.src)
+    // Do not invent source dimensions or commit a wrong crop while metadata
+    // is loading. The handles work once the displayed media has resolved.
+    if (!natural) return
+    crop = mediaResizeSourceRect(natural, L, props.item.resize ?? (type === 'IMAGE' ? 'cover' : undefined))
+  }
   const hug = hugText.value
   let scaleStyle: Record<string, any> | null = null
   let fontPx = parseFloat(TEXT_DEFAULT_FONT_SIZE)
@@ -92,7 +114,11 @@ function onHandleDown(e: PointerEvent, dir: string) {
     w: L.width,
     h: L.height,
     anchor: L.anchor,
-    shift: false,
+    media,
+    angle: typeof props.item.angle === 'number' ? props.item.angle : 0,
+    resize: props.item.resize,
+    crop,
+    changed: false,
     hug,
     scaleStyle,
     fontPx,
@@ -125,6 +151,34 @@ function onResizeMove(e: PointerEvent) {
   if (!s) return
   const dx = (e.clientX - s.px) / stageCtx.scale
   const dy = (e.clientY - s.py) / stageCtx.scale
+
+  // A click on a handle must not turn fitted media into a manual crop.
+  if (!s.changed && Math.abs(dx) < 0.001 && Math.abs(dy) < 0.001) return
+
+  if (s.media) {
+    const box = resizeMediaBox(
+      { left: s.left, top: s.top, width: s.w, height: s.h, angle: s.angle },
+      s.dir,
+      dx,
+      dy
+    )
+    // Movement along an edge's tangent is not a resize either.
+    if (!s.changed && Math.abs(box.width - s.w) < 0.001 && Math.abs(box.height - s.h) < 0.001) return
+    const { x, y } = topLeftToAnchor(box.left, box.top, box.width, box.height, s.anchor)
+    const patch: Record<string, any> = {
+      x: round3(x),
+      y: round3(y),
+      width: round3(box.width),
+      height: round3(box.height),
+      anchor: s.anchor,
+      resize: s.dir.length === 2 ? s.resize : undefined,
+      cropParams: s.crop,
+    }
+    if (props.item.position && props.item.position !== 'custom') patch.position = 'custom'
+    project.patchVisual(props.item._id, patch, false)
+    s.changed = true
+    return
+  }
 
   let { left, top, w, h } = s
   const corner = s.dir.length === 2
@@ -174,6 +228,7 @@ function onResizeMove(e: PointerEvent) {
   }
   if (props.item.position && props.item.position !== 'custom') patch.position = 'custom'
   project.patchVisual(props.item._id, patch, false)
+  s.changed = true
 }
 
 function onResizeUp() {
@@ -181,7 +236,7 @@ function onResizeUp() {
   window.removeEventListener('pointerup', onResizeUp)
   window.removeEventListener('pointercancel', onResizeUp)
   window.removeEventListener('blur', onResizeUp)
-  if (resizeStart) project.commit()
+  if (resizeStart?.changed) project.commit()
   resizeStart = null
 }
 
@@ -236,6 +291,7 @@ onBeforeUnmount(() => {
         v-for="hd in HANDLES"
         :key="hd.dir"
         class="handle"
+        :data-resize-handle="hd.dir"
         :style="{
           left: `calc(${hd.x * 100}% - var(--hs) / 2)`,
           top: `calc(${hd.y * 100}% - var(--hs) / 2)`,

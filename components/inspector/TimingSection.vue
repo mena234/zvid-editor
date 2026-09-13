@@ -8,6 +8,7 @@ import { resolveVisualTiming } from '~/shared/schema/defaults'
 import { MAX_DESIGN_ELEMENT_DURATION } from '~/shared/schema/constants'
 import { useMediaProbe } from '~/composables/useMediaProbe'
 import { round3 } from '~/utils/time'
+import { volumePercent, volumeGain } from '~/utils/volume'
 
 const props = defineProps<{ item: VisualDoc }>()
 const project = useProjectStore()
@@ -195,15 +196,16 @@ function patchTiming(field: TimingField, v: number | string | undefined) {
           @update:model-value="patch({ speed: $event })"
         />
       </UiField>
-      <UiField label="Volume" hint="0 mutes the clip's own audio">
+      <UiField label="Volume" hint="0% mutes the clip's own audio">
         <UiSlider
-          :model-value="item.volume"
+          :model-value="volumePercent(item.volume)"
           :min="0"
-          :max="2"
-          :step="0.05"
-          placeholder="1"
+          :max="200"
+          :step="1"
+          placeholder="100"
           clearable
-          @update:model-value="patch({ volume: $event })"
+          unit="%"
+          @update:model-value="patch({ volume: volumeGain($event) })"
         />
       </UiField>
       <p v-if="sourceDuration" class="hint">

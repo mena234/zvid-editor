@@ -64,6 +64,8 @@ interface AddMediaOptions {
   extendDurationTo?: number
   /** Reactive/probe-derived duration of the editing context, when available. */
   currentDuration?: number
+  /** Known audio source duration, used to make room for endpoint insertion. */
+  sourceDuration?: number
 }
 
 function clone<T>(v: T): T {
@@ -431,16 +433,49 @@ export const useProjectStore = defineStore('project', {
       // image projects have no audio — the panels are hidden, this is the
       // backstop (returned doc is simply not attached to the document)
       if (this.isImage) return doc
-      if (options.extendDurationTo !== undefined) {
+      // Library / URL additions follow the cursor in the active timeline.
+      // Preserve explicit placement from pasted JSON or duration-aware uploads.
+      const editor = useEditorStore()
+      let extendDurationTo = options.extendDurationTo
+      if (doc.enter === undefined) {
+        const playhead = Number.isFinite(editor.playhead) ? editor.playhead : 0
+        const enter = round3(Math.max(0, playhead))
+        doc.enter = enter || undefined
+        const currentDuration =
+          typeof options.currentDuration === 'number' &&
+          Number.isFinite(options.currentDuration)
+            ? options.currentDuration
+            : this.contextDurationOf(context)
+        if (
+          doc.exit === undefined && extendDurationTo === undefined &&
+          currentDuration >= 0 && enter >= round3(currentDuration)
+        ) {
+          // A new clip at the endpoint needs a visible, playable window. Use
+          // metadata when known; otherwise reserve five seconds while the URL
+          // loads. Existing in-timeline and explicitly timed items keep their
+          // natural-length / looping semantics.
+          const sourceEnd = typeof doc.audioEnd === 'number'
+            ? doc.audioEnd : options.sourceDuration
+          const sourceBegin = typeof doc.audioBegin === 'number' ? doc.audioBegin : 0
+          const speed = typeof doc.speed === 'number' && doc.speed > 0 ? doc.speed : 1
+          const span = typeof sourceEnd === 'number' && Number.isFinite(sourceEnd) && sourceEnd > sourceBegin
+            ? (sourceEnd - sourceBegin) / speed : 5
+          extendDurationTo = round3(enter + Math.max(0.001, span))
+          if (context !== 'root' && this.sceneByEditorId(context)?.duration === -1) {
+            // An auto scene grows from its items rather than its -1 duration.
+            doc.exit = extendDurationTo
+          }
+        }
+      }
+      if (extendDurationTo !== undefined) {
         this.extendContextDuration(
           context,
-          options.extendDurationTo,
+          extendDurationTo,
           options.currentDuration,
           false
         )
       }
       if (doc.track === undefined) {
-        const editor = useEditorStore()
         const track = nextFreeTrack(
           this.audiosOf(context).map((a) =>
             typeof a.track === 'number' ? a.track : 0
@@ -450,7 +485,7 @@ export const useProjectStore = defineStore('project', {
         if (track > 0) doc.track = track
       }
       this.audiosOf(context).push(doc)
-      if (context !== 'root' && options.extendDurationTo !== undefined) {
+      if (context !== 'root' && extendDurationTo !== undefined) {
         this.clampRootDesignVisuals()
       }
       this.commit()

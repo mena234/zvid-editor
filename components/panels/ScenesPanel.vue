@@ -121,8 +121,8 @@ function flatten() {
             <span class="hint">
               {{
                 (s.duration ?? -1) === -1
-                  ? `auto (${entryFor(s._id)?.duration ?? '…'}s)`
-                  : `${s.duration}s`
+                  ? `auto (${entryFor(s._id)?.duration.toFixed(1) ?? '…'}s)`
+                  : `${typeof s.duration === 'number' ? s.duration.toFixed(1) : s.duration}s`
               }}
               · {{ s.visuals.length }} visuals
               <template v-if="s.transition"> · {{ s.transition }} →</template>

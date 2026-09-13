@@ -131,7 +131,7 @@ function commitCondition(e: Event) {
           unit="s"
           @update:model-value="patch({ duration: $event ?? -1 })"
         />
-        <span v-if="isAuto" class="hint">computed: {{ entry?.duration ?? '…' }}s</span>
+        <span v-if="isAuto" class="hint">computed: {{ entry?.duration.toFixed(1) ?? '…' }}s</span>
       </div>
     </UiField>
 

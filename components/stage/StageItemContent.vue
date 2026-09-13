@@ -28,6 +28,11 @@ import {
   TEXT_DEFAULT_FONT_SIZE,
 } from '~/shared/schema/constants'
 import { clamp } from '~/utils/time'
+import {
+  setPreviewVolume,
+  releasePreviewVolume,
+  supportsAmplifiedVolume,
+} from '~/utils/previewVolume'
 
 const props = defineProps<{
   item: VisualDoc
@@ -80,6 +85,15 @@ const filteredMedia = computed(
     ['VIDEO', 'IMAGE', 'GIF'].includes(type.value ?? '') &&
     hasMediaFilter(props.item.filter)
 )
+const amplifiedVideo = ref(false)
+watch(
+  () => props.item.volume,
+  (volume) => {
+    if (Number(volume) > 1 && supportsAmplifiedVolume()) amplifiedVideo.value = true
+  },
+  { immediate: true }
+)
+const corsReadableMedia = computed(() => filteredMedia.value || amplifiedVideo.value)
 const proxyMedia = ref(false)
 const mediaSrc = computed(() =>
   proxyMedia.value && props.item.src
@@ -92,11 +106,13 @@ watch(
     proxyMedia.value = false
   }
 )
-function onMediaError() {
+function onMediaError(event: Event) {
+  // A removed/replaced element may still have a queued load failure.
+  if (event.target !== videoEl.value && event.target !== imgEl.value) return
   // A canvas needs CORS permission. Public hosts without CORS are retried
   // through a restricted same-origin media relay, without forwarding cookies.
   if (
-    filteredMedia.value &&
+    corsReadableMedia.value &&
     !proxyMedia.value &&
     /^https?:\/\//i.test(props.item.src ?? '')
   ) {
@@ -184,11 +200,12 @@ const shouldBufferVideo = computed(
 function syncVideo() {
   const v = videoEl.value
   if (!v || type.value !== 'VIDEO') return
+  // The volume watcher runs before Vue replaces the plain source with its
+  // CORS-enabled element. Wait for that ref before attaching a Web Audio node.
+  if (amplifiedVideo.value && v.crossOrigin !== 'anonymous') return
   const shouldPlay = editor.playing && isItemVisible.value
   v.playbackRate = clamp((props.item.speed ?? 1) * editor.playbackRate, 0.07, 16)
-  const vol = clamp(props.item.volume ?? 1, 0, 1)
-  v.volume = vol
-  v.muted = editor.muted || vol === 0
+  setPreviewVolume(v, props.item.volume ?? 1, editor.muted, shouldPlay)
 
   if (shouldPlay) {
     if (Math.abs(v.currentTime - targetMediaTime.value) > 0.25) {
@@ -210,6 +227,19 @@ watch(
   () => [props.item.volume, props.item.speed],
   () => syncVideo()
 )
+watch(videoEl, (current, previous) => {
+  if (previous) {
+    previous.pause()
+    releasePreviewVolume(previous)
+  }
+  if (current) syncVideo()
+})
+onBeforeUnmount(() => {
+  if (videoEl.value) {
+    videoEl.value.pause()
+    releasePreviewVolume(videoEl.value)
+  }
+})
 
 /* ---------------- TEXT ---------------- */
 const fontFamily = computed(
@@ -577,10 +607,10 @@ const iframeDoc = computed(() => {
   <!-- VIDEO -->
   <div v-if="type === 'VIDEO'" class="media-box" :style="{ borderRadius: radiusStyle }">
     <video
-      :key="`${filteredMedia}:${mediaSrc}`"
+      :key="`${corsReadableMedia}:${mediaSrc}`"
       ref="videoEl"
       class="media"
-      :crossorigin="filteredMedia ? 'anonymous' : undefined"
+      :crossorigin="corsReadableMedia ? 'anonymous' : undefined"
       :src="mediaSrc"
       :class="{ 'filter-source': filteredMedia }"
       :style="cropInnerStyle ?? mediaFitStyle"

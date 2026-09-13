@@ -35,6 +35,12 @@ const KIND_LABEL: Record<UploadKind, string> = {
 const fileInput = ref<HTMLInputElement>()
 const items = computed(() => uploads.ofKind(props.kind))
 const pending = computed(() => uploads.pendingOfKind(props.kind))
+const UPLOADS_PAGE_SIZE = 8
+const visibleCount = ref(UPLOADS_PAGE_SIZE)
+const visibleItems = computed(() => items.value.slice(0, visibleCount.value))
+watch(() => [props.kind, auth.user?.email], () => {
+  visibleCount.value = UPLOADS_PAGE_SIZE
+})
 
 onMounted(() => {
   // This panel may mount after auth changed while another library was open.
@@ -263,7 +269,7 @@ onBeforeUnmount(() => {
           <span class="pct">{{ p.progress }}%</span>
         </div>
         <div
-          v-for="item in items"
+          v-for="item in visibleItems"
           :key="item.id"
           class="audio-row"
           :title="`${item.fileName} — click to add at the playhead`"
@@ -297,7 +303,7 @@ onBeforeUnmount(() => {
           <span class="pct-badge">{{ p.progress }}%</span>
         </div>
         <div
-          v-for="item in items"
+          v-for="item in visibleItems"
           :key="item.id"
           class="cell"
           draggable="true"
@@ -323,6 +329,22 @@ onBeforeUnmount(() => {
             <UiIcon name="trash" :size="12" />
           </button>
         </div>
+      </div>
+      <div v-if="items.length > UPLOADS_PAGE_SIZE" class="upload-pagination">
+        <button
+          v-if="visibleCount < items.length"
+          class="btn ghost sm"
+          @click="visibleCount += UPLOADS_PAGE_SIZE"
+        >
+          Show more
+        </button>
+        <button
+          v-if="visibleCount > UPLOADS_PAGE_SIZE"
+          class="btn ghost sm"
+          @click="visibleCount = UPLOADS_PAGE_SIZE"
+        >
+          Show less
+        </button>
       </div>
     </template>
   </section>
@@ -453,6 +475,11 @@ onBeforeUnmount(() => {
   background: var(--accent);
   border-radius: 2px;
   transition: width 0.15s ease;
+}
+.upload-pagination {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
 }
 .pct-badge {
   position: absolute;

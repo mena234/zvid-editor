@@ -4,7 +4,7 @@ import { openFilterMedia } from '../utils/filterMediaSource'
 let active = 0
 const MAX_BYTES = 256 * 1024 * 1024
 
-/** CORS fallback for canvas-readable public media. No user credentials are sent. */
+/** CORS fallback for canvas and audio preview. No user credentials are sent. */
 export default defineEventHandler(async (event) => {
   const src = getQuery(event).src
   if (typeof src !== 'string' || src.length > 8192)
@@ -33,7 +33,7 @@ export default defineEventHandler(async (event) => {
     setHeader(
       event,
       'content-type',
-      /^(image|video)\//i.test(type) ? type : 'application/octet-stream'
+      /^(image|video|audio)\//i.test(type) ? type : 'application/octet-stream'
     )
     setHeader(event, 'x-content-type-options', 'nosniff')
     setHeader(event, 'content-security-policy', "default-src 'none'; sandbox")

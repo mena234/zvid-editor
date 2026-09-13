@@ -6,6 +6,7 @@ import { ref, computed, watchEffect } from 'vue'
 import { useEditorContext } from '~/composables/useEditorContext'
 import { useTemplateVars } from '~/composables/useTemplateVars'
 import { useMediaReplace } from '~/composables/useMediaReplace'
+import { useMediaProbe } from '~/composables/useMediaProbe'
 import { round3 } from '~/utils/time'
 import { visualLabel } from '~/utils/visualLabel'
 import type { UploadKind } from '~/stores/uploads'
@@ -15,6 +16,7 @@ const props = defineProps<{ kind: UploadKind }>()
 const { project, editor, contextDuration, activeScene } = useEditorContext()
 const tvars = useTemplateVars()
 const { tryReplace } = useMediaReplace()
+const { probe } = useMediaProbe()
 
 /* ---------------- replace-image mode ---------------- */
 const replaceTarget = computed(() =>
@@ -43,6 +45,7 @@ const EXT: Record<UploadKind, string> = {
 const label = computed(() => (props.kind === 'gif' ? 'GIF' : props.kind))
 
 const showUrl = ref(false)
+const audioCategory = ref<'music' | 'sound-effects'>('music')
 const mediaUrl = ref('')
 const varOptions = computed(() =>
   tvars.placeholderOptions(activeScene.value, 'string')
@@ -74,7 +77,10 @@ function addFromUrl() {
     return
   }
   if (type === 'AUDIO') {
-    const added = project.addAudio(editor.context, { src })
+    const added = project.addAudio(editor.context, { src }, {
+      currentDuration: contextDuration.value,
+      sourceDuration: src.includes('{{') ? undefined : probe('audio', src).duration,
+    })
     editor.selectAudio(added._id)
   } else {
     const added = project.addVisual(editor.context, {
@@ -138,7 +144,22 @@ function addFromUrl() {
     <PanelsUploadsSection :kind="kind" />
 
     <hr class="divider" />
-    <PanelsStockPanel :kind="kind" />
+    <div v-if="kind === 'audio'" class="audio-categories" aria-label="Audio categories">
+      <button
+        class="category"
+        :class="{ active: audioCategory === 'music' }"
+        :aria-pressed="audioCategory === 'music'"
+        @click="audioCategory = 'music'"
+      >Music</button>
+      <button
+        class="category"
+        :class="{ active: audioCategory === 'sound-effects' }"
+        :aria-pressed="audioCategory === 'sound-effects'"
+        @click="audioCategory = 'sound-effects'"
+      >Sound effects</button>
+    </div>
+    <PanelsSoundEffectsPanel v-if="kind === 'audio' && audioCategory === 'sound-effects'" />
+    <PanelsStockPanel v-else :kind="kind" />
   </div>
 </template>
 
@@ -220,5 +241,27 @@ function addFromUrl() {
   margin: 2px 0;
   border: none;
   border-top: 1px solid var(--border-0);
+}
+.audio-categories {
+  display: flex;
+  gap: 4px;
+}
+.category {
+  flex: 1;
+  padding: 7px 8px;
+  border: 1px solid var(--border-1);
+  border-radius: var(--radius-m);
+  background: var(--bg-2);
+  color: var(--text-2);
+  font-size: 11px;
+  font-weight: 600;
+}
+.category:hover,
+.category.active {
+  border-color: var(--accent);
+  color: var(--accent-strong);
+}
+.category.active {
+  background: var(--accent-soft);
 }
 </style>

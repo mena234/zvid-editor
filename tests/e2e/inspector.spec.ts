@@ -228,7 +228,7 @@ test('timing (VIDEO): window fields, ordering validation, trim/speed/volume', as
   await setNum(trim, 'Video begin', '0.2')
   await setNum(trim, 'Video end', '1.8')
   await setNum(trim, 'Playback speed', '2')
-  await setNum(trim, 'Volume', '0.5')
+  await setNum(trim, 'Volume', '50')
 
   await expect
     .poll(async () => await vis(page))
@@ -716,7 +716,7 @@ test('audio: placement, trim, mix, loop-count hint, src swap', async ({ page }) 
   await setNum(trim, 'Audio end', '2.8')
 
   const mix = sec(page, 'Mix')
-  await setNum(mix, 'Volume', '0.5')
+  await setNum(mix, 'Volume', '50')
   await setNum(mix, 'Speed (atempo)', '1.3')
   await setNum(mix, 'Track', '1')
 

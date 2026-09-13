@@ -40,12 +40,12 @@ function openScene(scene: Record<string, any>) {
             width: `${Math.max(10, e.duration * pxPerSec)}px`,
             background: `color-mix(in srgb, ${e.backgroundColor} 45%, var(--bg-3))`,
           }"
-          :title="`${e.scene.id} · ${e.duration}s — double-click to edit`"
+          :title="`${e.scene.id} · ${e.duration.toFixed(1)}s — double-click to edit`"
           @dblclick="openScene(e.scene)"
           @click="editor.selectScene(sourceIdOf(e.scene)); editor.openInspector()"
         >
           <span class="scene-name">{{ e.scene.id }}</span>
-          <span class="scene-dur mono">{{ e.duration }}s</span>
+          <span class="scene-dur mono">{{ e.duration.toFixed(1) }}s</span>
           <span
             v-if="e.transition"
             class="scene-transition"

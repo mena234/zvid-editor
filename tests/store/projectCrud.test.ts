@@ -74,6 +74,36 @@ describe('project store — add', () => {
     expect(third.track).toBe(2)
     expect(store.doc.audios).toHaveLength(3)
   })
+
+  it('places new audio at the playhead and preserves that placement through undo/redo', () => {
+    const store = useProjectStore()
+    const editor = useEditorStore()
+    editor.playhead = 4.583333333333
+    store.resetHistory()
+
+    const added = store.addAudio('root', { src: 'a.mp3' })
+    expect(added.enter).toBe(4.583)
+    expect(store.exportRaw().audios?.[0].enter).toBe(4.583)
+    store.undo()
+    expect(store.doc.audios).toHaveLength(0)
+    editor.playhead = 1
+    store.redo()
+    expect(store.doc.audios[0].enter).toBe(4.583)
+  })
+
+  it('uses the scene-local playhead without offsetting explicit audio timing', () => {
+    const store = useProjectStore()
+    const editor = useEditorStore()
+    store.doc.scenes = [
+      { _id: 'scn_1', id: 'scene-1', duration: 10, visuals: [], audios: [] } as any,
+    ]
+    editor.context = 'scn_1'
+    editor.playhead = 3.2
+    expect(store.addAudio('scn_1', { src: 'a.mp3' }).enter).toBe(3.2)
+    expect(store.addAudio('scn_1', { src: 'b.mp3', enter: 0 }).enter).toBe(0)
+    expect(store.addAudio('scn_1', { src: 'c.mp3', enter: '{{start}}' }).enter).toBe('{{start}}')
+    expect(store.doc.audios).toHaveLength(0)
+  })
 })
 
 describe('project store — patch/remove/duplicate/replace', () => {
