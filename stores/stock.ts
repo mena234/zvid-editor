@@ -23,6 +23,8 @@ interface StockSearchResponse {
   perPage: number
   hasMore: boolean
   providerErrors?: Record<string, string>
+  excludedCount?: number
+  message?: string
 }
 
 interface KindState {
@@ -42,6 +44,9 @@ interface KindState {
   requestId: number
   /** first load already triggered for this kind */
   initialized: boolean
+  message: string | null
+  /** Empty/duplicate-only pages require an explicit next-page request. */
+  autoLoadPaused: boolean
 }
 
 const PER_PAGE = 24
@@ -66,12 +71,15 @@ function emptyKindState(): KindState {
     unavailable: {},
     requestId: 0,
     initialized: false,
+    message: null,
+    autoLoadPaused: false,
   }
 }
 
 export const useStockStore = defineStore('stock', {
   state: () => ({
     kind: 'image' as StockKind,
+    scopeKey: null as string | null,
     byKind: {
       image: emptyKindState(),
       video: emptyKindState(),
@@ -97,6 +105,20 @@ export const useStockStore = defineStore('stock', {
   },
 
   actions: {
+    /** Cached renditions belong to one account/plan; invalidate in-flight
+     * searches as well so a previous session cannot repopulate the picker. */
+    setScope(scopeKey: string) {
+      if (this.scopeKey === scopeKey) return
+      this.scopeKey = scopeKey
+      for (const s of Object.values(this.byKind)) {
+        Object.assign(s, emptyKindState(), {
+          query: s.query,
+          provider: s.provider,
+          requestId: s.requestId + 1,
+        })
+      }
+    },
+
     async loadProviders() {
       if (this.providers) return
       try {
@@ -135,6 +157,8 @@ export const useStockStore = defineStore('stock', {
       s.hasMore = true
       s.error = null
       s.providerErrors = null
+      s.message = null
+      s.autoLoadPaused = false
       s.initialized = true
       s.requestId++ // invalidate in-flight loads
       s.loading = false
@@ -173,6 +197,7 @@ export const useStockStore = defineStore('stock', {
         })
         if (rid !== s.requestId) return // superseded by a newer request
         const seen = new Set(s.items.map((it) => it.id))
+        const previousCount = s.items.length
         for (const it of res.items ?? []) {
           if (!seen.has(it.id)) {
             seen.add(it.id)
@@ -180,7 +205,11 @@ export const useStockStore = defineStore('stock', {
           }
         }
         s.page += 1
-        s.hasMore = !!res.hasMore && (res.items?.length ?? 0) > 0
+        // Filtering incompatible renditions can leave a page empty while
+        // later pages still have usable media. Keep the server's cursor.
+        s.hasMore = !!res.hasMore
+        s.autoLoadPaused = s.items.length === previousCount
+        s.message = res.message || null
         s.providerErrors = res.providerErrors ?? null
         if (res.providerErrors) {
           // failed providers lose their tab (no warning banner); if the

@@ -293,6 +293,13 @@ export const useEditorStore = defineStore('editor', {
       this.playing = false
     },
 
+    setScenePreviewMode(mode: 'scene' | 'full') {
+      if (this.scenePreviewMode === mode) return
+      // End the editing session before its stage subtree is replaced.
+      this.clearSelection()
+      this.scenePreviewMode = mode
+    },
+
     seek(t: number, max = Infinity) {
       this.playhead = Math.min(Math.max(0, t), max)
     },

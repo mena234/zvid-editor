@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, inject } from 'vue'
+import { computed, inject, onBeforeUnmount } from 'vue'
 import type { VisualDoc } from '~/shared/schema/types'
 import { canonicalVisualType } from '~/shared/schema/types'
 import { effectiveLayout, isVisibleAt, resolveVisualTiming } from '~/utils/itemGeometry'
@@ -237,6 +237,8 @@ function onPointerDown(e: PointerEvent) {
   stageCtx.collectSnapLines(new Set(ids))
   window.addEventListener('pointermove', onDragMove)
   window.addEventListener('pointerup', onDragUp)
+  window.addEventListener('pointercancel', cancelDrag)
+  window.addEventListener('blur', cancelDrag)
 }
 
 function onDragMove(e: PointerEvent) {
@@ -280,17 +282,32 @@ function onDragMove(e: PointerEvent) {
 }
 
 function onDragUp() {
+  finishDrag(true)
+}
+
+function cancelDrag() {
+  finishDrag(false)
+}
+
+function finishDrag(selectOnRelease: boolean) {
   window.removeEventListener('pointermove', onDragMove)
   window.removeEventListener('pointerup', onDragUp)
+  window.removeEventListener('pointercancel', cancelDrag)
+  window.removeEventListener('blur', cancelDrag)
+  if (!dragStart) return
   stageCtx.clearGuides()
   if (dragStart?.moved) project.commit()
-  else if (dragStart?.deferredSelect) {
+  else if (selectOnRelease && dragStart?.deferredSelect) {
     // pointer never moved — this was a plain click, not a selection drag
     editor.selectVisual(dragStart.deferredSelect)
     editor.openInspector()
   }
   dragStart = null
 }
+
+// Scene/preview switches and deletion can unmount an item before pointerup.
+// Stop writing to that old scene and commit only work already performed.
+onBeforeUnmount(cancelDrag)
 
 function onDblClick(e: MouseEvent) {
   if (!props.interactive) return
@@ -369,6 +386,7 @@ const isEditingText = computed(
             :width="layout.width"
             :height="layout.height"
             :suppress-radius="clipRadiusAfterZoom"
+            :interactive="interactive"
           />
         </div>
       </div>

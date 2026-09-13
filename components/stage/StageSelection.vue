@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, inject } from 'vue'
+import { computed, inject, onBeforeUnmount } from 'vue'
 import type { VisualDoc } from '~/shared/schema/types'
 import { effectiveLayout } from '~/utils/itemGeometry'
 import { topLeftToAnchor } from '~/shared/schema/defaults'
@@ -99,6 +99,8 @@ function onHandleDown(e: PointerEvent, dir: string) {
   }
   window.addEventListener('pointermove', onResizeMove)
   window.addEventListener('pointerup', onResizeUp)
+  window.addEventListener('pointercancel', onResizeUp)
+  window.addEventListener('blur', onResizeUp)
 }
 
 /** Scale the px-valued typography of a style snapshot by one factor (unitless
@@ -177,6 +179,8 @@ function onResizeMove(e: PointerEvent) {
 function onResizeUp() {
   window.removeEventListener('pointermove', onResizeMove)
   window.removeEventListener('pointerup', onResizeUp)
+  window.removeEventListener('pointercancel', onResizeUp)
+  window.removeEventListener('blur', onResizeUp)
   if (resizeStart) project.commit()
   resizeStart = null
 }
@@ -193,6 +197,8 @@ function onRotateDown(e: PointerEvent) {
   rotateStart = { cx: rect.left + rect.width / 2, cy: rect.top + rect.height / 2 }
   window.addEventListener('pointermove', onRotateMove)
   window.addEventListener('pointerup', onRotateUp)
+  window.addEventListener('pointercancel', onRotateUp)
+  window.addEventListener('blur', onRotateUp)
 }
 
 function onRotateMove(e: PointerEvent) {
@@ -211,9 +217,16 @@ function onRotateMove(e: PointerEvent) {
 function onRotateUp() {
   window.removeEventListener('pointermove', onRotateMove)
   window.removeEventListener('pointerup', onRotateUp)
+  window.removeEventListener('pointercancel', onRotateUp)
+  window.removeEventListener('blur', onRotateUp)
   if (rotateStart) project.commit()
   rotateStart = null
 }
+
+onBeforeUnmount(() => {
+  onResizeUp()
+  onRotateUp()
+})
 </script>
 
 <template>

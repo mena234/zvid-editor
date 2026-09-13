@@ -68,6 +68,23 @@ describe('stock store', () => {
     expect(s.error).toBeNull()
   })
 
+  it('an account change clears cached renditions and ignores the previous request', async () => {
+    const store = useStockStore()
+    store.setScope('paid-account')
+    const old = deferred<any>()
+    fetchMock.mockReturnValueOnce(old.promise)
+    const pending = store.loadMore()
+    store.byKind.video.items = [item('large', { kind: 'video' })]
+    store.byKind.video.initialized = true
+    store.setScope('anonymous')
+    expect(store.byKind.video.items).toEqual([])
+    expect(store.byKind.video.initialized).toBe(false)
+    old.resolve(page([item('stale-large')]))
+    await pending
+    expect(store.byKind.image.items).toEqual([])
+    expect(store.byKind.image.loading).toBe(false)
+  })
+
   it('discards a stale response that resolves after a newer refresh (requestId guard)', async () => {
     const store = useStockStore()
     const first = deferred<any>()
@@ -179,7 +196,7 @@ describe('stock store', () => {
     expect(s.page).toBe(2)
   })
 
-  it('hasMore goes false when the server says so — and when a page comes back empty', async () => {
+  it('respects exhaustion but permits loading after an empty filtered page', async () => {
     const store = useStockStore()
     fetchMock.mockResolvedValueOnce(page([item('a')], false))
     await store.loadMore()
@@ -188,13 +205,20 @@ describe('stock store', () => {
     await store.loadMore() // exhausted → no fetch
     expect(fetchMock).not.toHaveBeenCalled()
 
-    // hasMore:true with zero items is treated as exhausted too
-    fetchMock.mockResolvedValueOnce(page([], true))
+    fetchMock.mockResolvedValueOnce(page([], true, {
+      excludedCount: 24, message: 'Some videos exceed your plan limits.',
+    }))
     await store.refresh()
-    expect(store.byKind.image.hasMore).toBe(false)
-    fetchMock.mockClear()
+    expect(store.byKind.image.hasMore).toBe(true)
+    expect(store.byKind.image.autoLoadPaused).toBe(true)
+    expect(store.byKind.image.message).toContain('plan limits')
+    fetchMock.mockResolvedValueOnce(page([item('compatible')], false))
     await store.loadMore()
-    expect(fetchMock).not.toHaveBeenCalled()
+    expect(store.byKind.image.items.map((value) => value.id)).toEqual(['compatible'])
+    expect(store.byKind.image.page).toBe(2)
+    expect(store.byKind.image.hasMore).toBe(false)
+    expect(store.byKind.image.autoLoadPaused).toBe(false)
+    expect(store.byKind.image.message).toBeNull()
   })
 
   it('captures per-provider errors from a successful page', async () => {

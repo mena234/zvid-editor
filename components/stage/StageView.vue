@@ -453,7 +453,7 @@ function closeContextMenu() {
 
 /* ---------------- selection bookkeeping ---------------- */
 const selectedVisuals = computed<VisualDoc[]>(() => {
-  if (editor.selectionKind !== 'visual') return []
+  if (isFullPreview.value || editor.selectionKind !== 'visual') return []
   const ids = new Set(editor.selectedIds.length ? editor.selectedIds : [editor.selectedId!])
   return contextVisuals.value.filter((v) => ids.has(v._id))
 })

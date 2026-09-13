@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { resetMockOrch, MOCK_ORCH, VALID_TOKEN } from './helpers/app'
+import { resetMockOrch, mockOrchCalls, MOCK_ORCH, VALID_TOKEN } from './helpers/app'
 
 /**
  * Server-route (Nitro) tests over HTTP — the editor's orch proxy layer
@@ -235,6 +235,13 @@ test.describe('designs', () => {
 })
 
 test.describe('stock', () => {
+  test('search forwards session authentication for plan-compatible renditions', async ({ request }) => {
+    const response = await request.get('/api/stock/search?type=video', { headers: AUTH })
+    expect(response.status()).toBe(200)
+    const calls = await mockOrchCalls()
+    expect(calls.find((call) => call.path === '/api/stock/search')?.auth).toBe(true)
+  })
+
   test('providers proxy', async ({ request }) => {
     const body = await (await request.get('/api/stock/providers')).json()
     expect(body.image).toEqual(['pexels'])

@@ -35,6 +35,7 @@ const props = defineProps<{
   contextDuration: number
   width: number
   height: number
+  interactive: boolean
   /** radius is clipped by the item wrapper instead (zoom parity) */
   suppressRadius?: boolean
 }>()
@@ -350,6 +351,7 @@ watch(
    history entry lands when editing ends. */
 const isEditing = computed(
   () =>
+    props.interactive &&
     editor.editingTextId === props.item._id &&
     type.value === 'TEXT' &&
     !hasCustomCode.value
@@ -482,7 +484,9 @@ function onEditKeydown(e: KeyboardEvent) {
 
 onBeforeUnmount(() => {
   // item unmounting mid-edit (scene switch, undo) — land the pending commit
-  if (isEditing.value) {
+  // The store may already have cleared editingTextId before Vue unmounts us;
+  // the snapshot, rather than the current selection, owns the pending edit.
+  if (editSnapshot) {
     finishEdit()
     editor.stopTextEdit(props.item._id)
   }

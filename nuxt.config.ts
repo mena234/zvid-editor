@@ -128,7 +128,7 @@ export default defineNuxtConfig({
 
   sentry: {
     org: 'zvid',
-    project: 'javascript-nuxt',
+    project: 'editor',
   },
 
   sourcemap: {

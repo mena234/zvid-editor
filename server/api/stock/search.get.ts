@@ -4,10 +4,13 @@
  */
 export default defineEventHandler(async (event) => {
   const { orchUrl } = useRuntimeConfig()
+  const token = getCookie(event, 'auth_token')
   try {
     return await $fetch('/api/stock/search', {
       baseURL: orchUrl,
       query: getQuery(event),
+      // Let orch select renditions against the authenticated user's plan.
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
     })
   } catch (e: any) {
     if (e?.statusCode) {

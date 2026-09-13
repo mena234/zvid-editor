@@ -3,6 +3,7 @@ import { ref, computed, watch, onMounted, onBeforeUnmount, nextTick } from 'vue'
 import { useEditorContext } from '~/composables/useEditorContext'
 import { useMediaReplace } from '~/composables/useMediaReplace'
 import { useStockStore, type StockKind, type StockItem } from '~/stores/stock'
+import { useAuthStore } from '~/stores/auth'
 import {
   setStockDragData,
   buildStockVisual,
@@ -16,7 +17,16 @@ const props = defineProps<{ kind: StockKind }>()
 const { project, editor, contextDuration } = useEditorContext()
 const { tryReplace } = useMediaReplace()
 const stock = useStockStore()
+const auth = useAuthStore()
+const accountScope = () => JSON.stringify([
+  auth.user?.id ?? auth.user?.email ?? null, auth.plan?.name, auth.plan?.isPaid,
+])
+stock.setScope(accountScope())
 stock.setKind(props.kind)
+watch(accountScope, (scope) => {
+  stock.setScope(scope)
+  void stock.refresh()
+})
 
 const PROVIDER_LABELS: Record<string, string> = {
   pexels: 'Pexels',
@@ -66,7 +76,7 @@ function nearBottom(): boolean {
 }
 
 function onRootScroll() {
-  if (nearBottom()) void stock.loadMore()
+  if (!stock.current.autoLoadPaused && nearBottom()) void stock.loadMore()
 }
 
 onMounted(() => {
@@ -93,7 +103,8 @@ watch(
   () => [stock.kind, stock.current.items.length, stock.current.loading],
   async () => {
     await nextTick()
-    if (!stock.current.loading && nearBottom()) void stock.loadMore()
+    if (!stock.current.loading && !stock.current.autoLoadPaused && nearBottom())
+      void stock.loadMore()
   }
 )
 
@@ -262,6 +273,14 @@ const skeletons = 8
     </div>
 
     <p
+      v-else-if="stock.current.message"
+      class="state-box hint"
+      role="status"
+    >
+      {{ stock.current.message }}
+    </p>
+
+    <p
       v-else-if="!stock.current.loading && stock.current.initialized && !stock.current.items.length"
       class="state-box hint"
     >
@@ -324,6 +343,15 @@ const skeletons = 8
     <p v-if="!stock.current.hasMore && stock.current.items.length" class="end-note">
       That's everything for this search.
     </p>
+
+    <button
+      v-if="stock.current.hasMore && stock.current.autoLoadPaused && !stock.current.error"
+      class="btn ghost sm"
+      :disabled="stock.current.loading"
+      @click="stock.loadMore()"
+    >
+      {{ stock.current.loading ? 'Loading…' : 'Load more' }}
+    </button>
 
     <p class="attribution">
       {{ attribution }} ·

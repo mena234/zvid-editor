@@ -325,14 +325,14 @@ const hasScenes = computed(() => !!project.doc.scenes?.length)
             <button
               :class="{ on: editor.scenePreviewMode === 'scene' }"
               title="Edit the global overlay track over the full movie"
-              @click="editor.scenePreviewMode = 'scene'"
+              @click="editor.setScenePreviewMode('scene')"
             >
               overlays
             </button>
             <button
               :class="{ on: editor.scenePreviewMode === 'full' }"
               title="Preview the full movie with scene transitions (read-only)"
-              @click="editor.scenePreviewMode = 'full'"
+              @click="editor.setScenePreviewMode('full')"
             >
               full movie
             </button>
