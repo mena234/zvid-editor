@@ -455,7 +455,7 @@ function closeContextMenu() {
 const selectedVisuals = computed<VisualDoc[]>(() => {
   if (isFullPreview.value || editor.selectionKind !== 'visual') return []
   const ids = new Set(editor.selectedIds.length ? editor.selectedIds : [editor.selectedId!])
-  return contextVisuals.value.filter((v) => ids.has(v._id))
+  return displayedVisuals.value.filter((v) => ids.has(v._id))
 })
 
 const contextLabel = computed(() => {

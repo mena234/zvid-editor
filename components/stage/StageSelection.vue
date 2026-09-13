@@ -4,7 +4,7 @@ import type { VisualDoc } from '~/shared/schema/types'
 import { canonicalVisualType } from '~/shared/schema/types'
 import { effectiveLayout } from '~/utils/itemGeometry'
 import { useMediaProbe } from '~/composables/useMediaProbe'
-import { mediaResizeSourceRect, resizeMediaBox, type ResizeHandle } from '~/utils/mediaResize'
+import { mediaCropSizeLimits, mediaResizeSourceRect, resizeMediaBox, resizeMediaCrop, type MediaSourceRect, type ResizeHandle } from '~/utils/mediaResize'
 import { topLeftToAnchor } from '~/shared/schema/defaults'
 import { useProjectStore } from '~/stores/project'
 import { isAutoHugText } from '~/utils/textTemplate'
@@ -32,6 +32,8 @@ const boxStyle = computed(() => ({
   height: `${layout.value.height}px`,
   transform: props.item.angle ? `rotate(${props.item.angle}deg)` : undefined,
   '--hs': `${hs.value}px`,
+  '--edge-length': `${20 / stageCtx.scale}px`,
+  '--edge-thickness': `${4 / stageCtx.scale}px`,
   '--bw': `${Math.max(1, 1.4 / stageCtx.scale)}px`,
 }))
 
@@ -62,6 +64,14 @@ let resizeStart: {
   angle: number
   resize: VisualDoc['resize']
   crop: VisualDoc['cropParams']
+  source: { width: number; height: number } | null
+  sourceCrop: MediaSourceRect | null
+  resolvedCrop: VisualDoc['cropParams']
+  flipH: boolean
+  flipV: boolean
+  contain: boolean
+  minSize: number
+  maxSize: number
   changed: boolean
   hug: boolean
   /** RAW doc style at drag start (corner scale must never compound or bake
@@ -79,15 +89,31 @@ function onHandleDown(e: PointerEvent, dir: ResizeHandle) {
   const media = type === 'IMAGE' || type === 'VIDEO' || type === 'GIF'
   // Selection receives the resolved preview; retain any authored crop
   // placeholders rather than writing their preview values back to the doc.
-  let crop = project.visualById(props.item._id)?.cropParams
-  // Images default to cover in the renderer. Materialize the current source
-  // rectangle once, so a side drag stretches those pixels in preview/export.
-  if (media && dir.length === 1 && !crop && (type === 'IMAGE' || props.item.resize === 'cover')) {
+  const crop = project.visualById(props.item._id)?.cropParams
+  let source: { width: number; height: number } | null = null
+  let sourceCrop: MediaSourceRect | null = null
+  // An explicitly letterboxed item retains that fit while its frame changes.
+  // Switching it to a filled crop would abruptly zoom on the first movement.
+  const contain = props.item.resize === 'contain' && !crop
+  let minSize = 8
+  let maxSize = Infinity
+  if (media && dir.length === 1 && !contain) {
+    const resolvedCrop = props.item.cropParams
+    // With variable preview disabled (or a missing variable), crop fields can
+    // still be placeholders. Never turn an unresolved crop into NaN geometry.
+    if (resolvedCrop && (
+      !['x', 'y', 'width', 'height'].every((key) => Number.isFinite(resolvedCrop[key])) ||
+      resolvedCrop.width <= 0 || resolvedCrop.height <= 0
+    )) return
     const natural = props.item.src && intrinsicOf(type === 'VIDEO' ? 'video' : 'image', props.item.src)
     // Do not invent source dimensions or commit a wrong crop while metadata
     // is loading. The handles work once the displayed media has resolved.
     if (!natural) return
-    crop = mediaResizeSourceRect(natural, L, props.item.resize ?? (type === 'IMAGE' ? 'cover' : undefined))
+    source = natural
+    sourceCrop = mediaResizeSourceRect(natural, L, resolvedCrop)
+    const limits = mediaCropSizeLimits(natural, L, sourceCrop, dir, type === 'IMAGE' ? 1 : 2)
+    minSize = limits.minSize
+    maxSize = limits.maxSize
   }
   const hug = hugText.value
   let scaleStyle: Record<string, any> | null = null
@@ -118,6 +144,14 @@ function onHandleDown(e: PointerEvent, dir: ResizeHandle) {
     angle: typeof props.item.angle === 'number' ? props.item.angle : 0,
     resize: props.item.resize,
     crop,
+    source,
+    sourceCrop,
+    resolvedCrop: props.item.cropParams,
+    flipH: !!props.item.flipH,
+    flipV: !!props.item.flipV,
+    contain,
+    minSize,
+    maxSize,
     changed: false,
     hug,
     scaleStyle,
@@ -160,19 +194,41 @@ function onResizeMove(e: PointerEvent) {
       { left: s.left, top: s.top, width: s.w, height: s.h, angle: s.angle },
       s.dir,
       dx,
-      dy
+      dy,
+      s.minSize,
+      s.maxSize
     )
     // Movement along an edge's tangent is not a resize either.
     if (!s.changed && Math.abs(box.width - s.w) < 0.001 && Math.abs(box.height - s.h) < 0.001) return
     const { x, y } = topLeftToAnchor(box.left, box.top, box.width, box.height, s.anchor)
+    let cropParams = s.crop
+    if (s.source && s.sourceCrop) {
+      // Use the committed box dimensions so source and output retain exactly
+      // the same aspect ratio in preview and the exported document.
+      cropParams = resizeMediaCrop(
+        s.source,
+        { width: s.w, height: s.h },
+        s.sourceCrop,
+        { width: round3(box.width), height: round3(box.height) },
+        s.dir,
+        s.flipH,
+        s.flipV
+      )
+      // A crop gesture authors the changed source coordinates; preserve any
+      // untouched template fields instead of baking their preview values.
+      for (const key of ['x', 'y', 'width', 'height'] as const) {
+        if (s.crop && s.resolvedCrop && Math.abs(cropParams[key] - s.resolvedCrop[key]) < 1e-9)
+          cropParams[key] = s.crop[key]
+      }
+    }
     const patch: Record<string, any> = {
       x: round3(x),
       y: round3(y),
       width: round3(box.width),
       height: round3(box.height),
       anchor: s.anchor,
-      resize: s.dir.length === 2 ? s.resize : undefined,
-      cropParams: s.crop,
+      resize: s.dir.length === 2 || s.contain ? s.resize : undefined,
+      cropParams,
     }
     if (props.item.position && props.item.position !== 'custom') patch.position = 'custom'
     project.patchVisual(props.item._id, patch, false)
@@ -291,10 +347,11 @@ onBeforeUnmount(() => {
         v-for="hd in HANDLES"
         :key="hd.dir"
         class="handle"
+        :class="{ 'handle--edge': hd.dir.length === 1 }"
         :data-resize-handle="hd.dir"
         :style="{
-          left: `calc(${hd.x * 100}% - var(--hs) / 2)`,
-          top: `calc(${hd.y * 100}% - var(--hs) / 2)`,
+          left: `${hd.x * 100}%`,
+          top: `${hd.y * 100}%`,
           cursor: hd.cursor,
         }"
         @pointerdown="onHandleDown($event, hd.dir)"
@@ -322,6 +379,7 @@ onBeforeUnmount(() => {
 }
 .handle {
   position: absolute;
+  transform: translate(-50%, -50%);
   width: var(--hs);
   height: var(--hs);
   background: #fff;
@@ -329,6 +387,46 @@ onBeforeUnmount(() => {
   border-radius: 50%;
   box-shadow: 0 1px 3px rgba(10, 6, 30, 0.3);
   pointer-events: auto;
+}
+.handle:not(.handle--edge) {
+  width: calc(var(--hs) * 1.3);
+  height: calc(var(--hs) * 1.3);
+}
+/* Slim edge bars retain a larger invisible target for easy dragging. */
+.handle--edge {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+.handle--edge::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  border-radius: 999px;
+  box-shadow: 0 0 0 calc(var(--bw) / 2) rgba(10, 6, 30, 0.2);
+  pointer-events: none;
+}
+.handle[data-resize-handle='n'],
+.handle[data-resize-handle='s'] {
+  width: var(--edge-length);
+}
+.handle[data-resize-handle='n']::before,
+.handle[data-resize-handle='s']::before {
+  width: 100%;
+  height: var(--edge-thickness);
+}
+.handle[data-resize-handle='e'],
+.handle[data-resize-handle='w'] {
+  height: var(--edge-length);
+}
+.handle[data-resize-handle='e']::before,
+.handle[data-resize-handle='w']::before {
+  width: var(--edge-thickness);
+  height: 100%;
 }
 .rotate-stick {
   position: absolute;
