@@ -228,10 +228,10 @@ test('scene CRUD: cards show durations (auto computed), add, reorder reconciles 
 
   const cards = sceneCards(page)
   await expect(cards).toHaveCount(3)
-  await expect(cards.nth(0)).toContainText('4s')
+  await expect(cards.nth(0)).toContainText('4.0s')
   // auto (-1) durations display the plan-computed value
-  await expect(cards.nth(1)).toContainText('auto (3s)')
-  await expect(cards.nth(2)).toContainText('2s')
+  await expect(cards.nth(1)).toContainText('auto (3.0s)')
+  await expect(cards.nth(2)).toContainText('2.0s')
   await expect(cards.nth(0)).toContainText('fade →')
 
   // add: a fresh 5s scene is appended and opened for editing
@@ -448,11 +448,11 @@ test('full-movie preview: scene groups follow the overlap-adjusted plan and tota
   await expect(page.locator('.scene-block')).toHaveCount(2)
   await expect(page.locator('.scene-block').nth(0)).toHaveAttribute(
     'title',
-    'A · 4s — double-click to edit'
+    'A · 4.0s — double-click to edit'
   )
   await expect(page.locator('.scene-block').nth(1)).toHaveAttribute(
     'title',
-    'B · 3s — double-click to edit'
+    'B · 3.0s — double-click to edit'
   )
   await expect(page.locator('.scene-block .scene-transition')).toHaveAttribute(
     'title',

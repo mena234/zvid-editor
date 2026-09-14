@@ -595,11 +595,14 @@ test('one-word mode renders only the word being spoken', async ({ page }) => {
 test('warning chip appears when the native preview fails; dismiss hides it', async ({
   page,
 }) => {
+  // Production chunks can load the module before the blocked worker fails.
+  // Allow all three 20s startup attempts plus their retry delays to finish.
+  test.setTimeout(120_000)
   await loadProject(page, baseDoc({ captions: [CAP3] }))
   await setPlayhead(page, 0.5)
 
   // jassub is blocked by beforeEach → init exhausts its retries → chip
-  await expect(page.locator('.ass-warning')).toBeVisible({ timeout: 20_000 })
+  await expect(page.locator('.ass-warning')).toBeVisible({ timeout: 75_000 })
   await expect(page.locator('.ass-warning')).toContainText('failed to load')
   await expect(page.locator('.ass-warning')).toContainText('browser')
   await expect(page.locator('.ass-warning .warn-retry')).toBeVisible()
@@ -633,12 +636,13 @@ async function blockJassubWorker(page: Page): Promise<{ lift: () => void }> {
 test('Retry button boots the native preview once the network recovers', async ({
   page,
 }) => {
+  test.setTimeout(120_000)
   const worker = await blockJassubWorker(page)
   await loadProject(page, baseDoc({ captions: [CAP3] }))
   await setPlayhead(page, 0.5)
 
   await expect(page.locator('.ass-warning .warn-retry')).toBeVisible({
-    timeout: 20_000,
+    timeout: 75_000,
   })
   worker.lift() // "network recovered"
   await page.click('.ass-warning .warn-retry')
@@ -652,10 +656,11 @@ test('Retry button boots the native preview once the network recovers', async ({
 test('captions (re)arriving after a failed init trigger an automatic retry', async ({
   page,
 }) => {
+  test.setTimeout(120_000)
   const worker = await blockJassubWorker(page)
   await loadProject(page, baseDoc({ captions: [CAP3] }))
   await setPlayhead(page, 0.5)
-  await expect(page.locator('.ass-warning')).toBeVisible({ timeout: 20_000 })
+  await expect(page.locator('.ass-warning')).toBeVisible({ timeout: 75_000 })
 
   worker.lift()
   // captions transition to 0 and back → hasCaptions watch retries on its own
