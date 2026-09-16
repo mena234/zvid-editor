@@ -309,7 +309,7 @@ onBeforeUnmount(() => {
           </template>
         </p>
         <p v-if="isImage" class="hint">
-          1 credit per image render — tip: bulk renders bill 10 images per credit.
+          1 credit per image render, including bulk renders.
         </p>
       </div>
 
