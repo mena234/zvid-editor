@@ -85,6 +85,36 @@ describe('auth store', () => {
     expect(s.loaded).toBe(true)
   })
 
+  it('login succeeds only after the cookie-backed session is established', async () => {
+    const s = useAuthStore()
+    const user = { email: 'a@b.c' }
+    fetchMock.mockResolvedValueOnce({ success: true, user })
+    fetchMock.mockResolvedValueOnce({ user, credits: { balance: 5 }, plan: { isPaid: true } })
+
+    expect((await s.login(user.email, 'test-password')).success).toBe(true)
+    expect(fetchMock).toHaveBeenNthCalledWith(2, '/api/session')
+    expect(s.user).toEqual(user)
+    expect(s.isPaid).toBe(true)
+  })
+
+  it.each(['missing cookie', 'session request failure'])('login reports failure after %s', async (failure) => {
+    const s = useAuthStore()
+    fetchMock.mockResolvedValueOnce({ success: true, user: { email: 'a@b.c' } })
+    if (failure === 'missing cookie') fetchMock.mockResolvedValueOnce({ user: null })
+    else fetchMock.mockRejectedValueOnce(new Error('offline'))
+
+    const result = await s.login('a@b.c', 'test-password')
+    expect(result).toMatchObject({ success: false, error: expect.stringContaining('session') })
+    expect(s.user).toBeNull()
+  })
+
+  it('failed credentials do not fetch a session', async () => {
+    const s = useAuthStore()
+    fetchMock.mockResolvedValueOnce({ success: false, error: 'Wrong email or password' })
+    expect(await s.login('a@b.c', 'wrong')).toEqual({ success: false, error: 'Wrong email or password' })
+    expect(fetchMock).toHaveBeenCalledTimes(1)
+  })
+
   it('logout clears the session even when the API call fails', async () => {
     const s = useAuthStore()
     s.user = { email: 'a@b.c' }

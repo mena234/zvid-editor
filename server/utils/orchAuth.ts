@@ -1,32 +1,38 @@
-import type { H3Event } from 'h3'
+import { getRequestURL, setCookie, type H3Event } from 'h3'
 
 const isProd = process.env.NODE_ENV === 'production'
 
 /**
- * Cookie options must stay identical to zvid-dash-nuxt/server/utils/authCookie.ts
- * so a session started in either app is visible to both (shared `.zvid.io`
- * domain in production; host-only `localhost` cookie in dev, which browsers
- * share across ports).
+ * Share sessions with the dashboard on Zvid hosts. A production build can
+ * also run on loopback over HTTP, where a `.zvid.io` cookie would be rejected.
+ * Keep the HTTP exception local; production hosts still require Secure.
  */
+function authCookieOptions(event: H3Event) {
+  const url = getRequestURL(event, { xForwardedHost: false })
+  const hostname = url.hostname.toLowerCase()
+  const isLoopback = hostname === 'localhost' || hostname.endsWith('.localhost')
+    || /^127(?:\.\d{1,3}){3}$/.test(hostname) || hostname === '[::1]'
+  const isZvidHost = hostname === 'zvid.io' || hostname.endsWith('.zvid.io')
+  return {
+    httpOnly: true,
+    secure: url.protocol === 'https:' || (isProd && !isLoopback),
+    sameSite: 'lax' as const,
+    path: '/',
+    ...(isProd && isZvidHost && { domain: '.zvid.io' }),
+  }
+}
+
 export function setAuthCookie(event: H3Event, token: string) {
   setCookie(event, 'auth_token', token, {
-    httpOnly: true,
-    secure: isProd,
-    sameSite: 'lax',
+    ...authCookieOptions(event),
     maxAge: 60 * 60 * 24 * 7, // 7 days
-    path: '/',
-    ...(isProd && { domain: '.zvid.io' }),
   })
 }
 
 export function clearAuthCookie(event: H3Event) {
   setCookie(event, 'auth_token', '', {
-    httpOnly: true,
-    secure: isProd,
-    sameSite: 'lax',
+    ...authCookieOptions(event),
     maxAge: 0,
-    path: '/',
-    ...(isProd && { domain: '.zvid.io' }),
   })
 }
 

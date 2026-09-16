@@ -74,7 +74,15 @@ export const useAuthStore = defineStore('auth', {
         user?: SessionUser
         error?: string
       }>('/api/auth/login', { method: 'POST', body: { email, password } })
-      if (result.success) await this.fetchSession()
+      if (result.success) {
+        await this.fetchSession()
+        if (!this.user) {
+          return {
+            success: false,
+            error: 'Could not establish your session. Please try signing in again.',
+          }
+        }
+      }
       return result
     },
 
