@@ -5,6 +5,8 @@ import { useProjectStore } from '~/stores/project'
 import { useEditorStore } from '~/stores/editor'
 import { useAuthStore } from '~/stores/auth'
 import { validateProjectDoc } from '~/shared/schema/validate'
+import { useEditorContext } from '~/composables/useEditorContext'
+import { useRenderPayload } from '~/composables/useRenderPayload'
 import {
   connectRenderSocket,
   submitRenderTask,
@@ -14,6 +16,8 @@ import {
 const project = useProjectStore()
 const editor = useEditorStore()
 const auth = useAuthStore()
+const { totalDuration } = useEditorContext()
+const renderPayload = useRenderPayload()
 const dashUrl = useRuntimeConfig().public.dashUrl
 
 const errors = computed(() =>
@@ -165,7 +169,7 @@ async function start() {
 
   let ack
   try {
-    ack = await submitRenderTask(socket, { payload: project.exportRaw() })
+    ack = await submitRenderTask(socket, { payload: renderPayload() })
   } catch (e: any) {
     fail(e?.message ?? 'Failed to submit the render')
     return
@@ -303,7 +307,7 @@ onBeforeUnmount(() => {
         <p class="hint">
           Output: {{ project.defaults.name }}.{{ isImage ? imageFormat : project.defaults.outputFormat }} ·
           {{ project.defaults.width }}×{{ project.defaults.height
-          }}<template v-if="!isImage"> · {{ project.defaults.duration }}s</template>
+          }}<template v-if="!isImage"> · {{ totalDuration }}s</template>
           <template v-if="auth.credits?.balance != null">
             · {{ auth.credits.balance }} credits available
           </template>

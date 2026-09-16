@@ -160,8 +160,10 @@ test('TopBar project settings all write through to the exported JSON', async ({
   await hIn.fill('600')
   await hIn.press('Enter')
 
-  // duration & fps mini-fields
-  const dur = page.locator('label[title="Timeline duration (seconds)"] input')
+  // Switch the duration control to a set length, then edit duration and fps.
+  await page.getByRole('button', { name: 'Project duration settings' }).click()
+  await page.getByRole('checkbox', { name: 'Fit content automatically' }).uncheck()
+  const dur = page.locator('.duration-popover input.num')
   await dur.fill('12')
   await dur.press('Enter')
   const fps = page.locator('label[title="Frame rate"] input')
@@ -184,6 +186,7 @@ test('TopBar project settings all write through to the exported JSON', async ({
     resolution: 'custom',
     width: 900,
     height: 600,
+    durationMode: 'fixed',
     duration: 12,
     frameRate: 24,
     backgroundColor: '#112233',
@@ -345,8 +348,8 @@ test('New menu resets to a video project and switches into image mode', async ({
   for (const shown of ['Images', 'Text', 'Design', 'Shape', 'Canvas', 'Variables']) {
     await expect(page.locator(`.rail-tab[title="${shown}"]`), shown).toHaveCount(1)
   }
-  // duration/fps mini-fields hidden, formats narrowed to image encoders
-  await expect(page.locator('label[title="Timeline duration (seconds)"]')).toHaveCount(0)
+  // Duration controls stay hidden; formats are narrowed to image encoders.
+  await expect(page.getByRole('button', { name: 'Project duration settings' })).toHaveCount(0)
   expect(
     await page.locator('select[title="Output format"] option').allTextContents()
   ).toEqual(['png', 'jpg', 'webp'])

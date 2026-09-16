@@ -9,7 +9,7 @@ import { volumePercent, volumeGain } from '~/utils/volume'
 
 const props = defineProps<{ audio: AudioDoc }>()
 const project = useProjectStore()
-const { contextDuration } = useEditorContext()
+const { contextDuration, activeScene } = useEditorContext()
 const { probe } = useMediaProbe()
 
 const probed = computed(() => (props.audio.src ? probe('audio', props.audio.src) : null))
@@ -27,6 +27,7 @@ const loopInfo = computed(() => {
 })
 
 function patch(p: Record<string, any>) {
+  if ('exit' in p) p.matchDuration = undefined
   project.patchAudio(props.audio._id, p)
 }
 </script>
@@ -56,6 +57,10 @@ function patch(p: Record<string, any>) {
     </UiSection>
 
     <UiSection title="Timeline placement">
+      <label class="hint">
+        <input type="checkbox" :checked="!!audio.matchDuration" @change="patch({ matchDuration: ($event.target as HTMLInputElement).checked || undefined })" />
+        {{ activeScene ? 'Match scene length' : 'Match project length' }}
+      </label>
       <div class="grid-2">
         <UiField label="Starts at (enter)">
           <UiNumberInput
@@ -68,7 +73,7 @@ function patch(p: Record<string, any>) {
             @update:model-value="patch({ enter: $event })"
           />
         </UiField>
-        <UiField label="Ends at (exit)" hint="Empty = source length / timeline end">
+        <UiField v-if="!audio.matchDuration" label="Ends at" hint="Empty = source length / timeline end">
           <UiNumberInput
             :model-value="audio.exit"
             :min="0"

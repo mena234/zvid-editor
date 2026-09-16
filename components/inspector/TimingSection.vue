@@ -104,7 +104,7 @@ function patchTiming(field: TimingField, v: number | string | undefined) {
         </UiField>
         <UiField
           label="Disappears at (exitEnd)"
-          :hint="isDesign ? `Design elements: max ${MAX_DESIGN_ELEMENT_DURATION}s on screen` : 'Empty = end of timeline'"
+          :hint="isDesign ? `Design elements: max ${MAX_DESIGN_ELEMENT_DURATION}s on screen` : 'Until scene / project end when empty'"
         >
           <UiNumberInput
             :model-value="item.exitEnd"

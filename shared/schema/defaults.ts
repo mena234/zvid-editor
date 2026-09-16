@@ -181,7 +181,7 @@ export function resolveAudioTiming(
   const enter = asNum(audio.enter, 0)
   const trimmed = Math.max(0, audioEnd - audioBegin)
   const rawExit = asNum(audio.exit, NaN)
-  const exit =
+  const exit = audio.matchDuration ? contextDuration :
     !Number.isNaN(rawExit) && rawExit > enter
       ? rawExit
       : Math.min(enter + trimmed / speed, contextDuration)

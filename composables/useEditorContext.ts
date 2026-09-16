@@ -50,10 +50,7 @@ export function useEditorContext() {
     }
     // root of a scenes project always spans the whole movie — the stage shows
     // the scenes in both preview modes, and global overlays run against it
-    if (project.doc.scenes?.length) {
-      return projectTotalDuration(displayDoc.value, probeDuration)
-    }
-    return displayDefaults.value.duration
+    return projectTotalDuration(displayDoc.value, probeDuration)
   })
 
   /** total duration of the final movie (for export/global overlays) */

@@ -709,7 +709,7 @@ test('audio: placement, trim, mix, loop-count hint, src swap', async ({ page }) 
 
   const placement = sec(page, 'Timeline placement')
   await setNum(placement, 'Starts at (enter)', '0.5')
-  await setNum(placement, 'Ends at (exit)', '8')
+  await setNum(placement, 'Ends at', '8')
 
   const trim = sec(page, 'Source trim')
   await setNum(trim, 'Audio begin', '0.2')

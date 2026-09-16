@@ -228,6 +228,7 @@ function schemaForType(type: string) {
 export const audioItemSchema = z
   .object({
     src: z.string(),
+    matchDuration: boolOpt,
     enter: numOpt,
     exit: numOpt,
     audioBegin: numOpt,
@@ -315,6 +316,7 @@ export const projectSchema = z
     width: numOpt,
     height: numOpt,
     duration: numOpt,
+    durationMode: z.enum(['auto', 'fixed']).optional(),
     frameRate: numOpt,
     backgroundColor: strOpt,
     outputFormat: strOpt,
@@ -369,7 +371,8 @@ export interface ProjectDoc {
   resolution?: string
   width?: number
   height?: number
-  duration?: number
+  duration?: number | string
+  durationMode?: 'auto' | 'fixed'
   frameRate?: number
   backgroundColor?: string
   outputFormat?: string

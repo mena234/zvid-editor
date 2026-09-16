@@ -106,7 +106,7 @@ function commitCondition(e: Event) {
 
     <UiField
       label="Duration"
-      :hint="'-1 / auto derives the duration from the scene\'s content; a {{placeholder}} resolves at render'"
+      hint="Auto follows the scene’s content. Set length keeps an intentional duration."
     >
       <div class="dur-row">
         <label class="check">
@@ -121,8 +121,9 @@ function commitCondition(e: Event) {
               })
             "
           />
-          auto
+          Auto
         </label>
+        <span v-if="!isAuto" class="hint">Set length</span>
         <UiNumberInput
           v-if="!isAuto"
           :model-value="scene.duration"

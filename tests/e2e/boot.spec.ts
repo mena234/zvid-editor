@@ -27,11 +27,14 @@ test('starts with a default empty video project', async ({ page }) => {
     const t = (window as any).__zvidTest
     return {
       duration: t.project.doc.duration,
+      durationMode: t.project.doc.durationMode,
       frameRate: t.project.doc.frameRate,
       errors: t.validate().filter((i: any) => i.level === 'error'),
     }
   })
-  expect(state.duration).toBeGreaterThan(0)
+  expect(state.durationMode).toBe('auto')
+  expect(state.duration).toBeUndefined()
+  await expect(page.getByTestId('project-duration')).toHaveText('Project: 0:10.00')
   expect(state.frameRate).toBeGreaterThan(0)
   expect(state.errors).toEqual([])
 })

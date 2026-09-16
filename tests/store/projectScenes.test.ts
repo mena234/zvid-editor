@@ -24,13 +24,13 @@ describe('project store — scenes', () => {
     setActivePinia(createPinia())
   })
 
-  it('addScene creates the scenes array with a sequential 1-based id and 5s duration', () => {
+  it('addScene creates the scenes array with a sequential 1-based id and automatic duration', () => {
     const store = useProjectStore()
     expect(store.hasScenes).toBe(false)
     const s0 = store.addScene()
     expect(store.hasScenes).toBe(true)
     expect(s0.id).toBe('scene-1')
-    expect(s0.duration).toBe(5)
+    expect(s0.duration).toBe(-1)
     expect(s0._id).toMatch(/^scn_/)
     const s1 = store.addScene()
     expect(s1.id).toBe('scene-2')
@@ -166,6 +166,7 @@ describe('project store — scenes', () => {
 
   it('convertToScenes wraps the flat timeline into a single scene', () => {
     const store = useProjectStore()
+    store.doc.durationMode = undefined
     store.doc.duration = 25
     const v = store.addVisual('root', { type: 'TEXT', text: 'x', track: 0 })
     const a = store.addAudio('root', { src: 'a.mp3', track: 0 })
@@ -181,6 +182,7 @@ describe('project store — scenes', () => {
 
   it('convertToScenes defaults the scene duration to 10 and is a no-op when scenes exist', () => {
     const store = useProjectStore()
+    store.doc.durationMode = undefined
     delete store.doc.duration
     store.convertToScenes()
     expect(store.doc.scenes![0].duration).toBe(10)

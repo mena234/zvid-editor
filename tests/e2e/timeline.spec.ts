@@ -11,7 +11,7 @@ import { openEditor, exportedDoc, loadProject, store, fx } from './helpers/app'
  * Geometry: pixel deltas are derived from editor.pxPerSec via the bridge —
  * nothing assumes the default zoom. Snapping is ON by default: a dragged
  * edge within 7px of 0 / duration / playhead / another clip's edge snaps
- * to it, otherwise it lands on the frame grid (round(t*fps)/fps). Every
+ * to it, then nearby half seconds, otherwise the frame grid (round(t*fps)/fps). Every
  * seed below is chosen so the expected value is exact under those rules.
  */
 

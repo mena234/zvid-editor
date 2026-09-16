@@ -64,7 +64,9 @@ test('audio categories preserve music search and add a playable effect for its n
   const origin = process.env.EDITOR_TEST_PRODUCTION === '1'
     ? 'https://editor.zvid.io' : 'http://127.0.0.1:4597'
   expect(doc.audios[0].src).toBe(`${origin}/audio/sound-effects/v1/whoosh.wav`)
-  expect(doc.duration).toBe(10.55)
+  expect(doc.durationMode).toBe('auto')
+  expect(doc.duration).toBe(10)
+  await expect(page.getByTestId('project-duration')).toHaveText('Project: 0:10.55')
   await page.getByRole('button', { name: 'Music', exact: true }).click()
   await expect(page.locator('.stock-panel .search-input')).toHaveValue('gentle')
   await expect(page.locator('.stock-panel .audio-row')).toHaveCount(1)

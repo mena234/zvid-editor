@@ -81,5 +81,8 @@ export function usePlayback(durationFn: () => number) {
     }
   )
 
+  watch(durationFn, (duration) => {
+    if (editor.playhead > duration) editor.seek(duration, duration)
+  })
   onBeforeUnmount(() => cancelAnimationFrame(raf))
 }

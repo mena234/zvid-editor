@@ -4,7 +4,9 @@ import { useEditorContext } from '~/composables/useEditorContext'
 import { usePlayheadJumps } from '~/composables/usePlayheadJumps'
 import { resolveVisualTiming, resolveAudioTiming } from '~/shared/schema/defaults'
 import { useMediaProbe } from '~/composables/useMediaProbe'
+import { contentDuration, projectContentDuration } from '~/shared/schema/scenePlan'
 import { formatTime, clamp, round3 } from '~/utils/time'
+import { snapTimelineTime } from '~/utils/timelineSnap'
 import {
   TIMELINE_DEFAULT_MIN_PX_PER_SEC,
   TIMELINE_HEADER_WIDTH,
@@ -18,8 +20,10 @@ const {
   contextVisuals,
   contextAudios,
   activeScene,
+  scenePlan,
+  totalDuration,
 } = useEditorContext()
-const { probe } = useMediaProbe()
+const { probe, probeDuration } = useMediaProbe()
 const { jumpBack, jumpForward } = usePlayheadJumps()
 
 /* ---------------- geometry ---------------- */
@@ -58,6 +62,9 @@ const lastCaptionEnd = computed(() => {
 const contentEnd = computed(() =>
   Math.max(contextDuration.value, lastClipEnd.value, lastCaptionEnd.value)
 )
+const independentEnd = computed(() => activeScene.value
+  ? contentDuration(activeScene.value, probeDuration)
+  : projectContentDuration(project.resolvedPreviewDoc, probeDuration))
 
 const contentWidth = computed(
   () => Math.max(contentEnd.value, contextDuration.value) * pxPerSec.value + 260
@@ -148,36 +155,49 @@ function openClipMenu(e: MouseEvent, id: string, kind: 'visual' | 'audio') {
 
 /* ---------------- snapping targets ---------------- */
 function snapTargets(excludeId?: string): number[] {
-  const pts = [0, contextDuration.value, editor.playhead]
+  const followsContent = activeScene.value
+    ? (activeScene.value.duration ?? -1) === -1
+    : project.doc.durationMode === 'auto'
+  const pts = [0, editor.playhead]
+  // A derived end follows the dragged clip. Snapping back to it on every
+  // pointermove makes slow trims sticky and leaves fractional end times.
+  if (!followsContent) pts.push(contextDuration.value)
+  if (!activeScene.value) {
+    if (scenePlan.value) pts.push(scenePlan.value.totalScenesDuration)
+    const minimum = project.resolvedPreviewDoc.duration
+    if (typeof minimum === 'number') pts.push(minimum)
+  }
   for (const v of contextVisuals.value) {
     if (v._id === excludeId) continue
     const t = resolveVisualTiming(v, contextDuration.value)
-    pts.push(t.enterBegin, t.exitEnd)
+    pts.push(t.enterBegin)
+    if (!followsContent || typeof v.exitEnd === 'number') pts.push(t.exitEnd)
   }
   for (const a of contextAudios.value) {
     if (a._id === excludeId) continue
     const src = a.src ? probe('audio', a.src) : null
     const t = resolveAudioTiming(a, contextDuration.value, src?.duration)
-    pts.push(t.enter, t.exit)
+    pts.push(t.enter)
+    if (
+      !followsContent ||
+      (!a.matchDuration &&
+        (typeof a.exit === 'number' ||
+          typeof a.audioEnd === 'number' ||
+          typeof src?.duration === 'number'))
+    ) {
+      pts.push(t.exit)
+    }
   }
   return pts
 }
 
 function snapTime(t: number, excludeId?: string): number {
-  const fps = project.defaults.frameRate
-  if (!editor.snapping) return round3(Math.max(0, t))
-  const threshold = 7 / pxPerSec.value
-  let best = t
-  let bestD = threshold
-  for (const p of snapTargets(excludeId)) {
-    const d = Math.abs(p - t)
-    if (d < bestD) {
-      bestD = d
-      best = p
-    }
-  }
-  if (best === t) best = Math.round(t * fps) / fps // frame grid
-  return round3(Math.max(0, best))
+  return snapTimelineTime(t, {
+    enabled: editor.snapping,
+    targets: snapTargets(excludeId),
+    pxPerSec: pxPerSec.value,
+    frameRate: project.defaults.frameRate,
+  })
 }
 
 /* ---------------- scrubbing ---------------- */
@@ -237,20 +257,22 @@ watch(
 /* ---------------- transport actions ---------------- */
 function fitDurationToContent() {
   // fit to the real last clip end so the duration can shrink, not only grow
-  const target = round3(lastClipEnd.value)
+  const target = round3(independentEnd.value)
   if (target <= 0) {
     editor.notify('Nothing on the timeline to fit the duration to', 'info')
     return
   }
   if (activeScene.value) {
-    project.patchScene(activeScene.value._id, { duration: target })
+    if (activeScene.value.duration !== undefined && activeScene.value.duration !== -1) {
+      project.patchScene(activeScene.value._id, { duration: target })
+    }
   } else {
-    project.patchProject({ duration: target })
+    project.patchProject(project.doc.durationMode === 'auto' ? { duration: undefined } : { duration: target })
   }
   editor.notify(`Duration set to ${target}s`, 'success')
 }
 
-const overDuration = computed(() => contentEnd.value > contextDuration.value + 0.001)
+const overDuration = computed(() => independentEnd.value > contextDuration.value + 0.001)
 
 const hasScenes = computed(() => !!project.doc.scenes?.length)
 </script>
@@ -300,20 +322,21 @@ const hasScenes = computed(() => !!project.doc.scenes?.length)
         <span class="time mono">
           {{ formatTime(editor.playhead) }}
           <span class="time-total">/ {{ formatTime(contextDuration) }}</span>
+          <span v-if="activeScene" class="time-total"> · Project {{ formatTime(totalDuration) }}</span>
         </span>
         <span
-          v-if="overDuration && !activeScene"
+          v-if="overDuration"
           class="over-badge"
-          title="Clips extend past the project duration — the render will cut them off"
+          title="Content extends beyond the set length and will be cut off"
         >
           <UiIcon name="warning" :size="11" />
           content exceeds duration
-          <button class="link" @click="fitDurationToContent">fit</button>
+          <button class="link" @click="fitDurationToContent">{{ activeScene ? 'Extend scene to fit' : 'Extend project to fit' }}</button>
         </span>
         <button
           v-else
           class="btn ghost sm"
-          title="Set duration to the last clip's end"
+          title="Fit scenes, timed elements, audio and captions; remove extra time"
           @click="fitDurationToContent"
         >
           Fit duration

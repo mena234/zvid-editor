@@ -8,6 +8,8 @@ import { resolveAudioTiming } from '../../shared/schema/defaults'
 describe('project store — media duration growth', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
+    // This suite covers legacy explicit-duration projects.
+    useProjectStore().doc.durationMode = undefined
   })
 
   it.each([undefined, 3])('makes room for endpoint audio with source duration %s in one undo', (sourceDuration) => {

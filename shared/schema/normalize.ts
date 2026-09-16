@@ -29,6 +29,7 @@ const PROJECT_KEYS = new Set([
   'width',
   'height',
   'duration',
+  'durationMode',
   'frameRate',
   'backgroundColor',
   'outputFormat',
@@ -131,6 +132,7 @@ export function importProject(raw: unknown): ImportResult {
     width: p.width,
     height: p.height,
     duration: p.duration,
+    durationMode: p.durationMode,
     frameRate: p.frameRate,
     backgroundColor: p.backgroundColor,
     outputFormat: p.outputFormat,
@@ -334,6 +336,7 @@ export function exportProject(doc: ProjectDoc): Record<string, any> {
     if (doc.height !== undefined) out.height = doc.height
   }
   if (doc.duration !== undefined) out.duration = doc.duration
+  if (doc.durationMode !== undefined) out.durationMode = doc.durationMode
   if (doc.frameRate !== undefined) out.frameRate = doc.frameRate
   if (doc.backgroundColor !== undefined) out.backgroundColor = doc.backgroundColor
   if (doc.outputFormat !== undefined) out.outputFormat = doc.outputFormat
@@ -399,7 +402,7 @@ export function newProjectDoc(type: 'video' | 'image' = 'video'): ProjectDoc {
   return {
     name: 'untitled-video',
     resolution: 'full-hd',
-    duration: 10,
+    durationMode: 'auto',
     frameRate: 30,
     backgroundColor: '#0b0d12',
     outputFormat: 'mp4',

@@ -124,18 +124,7 @@ function setResolution(e: Event) {
       <span v-if="isImage" class="dim-badge mode-badge" title="Still-image project">IMAGE</span>
 
       <template v-if="!isImage">
-        <label class="mini-field" title="Timeline duration (seconds)">
-          <UiIcon name="clock" :size="13" />
-          <UiNumberInput
-            class="w-56"
-            :model-value="project.doc.duration"
-            :min="0.1"
-            :step="0.5"
-            placeholder="10"
-            @update:model-value="project.patchProject({ duration: $event })"
-          />
-          <span class="suffix">s</span>
-        </label>
+        <ProjectDuration />
 
         <label class="mini-field" title="Frame rate">
           <UiIcon name="film" :size="13" />
@@ -263,10 +252,11 @@ function setResolution(e: Event) {
 <style scoped>
 .topbar {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 8px;
-  height: 52px;
-  padding: 0 14px;
+  min-height: 52px;
+  padding: 7px 14px;
   background: var(--bg-1);
   border-bottom: 1px solid var(--border-0);
   flex: 0 0 auto;
@@ -332,10 +322,11 @@ function setResolution(e: Event) {
 }
 .settings {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 7px;
-  padding: 0 10px;
-  height: 38px;
+  padding: 5px 10px;
+  min-height: 38px;
   border: 1px solid var(--border-0);
   border-radius: var(--radius-m);
   background: var(--bg-2);
@@ -434,6 +425,13 @@ function setResolution(e: Event) {
 }
 .spacer {
   flex: 1;
+}
+
+@media (max-width: 1920px) {
+  .settings {
+    order: 1;
+    flex-basis: 100%;
+  }
 }
 
 @media (max-width: 1360px) {

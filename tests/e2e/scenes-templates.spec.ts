@@ -234,11 +234,12 @@ test('scene CRUD: cards show durations (auto computed), add, reorder reconciles 
   await expect(cards.nth(2)).toContainText('2.0s')
   await expect(cards.nth(0)).toContainText('fade →')
 
-  // add: a fresh 5s scene is appended and opened for editing
+  // New scenes follow their content, with a 10s fallback while empty.
   await page.locator('.rail-panel button', { hasText: 'Add scene' }).click()
   await expect(cards).toHaveCount(4)
   let doc = await exportedDoc(page)
-  expect(doc.scenes[3]).toMatchObject({ id: 'scene-4', duration: 5 })
+  expect(doc.scenes[3]).toMatchObject({ id: 'scene-4', duration: -1 })
+  await expect(cards.nth(3)).toContainText('auto (10.0s)')
   expect(await store(page, 'editor', 'context')).not.toBe('root')
 
   // remove the added scene again

@@ -19,8 +19,7 @@ import {
   resolveVisualTiming,
   clampDesignTiming,
 } from '~/shared/schema/defaults'
-import { DEFAULT_SCENE_DURATION } from '~/shared/schema/constants'
-import { computeSceneAutoDuration } from '~/shared/schema/scenePlan'
+import { projectTotalDuration } from '~/shared/schema/scenePlan'
 import {
   resolveDocPreview,
   hasTemplateMarkers,
@@ -70,6 +69,23 @@ interface AddMediaOptions {
 
 function clone<T>(v: T): T {
   return JSON.parse(JSON.stringify(v))
+}
+
+/** Keep a naturally sized media window attached to source trim/speed edits.
+ * Deliberately longer/shorter windows keep their authored length. */
+function mediaTimingPatch(item: Record<string, any>, patch: Record<string, any>, audio = false) {
+  const beginKey = audio ? 'audioBegin' : 'videoBegin'
+  const endKey = audio ? 'audioEnd' : 'videoEnd'
+  const enterKey = audio ? 'enter' : 'enterBegin'
+  const exitKey = audio ? 'exit' : 'exitEnd'
+  if (exitKey in patch || !['speed', beginKey, endKey].some((key) => key in patch)) return patch
+  if (typeof item[endKey] !== 'number' || typeof item[exitKey] !== 'number') return patch
+  const oldEnd = (item[enterKey] ?? 0) + (item[endKey] - (item[beginKey] ?? 0)) / (item.speed ?? 1)
+  if (Math.abs(oldEnd - item[exitKey]) > 0.002) return patch
+  const next = { ...item, ...patch }
+  const end = (next[enterKey] ?? 0) + (next[endKey] - (next[beginKey] ?? 0)) / (next.speed ?? 1)
+  if (!Number.isFinite(end) || end <= (next[enterKey] ?? 0)) return patch
+  return { ...patch, [exitKey]: round3(end), ...(!audio && item.exitBegin === item.exitEnd ? { exitBegin: round3(end) } : {}) }
 }
 
 const EXACT_DURATION_PLACEHOLDER = /^\{\{\s*([^{}]+?)\s*\}\}$/
@@ -210,20 +226,7 @@ export const useProjectStore = defineStore('project', {
           const s = state.doc.scenes?.find((x) => x._id === context)
           if (s) return sceneDuration(s)
         }
-        const base = resolveProjectDefaults(state.doc).duration
-        if (context === 'root' && state.doc.scenes?.length) {
-          const total = state.doc.scenes.reduce((sum, s) => {
-            const d = sceneDuration(s)
-            const staticAutoDuration = computeSceneAutoDuration(
-              s,
-              () => undefined
-            )
-            return sum +
-              (d > 0 ? d : staticAutoDuration || DEFAULT_SCENE_DURATION)
-          }, 0)
-          return Math.max(base, total)
-        }
-        return base
+        return projectTotalDuration(state.doc, () => undefined)
       }
     },
     /** Template variable defaults (live in the export-passthrough `extra`). */
@@ -433,6 +436,10 @@ export const useProjectStore = defineStore('project', {
       // image projects have no audio — the panels are hidden, this is the
       // backstop (returned doc is simply not attached to the document)
       if (this.isImage) return doc
+      if (this.doc.durationMode === 'auto' && doc.audioEnd === undefined &&
+        typeof options.sourceDuration === 'number' && Number.isFinite(options.sourceDuration)) {
+        doc.audioEnd = options.sourceDuration
+      }
       // Library / URL additions follow the cursor in the active timeline.
       // Preserve explicit placement from pasted JSON or duration-aware uploads.
       const editor = useEditorStore()
@@ -507,6 +514,9 @@ export const useProjectStore = defineStore('project', {
     ): boolean {
       if (this.isImage || !Number.isFinite(requiredEnd) || requiredEnd <= 0)
         return false
+      // Auto project duration is derived, never written back as a sticky floor.
+      // Explicit scenes in these projects keep the length the user chose.
+      if (this.doc.durationMode === 'auto') return false
 
       const end = round3(requiredEnd)
       const suppliedCurrent =
@@ -570,6 +580,7 @@ export const useProjectStore = defineStore('project', {
     patchVisual(id: string, patch: Record<string, any>, commit = true) {
       const v = this.visualById(id)
       if (!v) return
+      if (canonicalVisualType(v.type) === 'VIDEO') patch = mediaTimingPatch(v, patch)
       for (const [k, val] of Object.entries(patch)) {
         if (val === undefined) delete (v as any)[k]
         else (v as any)[k] = val
@@ -598,6 +609,8 @@ export const useProjectStore = defineStore('project', {
     patchAudio(id: string, patch: Record<string, any>, commit = true) {
       const a = this.audioById(id)
       if (!a) return
+      if (!a.matchDuration) patch = mediaTimingPatch(a, patch, true)
+      if ('exit' in patch && !('matchDuration' in patch)) delete a.matchDuration
       for (const [k, val] of Object.entries(patch)) {
         if (val === undefined) delete (a as any)[k]
         else (a as any)[k] = val
@@ -823,7 +836,7 @@ export const useProjectStore = defineStore('project', {
       const scene: SceneDoc = {
         _id: makeId('scn'),
         id: uniqueSceneId(scenes),
-        duration: 5,
+        duration: -1,
         visuals: [],
         audios: [],
       }
@@ -894,7 +907,7 @@ export const useProjectStore = defineStore('project', {
       const scene: SceneDoc = {
         _id: makeId('scn'),
         id: 'scene-1',
-        duration: this.doc.duration ?? 10,
+        duration: this.doc.durationMode === 'auto' ? -1 : this.doc.duration ?? 10,
         visuals: this.doc.visuals,
         audios: this.doc.audios,
       }
@@ -904,11 +917,12 @@ export const useProjectStore = defineStore('project', {
       this.commit()
     },
     /** Flatten scenes into the root timeline using scene start offsets. */
-    flattenScenes(startsBySceneId: Record<string, number>) {
+    flattenScenes(startsBySceneId: Record<string, number>, durationsBySceneId: Record<string, number> = {}) {
       const scenes = this.doc.scenes
       if (!scenes?.length) return
       for (const s of scenes) {
         const offset = startsBySceneId[s._id] ?? 0
+        const localDuration = durationsBySceneId[s._id] ?? (typeof s.duration === 'number' && s.duration > 0 ? s.duration : undefined)
         // a scene-bounded design window must stay pinned to ITS scene's end
         // once it resolves against the whole movie (-1 = unknowable → ceiling)
         const sceneEnd =
@@ -931,6 +945,10 @@ export const useProjectStore = defineStore('project', {
           this.doc.visuals.push(v)
         }
         for (const a of s.audios) {
+          if (a.matchDuration && localDuration !== undefined) {
+            a.exit = localDuration
+            delete a.matchDuration
+          }
           a.enter = round3((a.enter ?? 0) + offset)
           if (a.exit !== undefined) a.exit = round3(a.exit + offset)
           this.doc.audios.push(a)

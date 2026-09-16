@@ -42,10 +42,12 @@ function entryFor(id: string) {
 function flatten() {
   if (!scenePlan.value) return
   const starts: Record<string, number> = {}
+  const durations: Record<string, number> = {}
   for (const e of scenePlan.value.entries) starts[e.scene._id] = e.start
+  for (const e of scenePlan.value.entries) durations[e.scene._id] = e.duration
   const total = scenePlan.value.totalScenesDuration
-  project.flattenScenes(starts)
-  project.patchProject({ duration: Math.max(project.doc.duration ?? 0, total) })
+  project.flattenScenes(starts, durations)
+  project.patchProject({ duration: Math.max(typeof project.doc.duration === 'number' ? project.doc.duration : 0, total) })
   editor.setContext('root')
   editor.notify('Scenes flattened into the root timeline', 'success')
 }

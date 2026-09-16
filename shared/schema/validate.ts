@@ -8,6 +8,7 @@ import {
 import { canonicalVisualType } from './types'
 import type { ProjectDoc, VisualDoc, SceneDoc } from './types'
 import { resolveVisualTiming, resolveProjectDefaults } from './defaults'
+import { projectTotalDuration, computeSceneAutoDuration } from './scenePlan'
 
 export interface ValidationIssue {
   level: 'error' | 'warning'
@@ -290,6 +291,7 @@ function checkImageProject(doc: ProjectDoc, issues: ValidationIssue[]) {
   }
   const forbidden: [string, unknown][] = [
     ['duration', doc.duration],
+    ['durationMode', doc.durationMode],
     ['frameRate', doc.frameRate],
     ['thumbnail', doc.thumbnail || undefined],
   ]
@@ -422,7 +424,7 @@ export function validateProjectDoc(doc: ProjectDoc): ValidationIssue[] {
       }
     }
   }
-  if (!isImage && doc.duration !== undefined && doc.duration <= 0) {
+  if (!isImage && typeof doc.duration === 'number' && doc.duration <= 0) {
     issues.push({ level: 'error', path: 'duration', message: 'duration must be > 0.' })
   }
   if (!isImage && doc.frameRate !== undefined && (doc.frameRate <= 0 || doc.frameRate > 120)) {
@@ -450,19 +452,7 @@ export function validateProjectDoc(doc: ProjectDoc): ValidationIssue[] {
 
   // root visuals of a scenes project overlay the WHOLE movie — resolve their
   // open-ended timing against the total, not the (often unset) doc duration
-  const rootDuration = doc.scenes?.length
-    ? Math.max(
-        defaults.duration,
-        doc.scenes.reduce(
-          (sum, s) =>
-            sum +
-            (typeof s.duration === 'number' && s.duration > 0
-              ? s.duration
-              : defaults.duration),
-          0
-        )
-      )
-    : defaults.duration
+  const rootDuration = projectTotalDuration(doc, () => undefined)
   doc.visuals.forEach((v, i) =>
     checkVisual(v, `visuals[${i}]`, rootDuration, issues)
   )
@@ -505,7 +495,7 @@ export function validateProjectDoc(doc: ProjectDoc): ValidationIssue[] {
 
   doc.scenes?.forEach((s, i) => {
     checkScene(s, i, doc.scenes!, issues)
-    const sceneDuration = s.duration && s.duration > 0 ? s.duration : defaults.duration
+    const sceneDuration = typeof s.duration === 'number' && s.duration > 0 ? s.duration : computeSceneAutoDuration(s, () => undefined)
     const sceneIsAuto = !(typeof s.duration === 'number' && s.duration > 0)
     s.visuals.forEach((v, j) => {
       checkVisual(v, `scenes[${i}].visuals[${j}]`, sceneDuration, issues)

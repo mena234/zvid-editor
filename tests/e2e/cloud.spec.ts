@@ -255,7 +255,9 @@ test('Save project: POST creates and links, localStorage remembers, next Save PU
   expect(posts).toHaveLength(1)
   expect(posts[0].auth).toBe(true)
   expect(posts[0].body.name).toBe('cloud-save-e2e')
-  expect(posts[0].body.payload.duration).toBeGreaterThan(0)
+  expect(posts[0].body.payload.durationMode).toBe('auto')
+  expect(posts[0].body.payload.duration).toBeUndefined()
+  await expect(page.getByTestId('project-duration')).toHaveText('Project: 0:10.00')
   expect(posts[0].body.payload.frameRate).toBeGreaterThan(0)
 
   // the session plugin mirrors the link into localStorage
@@ -273,8 +275,15 @@ test('Save project: POST creates and links, localStorage remembers, next Save PU
   const puts = await callsTo('/api/projects/prj_1', 'PUT')
   expect(puts.length).toBeGreaterThanOrEqual(1)
   expect(puts[0].body.payload.duration).toBe(12)
+  expect(puts[0].body.payload.durationMode).toBe('auto')
   expect(await store(page, 'editor', 'cloudProject.id')).toBe('prj_1')
   expect((await callsTo('/api/projects', 'POST')).length).toBe(1) // no fork
+
+  const reopened = await page.context().newPage()
+  await openEditor(reopened, { authed: true, query: '?project=prj_1' })
+  await expect(reopened.locator('.name-input')).toHaveValue('cloud-save-e2e')
+  await expect(reopened.getByTestId('project-duration')).toHaveText('Project: 0:12.00')
+  expect((await exportedDoc(reopened)).durationMode).toBe('auto')
 })
 
 test('Projects modal lists, opens (replaces doc + links), renames and deletes with confirm', async ({
@@ -677,7 +686,9 @@ test('uploaded video click and canvas drop extend timing from the playhead', asy
   // project. One undo removes the clip and restores the old duration.
   await cell.click()
   let doc = await exportedDoc(page)
-  expect(doc.duration).toBe(12)
+  expect(doc.durationMode).toBe('auto')
+  expect(doc.duration).toBe(5) // Keep the authored minimum, not the computed end.
+  await expect(page.getByTestId('project-duration')).toHaveText('Project: 0:12.00')
   expect(doc.visuals[0]).toMatchObject({
     type: 'VIDEO',
     enterBegin: 4,
@@ -686,6 +697,7 @@ test('uploaded video click and canvas drop extend timing from the playhead', asy
   await page.evaluate(() => (window as any).__zvidTest.project.undo())
   doc = await exportedDoc(page)
   expect(doc.duration).toBe(5)
+  await expect(page.getByTestId('project-duration')).toHaveText('Project: 0:05.00')
   // Empty visual arrays are omitted from exported JSON.
   expect(doc.visuals ?? []).toHaveLength(0)
 
@@ -696,7 +708,8 @@ test('uploaded video click and canvas drop extend timing from the playhead', asy
   })
   await expect.poll(async () => (await exportedDoc(page)).visuals.length).toBe(1)
   doc = await exportedDoc(page)
-  expect(doc.duration).toBe(11)
+  expect(doc.duration).toBe(5)
+  await expect(page.getByTestId('project-duration')).toHaveText('Project: 0:11.00')
   expect(doc.visuals[0]).toMatchObject({
     type: 'VIDEO',
     enterBegin: 3,
