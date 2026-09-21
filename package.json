@@ -8,6 +8,7 @@
     "dev": "nuxt dev --port 3003",
     "build": "nuxt build",
     "generate": "nuxt generate",
+    "fonts:update": "node scripts/update-google-fonts.mjs",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "test": "vitest run",

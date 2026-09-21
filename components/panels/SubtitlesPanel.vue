@@ -8,7 +8,6 @@ import {
   SUBTITLE_POSITIONS,
   SUBTITLE_SLIDE_DIRECTIONS,
 } from '~/shared/schema/constants'
-import { POPULAR_GOOGLE_FONTS } from '~/utils/fonts'
 import { round3 } from '~/utils/time'
 
 const project = useProjectStore()
@@ -390,14 +389,11 @@ function fmtT(v: number) {
         </select>
       </UiField>
       <div class="grid-2">
-        <UiField label="Font family">
-          <select
-            class="ctl"
-            :value="styles.fontFamily ?? 'Poppins'"
-            @change="patchStyles({ fontFamily: ($event.target as HTMLSelectElement).value })"
-          >
-            <option v-for="f in POPULAR_GOOGLE_FONTS" :key="f" :value="f">{{ f }}</option>
-          </select>
+        <UiField label="Font family" as="div">
+          <UiFontPicker
+            :model-value="styles.fontFamily ?? 'Poppins'"
+            @update:model-value="patchStyles({ fontFamily: $event })"
+          />
         </UiField>
         <UiField label="Font size (px)">
           <UiNumberInput

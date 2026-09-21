@@ -436,8 +436,8 @@ test('typography: font search+pick, size/weight/color/transform, customCode over
 
   // font picker: open, search, select — loads the font and writes the style
   await typo.locator('.font-btn').click()
-  await typo.locator('.font-menu input.ctl').fill('Robo')
-  await typo.getByRole('button', { name: 'Roboto', exact: true }).click()
+  await page.getByRole('textbox', { name: 'Search Google Fonts' }).fill('Robo')
+  await page.getByRole('dialog', { name: 'Choose Google font' }).getByRole('button', { name: 'Roboto', exact: true }).click()
   await expect.poll(async () => (await vis(page)).style?.fontFamily).toBe('Roboto')
 
   await setNum(typo, 'Size', '60')

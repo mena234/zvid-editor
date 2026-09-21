@@ -66,6 +66,19 @@ npm test           # schema round-trip tests over the bundled examples
   editor origin is allowed by orch's `CORS_ORIGINS`.
   `GET /api/probe?src=…` provides an ffprobe fallback for CORS-blocked media.
 
+## Google Fonts catalog
+
+Text, Design Studio, and subtitle font pickers share the complete bundled Google
+Fonts catalog. Search matches all families; **Show more fonts** extends the list
+without downloading font files. Only selected/project fonts load from Google.
+You can also enter a family name for fonts released after the catalog snapshot.
+
+Run `npm run fonts:update` to refresh `data/google-fonts.json` from
+[Google Fonts metadata](https://fonts.google.com/metadata/fonts), then commit the
+updated snapshot. This requires network access but no API key. The editor can
+browse the catalog without contacting Google; previewing a font still requires
+access to Google's font servers.
+
 ## Fidelity notes
 
 The stage is a DOM approximation of the FFmpeg output. Text/HTML/SVG are
