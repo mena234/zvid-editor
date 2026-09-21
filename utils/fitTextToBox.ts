@@ -70,10 +70,8 @@ export function fitActiveFor(item?: Record<string, any> | null): boolean {
 /**
  * What `white-space` resolves to on the renderer's `.container`.
  *
- * The capture page (package/src/lib/texts/buildHtmlContent.ts) declares none —
- * neither in its reset nor in the `.container` rule — so the container inherits
- * the initial `normal` from the body unless the item's own `style` declares
- * something, which buildHtmlContent writes into the `.container` rule.
+ * HTML keeps the initial `normal`; plain text explicitly uses `pre-wrap` so
+ * authored line breaks and spaces survive. An item's own style wins in both.
  */
 export const RENDERER_WHITE_SPACE = 'normal'
 
@@ -83,19 +81,14 @@ export function rendererWhiteSpaceFor(item?: Record<string, any> | null): string
   // either spelling and the renderer honours both.
   const declared = item?.style?.whiteSpace ?? item?.style?.['white-space']
   const value = typeof declared === 'string' ? declared.trim() : ''
-  return value || RENDERER_WHITE_SPACE
+  return value || (item?.html ? RENDERER_WHITE_SPACE : 'pre-wrap')
 }
 
 /**
  * Pin a measured copy to the renderer's `white-space` — measurement only.
  *
- * The stage paints TEXT through `.text-inner`, which sets `white-space:
- * pre-wrap` so authored newlines and double spaces survive in the preview. The
- * renderer has no such rule, and `pre-wrap` preserves runs of whitespace at the
- * wrap point: the measured ink comes out wider, so the search picks a smaller
- * factor than the render applies (0.5 against the renderer's 0.78125 for
- * double-spaced copy). The painted preview keeps its `pre-wrap`; only the
- * transform-free clone measureFitFactor probes is pinned.
+ * This includes the plain-text/HTML distinction and explicit style overrides,
+ * so fitting measures the same line breaks that will be captured.
  */
 export function applyRendererWhiteSpace(
   el: HTMLElement | null | undefined,

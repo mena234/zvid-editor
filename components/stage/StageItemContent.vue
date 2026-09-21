@@ -9,7 +9,8 @@ import { useEditorStore } from '~/stores/editor'
 import { useProjectStore } from '~/stores/project'
 import { useMediaProbe } from '~/composables/useMediaProbe'
 import { useMeasuredDims } from '~/composables/useMeasuredDims'
-import { extractFontFamilies, loadGoogleFonts } from '~/utils/fonts'
+import { extractFontFamilies, loadGoogleFonts, textFontStack } from '~/utils/fonts'
+import { fontSample, textFontHtml } from '~/shared/textFontPolicy'
 import {
   applyFitFactor,
   applyRendererWhiteSpace,
@@ -247,19 +248,20 @@ const fontFamily = computed(
 )
 /* The renderer loads every family the element references — style.fontFamily
    plus every font-family declared in its inline html and its customCode css
-   (first family of each stack, generics dropped, capped at 4). Loading only
+   (all stack families plus deterministic script fallbacks). Loading only
    style.fontFamily left the rest in whatever fallback the container had. */
 const textFontFamilies = computed(() =>
   extractFontFamilies({
     style: { ...(props.item.style ?? {}), fontFamily: fontFamily.value },
     html: props.item.html,
+    text: props.item.text,
     css: props.item.customCode?.css,
   })
 )
 watch(
   textFontFamilies,
   (families) => {
-    if (type.value === 'TEXT') loadGoogleFonts(families)
+    if (type.value === 'TEXT') loadGoogleFonts(families, fontSample(props.item.text, props.item.html), { weight: props.item.style?.fontWeight, italic: props.item.style?.fontStyle === 'italic' })
   },
   { immediate: true }
 )
@@ -271,7 +273,7 @@ const textInnerStyle = computed(() => {
     if (v === undefined || v === null || k === 'fontFamily') continue
     css[k] = String(v)
   }
-  css.fontFamily = `'${fontFamily.value}', sans-serif`
+  css.fontFamily = textFontStack(fontFamily.value, fontSample(props.item.text, props.item.html))
   if (!css.fontSize) css.fontSize = TEXT_DEFAULT_FONT_SIZE
   if (props.item.width !== undefined) {
     css.width = `${props.item.width}px`
@@ -284,7 +286,7 @@ const textInnerStyle = computed(() => {
 })
 
 const textHtml = computed(() => {
-  if (props.item.html) return props.item.html
+  if (props.item.html) return textFontHtml(props.item.html)
   return escapeHtml(props.item.text ?? '')
 })
 
@@ -308,11 +310,8 @@ function runTextFit() {
     // distort client rects (a rotated box reports its axis-aligned bounds)
     const clone = el.cloneNode(true) as HTMLElement
     host.appendChild(clone)
-    // `.text-inner` paints with `white-space: pre-wrap`; the renderer's
-    // container has no such rule, and pre-wrap keeps runs of whitespace at the
-    // wrap point — measuring under it reads wider ink and picks a smaller
-    // factor than the render. The clone measures under the renderer's value;
-    // the painted element keeps pre-wrap.
+    // Plain text preserves authored newlines in both paths. HTML and explicit
+    // whiteSpace declarations keep their own policy during fitting as well.
     applyRendererWhiteSpace(clone, props.item)
     return clone
   }, fitBoxOf(props.item))
@@ -698,6 +697,7 @@ const iframeDoc = computed(() => {
       v-else-if="cssOnlyCode"
       :item-id="item._id"
       :html="textHtml"
+      :plain-text="!item.html"
       :style-object="item.style"
       :custom-css="item.customCode?.css"
       :explicit-width="item.width"
@@ -708,6 +708,7 @@ const iframeDoc = computed(() => {
       v-else
       ref="textMeasureEl"
       class="text-inner"
+      dir="auto"
       :class="{ editing: isEditing }"
       :style="textInnerStyle"
       :contenteditable="editableAttr"
@@ -722,6 +723,7 @@ const iframeDoc = computed(() => {
       v-if="needsIframe"
       :item-id="item._id"
       :html="textHtml"
+      :plain-text="!item.html"
       :style-object="item.style"
       :custom-css="item.customCode?.css"
       :explicit-width="item.width"

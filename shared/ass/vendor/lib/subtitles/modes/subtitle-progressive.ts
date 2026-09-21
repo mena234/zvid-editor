@@ -1,15 +1,20 @@
-import { escapeAssText, formatTime } from '../../../utils/subtitles';
+import {
+  escapeAssText,
+  formatTime,
+  joinAssWords,
+} from '../../../utils/subtitles';
 import type { SubtitleStyles, Subtitle } from '../../../types/text';
 
 // Generate ASS content
 export function generateASSContent(subtitle: Subtitle) {
   const styles = subtitle.styles as SubtitleStyles;
-  const groups = subtitle.captions
-    .map((caption) => caption.words ?? [])
-    .filter((group) => group.length > 0);
+  const groups = subtitle.captions.filter(
+    (caption) => (caption.words?.length ?? 0) > 0
+  );
   let assContent = ``;
 
-  groups.forEach((group, groupIndex) => {
+  groups.forEach((caption, groupIndex) => {
+    const group = caption.words!;
     assContent += `; Group ${groupIndex + 1}: "${group.map((w) => w.text).join(' ')}"\n`;
 
     const groupEnd = group[group.length - 1].end;
@@ -22,24 +27,22 @@ export function generateASSContent(subtitle: Subtitle) {
       const start = formatTime(startSeconds);
       const end = formatTime(nextStartSeconds);
 
-      const text = group
-        .map((w, i) => {
-          const t = escapeAssText(w.text);
+      const text = joinAssWords(caption, (w, i) => {
+        const t = escapeAssText(w.text);
 
-          if (i < wordIndex) {
-            // already spoken words - normal style
-            return t;
-          }
+        if (i < wordIndex) {
+          // already spoken words - normal style
+          return t;
+        }
 
-          if (i === wordIndex) {
-            // highlighted word
-            return `{\\rHighlight}${t}{\\rDefault}`;
-          }
+        if (i === wordIndex) {
+          // highlighted word
+          return `{\\rHighlight}${t}{\\rDefault}`;
+        }
 
-          // future words - hidden
-          return `{\\alpha&HFF&}${t}{\\alpha&H00&}`;
-        })
-        .join(' ');
+        // future words - hidden
+        return `{\\alpha&HFF&}${t}{\\alpha&H00&}`;
+      });
 
       assContent += `Dialogue: 0,${start},${end},Default,,${styles.marginH},${styles.marginH},${styles.marginV},,${text}\n`;
     });

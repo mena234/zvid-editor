@@ -8,6 +8,8 @@
  * Mirrors package/src/utils/downloadGoogleFont.ts.
  */
 
+import { fontVariantCandidates } from '../../shared/fontResolution'
+
 const NAME_RE = /^[\w\s-]{1,80}$/
 const cache = new Map<string, Uint8Array>()
 
@@ -27,20 +29,26 @@ export default defineEventHandler(async (event) => {
   if (!ttf) {
     const encoded = encodeURIComponent(family).replace(/%20/g, '+')
     // A single ital/wght combination → exactly one @font-face in the response.
-    const cssUrl = `https://fonts.googleapis.com/css2?family=${encoded}:ital,wght@${italic ? 1 : 0},${weight}&display=swap`
-
-    const css = await $fetch<string>(cssUrl, {
-      // no browser UA → Google serves TTF urls (same as the package's axios)
-      headers: { 'User-Agent': 'axios/1.7' },
-      responseType: 'text',
-    }).catch(() => null)
+    let css: string | null = null
+    // Mirror the renderer: absent italics use the same upright font and
+    // libass synthesizes italic. Never silently initialize an empty worker.
+    for (const variant of fontVariantCandidates({ weight, italic })) {
+      const cssUrl = `https://fonts.googleapis.com/css2?family=${encoded}:ital,wght@${variant.italic ? 1 : 0},${variant.weight}&display=swap`
+      css = await $fetch<string>(cssUrl, {
+        headers: { 'User-Agent': 'axios/1.7' },
+        responseType: 'text',
+        timeout: 8000,
+        retry: 0,
+      }).catch(() => null)
+      if (css?.match(/url\((.*?)\)/)) break
+    }
     const match = css?.match(/url\((.*?)\)/)
     const fileUrl = match?.[1]?.replace(/['"]+/g, '')
     if (!fileUrl) {
       throw createError({ statusCode: 404, statusMessage: `no TTF for ${family}` })
     }
 
-    const buf = await $fetch<ArrayBuffer>(fileUrl, { responseType: 'arrayBuffer' }).catch(
+    const buf = await $fetch<ArrayBuffer>(fileUrl, { responseType: 'arrayBuffer', timeout: 8000, retry: 0 }).catch(
       () => null
     )
     if (!buf) {

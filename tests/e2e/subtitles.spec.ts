@@ -1,6 +1,7 @@
 import { test, expect, type Page, type Locator } from '@playwright/test'
 import * as path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { readFileSync } from 'node:fs'
 import {
   openEditor,
   exportedDoc,
@@ -13,6 +14,11 @@ import {
 // expected word/chunk timings are computed with identical rounding.
 import { distributeWords, chunkCaptions } from '../../shared/schema/subtitle'
 import { SUBTITLE_MODES } from '../../shared/schema/constants'
+import { configureSubtitleSegmentation } from '../../shared/ass/vendor/utils/subtitleSegmentation'
+
+test.beforeAll(async () => {
+  configureSubtitleSegmentation(await import('icu'))
+})
 
 /**
  * Subtitle editor end-to-end: SubtitlesPanel CRUD + import, the word grid
@@ -24,8 +30,8 @@ import { SUBTITLE_MODES } from '../../shared/schema/constants'
  * /api/fonts (external). Every test aborts the jassub module request so the
  * overlay deterministically uses its DOM word-span fallback and no external
  * font traffic ever happens. The §6b recovery tests unroute jassub again to
- * exercise the retry path — those also abort /api/fonts so font lookups
- * resolve null locally (loadRenderFont never throws).
+ * exercise the retry path, supplying an original ASCII test font locally
+ * after recovery. A ready worker without supplied fonts is not a valid preview.
  */
 
 const FIXTURES_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), 'fixtures')
@@ -621,7 +627,7 @@ test('warning chip appears when the native preview fails; dismiss hides it', asy
  * browser's module map (not retriable), so the recovery tests model the
  * realistic transient class instead — the worker/wasm boot fetches, which
  * ARE refetched on every attempt. The module itself loads from the local
- * dev server; /api/fonts is aborted so font lookups resolve null locally.
+ * dev server; fonts recover with the worker and use a local test fixture.
  */
 async function blockJassubWorker(page: Page): Promise<{ lift: () => void }> {
   await page.unroute('**/*jassub*') // allow the module chunk itself
@@ -629,7 +635,9 @@ async function blockJassubWorker(page: Page): Promise<{ lift: () => void }> {
   await page.route(/jassub.*worker/i, (route) =>
     blocked ? route.abort() : route.continue()
   )
-  await page.route('**/api/fonts**', (route) => route.abort())
+  await page.route('**/api/fonts**', (route) => blocked ? route.abort() : route.fulfill({
+    contentType: 'font/ttf', body: readFileSync(path.join(FIXTURES_DIR, 'qa-preview.ttf')),
+  }))
   return { lift: () => (blocked = false) }
 }
 
@@ -638,7 +646,7 @@ test('Retry button boots the native preview once the network recovers', async ({
 }) => {
   test.setTimeout(120_000)
   const worker = await blockJassubWorker(page)
-  await loadProject(page, baseDoc({ captions: [CAP3] }))
+  await loadProject(page, baseDoc({ captions: [CAP3], font: { family: 'QA Preview' } }))
   await setPlayhead(page, 0.5)
 
   await expect(page.locator('.ass-warning .warn-retry')).toBeVisible({
@@ -658,7 +666,7 @@ test('captions (re)arriving after a failed init trigger an automatic retry', asy
 }) => {
   test.setTimeout(120_000)
   const worker = await blockJassubWorker(page)
-  await loadProject(page, baseDoc({ captions: [CAP3] }))
+  await loadProject(page, baseDoc({ captions: [CAP3], font: { family: 'QA Preview' } }))
   await setPlayhead(page, 0.5)
   await expect(page.locator('.ass-warning')).toBeVisible({ timeout: 75_000 })
 
@@ -666,9 +674,26 @@ test('captions (re)arriving after a failed init trigger an automatic retry', asy
   // captions transition to 0 and back → hasCaptions watch retries on its own
   await loadProject(page, baseDoc())
   await expect(page.locator('.ass-warning')).toHaveCount(0)
-  await loadProject(page, baseDoc({ captions: [CAP3] }))
+  await loadProject(page, baseDoc({ captions: [CAP3], font: { family: 'QA Preview' } }))
   await setPlayhead(page, 0.5)
 
+  await expect(page.locator('.ass-layer')).toBeVisible({ timeout: 30_000 })
+  await expect(page.locator('.ass-warning')).toHaveCount(0)
+})
+
+test('missing fonts show a warning instead of a blank native preview and can be retried', async ({ page }) => {
+  await page.unroute('**/*jassub*')
+  let blocked = true
+  await page.route('**/api/fonts**', (route) => blocked ? route.abort() : route.fulfill({
+    contentType: 'font/ttf', body: readFileSync(path.join(FIXTURES_DIR, 'qa-preview.ttf')),
+  }))
+  await loadProject(page, baseDoc({ captions: [CAP3], font: { family: 'QA Preview' } }))
+  await setPlayhead(page, 0.5)
+  await expect(page.locator('.ass-warning')).toBeVisible({ timeout: 30_000 })
+  await expect(page.locator('.ass-layer')).toBeHidden()
+  await expect(page.locator(OVERLAY)).toBeVisible()
+  blocked = false
+  await page.click('.ass-warning .warn-retry')
   await expect(page.locator('.ass-layer')).toBeVisible({ timeout: 30_000 })
   await expect(page.locator('.ass-warning')).toHaveCount(0)
 })

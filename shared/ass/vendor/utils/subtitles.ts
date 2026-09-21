@@ -1,6 +1,25 @@
-// `import type` (not a value import): Vite/esbuild does not elide type-only
-// named imports the way tsc does — a value import of types breaks in-browser.
 import type { Caption, Word } from '../types/text';
+import {
+  segmentWords,
+  graphemes,
+  captionSeparators,
+  joinCaptionWords,
+} from './subtitleText';
+export { graphemes, captionSeparators, joinCaptionWords } from './subtitleText';
+
+/** Apply ASS styling to words while retaining the source's separators. */
+export function joinAssWords(
+  caption: Caption,
+  render: (word: Word, i: number) => string
+): string {
+  const words = caption.words ?? [];
+  const separators = captionSeparators(caption);
+  return (
+    words
+      .map((word, i) => escapeAssText(separators[i]) + render(word, i))
+      .join('') + escapeAssText(separators[words.length])
+  );
+}
 
 type TextCase = 'capitalize' | 'lowercase' | 'uppercase' | undefined;
 
@@ -64,11 +83,9 @@ export function transformTextCase(
 
   // Build text from words if caption.text missing/empty
   if (!text || !text.trim()) {
-    text = (caption.words ?? [])
-      .slice()
-      .sort((a: Word, b: Word) => a.start - b.start)
-      .map((w) => w.text)
-      .join(' ');
+    text = joinCaptionWords({
+      words: (caption.words ?? []).slice().sort((a, b) => a.start - b.start),
+    });
   }
 
   // Transform caption.text (caller can assign it if desired)
@@ -94,15 +111,13 @@ export function distributeWords(
   start: number,
   end: number
 ): Word[] {
-  const parts = String(text ?? '')
-    .split(/\s+/)
-    .filter(Boolean);
+  const parts = segmentWords(String(text ?? ''));
   if (!parts.length || !(end > start)) return [];
   const total = end - start;
-  const weightSum = parts.reduce((s, w) => s + w.length + 1, 0);
+  const weightSum = parts.reduce((s, w) => s + graphemes(w).length + 1, 0);
   let t = start;
   return parts.map((w) => {
-    const dur = ((w.length + 1) / weightSum) * total;
+    const dur = ((graphemes(w).length + 1) / weightSum) * total;
     const word = {
       start: Math.round(t * 1000) / 1000,
       end: Math.round((t + dur) * 1000) / 1000,

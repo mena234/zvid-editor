@@ -5,122 +5,73 @@
  * the preview matches.
  */
 
-/**
- * Families the browser resolves itself; asking Google Fonts for them 400s.
- * Mirrors GENERIC_FAMILIES in package/src/lib/texts/buildHtmlContent.ts.
- */
-const GENERIC_FAMILIES = new Set([
-  'serif',
-  'sans-serif',
-  'monospace',
-  'cursive',
-  'fantasy',
-  'system-ui',
-  'ui-serif',
-  'ui-sans-serif',
-  'ui-monospace',
-  'ui-rounded',
-  'math',
-  'emoji',
-  'fangsong',
-  'inherit',
-  'initial',
-  'unset',
-  'revert',
-  'revert-layer',
-])
+import { parseFontFamilies } from '../shared/fontResolution'
+import { fontSample, referencedTextFamilies, textFontCssUrls } from '../shared/textFontPolicy'
+export { MAX_FAMILIES_PER_ELEMENT, textFontStack } from '../shared/textFontPolicy'
 
-/** Same cap the renderer applies per TEXT element. */
-export const MAX_FAMILIES_PER_ELEMENT = 4
-
-/** First family of a CSS font stack, unquoted (`'Space Grotesk', sans-serif`). */
 export function firstFamilyOf(stack: string): string | null {
-  const family = String(stack)
-    .split(',')[0]
-    .trim()
-    .replace(/^["']|["']$/g, '')
-    .trim()
-  if (!family || family.startsWith('var(')) return null
-  if (GENERIC_FAMILIES.has(family.toLowerCase())) return null
-  return family
+  return parseFontFamilies(stack)[0] || null
 }
 
-/**
- * Every Google font family a TEXT element references: its own `style.fontFamily`
- * plus every `font-family` declared in its inline HTML or its customCode CSS.
- *
- * Byte-for-byte the same rule set the renderer uses (`referencedFamilies` in
- * package/src/lib/texts/buildHtmlContent.ts) — including the declaration regex,
- * so the preview never resolves a family the render leaves in a fallback face.
- */
+/** All stack members plus downloaded fallbacks for the actual script. */
 export function extractFontFamilies(sources: {
-  /** the item's style object, or a bare font stack */
   style?: Record<string, any> | string | null
   html?: string | null
+  text?: string | null
   css?: string | null
 }): string[] {
-  const ordered: string[] = []
-  const seen = new Set<string>()
-  const push = (raw: string | null) => {
-    if (!raw) return
-    const key = raw.toLowerCase()
-    if (seen.has(key)) return
-    seen.add(key)
-    ordered.push(raw)
-  }
-
-  const declared =
-    typeof sources.style === 'string'
-      ? sources.style
-      : (sources.style?.fontFamily as string | undefined)
-  if (declared) push(firstFamilyOf(String(declared)))
-
-  // The renderer strips backslashes from the html before anything reads it —
-  // getTextImage.ts passes `html.replace(/\\/g, '')` into buildHtmlContent, and
-  // referencedFamilies only ever sees the de-escaped copy. Matching the raw
-  // html instead makes a literal backslash next to a font-family declaration
-  // resolve a different family here than the render loads. `customCode.css`
-  // reaches buildHtmlContent untouched (as `animationCss`), so it is matched as
-  // authored.
+  const declared = typeof sources.style === 'string' ? sources.style : sources.style?.fontFamily
   const html = sources.html ? String(sources.html).replace(/\\/g, '') : null
-
-  for (const source of [html, sources.css]) {
-    if (!source) continue
-    // Declaration values end at `;` or the end of the rule / style attribute.
-    const re = /font-family\s*:\s*([^;}"]+)/gi
-    let match: RegExpExecArray | null
-    while ((match = re.exec(String(source)))) push(firstFamilyOf(match[1]))
-  }
-  return ordered.slice(0, MAX_FAMILIES_PER_ELEMENT)
+  return referencedTextFamilies(String(declared || ''), fontSample(sources.text, html), html, sources.css)
 }
 
-const loaded = new Set<string>()
+const loaded = new Map<string, Promise<void>>()
 
-/** Inject a Google Fonts stylesheet for a family (id-deduplicated). */
-export function loadGoogleFont(family: string) {
+/** Deduplicate the stylesheet, then eagerly load this text's selected face. */
+export async function loadGoogleFont(family: string, text = '', variant: { weight?: string | number; italic?: boolean } = {}) {
   if (!family || typeof document === 'undefined') return
   const clean = family.trim()
-  if (!clean || loaded.has(clean)) return
-  loaded.add(clean)
-  const link = document.createElement('link')
-  link.rel = 'stylesheet'
-  link.href = `https://fonts.googleapis.com/css2?family=${encodeURIComponent(
-    clean
-  ).replace(/%20/g, '+')}:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&display=swap`
-  link.dataset.zvidFont = clean
-  document.head.appendChild(link)
+  if (!clean) return
+  if (!loaded.has(clean)) {
+    loaded.set(clean, new Promise<void>((resolve) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      const urls = textFontCssUrls(clean)
+      let candidate = 0
+      link.href = urls[candidate]
+      link.onload = () => resolve()
+      link.onerror = () => {
+        if (++candidate < urls.length) link.href = urls[candidate]
+        else { loaded.delete(clean); resolve() }
+      }
+      link.dataset.zvidFont = clean
+      document.head.appendChild(link)
+    }))
+  }
+  await loaded.get(clean)
+  if (text) {
+    const quoted = JSON.stringify(clean)
+    await document.fonts.load(`${variant.italic ? 'italic' : 'normal'} ${variant.weight || 400} 16px ${quoted}`, text).catch(() => [])
+  }
 }
 
-/** Inject the stylesheet of every family an element references. */
-export function loadGoogleFonts(families: string[]) {
-  for (const family of families) loadGoogleFont(family)
+/** All script faces must settle before the preview is measured. */
+export async function loadGoogleFonts(families: string[], text = '', variant: { weight?: string | number; italic?: boolean } = {}) {
+  await Promise.all(families.map(family => loadGoogleFont(family, text, variant)))
 }
 
 /** css2 URL for iframe/customCode previews. */
 export function googleFontCssUrl(family: string): string {
-  return `https://fonts.googleapis.com/css2?family=${encodeURIComponent(
-    family.trim()
-  ).replace(/%20/g, '+')}:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&display=swap`
+  return textFontCssUrls(family)[0]
+}
+
+/** A fixed retry handler, with URL data in escaped attributes, for sandboxed documents. */
+export function googleFontLinks(families: string[]): string {
+  const attr = (value: string) => value.replace(/&/g, '&amp;').replace(/"/g, '&quot;')
+  return [...new Set(families)].map(family => {
+    const urls = textFontCssUrls(family)
+    return `<link rel="stylesheet" href="${urls[0]}" data-fallback="${attr(JSON.stringify(urls.slice(1)))}" onerror="const a=JSON.parse(this.dataset.fallback);if(a.length){this.href=a.shift();this.dataset.fallback=JSON.stringify(a)}">`
+  }).join('\n')
 }
 
 /**

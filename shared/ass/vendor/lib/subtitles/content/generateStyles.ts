@@ -128,7 +128,7 @@ export default function generateStyles(
     0, // MarginL
     0, // MarginR
     0, // MarginV
-    1, // Encoding
+    -1, // libass: auto paragraph direction and whole-line bidi/shaping
   ];
 
   return defaultStyles;

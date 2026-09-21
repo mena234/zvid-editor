@@ -2,6 +2,7 @@
 import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
 import { useMeasuredDims } from '~/composables/useMeasuredDims'
 import { styleObjectToCss } from '~/utils/textTemplate'
+import { textFontStack, fontSample, textFontCss, textFontHtml } from '~/shared/textFontPolicy'
 import {
   TEXT_DEFAULT_FONT_FAMILY,
   TEXT_DEFAULT_FONT_SIZE,
@@ -16,6 +17,7 @@ import {
 const props = defineProps<{
   itemId: string
   html: string
+  plainText?: boolean
   /** item style object ("style" itself is a reserved attr name in Vue) */
   styleObject?: Record<string, any>
   customCss?: string
@@ -38,15 +40,16 @@ function build() {
     <style>
       * { margin: 0; padding: 0; box-sizing: content-box; }
       .container {
-        font-family: '${fontFamily}', sans-serif;
+        ${props.plainText ? 'white-space: pre-wrap;' : ''}
+        font-family: ${textFontStack(fontFamily, fontSample(undefined, props.html))};
         ${styleObjectToCss(style)}
         ${props.explicitWidth ? `width: ${props.explicitWidth}px;` : 'width: max-content;'}
         ${props.explicitHeight ? `height: ${props.explicitHeight}px;` : ''}
         position: absolute;
       }
-      ${props.customCss ?? ''}
+      ${textFontCss(props.customCss ?? '', fontSample(undefined, props.html))}
     </style>
-    <div class="container">${props.html}</div>
+    <div class="container" dir="auto">${textFontHtml(props.html)}</div>
   `
   ro?.disconnect()
   const container = shadow.querySelector('.container') as HTMLElement | null
@@ -69,6 +72,7 @@ onMounted(build)
 watch(
   () => [
     props.html,
+    props.plainText,
     props.customCss,
     JSON.stringify(props.styleObject ?? {}),
     props.explicitWidth,

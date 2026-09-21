@@ -304,18 +304,17 @@ describe('measureFitFactor', () => {
 /* --------------------------- renderer white-space -------------------------- */
 
 /**
- * The renderer's capture page sets no `white-space`, so `.container` resolves
- * `normal` unless the item's own style declares otherwise. The editor paints
- * TEXT through `.text-inner { white-space: pre-wrap }`; measuring under that
- * reads whitespace runs as ink and shrinks further than the render does.
+ * Plain text and HTML deliberately have different whitespace defaults; an
+ * explicit author declaration must win in both fitting and painting.
  */
 describe('rendererWhiteSpaceFor / applyRendererWhiteSpace', () => {
-  it('is `normal` unless the item declares its own value', () => {
-    expect(rendererWhiteSpaceFor(undefined)).toBe('normal')
-    expect(rendererWhiteSpaceFor({})).toBe('normal')
-    expect(rendererWhiteSpaceFor({ style: {} })).toBe('normal')
-    expect(rendererWhiteSpaceFor({ style: { whiteSpace: '  ' } })).toBe('normal')
-    expect(rendererWhiteSpaceFor({ style: { whiteSpace: 42 } })).toBe('normal')
+  it('preserves plain text line breaks and keeps HTML defaults unless explicitly styled', () => {
+    expect(rendererWhiteSpaceFor(undefined)).toBe('pre-wrap')
+    expect(rendererWhiteSpaceFor({})).toBe('pre-wrap')
+    expect(rendererWhiteSpaceFor({ style: {} })).toBe('pre-wrap')
+    expect(rendererWhiteSpaceFor({ style: { whiteSpace: '  ' } })).toBe('pre-wrap')
+    expect(rendererWhiteSpaceFor({ style: { whiteSpace: 42 } })).toBe('pre-wrap')
+    expect(rendererWhiteSpaceFor({ html: '<b>a\nb</b>' })).toBe('normal')
     expect(rendererWhiteSpaceFor({ style: { whiteSpace: ' pre-wrap ' } })).toBe(
       'pre-wrap'
     )
@@ -327,14 +326,14 @@ describe('rendererWhiteSpaceFor / applyRendererWhiteSpace', () => {
     expect(rendererWhiteSpaceFor({ style: { 'white-space': 'pre' } })).toBe('pre')
   })
 
-  it('pins the measured copy to `normal`, over the .text-inner class rule', () => {
+  it('pins the measured copy to the plain-text whitespace policy', () => {
     const style = fakeStyle()
     applyRendererWhiteSpace({ style } as any, {
       type: 'TEXT',
       style: { fontSize: '42px' },
     })
     expect(style.props.get('white-space')).toEqual({
-      value: 'normal',
+      value: 'pre-wrap',
       priority: 'important',
     })
   })

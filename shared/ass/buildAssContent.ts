@@ -2,7 +2,7 @@ import type { Caption, Subtitle } from './vendor/types/text'
 import { formatASSTime, escapeAssText, transformTextCase } from './vendor/utils/subtitles'
 import generateHeader from './vendor/lib/subtitles/content/generateHeader'
 import configInstance from './vendor/lib/config/config'
-import prepareRoundedBoxes from './vendor/lib/subtitles/roundedBoxes'
+import prepareRoundedBoxes, { loadSubtitleFontMetrics } from './vendor/lib/subtitles/roundedBoxes'
 import { generateASSContent as generateASSContentWordByWord } from './vendor/lib/subtitles/modes/subtitle-one-word'
 import { generateASSContent as generateASSContentSentenceByWord } from './vendor/lib/subtitles/modes/subtitle-progressive'
 import { generateASSContent as generateASSContentKaraoke } from './vendor/lib/subtitles/modes/subtitle-karaoke'
@@ -11,6 +11,8 @@ import { generateASSContent as generateASSContentFade } from './vendor/lib/subti
 import { generateASSContent as generateASSContentTypewriter } from './vendor/lib/subtitles/modes/subtitle-typewriter'
 import { generateASSContent as generateASSContentFill } from './vendor/lib/subtitles/modes/subtitle-fill'
 import { generateASSContent as generateASSContentSlide } from './vendor/lib/subtitles/modes/subtitle-slide'
+import { applyAssFontFallbacks } from '../fontResolution'
+import type { LoadedFont } from './fontMetrics'
 
 /**
  * Browser port of package/src/lib/subtitles/content/buildAssFile.ts — builds
@@ -23,7 +25,8 @@ import { generateASSContent as generateASSContentSlide } from './vendor/lib/subt
  */
 export async function buildAssContent(
   subtitle: Subtitle,
-  project: { width: number; height: number }
+  project: { width: number; height: number },
+  fonts: LoadedFont[] = []
 ): Promise<string> {
   configInstance.updateConfig({ width: project.width, height: project.height })
 
@@ -47,7 +50,7 @@ export async function buildAssContent(
   }))
   subtitle.captions = transformedCaptions
 
-  const rounded = await prepareRoundedBoxes(subtitle)
+  const rounded = await prepareRoundedBoxes(subtitle, fonts)
   const headerStyles = rounded ? rounded.stylesForText : styles
   const assHeader = generateHeader(
     headerStyles,
@@ -63,13 +66,15 @@ export async function buildAssContent(
   } else if (mode === 'karaoke' || mode === 'highlight') {
     assBody = generateASSContentKaraoke(subtitle)
   } else if (mode === 'pop' || mode === 'bounce') {
-    assBody = generateASSContentWordScale(subtitle, mode)
+    const metrics = await loadSubtitleFontMetrics(styles, fonts)
+    assBody = generateASSContentWordScale(subtitle, mode, metrics.measure)
   } else if (mode === 'fade') {
     assBody = generateASSContentFade(subtitle)
   } else if (mode === 'typewriter') {
     assBody = generateASSContentTypewriter(subtitle)
   } else if (mode === 'fill') {
-    assBody = generateASSContentFill(subtitle)
+    const metrics = await loadSubtitleFontMetrics(styles, fonts)
+    assBody = generateASSContentFill(subtitle, metrics.measure)
   } else if (mode === 'slide') {
     assBody = generateASSContentSlide(subtitle)
   } else {
@@ -83,5 +88,5 @@ export async function buildAssContent(
       .join('\n')
   }
 
-  return `${assHeader}${rounded ? rounded.events : ''}${assBody}`
+  return applyAssFontFallbacks(`${assHeader}${rounded ? rounded.events : ''}${assBody}`, styles.fontFamily, fonts)
 }

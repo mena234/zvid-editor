@@ -21,6 +21,22 @@ const forceJassubCanvas2D = {
   },
 }
 
+/** Nuxt supplies a process shim in browsers; ICU must use its browser loader. */
+const forceIcuBrowserLoader = {
+  name: 'zvid:icu-browser-loader',
+  transform(code: string, id: string) {
+    if (!id.split('?')[0]!.replaceAll('\\', '/').endsWith('/icu/lib/diplomat-wasm.mjs')) return
+    const nodeLoaderStart = code.indexOf('if (globalThis.process?.getBuiltinModule) {')
+    const initializerStart = code.indexOf('wasm.diplomat_init();')
+    if (nodeLoaderStart < 0 || initializerStart < nodeLoaderStart) {
+      throw new Error('The pinned ICU loader changed; verify its browser initialization before upgrading.')
+    }
+    return code.slice(0, nodeLoaderStart)
+      + `const loadedWasm = await WebAssembly.instantiateStreaming(fetch(cfg['wasm_path']), imports);\nwasm = loadedWasm.instance.exports;\n\n`
+      + code.slice(initializerStart)
+  },
+}
+
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-01',
   ssr: false,
@@ -102,11 +118,13 @@ export default defineNuxtConfig({
   },
 
   vite: {
+    // ICU4X's pinned WebAssembly module initializes with top-level await.
+    build: { target: 'es2022' },
     define: {
       __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: 'false',
     },
     // dev serves the worker file through the main transform pipeline…
-    plugins: [forceJassubCanvas2D],
+    plugins: [forceJassubCanvas2D, forceIcuBrowserLoader],
     // jassub's worker contains dynamic imports; vite's default iife worker
     // format can't code-split, so production builds fail without this.
     // …but production bundles workers with their own plugin list.
@@ -114,7 +132,7 @@ export default defineNuxtConfig({
     optimizeDeps: {
       // jassub resolves its worker/wasm via `new URL(..., import.meta.url)`;
       // pre-bundling would break those relative asset URLs.
-      exclude: ['jassub', '@ffmpeg/ffmpeg', '@ffmpeg/core'],
+      exclude: ['jassub', '@ffmpeg/ffmpeg', '@ffmpeg/core', 'icu'],
       // …but its CommonJS deps still need the ESM interop pre-bundle
       // ("excluded parent > cjs child" form).
       include: [

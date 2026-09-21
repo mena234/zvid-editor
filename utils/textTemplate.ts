@@ -1,4 +1,5 @@
-import { extractFontFamilies, googleFontCssUrls } from './fonts'
+import { extractFontFamilies, googleFontLinks, textFontStack } from './fonts'
+import { fontSample, textFontHtml, textFontCss } from '../shared/textFontPolicy'
 import { fitScriptSource } from './fitTextToBox'
 import {
   TEXT_DEFAULT_FONT_FAMILY,
@@ -74,20 +75,20 @@ export function buildIframeDoc(opts: TextTemplateOptions): string {
   const style = { ...(opts.style ?? {}) }
   if (!style.fontSize && !opts.svg) style.fontSize = TEXT_DEFAULT_FONT_SIZE
   const cssProps = styleObjectToCss(style)
-  const body = opts.svg ?? opts.html ?? escapeHtml(opts.text ?? '')
+  const sample = fontSample(opts.text, opts.html)
+  const body = opts.svg ?? (opts.html == null ? escapeHtml(opts.text ?? '') : textFontHtml(opts.html, sample))
 
   // The iframe is its own document: the document-level <link>s the stage
   // injects do not reach it, so every family the element references — style,
   // inline html, customCode css — needs its own link here.
-  const fontLinks = googleFontCssUrls(
+  const fontLinks = googleFontLinks(
     extractFontFamilies({
       style: { ...style, fontFamily },
       html: opts.html,
+      text: opts.text,
       css: opts.customCss,
     })
   )
-    .map((url) => `<link rel="stylesheet" href="${url}">`)
-    .join('\n')
 
   const fitBox = {
     width: typeof opts.width === 'number' && opts.width > 0 ? opts.width : null,
@@ -109,17 +110,18 @@ ${fontLinks}
   * { margin: 0; padding: 0; box-sizing: content-box; background: transparent; }
   html, body { overflow: hidden; }
   .container {
-    font-family: '${fontFamily}', sans-serif;
+    ${!opts.svg && opts.html == null ? 'white-space: pre-wrap;' : ''}
+    font-family: ${textFontStack(fontFamily, fontSample(opts.text, opts.html))};
     ${cssProps}
     ${opts.width ? `width: ${opts.width}px;` : 'width: fit-content;'}
     ${opts.height ? `height: ${opts.height}px;` : ''}
   }
   ${opts.svg ? '.container svg { display:block; width:100%; height:100%; }' : ''}
-  ${opts.customCss ?? ''}
+  ${opts.svg ? opts.customCss ?? '' : textFontCss(opts.customCss ?? '', sample)}
 </style>
 </head>
 <body>
-<div class="container">${body}</div>
+<div class="container"${opts.svg ? '' : ' dir="auto"'}>${body}</div>
 ${opts.customJs ? `<script>try{${opts.customJs}}catch(e){console.error(e)}<\/script>` : ''}
 ${fitScript}
 </body>

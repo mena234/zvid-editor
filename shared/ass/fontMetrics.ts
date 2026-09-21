@@ -1,3 +1,5 @@
+import { parseFontFamilies } from '../fontResolution'
+
 /**
  * Font loading + libass-style metrics for the browser ASS pipeline.
  *
@@ -65,7 +67,7 @@ export function loadRenderFont(
   fontFamily: string,
   opts: { weight?: number; italic?: boolean } = {}
 ): Promise<LoadedFont | null> {
-  const family = String(fontFamily ?? 'Poppins').split(',')[0].trim()
+  const family = parseFontFamilies(fontFamily)[0] ?? 'Noto Sans'
   const weight = opts.weight ?? 400
   const italic = !!opts.italic
   const key = `${family}|${weight}|${italic}`
@@ -96,6 +98,8 @@ export function loadRenderFont(
     }
   })()
 
+  // A transient network failure must not poison Retry for the page lifetime.
+  p.then((font) => { if (!font && cache.get(key) === p) cache.delete(key) })
   cache.set(key, p)
   return p
 }

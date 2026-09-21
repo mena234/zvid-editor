@@ -12,6 +12,8 @@ import {
 import { loadGoogleFont } from '~/utils/fonts'
 import { buildAssContent } from '~/shared/ass/buildAssContent'
 import { loadRenderFont } from '~/shared/ass/fontMetrics'
+import { resolveSubtitleFonts } from '~/shared/fontResolution'
+import { captionSeparators, graphemes } from '~/shared/ass/vendor/utils/subtitles'
 
 const props = defineProps<{ time: number }>()
 const project = useProjectStore()
@@ -47,6 +49,7 @@ const assFailed = ref(false)
 // browser lacks Worker/OffscreenCanvas — retrying is pointless, only a
 // different browser helps
 const assUnsupported = ref(false)
+const assFontFailed = ref(false)
 const warningDismissed = ref(false)
 let jassub: any = null
 let destroyed = false
@@ -160,7 +163,6 @@ async function initAss(): Promise<boolean> {
       jassub = instance
       // fonts live in the worker — a fresh worker starts with none
       loadedFontKeys.clear()
-      assReady.value = true
       return true
     } catch (e) {
       hardDestroy(instance)
@@ -183,6 +185,7 @@ async function initAss(): Promise<boolean> {
 function retryNativePreview() {
   if (assUnsupported.value || destroyed) return
   assFailed.value = false
+  assFontFailed.value = false
   warningDismissed.value = false
   scheduleRebuild()
 }
@@ -193,18 +196,20 @@ function retryNativePreview() {
  * ASS builder styles (text and box drawings alike) reference the subtitle's
  * own family — never a family we don't supply.
  */
-async function ensureFonts(st: Record<string, any>) {
-  const family = String(st.fontFamily ?? 'Poppins').split(',')[0].trim()
+async function ensureFonts(st: Record<string, any>, text: string) {
   const variant = { weight: st.isBold ? 700 : 400, italic: !!st.isItalic }
-  const key = `${family}|${variant.weight}|${variant.italic}`
-  if (loadedFontKeys.has(key)) return
-  const font = await loadRenderFont(family, variant)
-  if (font && jassub) {
+  const resolved = await resolveSubtitleFonts(String(st.fontFamily ?? 'Poppins'), text,
+    (family) => loadRenderFont(family, variant))
+  for (const font of resolved.fonts) {
+    const key = `${font.family}|${variant.weight}|${variant.italic}`
+    if (loadedFontKeys.has(key)) continue
+    if (!jassub) throw new Error('Subtitle preview is not ready')
     // slice(): abslink may transfer (detach) the buffer, and the cached copy
     // is reused for canvas measurement
     await jassub.renderer.addFonts([font.data.slice()])
     loadedFontKeys.add(key)
   }
+  return resolved
 }
 
 // rebuilds are serialized: init/setTrack must never interleave
@@ -231,19 +236,23 @@ async function rebuild(token: number) {
   }
   if (!(await initAss())) return
   try {
-    await ensureFonts(st)
+    assReady.value = false
+    const resolved = await ensureFonts(st, sub.captions.map((caption: any) =>
+      caption.text ?? caption.words?.map((word: any) => word.text).join(' ') ?? '').join('\n'))
     // deep clone: buildAssContent mutates captions/styles like the package does
-    const clone = JSON.parse(JSON.stringify({ captions: sub.captions, styles: st }))
+    const clone = JSON.parse(JSON.stringify({ captions: sub.captions, styles: { ...st, fontFamily: resolved.family } }))
     const content = await buildAssContent(clone, {
       width: project.defaults.width,
       height: project.defaults.height,
-    })
+    }, resolved.fonts)
     if (destroyed || token !== rebuildToken) return
     await jassub.renderer.setTrack(content)
+    assReady.value = true
     renderFrame(true)
   } catch (e: any) {
     console.warn('[subtitles] ASS build failed, using DOM fallback:', String(e?.stack || e))
     assFailed.value = true
+    assFontFailed.value = /Subtitle fonts/.test(String(e?.message || e))
     assReady.value = false
   }
 }
@@ -296,6 +305,7 @@ watch(hasCaptions, (has, had) => {
 /* ------------------------------------------------------------------ */
 
 const active = computed(() => activeCaptionAt(subtitle.value, props.time))
+const separators = computed(() => active.value ? captionSeparators(active.value.caption) : [])
 
 const words = computed(() => {
   if (!active.value) return []
@@ -359,10 +369,10 @@ function strokeWordStyle(w: RenderedWord): Record<string, string> | undefined {
 }
 
 function typedPart(w: RenderedWord): string {
-  return [...w.text].slice(0, w.revealedChars ?? 0).join('')
+  return graphemes(w.text).slice(0, w.revealedChars ?? 0).join('')
 }
 function untypedPart(w: RenderedWord): string {
-  return [...w.text].slice(w.revealedChars ?? 0).join('')
+  return graphemes(w.text).slice(w.revealedChars ?? 0).join('')
 }
 </script>
 
@@ -385,6 +395,10 @@ function untypedPart(w: RenderedWord): string {
     <span v-if="assUnsupported" class="warn-text">
       This browser can't show the exact subtitle preview — an approximation is
       shown. Please switch to a recent Chrome, Edge, or Firefox.
+    </span>
+    <span v-else-if="assFontFailed" class="warn-text">
+      A required subtitle font could not load — an approximation is shown.
+      Check your connection or choose a font for this language, then retry.
     </span>
     <span v-else class="warn-text">
       The exact subtitle preview failed to load — an approximation is shown.
@@ -410,7 +424,7 @@ function untypedPart(w: RenderedWord): string {
             ><span v-else-if="w.visible" class="w" :style="strokeWordStyle(w)">{{
               w.text
             }}</span
-            >{{ ' ' }}
+            >{{ separators[i + 1] ?? '' }}
           </template>
         </div>
         <div class="fill-layer">
@@ -432,7 +446,7 @@ function untypedPart(w: RenderedWord): string {
             ><span v-else-if="w.visible" class="w" :style="wordStyle(w)">{{
               w.text
             }}</span
-            >{{ ' ' }}
+            >{{ separators[i + 1] ?? '' }}
           </template>
         </div>
       </div>

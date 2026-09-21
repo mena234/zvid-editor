@@ -14,6 +14,7 @@ export default defineConfig({
     },
   },
   test: {
+    setupFiles: ['tests/setupSegmentation.ts'],
     include: [
       'tests/*.test.ts',
       'tests/unit/**/*.test.ts',

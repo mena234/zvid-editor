@@ -19,28 +19,10 @@ export const SUBTITLE_V2_STYLE_KEYS = [
   'margin',
 ] as const
 
-/**
- * Distribute word timings across a caption window proportionally to word
- * length (+1 for the trailing space). Canonical copy — the package mirrors it.
- */
+// Shared Unicode tokenization and proportional timing, identical to rendering.
+import { distributeWords as distributeAssWords, joinCaptionWords } from '../ass/vendor/utils/subtitles'
 export function distributeWords(text: string, start: number, end: number): RawWord[] {
-  const parts = String(text ?? '')
-    .split(/\s+/)
-    .filter(Boolean)
-  if (!parts.length || !(end > start)) return []
-  const total = end - start
-  const weightSum = parts.reduce((s, w) => s + w.length + 1, 0)
-  let t = start
-  return parts.map((w) => {
-    const dur = ((w.length + 1) / weightSum) * total
-    const word = {
-      start: Math.round(t * 1000) / 1000,
-      end: Math.round((t + dur) * 1000) / 1000,
-      text: w,
-    }
-    t += dur
-    return word
-  })
+  return distributeAssWords(text, start, end).map((word) => ({ ...word }))
 }
 
 /** Split captions so no group exceeds `maxWords`; chunks display contiguously. */
@@ -61,7 +43,7 @@ export function chunkCaptions(captions: RawCaption[], maxWords: number): RawCapt
       out.push({
         start: i === 0 ? caption.start : group[0].start,
         end: i === groups.length - 1 ? caption.end : groups[i + 1][0].start,
-        text: group.map((w) => w.text).join(' '),
+        text: joinCaptionWords(caption, undefined, i * limit, i * limit + group.length),
         words: group,
       })
     })

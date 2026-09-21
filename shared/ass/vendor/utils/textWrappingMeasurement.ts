@@ -37,36 +37,46 @@ export function wrapWordIndicesByWidth(
   fontSize: number,
   fontFamily: string,
   options: {
-    isBold?: boolean
-    isItalic?: boolean
-    scaleHeadroom?: number
+    isBold?: boolean;
+    isItalic?: boolean;
+    scaleHeadroom?: number;
+    separators?: string[];
+    measure?: (text: string) => number;
   } = {}
 ): number[][] {
-  const fontStyle = `${options.isItalic ? 'italic ' : ''}${options.isBold ? 'bold ' : ''}`
-  const headroom = options.scaleHeadroom ?? 1
-  const measure = (text: string) => measureText(text, fontSize, fontFamily, fontStyle)
-  const wordWidths = wordTexts.map((t) => measure(t))
+  const fontStyle = `${options.isItalic ? 'italic ' : ''}${options.isBold ? 'bold ' : ''}`;
+  const headroom = options.scaleHeadroom ?? 1;
+  const measure = options.measure ?? ((text: string) => measureText(text, fontSize, fontFamily, fontStyle));
+  const wordWidths = wordTexts.map((t) => measure(t));
 
-  const lines: number[][] = []
-  let current: number[] = []
+  const lines: number[][] = [];
+  let current: number[] = [];
 
   wordTexts.forEach((_, i) => {
-    const candidate = [...current, i]
-    const lineWidth = measure(candidate.map((j) => wordTexts[j]).join(' '))
-    const widestWord = Math.max(...candidate.map((j) => wordWidths[j]))
-    const effectiveWidth = lineWidth + (headroom - 1) * widestWord
+    if (/\r?\n/.test(options.separators?.[i] ?? "") && current.length) {
+      lines.push(current);
+      current = [];
+    }
+    const candidate = [...current, i];
+    const lineText = candidate.map((j, k) => `${k ? (options.separators?.[j] ?? ' ') : j === 0 ? options.separators?.[0] ?? '' : ''}${wordTexts[j]}`).join('')
+      + (i === wordTexts.length - 1 ? options.separators?.[wordTexts.length] ?? '' : (options.separators?.[i + 1] ?? '').trimEnd());
+    const lineWidth = measure(lineText);
+    const widestWord = Math.max(...candidate.map((j) => wordWidths[j]));
+    // Only one word is scaled up at a time, so reserving headroom for the
+    // widest word covers the worst case.
+    const effectiveWidth = lineWidth + (headroom - 1) * widestWord;
 
     if (effectiveWidth > maxWidth && current.length > 0) {
-      lines.push(current)
-      current = [i]
+      lines.push(current);
+      current = [i];
     } else {
-      current = candidate
+      current = candidate;
     }
-  })
+  });
 
   if (current.length > 0) {
-    lines.push(current)
+    lines.push(current);
   }
 
-  return lines
+  return lines;
 }

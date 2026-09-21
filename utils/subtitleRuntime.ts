@@ -1,5 +1,6 @@
 import type { RawSubtitle, RawCaption, RawWord } from '~/shared/schema/types'
 import { distributeWords } from '../shared/schema/subtitle'
+import { graphemes, joinCaptionWords } from '../shared/ass/vendor/utils/subtitles'
 
 /**
  * Runtime helpers approximating the package's ASS subtitle output
@@ -158,7 +159,7 @@ export function renderCaptionWords(
       case 'typewriter': {
         // chars type on across the window until the next word starts
         const sweepEnd = i < words.length - 1 ? words[i + 1].start : groupEnd
-        const len = [...w.text].length
+        const len = graphemes(w.text).length
         const progress = clamp01((t - w.start) / Math.max(0.01, sweepEnd - w.start))
         const revealedChars =
           i < idx ? len : i > idx ? 0 : Math.min(len, Math.floor(progress * len) + 1)
@@ -741,7 +742,7 @@ export function parseWhisperJson(raw: any): RawCaption[] {
     }))
     const start = Number(seg.start ?? words[0]?.start ?? 0)
     const end = Number(seg.end ?? words[words.length - 1]?.end ?? start)
-    const text = String(seg.text ?? words.map((w) => w.text).join(' ')).trim()
+    const text = String(seg.text ?? joinCaptionWords({ words })).trim()
     if (end <= start) continue
     captions.push({
       start,

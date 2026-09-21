@@ -1,4 +1,8 @@
-import { escapeAssText, formatASSTime } from '../../../utils/subtitles';
+import {
+  escapeAssText,
+  formatASSTime,
+  joinAssWords,
+} from '../../../utils/subtitles';
 import type { Subtitle, SubtitleStyles } from '../../../types/text';
 import configInstance from '../../config/config';
 
@@ -99,12 +103,10 @@ export function generateASSContent(subtitle: Subtitle) {
       if (word.start >= endSeconds) return;
 
       const start = formatASSTime(word.start);
-      const text = words
-        .map((w, j) => {
-          const t = escapeAssText(w.text);
-          return j === i ? `{${fadeIn}}${t}` : `{\\alpha&HFF&}${t}`;
-        })
-        .join(' ');
+      const text = joinAssWords(caption, (w, j) => {
+        const t = escapeAssText(w.text);
+        return j === i ? `{${fadeIn}}${t}` : `{\\alpha&HFF&}${t}`;
+      });
 
       assContent += `Dialogue: ${i},${start},${end},Default,,${styles.marginH},${styles.marginH},${styles.marginV},,${entrance}${text}\n`;
     });

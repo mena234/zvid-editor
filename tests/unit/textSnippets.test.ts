@@ -71,10 +71,10 @@ describe('buildIframeDoc', () => {
     const doc = buildIframeDoc({ text: '<hi & bye>' })
     expect(doc).toContain('<!DOCTYPE html>')
     expect(doc).toContain(`href="${googleFontCssUrl('Poppins')}"`)
-    expect(doc).toContain("font-family: 'Poppins', sans-serif;")
+    expect(doc).toContain("font-family: 'Poppins', 'Noto Sans', sans-serif;")
     expect(doc).toContain('font-size: 42px;') // TEXT_DEFAULT_FONT_SIZE
     expect(doc).toContain('width: fit-content;')
-    expect(doc).toContain('<div class="container">&lt;hi &amp; bye&gt;</div>')
+    expect(doc).toContain('<div class="container" dir="auto">&lt;hi &amp; bye&gt;</div>')
   })
   it('explicit style/size: custom family link, style props, px box', () => {
     const doc = buildIframeDoc({
@@ -84,7 +84,7 @@ describe('buildIframeDoc', () => {
       height: 150,
     })
     expect(doc).toContain(`href="${googleFontCssUrl('Inter')}"`)
-    expect(doc).toContain("font-family: 'Inter', sans-serif;")
+    expect(doc).toContain("font-family: 'Inter', 'Noto Sans', sans-serif;")
     expect(doc).toContain('font-size: 30px;')
     expect(doc).toContain('color: #fff;')
     expect(doc).toContain('width: 300px;')
@@ -94,7 +94,7 @@ describe('buildIframeDoc', () => {
   })
   it('html mode: markup is injected raw (not escaped)', () => {
     const doc = buildIframeDoc({ html: '<em>hey</em>' })
-    expect(doc).toContain('<div class="container"><em>hey</em></div>')
+    expect(doc).toContain('<div class="container" dir="auto"><em>hey</em></div>')
   })
   it('svg mode: raw svg body, svg sizing rule, no default font size', () => {
     const svg = '<svg viewBox="0 0 10 10"><rect/></svg>'
@@ -124,7 +124,7 @@ describe('buildIframeDoc', () => {
 
   /* the iframe is a separate document: the stage's document-level font links
      do not reach it, so it carries one <link> per referenced family */
-  it('emits one font link per referenced family (style + html + customCss)', () => {
+  it('emits one font link per authored family and the deterministic fallback', () => {
     const doc = buildIframeDoc({
       html: '<span style="font-family: Kanit">hi</span>',
       style: { fontFamily: 'Inter' },
@@ -133,12 +133,13 @@ describe('buildIframeDoc', () => {
     expect(doc).toContain(`href="${googleFontCssUrl('Inter')}"`)
     expect(doc).toContain(`href="${googleFontCssUrl('Kanit')}"`)
     expect(doc).toContain(`href="${googleFontCssUrl('Lobster')}"`)
-    expect(doc.match(/<link rel="stylesheet"/g)?.length).toBe(3)
+    expect(doc.match(/<link rel="stylesheet"/g)?.length).toBe(4)
+    expect(doc).toContain(`href="${googleFontCssUrl('Noto Sans')}"`)
   })
 
-  it('still emits exactly one link when nothing else is referenced', () => {
+  it('includes a fallback when only the main family is authored', () => {
     const doc = buildIframeDoc({ text: 'x', style: { fontFamily: 'Inter' } })
-    expect(doc.match(/<link rel="stylesheet"/g)?.length).toBe(1)
+    expect(doc.match(/<link rel="stylesheet"/g)?.length).toBe(2)
   })
 
   it('fitToBox injects the fit bootstrap after customJs, and only with a box', () => {
@@ -265,12 +266,12 @@ describe('extractFontFamilies', () => {
         html: `<span style="font-family: 'Space Grotesk', sans-serif">a</span>`,
         css: '.b { font-family: Lobster; }',
       })
-    ).toEqual(['Inter', 'Space Grotesk', 'Lobster'])
+    ).toEqual(['Inter', 'Space Grotesk', 'Lobster', 'Noto Sans'])
   })
 
-  it('accepts a bare stack and keeps only the first family', () => {
+  it('accepts a bare stack and keeps every real family', () => {
     expect(extractFontFamilies({ style: "'Bebas Neue', Impact, sans-serif" })).toEqual(
-      ['Bebas Neue']
+      ['Bebas Neue', 'Impact']
     )
   })
 
@@ -295,7 +296,7 @@ describe('extractFontFamilies', () => {
         html: '<b style="font-family: inter">x</b>',
         css: '.c { font-family: INTER; }',
       })
-    ).toEqual(['Inter'])
+    ).toEqual(['Inter', 'Noto Sans'])
   })
 
   it('caps at four families per element', () => {
@@ -311,7 +312,7 @@ describe('extractFontFamilies', () => {
 
   it('missing sources yield nothing', () => {
     expect(extractFontFamilies({})).toEqual([])
-    expect(extractFontFamilies({ style: {}, html: '<b>x</b>' })).toEqual([])
+    expect(extractFontFamilies({ style: {}, html: '<b>x</b>' })).toEqual(['Noto Sans'])
   })
 
   /**
@@ -326,13 +327,13 @@ describe('extractFontFamilies', () => {
         style: { fontFamily: 'Inter' },
         html: `<span style=\\"font-family: 'Lobster'\\">a</span>`,
       })
-    ).toEqual(['Inter', 'Lobster'])
+    ).toEqual(['Inter', 'Lobster', 'Noto Sans'])
 
     expect(
       extractFontFamilies({
         html: `<b style="font-family: \\'Bebas Neue\\', Impact">x</b>`,
       })
-    ).toEqual(['Bebas Neue'])
+    ).toEqual(['Bebas Neue', 'Impact', 'Noto Sans'])
   })
 
   /**
@@ -342,6 +343,6 @@ describe('extractFontFamilies', () => {
   it('leaves the css escaped, exactly like animationCss stays escaped', () => {
     expect(
       extractFontFamilies({ css: `.a { font-family: \\'Lobster\\'; }` })
-    ).toEqual([`\\'Lobster\\`])
+    ).toEqual([`\\'Lobster\\'`])
   })
 })

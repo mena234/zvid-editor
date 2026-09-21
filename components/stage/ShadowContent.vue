@@ -2,6 +2,7 @@
 import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
 import { useMeasuredDims } from '~/composables/useMeasuredDims'
 import { styleObjectToCss } from '~/utils/textTemplate'
+import { textFontStack, fontSample, textFontCss, textFontHtml } from '~/shared/textFontPolicy'
 import {
   applyFitFactor,
   measureFitFactor,
@@ -21,6 +22,8 @@ import {
 const props = defineProps<{
   itemId: string
   html?: string
+  /** Escaped plain text retains authored newlines; HTML keeps CSS defaults. */
+  plainText?: boolean
   svg?: string
   styleObject?: Record<string, any>
   customCss?: string
@@ -91,15 +94,16 @@ function build() {
     <style>
       * { margin: 0; padding: 0; box-sizing: content-box; background: transparent; }
       .container {
-        font-family: '${fontFamily}', sans-serif;
+        ${props.plainText ? 'white-space: pre-wrap;' : ''}
+        font-family: ${textFontStack(fontFamily, fontSample(undefined, props.html))};
         ${styleObjectToCss(style)}
         ${props.explicitWidth ? `width: ${props.explicitWidth}px;` : 'width: max-content;'}
         ${props.explicitHeight ? `height: ${props.explicitHeight}px;` : ''}
       }
       ${props.svg ? '.container svg { display: block; width: 100%; height: 100%; }' : ''}
-      ${props.customCss ?? ''}
+      ${props.svg ? props.customCss ?? '' : textFontCss(props.customCss ?? '', fontSample(undefined, props.html))}
     </style>
-    <div class="container">${props.svg ?? props.html ?? ''}</div>
+    <div class="container" dir="auto">${props.svg ?? textFontHtml(props.html ?? '')}</div>
   `
   shadow.innerHTML = markup
   ro?.disconnect()
@@ -141,6 +145,7 @@ onMounted(() => {
 watch(
   () => [
     props.html,
+    props.plainText,
     props.svg,
     props.customCss,
     JSON.stringify(props.styleObject ?? {}),

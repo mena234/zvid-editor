@@ -1,4 +1,8 @@
-import { escapeAssText, formatTime } from '../../../utils/subtitles';
+import {
+  escapeAssText,
+  formatTime,
+  captionSeparators,
+} from '../../../utils/subtitles';
 import { wrapWordIndicesByWidth } from '../../../utils/textWrappingMeasurement';
 import type { Subtitle, SubtitleStyles } from '../../../types/text';
 import configInstance from '../../config/config';
@@ -37,18 +41,20 @@ export type ScaleAnimation = keyof typeof SCALE_ANIMATIONS;
 //    its slot while the base layer — the words the viewer sees — never moves.
 export function generateASSContent(
   jsonData: Subtitle,
-  animation: ScaleAnimation
+  animation: ScaleAnimation,
+  measure?: (text: string) => number
 ) {
   const styles = jsonData.styles as SubtitleStyles;
   const { width: projectWidth } = configInstance.getConfig();
   const wrapWidth = projectWidth - 2 * (styles.marginH ?? 0);
-  const groups = jsonData.captions
-    .map((caption) => caption.words ?? [])
-    .filter((group) => group.length > 0);
+  const groups = jsonData.captions.filter(
+    (caption) => (caption.words?.length ?? 0) > 0
+  );
 
   let assContent = ``;
 
-  groups.forEach((group, groupIndex) => {
+  groups.forEach((caption, groupIndex) => {
+    const group = caption.words!;
     assContent += `; Group ${groupIndex + 1}: "${group.map((w) => w.text).join(' ')}"\n`;
 
     const groupEnd = group[group.length - 1].end;
@@ -63,6 +69,8 @@ export function generateASSContent(
         isBold: styles.isBold,
         isItalic: styles.isItalic,
         scaleHeadroom: SCALE_PEAKS[animation],
+        separators: captionSeparators(caption),
+        measure,
       }
     );
     const lineStarts = new Set(lines.slice(1).map((line) => line[0]));
@@ -76,32 +84,39 @@ export function generateASSContent(
       const end = formatTime(nextStartSeconds);
 
       const separator = (i: number) =>
-        i === 0 ? '' : lineStarts.has(i) ? '\\N' : ' ';
+        i === 0
+          ? escapeAssText(captionSeparators(caption)[0])
+          : lineStarts.has(i)
+            ? `${escapeAssText(captionSeparators(caption)[i].trimEnd())}\\N`
+            : escapeAssText(captionSeparators(caption)[i]);
 
       // Base layer: the full line, no scaling anywhere, active word's slot
       // kept blank (invisible) for the overlay to fill.
-      const baseText = group
-        .map((w, i) => {
-          const t = escapeAssText(w.text);
-          const token = i === wordIndex ? `{\\alpha&HFF&}${t}{\\rDefault}` : t;
-          return `${separator(i)}${token}`;
-        })
-        .join('');
+      const baseText =
+        group
+          .map((w, i) => {
+            const t = escapeAssText(w.text);
+            const token =
+              i === wordIndex ? `{\\alpha&HFF&}${t}{\\rDefault}` : t;
+            return `${separator(i)}${token}`;
+          })
+          .join('') + escapeAssText(captionSeparators(caption)[group.length]);
 
       // Overlay layer: everything hidden except the active word, which gets
       // the Highlight style + scale animation. \rHighlight resets the hiding
       // alpha to the style's (visible) one; \rDefault afterwards cancels the
       // \t and \alpha&HFF& re-hides the remaining words.
-      const overlayText = group
-        .map((w, i) => {
-          const t = escapeAssText(w.text);
-          const token =
-            i === wordIndex
-              ? `{\\rHighlight${SCALE_ANIMATIONS[animation]}}${t}{\\rDefault\\alpha&HFF&}`
-              : t;
-          return `${separator(i)}${token}`;
-        })
-        .join('');
+      const overlayText =
+        group
+          .map((w, i) => {
+            const t = escapeAssText(w.text);
+            const token =
+              i === wordIndex
+                ? `{\\rHighlight${SCALE_ANIMATIONS[animation]}}${t}{\\rDefault\\alpha&HFF&}`
+                : t;
+            return `${separator(i)}${token}`;
+          })
+          .join('') + escapeAssText(captionSeparators(caption)[group.length]);
 
       assContent += `Dialogue: 0,${start},${end},Default,,${styles.marginH},${styles.marginH},${styles.marginV},,{\\q2}${baseText}\n`;
       assContent += `Dialogue: 1,${start},${end},Default,,${styles.marginH},${styles.marginH},${styles.marginV},,{\\q2\\alpha&HFF&}${overlayText}\n`;
