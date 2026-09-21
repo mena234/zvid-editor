@@ -25,9 +25,12 @@ export function createSubtitleMeasurer(
     let width = 0;
     let cursor = 0;
     for (const cluster of graphemes(text)) {
-      const neutral = /^[\p{Script=Common}\p{Script=Inherited}\p{Cf}\s]+$/u.test(cluster);
-      const face = neutral && covers(active.data, cluster) ? active
-        : ordered.find((font) => covers(font.data, cluster)) ?? active;
+      const neutral =
+        /^[\p{Script=Common}\p{Script=Inherited}\p{Cf}\s]+$/u.test(cluster);
+      const face =
+        neutral && covers(active.data, cluster)
+          ? active
+          : (ordered.find((font) => covers(font.data, cluster)) ?? active);
       if (face !== active) {
         width += active.measure(run);
         active = face;

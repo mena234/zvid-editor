@@ -284,17 +284,19 @@ export function applyAssFontFallbacks(
               /^[\p{Script=Common}\p{Script=Inherited}\p{Cf}\s]+$/u.test(
                 segment
               );
-          const font =
-            neutral && lastTextFont && fontCoversText(lastTextFont.data, segment)
-              ? lastTextFont
+            const font =
+              neutral &&
+              lastTextFont &&
+              fontCoversText(lastTextFont.data, segment)
+                ? lastTextFont
                 : fonts.find((candidate) =>
                     fontCoversText(candidate.data, segment)
                   );
-          if (font && font.family !== active?.family) {
+            if (font && font.family !== active?.family) {
               output += `{\\fn${font.family}}`;
-            active = font;
-          }
-          if (font) lastTextFont = font;
+              active = font;
+            }
+            if (font) lastTextFont = font;
             output += segment;
           }
         cursor = end;

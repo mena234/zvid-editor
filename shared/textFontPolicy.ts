@@ -53,7 +53,11 @@ export function referencedTextFamilies(
       /font-family\s*:\s*((?:(?:"[^"]*"|'[^']*')|[^;"'{}<>])+)/gi
     )) {
       const declared = match[1].replace(/\s*!important\s*$/i, '').trim();
-      if (!/\b(?:var|env)\s*\(|^(?:inherit|initial|unset|revert|revert-layer)$/i.test(declared))
+      if (
+        !/\b(?:var|env)\s*\(|^(?:inherit|initial|unset|revert|revert-layer)$/i.test(
+          declared
+        )
+      )
         authored.push(...parseFontFamilies(declared));
     }
   }
@@ -84,14 +88,21 @@ export function textFontCss(css: string, text: string): string {
     /(\/\*[\s\S]*?\*\/|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|@font-face\s*\{[^}]*\})|((?<![\w-])font-family\s*:\s*)((?:"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|[^;{}"'])+)/gi,
     (original, protectedToken, declaration, value, offset) => {
       if (protectedToken) return original;
-      const before = css.slice(0, offset).replace(/\/\*[\s\S]*?\*\//g, '').trimEnd();
+      const before = css
+        .slice(0, offset)
+        .replace(/\/\*[\s\S]*?\*\//g, '')
+        .trimEnd();
       if (before && !/[;{]$/.test(before)) return original;
       const important = value.match(/\s*!important\s*$/i)?.[0] || '';
       const stack = value.slice(0, value.length - important.length).trim();
       // A small declaration transformer is not a complete CSS parser. Keep
       // escaped/commented syntax intact rather than changing authored meaning.
       if (/\\|\/\*/.test(stack)) return original;
-      if (/\b(?:var|env)\s*\(|^(?:inherit|initial|unset|revert|revert-layer)$/i.test(stack))
+      if (
+        /\b(?:var|env)\s*\(|^(?:inherit|initial|unset|revert|revert-layer)$/i.test(
+          stack
+        )
+      )
         return original;
       return declaration + textFontStack(stack, text) + important;
     }
@@ -99,23 +110,38 @@ export function textFontCss(css: string, text: string): string {
 }
 
 /** Rewrite only CSS in markup; source text and other attributes stay intact. */
-export function textFontHtml(html: string, text = fontSample(undefined, html)): string {
+export function textFontHtml(
+  html: string,
+  text = fontSample(undefined, html)
+): string {
   return html
-    .replace(/(<style\b[^>]*>)([\s\S]*?)(<\/style\s*>)/gi,
-      (_, open, css, close) => open + textFontCss(css, text) + close)
-    .replace(/<[a-z][a-z\d:-]*(?:[^>"']|"[^"]*"|'[^']*')*>/gi, tag =>
-      tag.replace(/(\sstyle\s*=\s*)(?:"([^"]*)"|'([^']*)'|([^\s>]+))/gi,
+    .replace(
+      /(<style\b[^>]*>)([\s\S]*?)(<\/style\s*>)/gi,
+      (_, open, css, close) => open + textFontCss(css, text) + close
+    )
+    .replace(/<[a-z][a-z\d:-]*(?:[^>"']|"[^"]*"|'[^']*')*>/gi, (tag) =>
+      tag.replace(
+        /(\sstyle\s*=\s*)(?:"([^"]*)"|'([^']*)'|([^\s>]+))/gi,
         (original, prefix, doubleQuoted, singleQuoted, bare) => {
           const rawCss = doubleQuoted ?? singleQuoted ?? bare;
           // Preserve unfamiliar HTML entities exactly. Decoding/re-encoding a
           // partial entity set can change unrelated CSS values or URLs.
           if (/&(?!(?:amp|quot|apos|#34|#39);)/i.test(rawCss)) return original;
           const css = rawCss
-            .replace(/&quot;|&#34;/gi, '"').replace(/&apos;|&#39;/gi, "'").replace(/&amp;/gi, '&');
+            .replace(/&quot;|&#34;/gi, '"')
+            .replace(/&apos;|&#39;/gi, "'")
+            .replace(/&amp;/gi, '&');
           const transformed = textFontCss(css, text);
           if (transformed === css) return original;
           // Attribute encoding avoids changing the tag's structure regardless
           // of the quote style used by an authored font name.
-          return prefix + '"' + transformed.replace(/&/g, '&amp;').replace(/"/g, '&quot;') + '"';
-        }))
+          return (
+            prefix +
+            '"' +
+            transformed.replace(/&/g, '&amp;').replace(/"/g, '&quot;') +
+            '"'
+          );
+        }
+      )
+    );
 }

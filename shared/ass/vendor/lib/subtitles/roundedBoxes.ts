@@ -164,12 +164,16 @@ export function layoutGroup(
     fullText += text;
   });
   fullText += separators[texts.length] ?? '';
-  const rangeStart = (index: number) => index === 0 ? 0 : starts[index];
-  const rangeEnd = (index: number) => index === texts.length - 1
-    ? fullText.length
-    : starts[index] + texts[index].length + (separators[index + 1] ?? '').trimEnd().length;
+  const rangeStart = (index: number) => (index === 0 ? 0 : starts[index]);
+  const rangeEnd = (index: number) =>
+    index === texts.length - 1
+      ? fullText.length
+      : starts[index] +
+        texts[index].length +
+        (separators[index + 1] ?? '').trimEnd().length;
   const measureIndices = (indices: number[]) => {
-    const first = indices[0], last = indices[indices.length - 1];
+    const first = indices[0],
+      last = indices[indices.length - 1];
     return metrics.measure.range
       ? metrics.measure.range(fullText, rangeStart(first), rangeEnd(last))
       : metrics.measure(fullText.slice(rangeStart(first), rangeEnd(last)));
@@ -224,9 +228,11 @@ export function layoutGroup(
 
   return lineIdx.map((idxs, li) => {
     const lineTexts = idxs.map((i) => texts[i]);
-    const gaps = idxs.map((i, k) => k || i === 0 ? separators[i] : '');
+    const gaps = idxs.map((i, k) => (k || i === 0 ? separators[i] : ''));
     const last = idxs[idxs.length - 1];
-    gaps.push(fullText.slice(starts[last] + texts[last].length, rangeEnd(last)));
+    gaps.push(
+      fullText.slice(starts[last] + texts[last].length, rangeEnd(last))
+    );
     const width = measureIndices(idxs);
     const left =
       horizontal === 'left'
@@ -236,10 +242,28 @@ export function layoutGroup(
           : (playResX - width) / 2;
     const lineStart = rangeStart(idxs[0]);
     const lineMeasure: SubtitleMeasure = metrics.measure.range
-      ? Object.assign((text: string) => metrics.measure.range!(fullText, lineStart, lineStart + text.length), {
-        range: (_text: string, start: number, end: number) => metrics.measure.range!(fullText, lineStart + start, lineStart + end),
-      }) : metrics.measure;
-    const wordSpans = visualWordSpans(lineTexts, gaps, lineMeasure, { text: fullText, start: lineStart, splitDirections: mode === 'fill' });
+      ? Object.assign(
+          (text: string) =>
+            metrics.measure.range!(
+              fullText,
+              lineStart,
+              lineStart + text.length
+            ),
+          {
+            range: (_text: string, start: number, end: number) =>
+              metrics.measure.range!(
+                fullText,
+                lineStart + start,
+                lineStart + end
+              ),
+          }
+        )
+      : metrics.measure;
+    const wordSpans = visualWordSpans(lineTexts, gaps, lineMeasure, {
+      text: fullText,
+      start: lineStart,
+      splitDirections: mode === 'fill',
+    });
     return {
       left,
       top: blockTop + li * fontSize,

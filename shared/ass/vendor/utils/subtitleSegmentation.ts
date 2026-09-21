@@ -19,14 +19,21 @@ export interface SubtitleWordSegment {
 let words: BoundarySegmenter | undefined;
 let characters: BoundarySegmenter | undefined;
 
-export function configureSubtitleSegmentation(provider: SubtitleSegmentationProvider): void {
+export function configureSubtitleSegmentation(
+  provider: SubtitleSegmentationProvider
+): void {
   if (words && characters) return;
   words = provider.WordSegmenter.createDictionary();
   characters = new provider.GraphemeClusterSegmenter();
 }
 
-function requireSegmenter(segmenter: BoundarySegmenter | undefined): BoundarySegmenter {
-  if (!segmenter) throw new Error('Subtitle language support has not loaded. Reload the editor or retry the render.');
+function requireSegmenter(
+  segmenter: BoundarySegmenter | undefined
+): BoundarySegmenter {
+  if (!segmenter)
+    throw new Error(
+      'Subtitle language support has not loaded. Reload the editor or retry the render.'
+    );
   return segmenter;
 }
 
@@ -35,11 +42,12 @@ export function segmentTextWords(text: string): SubtitleWordSegment[] {
   const result: SubtitleWordSegment[] = [];
   let previous = 0;
   for (let end = iterator.next(); end >= 0; end = iterator.next()) {
-    if (end > previous) result.push({
-      segment: text.slice(previous, end),
-      index: previous,
-      isWordLike: !!iterator.isWordLike,
-    });
+    if (end > previous)
+      result.push({
+        segment: text.slice(previous, end),
+        index: previous,
+        isWordLike: !!iterator.isWordLike,
+      });
     previous = end;
   }
   return result;

@@ -8,7 +8,12 @@ const bidi = bidiFactory() as {
     levels: Uint8Array;
     paragraphs: unknown[];
   };
-  getReorderedIndices(text: string, levels: unknown, start?: number, end?: number): number[];
+  getReorderedIndices(
+    text: string,
+    levels: unknown,
+    start?: number,
+    end?: number
+  ): number[];
 };
 
 export interface WordSpan {
@@ -19,7 +24,9 @@ export interface WordSpan {
 }
 
 export function hasRtlText(text: string): boolean {
-  return bidi.getEmbeddingLevels(text).levels.some((level) => (level & 1) === 1);
+  return bidi
+    .getEmbeddingLevels(text)
+    .levels.some((level) => (level & 1) === 1);
 }
 
 /**
@@ -49,14 +56,25 @@ export function visualWordSpans(
   const paragraph = context?.text ?? text;
   const start = context?.start ?? 0;
   const embedding = bidi.getEmbeddingLevels(paragraph);
-  const indices = bidi.getReorderedIndices(paragraph, embedding, start, start + text.length - 1)
-    .slice(start, start + text.length).map((index) => index - start);
-  const fragments: { owner: number; direction: 'ltr' | 'rtl'; indices: number[] }[] = [];
+  const indices = bidi
+    .getReorderedIndices(paragraph, embedding, start, start + text.length - 1)
+    .slice(start, start + text.length)
+    .map((index) => index - start);
+  const fragments: {
+    owner: number;
+    direction: 'ltr' | 'rtl';
+    indices: number[];
+  }[] = [];
   for (const index of indices) {
     const owner = owners[index];
     const direction = embedding.levels[start + index] & 1 ? 'rtl' : 'ltr';
     const last = fragments[fragments.length - 1];
-    if (last && last.owner === owner && (!context?.splitDirections || last.direction === direction)) last.indices.push(index);
+    if (
+      last &&
+      last.owner === owner &&
+      (!context?.splitDirections || last.direction === direction)
+    )
+      last.indices.push(index);
     else fragments.push({ owner, direction, indices: [index] });
   }
   const widths = fragments.map((fragment) => {
@@ -73,7 +91,13 @@ export function visualWordSpans(
   let left = 0;
   fragments.forEach((fragment, i) => {
     const width = widths[i] * scale;
-    if (fragment.owner >= 0) spans[fragment.owner].push({ left, width, direction: fragment.direction, logicalStart: Math.min(...fragment.indices) });
+    if (fragment.owner >= 0)
+      spans[fragment.owner].push({
+        left,
+        width,
+        direction: fragment.direction,
+        logicalStart: Math.min(...fragment.indices),
+      });
     left += width;
   });
   return spans;
