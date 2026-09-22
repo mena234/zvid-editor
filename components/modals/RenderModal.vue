@@ -7,6 +7,7 @@ import { useAuthStore } from '~/stores/auth'
 import { validateProjectDoc } from '~/shared/schema/validate'
 import { useEditorContext } from '~/composables/useEditorContext'
 import { useRenderPayload } from '~/composables/useRenderPayload'
+import { ZVID_DISCORD_URL } from '~/utils/community'
 import {
   connectRenderSocket,
   submitRenderTask,
@@ -347,6 +348,12 @@ onBeforeUnmount(() => {
           </a>
           <button class="btn ghost" @click="status = 'idle'">Render again</button>
         </div>
+        <p class="hint">
+          Made something you want to share?
+          <a :href="ZVID_DISCORD_URL" target="_blank" rel="noopener noreferrer" class="community-link">
+            Join the Zvid community on Discord.
+          </a>
+        </p>
       </div>
 
       <div v-else class="block err-block">
@@ -364,6 +371,11 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
+.community-link {
+  color: var(--text-0);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
 .center {
   display: flex;
   flex-direction: column;

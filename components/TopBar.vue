@@ -4,6 +4,7 @@ import { useProjectStore } from '~/stores/project'
 import { useEditorStore } from '~/stores/editor'
 import { useTourStore } from '~/stores/tour'
 import { useCloud } from '~/composables/useCloud'
+import { ZVID_DISCORD_URL } from '~/utils/community'
 import {
   RESOLUTION_PRESET_NAMES,
   RESOLUTION_PRESETS,
@@ -193,6 +194,17 @@ function setResolution(e: Event) {
     <button class="icon-btn" title="Product tour" @click="tour.start()">
       <UiIcon name="compass" />
     </button>
+
+    <a
+      class="btn ghost"
+      :href="ZVID_DISCORD_URL"
+      target="_blank"
+      rel="noopener noreferrer"
+      title="Join the Zvid community on Discord (opens in a new tab)"
+      aria-label="Join the Zvid community on Discord (opens in a new tab)"
+    >
+      <UiIcon name="discord" :size="16" /> Discord
+    </a>
 
     <div class="divider" />
 

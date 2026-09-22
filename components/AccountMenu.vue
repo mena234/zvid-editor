@@ -3,6 +3,7 @@ import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useAuthStore } from '~/stores/auth'
 import { useEditorStore } from '~/stores/editor'
 import { useCloud } from '~/composables/useCloud'
+import { ZVID_DISCORD_URL } from '~/utils/community'
 
 const auth = useAuthStore()
 const editor = useEditorStore()
@@ -68,6 +69,15 @@ function run(action: () => void) {
         </button>
         <a class="item" :href="dashUrl" target="_blank" rel="noopener">
           <UiIcon name="link" :size="14" /> Open dashboard
+        </a>
+        <a
+          class="item"
+          :href="ZVID_DISCORD_URL"
+          target="_blank"
+          rel="noopener noreferrer"
+          @click="open = false"
+        >
+          <UiIcon name="discord" :size="14" /> Discord community
         </a>
         <div class="menu-sep" />
         <button class="item" @click="signOut">
