@@ -55,10 +55,15 @@ export async function orchApi<T = any>(
   const { orchUrl } = useRuntimeConfig()
   const token = getCookie(event, 'auth_token')
 
+  if (/^\/(projects|templates)(\/|$)/.test(endpoint)) {
+    setHeader(event, 'Cache-Control', 'no-store')
+  }
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
   }
   if (token) headers.Authorization = `Bearer ${token}`
+  const verification = getCookie(event, 'admin_verification')
+  if (verification) headers['X-Admin-Verification'] = verification
 
   try {
     return await $fetch<T>(`/api${endpoint}`, {
@@ -109,7 +114,9 @@ export async function orchAction<T = any>(
     return {
       success: false,
       status: err?.statusCode || 500,
-      error: body.message || body.error || fallbackError,
+      error: body.error === 'ADMIN_REAUTH_REQUIRED'
+        ? 'Verify your identity at https://app.zvid.io/admin/security, then reopen this project or template.'
+        : body.message || body.error || fallbackError,
       details: body.details || null,
     }
   }
