@@ -11,6 +11,28 @@ Three layers (full design: `EDITOR_TESTING_PLAN.md` at the repo root):
 
 `npm run test:all` runs unit + server + E2E (not fidelity — it runs real package renders).
 
+## Responsive feature parity
+
+Run `npm run test:responsive` after installing Chromium, WebKit and Firefox with
+`npx playwright install chromium webkit firefox`. To run just Chromium, use
+`npm run test:responsive -- --project=chromium`.
+
+The suite exercises desktop, tablet, phone, 320px phone and phone landscape
+workflows. Chromium also runs the panel, Design Studio and real touch-gesture
+tests; WebKit and Firefox run account, project, upload, import/export, render
+dialog and support-chat workflows. Tests tap controls, verify exported project data and check
+viewport bounds. Touch gestures use browser input, not synthetic DOM events.
+Artifacts are written to `../tmp/editor-responsive-results`.
+
+These checks emulate screen sizes and touch input. They do not replace physical
+iOS/Android testing of browser chrome, on-screen keyboards, file pickers or
+hardware-specific media playback. Auth and cloud rendering use the local mock
+server and do not spend credits. Keep test runs serial because they share mock
+server state.
+
+The verified coverage and known limits are recorded in
+[the responsive editor QA report](../docs/responsive-editor-qa.md).
+
 ## Fidelity layer
 
 `tests/fidelity/` renders a fixture JSON with the actual package CLI
@@ -66,7 +88,7 @@ the rotated item's alpha to an opaque black box (package-side quirk).
 
 | Port | What | Source |
 |---|---|---|
-| 4597 | editor dev server, `ORCH_URL` → mock | `npm run dev -- --host 127.0.0.1 --port 4597` |
+| 4597 | editor dev server, `ORCH_URL` → mock | `node node_modules/nuxt/bin/nuxt.mjs dev --host 127.0.0.1 --port 4597` |
 | 4598 | fixture media server (CORS + Range) | `tests/e2e/helpers/fixtureServer.mjs` |
 | 4599 | mock orch: HTTP API + Socket.IO `/frontend` | `tests/e2e/helpers/mockOrch.mjs` |
 
@@ -76,7 +98,7 @@ the ~30 s dev-server boot):
 ```bash
 node tests/e2e/helpers/standalone-servers.mjs   # fixtures + mock orch
 ORCH_URL=http://127.0.0.1:4599 NUXT_PUBLIC_ORCH_URL=http://127.0.0.1:4599 \
-  npm run dev -- --host 127.0.0.1 --port 4597
+  node node_modules/nuxt/bin/nuxt.mjs dev --host 127.0.0.1 --port 4597
 ```
 
 Gotcha: bind the dev server to `127.0.0.1` explicitly — plain `nuxt dev` binds

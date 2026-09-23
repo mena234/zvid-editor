@@ -807,7 +807,7 @@ test('stock: unified library, debounced search, infinite scroll to page 2, click
 
   // infinite scroll: bottom of the rail panel pulls page 2 (dedup by id)
   await page
-    .locator('.rail-panel')
+    .locator('.rail-panel-body')
     .evaluate((el) => (el.scrollTop = el.scrollHeight))
   await expect(cells).toHaveCount(60)
   const page2 = (await callsTo('/api/stock/search')).filter(
@@ -858,7 +858,7 @@ test('stock provider error: notice shown, auto-load halts, Retry recovers', asyn
   const before = searchReqs.length
   expect(before).toBeGreaterThanOrEqual(1)
   await page
-    .locator('.rail-panel')
+    .locator('.rail-panel-body')
     .evaluate((el) => (el.scrollTop = el.scrollHeight))
   await page.waitForTimeout(700)
   expect(searchReqs.length).toBe(before)

@@ -83,4 +83,14 @@ h3 {
   font-size: 12px;
   color: var(--text-1);
 }
+@media (max-width: 600px) {
+  .row {
+    flex-direction: column;
+    gap: 4px;
+    padding: 6px 0;
+  }
+  .keys {
+    flex-basis: auto;
+  }
+}
 </style>

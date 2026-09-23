@@ -35,6 +35,10 @@ const boxStyle = computed(() => ({
   '--edge-length': `${20 / stageCtx.scale}px`,
   '--edge-thickness': `${4 / stageCtx.scale}px`,
   '--bw': `${Math.max(1, 1.4 / stageCtx.scale)}px`,
+  // Keep a tappable center on small text/graphics instead of covering it
+  // with the enlarged edge handles.
+  '--touch-hit': `${Math.min(26 / stageCtx.scale, layout.value.width / 2, layout.value.height / 2)}px`,
+  '--rotate-hit': `${26 / stageCtx.scale}px`,
 }))
 
 const HANDLES = [
@@ -378,6 +382,7 @@ onBeforeUnmount(() => {
   opacity: 0.8;
 }
 .handle {
+  touch-action: none;
   position: absolute;
   transform: translate(-50%, -50%);
   width: var(--hs);
@@ -438,6 +443,7 @@ onBeforeUnmount(() => {
   transform: translateX(-50%);
 }
 .rotate-handle {
+  touch-action: none;
   position: absolute;
   left: calc(50% - var(--hs) / 2 - var(--hs) * 0.1);
   top: calc(var(--hs) * -3.2);
@@ -448,5 +454,21 @@ onBeforeUnmount(() => {
   border-radius: 50%;
   pointer-events: auto;
   cursor: grab;
+}
+@media (pointer: coarse) {
+  .handle::after,
+  .rotate-handle::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: var(--touch-hit);
+    height: var(--touch-hit);
+  }
+  .rotate-handle::after {
+    width: var(--rotate-hit);
+    height: var(--rotate-hit);
+  }
 }
 </style>

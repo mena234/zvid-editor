@@ -181,4 +181,15 @@ function setWidth(v?: number) {
   display: flex;
   gap: 6px;
 }
+@media (pointer: coarse) {
+  .anchor-row {
+    flex-wrap: wrap;
+  }
+  .anchor-row .grow {
+    flex-basis: 100%;
+  }
+  .grid-3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
 </style>

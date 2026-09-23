@@ -167,4 +167,21 @@ function label(l: DesignLayer): string {
 .icon-btn.danger:hover {
   color: var(--red);
 }
+@media (pointer: coarse) {
+  .row {
+    flex-wrap: wrap;
+    min-height: 40px;
+  }
+  .row-actions {
+    flex-basis: 100%;
+    justify-content: flex-end;
+  }
+  .row-actions .icon-btn {
+    width: 30px;
+    height: 32px;
+  }
+  .add-row .btn {
+    min-height: 36px;
+  }
+}
 </style>

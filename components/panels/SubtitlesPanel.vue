@@ -654,6 +654,15 @@ function fmtT(v: number) {
 .w-text {
   font-size: 11px;
 }
+@media (pointer: coarse) {
+  /* Leave room for the full timestamp and variable button at touch font sizes. */
+  .word-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .w-text {
+    grid-column: 1 / -1;
+  }
+}
 .src-note {
   display: flex;
   flex-direction: column;

@@ -203,10 +203,29 @@ function nudge(dir: 1 | -1, e: KeyboardEvent) {
 }
 .num-wrap:hover .embed,
 .num-wrap:focus-within .embed,
-.embed:has(.vm-pop) {
+.embed:has(.vm-btn[aria-expanded='true']) {
   opacity: 1;
 }
 .num-wrap.has-menu:hover .unit {
   opacity: 0;
+}
+@media (pointer: coarse) {
+  .num-wrap.has-menu {
+    /* Preserve readable values beside the persistent 32px variable control. */
+    min-width: 104px;
+  }
+  .embed {
+    opacity: 1;
+  }
+  .embed :deep(.vm-btn) {
+    width: 32px;
+    height: 32px;
+  }
+  .num-wrap.has-menu .num {
+    padding-right: 36px;
+  }
+  .num-wrap.has-menu .unit {
+    display: none;
+  }
 }
 </style>

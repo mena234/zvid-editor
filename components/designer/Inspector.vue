@@ -14,7 +14,7 @@ import { useTemplateVars } from '~/composables/useTemplateVars'
 const props = defineProps<{
   design: DesignDoc
   layer: DesignLayer | null
-  /** compiled loop duration â€” shown next to the â€œautoâ€ toggle */
+  /** Compiled loop duration, shown next to the auto toggle. */
   resolvedDuration: number
 }>()
 
@@ -169,7 +169,7 @@ function patchBg(part: Record<string, any>) {
             <UiNumberInput :allow-var="false"
               :model-value="layer.rotate"
               :step="1"
-              unit="Â°"
+              unit="°"
               @update:model-value="patchL({ rotate: $event ?? 0 })"
             />
           </UiField>
@@ -504,7 +504,7 @@ function patchBg(part: Record<string, any>) {
                 ref="srcEl"
                 class="ctl mono"
                 :value="layer.src"
-                placeholder="https://â€¦/photo.png"
+                placeholder="https://…/photo.png"
                 spellcheck="false"
                 @change="patchL({ src: ($event.target as HTMLInputElement).value.trim() })"
               />
@@ -687,7 +687,7 @@ function patchBg(part: Record<string, any>) {
               :min="0"
               :max="360"
               :step="5"
-              unit="Â°"
+              unit="°"
               @update:model-value="patchBg({ angle: $event ?? 135 })"
             />
           </UiField>
@@ -708,7 +708,7 @@ function patchBg(part: Record<string, any>) {
           :model-value="design.fontFamily"
           @update:model-value="emit('patchDesign', { fontFamily: $event })"
         />
-        <p class="hint">One Google Font per design â€” the render loads it automatically.</p>
+        <p class="hint">One Google Font per design — the render loads it automatically.</p>
       </UiSection>
 
       <UiSection title="Loop">

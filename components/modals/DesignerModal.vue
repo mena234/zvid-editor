@@ -394,6 +394,7 @@ function onKeydown(e: KeyboardEvent) {
             </template>
           </div>
         </div>
+        <button class="btn ghost sm" @click="selectedId = null">Canvas settings</button>
         <span class="meta mono">{{ design.width }}×{{ design.height }}px</span>
         <span class="meta">
           loop {{ compiled.duration.toFixed(2) }}s{{ design.duration === 'auto' ? ' (auto)' : '' }}
@@ -464,6 +465,7 @@ function onKeydown(e: KeyboardEvent) {
 }
 .toolbar {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 12px;
   flex: 0 0 auto;
@@ -480,7 +482,8 @@ function onKeydown(e: KeyboardEvent) {
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 8px;
   width: 700px;
-  max-height: 420px;
+  max-width: calc(100vw - 90px);
+  max-height: min(420px, calc(100dvh - 220px));
   overflow-y: auto;
   padding: 10px;
   background: var(--bg-3);
@@ -570,10 +573,13 @@ function onKeydown(e: KeyboardEvent) {
 }
 .cols {
   display: grid;
-  grid-template-columns: 200px 1fr 264px;
+  grid-template-columns: 200px minmax(0, 1fr) 264px;
   gap: 12px;
   flex: 1;
   min-height: 0;
+}
+.cols > * {
+  min-width: 0;
 }
 .col-left {
   display: flex;
@@ -590,5 +596,49 @@ function onKeydown(e: KeyboardEvent) {
 .warn {
   color: var(--yellow);
   flex: 0 0 auto;
+}
+@media (max-width: 1000px) {
+  .studio {
+    height: auto;
+  }
+  .cols {
+    grid-template-columns: 180px minmax(0, 1fr);
+    grid-template-rows: 320px auto;
+    flex: none;
+  }
+  .col-right {
+    grid-column: 1 / -1;
+  }
+}
+@media (max-width: 600px) {
+  .toolbar {
+    gap: 8px;
+  }
+  .toolbar .spacer {
+    display: none;
+  }
+  .meta.subtle {
+    flex-basis: 100%;
+  }
+  .tpl-menu {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-width: calc(100vw - 44px);
+    max-height: 50dvh;
+  }
+  .cols {
+    display: flex;
+    flex-direction: column;
+  }
+  .cols > :deep(.preview) {
+    order: -1;
+    flex: none;
+    height: 280px;
+  }
+  .cols :deep(.controls) {
+    flex-wrap: wrap;
+  }
+  .col-left {
+    max-height: 220px;
+  }
 }
 </style>

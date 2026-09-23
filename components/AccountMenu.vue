@@ -12,14 +12,21 @@ const dashUrl = useRuntimeConfig().public.dashUrl as string
 
 const open = ref(false)
 const root = ref<HTMLElement>()
+const toggle = ref<HTMLButtonElement>()
 
-function onDocDown(e: MouseEvent) {
+function onDocDown(e: PointerEvent) {
   if (open.value && root.value && !root.value.contains(e.target as Node)) {
     open.value = false
   }
 }
-onMounted(() => document.addEventListener('mousedown', onDocDown))
-onBeforeUnmount(() => document.removeEventListener('mousedown', onDocDown))
+onMounted(() => document.addEventListener('pointerdown', onDocDown))
+onBeforeUnmount(() => document.removeEventListener('pointerdown', onDocDown))
+
+function closeMenu() {
+  if (!open.value) return
+  open.value = false
+  toggle.value?.focus()
+}
 
 function signIn() {
   editor.postAuthModal = null
@@ -39,7 +46,7 @@ function run(action: () => void) {
 </script>
 
 <template>
-  <div ref="root" class="account">
+  <div ref="root" class="account" @keydown.esc.stop="closeMenu">
     <button
       v-if="!auth.user"
       class="btn ghost"
@@ -50,11 +57,19 @@ function run(action: () => void) {
     </button>
 
     <template v-else>
-      <button class="avatar" :title="auth.user.email" @click="open = !open">
+      <button
+        ref="toggle"
+        class="avatar"
+        :title="auth.user.email"
+        :aria-label="`Account for ${auth.user.email}`"
+        :aria-expanded="open"
+        aria-controls="account-menu"
+        @click="open = !open"
+      >
         {{ auth.initials }}
       </button>
 
-      <div v-if="open" class="menu">
+      <div v-if="open" id="account-menu" class="menu">
         <div class="menu-head">
           <span class="email">{{ auth.user.email }}</span>
           <span v-if="auth.credits?.balance != null" class="credits">
@@ -93,6 +108,7 @@ function run(action: () => void) {
   position: relative;
   display: flex;
   align-items: center;
+  flex: 0 0 auto;
 }
 .avatar {
   width: 30px;
@@ -113,7 +129,11 @@ function run(action: () => void) {
   position: absolute;
   top: calc(100% + 8px);
   right: 0;
-  min-width: 220px;
+  width: 260px;
+  max-width: calc(100vw - 24px);
+  max-height: calc(100dvh - 80px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
   background: var(--bg-1);
   border: 1px solid var(--border-1);
   border-radius: var(--radius-m);
@@ -135,6 +155,7 @@ function run(action: () => void) {
   color: var(--text-0);
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .credits {
   font-size: 11px;
@@ -162,5 +183,15 @@ function run(action: () => void) {
   height: 1px;
   background: var(--border-0);
   margin: 6px 0;
+}
+@media (max-width: 600px), (pointer: coarse) {
+  .avatar {
+    width: 40px;
+    height: 40px;
+  }
+  .account > .btn,
+  .item {
+    min-height: 40px;
+  }
 }
 </style>

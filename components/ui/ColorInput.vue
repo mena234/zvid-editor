@@ -130,7 +130,12 @@ function onText(e: Event) {
 }
 .color-wrap:hover .embed,
 .color-wrap:focus-within .embed,
-.embed:has(.vm-pop) {
+.embed:has(.vm-btn[aria-expanded='true']) {
   opacity: 1;
+}
+@media (pointer: coarse) {
+  .embed { opacity: 1; }
+  .embed :deep(.vm-btn) { width: 32px; height: 32px; }
+  .color-wrap:has(.embed) .text { padding-right: 36px; }
 }
 </style>

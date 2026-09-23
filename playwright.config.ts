@@ -64,7 +64,7 @@ export default defineConfig({
       timeout: 30_000,
     },
     {
-      command: 'npm run dev -- --host 127.0.0.1 --port 4597',
+      command: 'node node_modules/nuxt/bin/nuxt.mjs dev --host 127.0.0.1 --port 4597',
       url: 'http://127.0.0.1:4597/',
       reuseExistingServer: true,
       timeout: 240_000,

@@ -127,6 +127,8 @@ function cancel() {
 }
 .links {
   display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
   justify-content: space-between;
   margin-top: 14px;
   font-size: 12px;
@@ -137,5 +139,10 @@ function cancel() {
 }
 .links a:hover {
   text-decoration: underline;
+}
+@media (max-width: 600px) {
+  .submit {
+    min-height: 44px;
+  }
 }
 </style>

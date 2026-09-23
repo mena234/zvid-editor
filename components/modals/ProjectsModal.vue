@@ -194,6 +194,7 @@ function fmtDate(value: string) {
   flex-direction: column;
   gap: 2px;
   min-width: 0;
+  flex: 1;
 }
 .name {
   border: none;
@@ -242,7 +243,8 @@ function fmtDate(value: string) {
 .rename {
   height: 28px;
   font-size: 12.5px;
-  width: 260px;
+  width: 100%;
+  max-width: 260px;
 }
 .err {
   color: var(--red);
@@ -253,5 +255,22 @@ function fmtDate(value: string) {
 }
 .foot-hint {
   margin-right: auto;
+  flex: 1 1 180px;
+}
+@media (max-width: 600px) {
+  .row {
+    flex-wrap: wrap;
+  }
+  .row-main {
+    flex-basis: 100%;
+  }
+  .row-actions {
+    margin-left: auto;
+  }
+  .row-actions .btn,
+  .row-actions .icon-btn {
+    min-height: 40px;
+    min-width: 40px;
+  }
 }
 </style>

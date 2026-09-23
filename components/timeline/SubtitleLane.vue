@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onBeforeUnmount } from 'vue'
 import { useProjectStore } from '~/stores/project'
 import { useEditorStore } from '~/stores/editor'
 import { round3, clamp } from '~/utils/time'
@@ -21,14 +21,16 @@ let gesture: {
   end0: number
   words0: { start: number; end: number; text: string }[]
   moved: boolean
+  touch: boolean
 } | null = null
 
 function beginGesture(e: PointerEvent, index: number, mode: Mode) {
   if (e.button !== 0) return
   e.stopPropagation()
+  e.preventDefault()
   const c = captions.value[index]
   editor.selectCaption(index)
-  editor.openPanel('subtitles')
+  if (e.pointerType !== 'touch') editor.openPanel('subtitles')
   gesture = {
     mode,
     index,
@@ -37,9 +39,12 @@ function beginGesture(e: PointerEvent, index: number, mode: Mode) {
     end0: c.end,
     words0: (c.words ?? []).map((w) => ({ ...w })),
     moved: false,
+    touch: e.pointerType === 'touch',
   }
   window.addEventListener('pointermove', onMove)
   window.addEventListener('pointerup', onUp)
+  window.addEventListener('pointercancel', cancelGesture)
+  window.addEventListener('blur', cancelGesture)
 }
 
 function onMove(e: PointerEvent) {
@@ -68,11 +73,18 @@ function onMove(e: PointerEvent) {
 }
 
 function onUp() {
+  if (gesture?.touch && !gesture.moved) editor.openPanel('subtitles')
+  cancelGesture()
+}
+function cancelGesture() {
   window.removeEventListener('pointermove', onMove)
   window.removeEventListener('pointerup', onUp)
+  window.removeEventListener('pointercancel', cancelGesture)
+  window.removeEventListener('blur', cancelGesture)
   if (gesture?.moved) project.commit()
   gesture = null
 }
+onBeforeUnmount(cancelGesture)
 </script>
 
 <template>
@@ -146,6 +158,7 @@ function onUp() {
   flex: 1;
 }
 .caption-block {
+  touch-action: none;
   position: absolute;
   top: 4px;
   height: 21px;
@@ -186,5 +199,8 @@ function onUp() {
 }
 .trim.r {
   right: 0;
+}
+@media (pointer: coarse) {
+  .trim { width: 14px; }
 }
 </style>

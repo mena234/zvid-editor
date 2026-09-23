@@ -36,11 +36,11 @@ function stop() {
 <template>
   <div v-if="show" class="admin-ex-banner">
     <span class="badge">ADMIN</span>
-    <span v-if="editor.sourceExample" class="label">
+    <span v-if="editor.sourceExample" class="label" :title="editor.sourceExample.title">
       Editing example
       <b>{{ editor.sourceExample?.title }}</b>
     </span>
-    <span v-else class="label">
+    <span v-else class="label" :title="publish.title || publish.slug">
       Publishing
       <b>{{ publish.title || publish.slug }}</b>
     </span>
@@ -52,24 +52,25 @@ function stop() {
     >
       <span class="dot" /> {{ publishLabel }}
     </button>
-    <span class="spacer" />
-    <button v-if="editor.sourceExample" class="btn ghost sm" @click="stop">
-      Stop editing
-    </button>
-    <button
-      v-if="editor.sourceExample"
-      class="btn primary sm"
-      :disabled="publish.active"
-      @click="cloud.publishExample()"
-    >
-      <UiIcon name="render" :size="13" /> Render &amp; publish
-    </button>
+    <div v-if="editor.sourceExample" class="admin-ex-actions">
+      <button class="btn ghost sm" @click="stop">Stop editing</button>
+      <button
+        class="btn primary sm"
+        :disabled="publish.active"
+        @click="cloud.publishExample()"
+      >
+        <UiIcon name="render" :size="13" /> Render &amp; publish
+      </button>
+    </div>
   </div>
 </template>
 
 <style scoped>
 .admin-ex-banner {
   display: flex;
+  flex-wrap: wrap;
+  min-width: 0;
+  flex: 0 0 auto;
   align-items: center;
   gap: 10px;
   padding: 6px 14px;
@@ -83,6 +84,7 @@ function stop() {
   color: var(--text-1);
 }
 .badge {
+  flex: 0 0 auto;
   padding: 2px 7px;
   border-radius: 999px;
   background: var(--accent);
@@ -91,11 +93,22 @@ function stop() {
   font-weight: 800;
   letter-spacing: 0.06em;
 }
+.label {
+  flex: 1 1 180px;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .label b {
   color: var(--text-0);
 }
-.spacer {
-  flex: 1;
+.admin-ex-actions {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
 }
 .btn.sm {
   height: 26px;
@@ -107,6 +120,7 @@ function stop() {
   cursor: not-allowed;
 }
 .chip.publishing {
+  flex: 0 0 auto;
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -118,6 +132,10 @@ function stop() {
   color: var(--text-0);
   font-size: 10.5px;
   cursor: pointer;
+}
+@media (max-width: 767px) {
+  .admin-ex-banner { gap: 6px 8px; padding: 6px 10px; }
+  .btn.sm, .chip.publishing { min-height: 34px; }
 }
 .chip.publishing .dot {
   width: 7px;

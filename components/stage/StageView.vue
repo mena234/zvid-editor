@@ -43,18 +43,22 @@ onMounted(() => {
   if (scrollEl.value) ro.observe(scrollEl.value)
   window.addEventListener('pointermove', onWindowPointerMove)
   window.addEventListener('pointerup', onWindowPointerUp)
+  window.addEventListener('pointercancel', cancelMarquee)
 })
 onBeforeUnmount(() => {
+  cancelPan()
   ro?.disconnect()
   window.removeEventListener('pointermove', onWindowPointerMove)
   window.removeEventListener('pointerup', onWindowPointerUp)
+  window.removeEventListener('pointercancel', cancelMarquee)
 })
 
 const projW = computed(() => displayDefaults.value.width)
 const projH = computed(() => displayDefaults.value.height)
+const stagePadding = computed(() => avail.value.w < 600 || avail.value.h < 300 ? 24 : 48)
 
 const fitScale = computed(() => {
-  const pad = 48
+  const pad = stagePadding.value
   return Math.min(
     (avail.value.w - pad) / projW.value,
     (avail.value.h - pad) / projH.value,
@@ -303,6 +307,74 @@ provide('stageCtx', stageCtx)
 /* ---------------- marquee ---------------- */
 const marquee = ref<null | { x0: number; y0: number; x1: number; y1: number }>(null)
 let marqueeActive = false
+let marqueeTouch = false
+
+function cancelMarquee() {
+  marqueeActive = false
+  marquee.value = null
+}
+
+/* ---------------- pan the zoomed canvas ---------------- */
+const panMode = ref(false)
+const pan = ref<null | {
+  pointerId: number
+  x: number
+  y: number
+  left: number
+  top: number
+}>(null)
+
+function cancelPan() {
+  const pointerId = pan.value?.pointerId
+  pan.value = null
+  if (pointerId !== undefined && scrollEl.value?.hasPointerCapture(pointerId)) {
+    scrollEl.value.releasePointerCapture(pointerId)
+  }
+}
+
+function togglePan() {
+  cancelPan()
+  cancelMarquee()
+  closeContextMenu()
+  panMode.value = !panMode.value
+}
+
+function onPanDown(e: PointerEvent) {
+  if (!panMode.value || e.button !== 0) return
+  // Capture before stage items/selection handles can begin their own edits.
+  e.preventDefault()
+  e.stopPropagation()
+  if (!e.isPrimary || pan.value || !scrollEl.value) return
+  pan.value = {
+    pointerId: e.pointerId,
+    x: e.clientX,
+    y: e.clientY,
+    left: scrollEl.value.scrollLeft,
+    top: scrollEl.value.scrollTop,
+  }
+  scrollEl.value.setPointerCapture(e.pointerId)
+}
+
+function onPanMove(e: PointerEvent) {
+  const start = pan.value
+  if (!start || e.pointerId !== start.pointerId || !scrollEl.value) return
+  e.preventDefault()
+  e.stopPropagation()
+  scrollEl.value.scrollLeft = start.left - (e.clientX - start.x)
+  scrollEl.value.scrollTop = start.top - (e.clientY - start.y)
+}
+
+function onPanEnd(e: PointerEvent) {
+  if (e.pointerId !== pan.value?.pointerId) return
+  e.stopPropagation()
+  cancelPan()
+}
+
+function onPanClick(e: MouseEvent) {
+  if (!panMode.value) return
+  e.preventDefault()
+  e.stopPropagation()
+}
 
 function framePoint(e: PointerEvent): { x: number; y: number } {
   const frame = frameEl.value!.getBoundingClientRect()
@@ -322,8 +394,9 @@ function onFramePointerDown(e: PointerEvent) {
   const p = framePoint(e)
   marquee.value = { x0: p.x, y0: p.y, x1: p.x, y1: p.y }
   marqueeActive = true
+  marqueeTouch = e.pointerType === 'touch'
   // empty-stage click: the shared panel shows the project settings
-  editor.openProjectSettings()
+  if (!marqueeTouch) editor.openProjectSettings()
 }
 
 function onWindowPointerMove(e: PointerEvent) {
@@ -336,6 +409,7 @@ function onWindowPointerMove(e: PointerEvent) {
 
 function onWindowPointerUp() {
   if (marqueeActive && marquee.value) {
+    let selected = false
     const m = marquee.value
     const rect = {
       left: Math.min(m.x0, m.x1),
@@ -357,12 +431,14 @@ function onWindowPointerUp() {
           hits.push(item._id)
       }
       if (hits.length) {
+        selected = true
         editor.selectionKind = 'visual'
         editor.selectedIds = hits
         editor.selectedId = hits[hits.length - 1]
-        editor.openInspector()
+        if (!marqueeTouch) editor.openInspector()
       }
     }
+    if (!selected && marqueeTouch) editor.openProjectSettings()
   }
   marqueeActive = false
   marquee.value = null
@@ -443,12 +519,19 @@ function onStockDrop(e: DragEvent) {
 }
 
 /* ---------------- context menu ---------------- */
-const ctxMenu = ref<null | { x: number; y: number; id: string }>(null)
+const ctxMenu = ref<null | { x: number; y: number; id: string; kind?: 'visual' | 'audio' }>(null)
 function openContextMenu(e: MouseEvent, id: string) {
   ctxMenu.value = { x: e.clientX, y: e.clientY, id }
 }
 function closeContextMenu() {
   ctxMenu.value = null
+}
+function openSelectionActions(e: MouseEvent) {
+  if (!editor.selectedId || !['visual', 'audio'].includes(editor.selectionKind ?? '')) return
+  ctxMenu.value = {
+    x: e.clientX, y: e.clientY, id: editor.selectedId,
+    kind: editor.selectionKind as 'visual' | 'audio',
+  }
 }
 
 /* ---------------- selection bookkeeping ---------------- */
@@ -482,7 +565,14 @@ const contextLabel = computed(() => {
     <div
       ref="scrollEl"
       class="stage-scroll checkerboard"
-      :class="{ 'stock-drop': stockDropActive }"
+      :class="{ 'stock-drop': stockDropActive, 'pan-mode': panMode, panning: !!pan }"
+      @pointerdown.capture="onPanDown"
+      @pointermove.capture="onPanMove"
+      @pointerup.capture="onPanEnd"
+      @pointercancel.capture="onPanEnd"
+      @lostpointercapture="onPanEnd"
+      @click.capture="onPanClick"
+      @dblclick.capture="onPanClick"
       @wheel="onWheel"
       @dragover="onStockDragOver"
       @dragleave="onStockDragLeave"
@@ -493,6 +583,7 @@ const contextLabel = computed(() => {
         :style="{
           width: `${projW * scale}px`,
           height: `${projH * scale}px`,
+          margin: `${stagePadding / 2}px`,
         }"
       >
         <div
@@ -620,6 +711,27 @@ const contextLabel = computed(() => {
     <div class="stage-foot">
       <div class="foot-left">
         <button
+          class="btn ghost sm pan-toggle"
+          :class="{ active: panMode }"
+          title="Pan canvas — drag to move the view; toggle off to edit"
+          aria-label="Pan canvas"
+          :aria-pressed="panMode"
+          @click="togglePan"
+        >
+          Pan
+        </button>
+        <button
+          v-if="editor.selectedId && (editor.selectionKind === 'visual' || editor.selectionKind === 'audio')"
+          class="icon-btn"
+          title="Selected element actions"
+          aria-label="Selected element actions"
+          aria-haspopup="menu"
+          :aria-expanded="!!ctxMenu"
+          @click="openSelectionActions"
+        >
+          <UiIcon name="more" />
+        </button>
+        <button
           class="icon-btn"
           :class="{ active: editor.showSafeArea }"
           title="Toggle safe margins"
@@ -658,6 +770,7 @@ const contextLabel = computed(() => {
       :x="ctxMenu.x"
       :y="ctxMenu.y"
       :item-id="ctxMenu.id"
+      :kind="ctxMenu.kind"
       @close="closeContextMenu"
     />
   </div>
@@ -683,6 +796,8 @@ const contextLabel = computed(() => {
   background: var(--accent-soft);
   border-bottom: 1px solid var(--border-0);
   flex: 0 0 auto;
+  flex-wrap: wrap;
+  overflow-wrap: anywhere;
 }
 .ctx-banner .sep {
   color: var(--text-3);
@@ -701,6 +816,7 @@ const contextLabel = computed(() => {
   flex: 0 0 auto;
 }
 .stage-frame {
+  touch-action: none;
   position: absolute;
   top: 0;
   left: 0;
@@ -776,7 +892,7 @@ const contextLabel = computed(() => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 34px;
+  min-height: 34px;
   padding: 0 10px;
   border-top: 1px solid var(--border-0);
   background: var(--bg-1);
@@ -798,5 +914,39 @@ const contextLabel = computed(() => {
 }
 .zoom-label:hover {
   color: var(--text-0);
+}
+.stage-scroll.pan-mode {
+  touch-action: none;
+  user-select: none;
+}
+.stage-scroll.pan-mode,
+.stage-scroll.pan-mode :deep(*) {
+  cursor: grab;
+}
+.stage-scroll.panning,
+.stage-scroll.panning :deep(*) {
+  cursor: grabbing;
+}
+.pan-toggle {
+  padding-inline: 7px;
+  min-height: 30px;
+}
+.pan-toggle.active {
+  color: var(--accent-strong);
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+@media (max-width: 767px) {
+  .stage-foot {
+    min-height: 40px;
+    padding: 0 6px;
+  }
+  .stage-foot .icon-btn {
+    width: 34px;
+    height: 34px;
+  }
+  .pan-toggle {
+    min-height: 34px;
+  }
 }
 </style>

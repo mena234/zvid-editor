@@ -583,7 +583,7 @@ async function editExample(item: LibraryItem) {
 }
 .grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr));
   gap: 10px;
 }
 .card {
@@ -596,6 +596,7 @@ async function editExample(item: LibraryItem) {
   background: var(--bg-1);
   color: var(--text-0);
   text-align: left;
+  min-width: 0;
 }
 .card:hover {
   border-color: var(--accent);
@@ -749,5 +750,35 @@ async function editExample(item: LibraryItem) {
   flex-direction: column;
   align-items: flex-start;
   gap: 8px;
+}
+@media (max-width: 600px) {
+  .ex-search-row {
+    flex-wrap: wrap;
+  }
+  .ex-search {
+    flex-basis: 100%;
+  }
+  .ex-cats {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+  .ex-cat {
+    flex: 0 0 auto;
+    min-height: 36px;
+  }
+  .ex-mode-btn {
+    min-height: 36px;
+  }
+  .ex-tools {
+    position: static;
+  }
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .edit-badge {
+    opacity: 1;
+  }
 }
 </style>

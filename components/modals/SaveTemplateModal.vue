@@ -226,6 +226,7 @@ async function save() {
 }
 .vars-row {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 8px;
   padding: 2px 0;

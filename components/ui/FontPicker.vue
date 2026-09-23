@@ -191,4 +191,7 @@ async function showMore() {
 .font-item[aria-pressed='true'] { background: var(--accent-soft); color: var(--accent-strong); }
 .font-item.custom, .font-item.more { color: var(--accent-strong); font-size: 11px; }
 .font-empty { margin: 8px; color: var(--text-2); font-size: 12px; }
+@media (pointer: coarse) {
+  .font-menu > input { font-size: 16px; }
+}
 </style>

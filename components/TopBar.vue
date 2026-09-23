@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
+import { computed, ref, watch, nextTick, onMounted, onBeforeUnmount } from 'vue'
 import { useProjectStore } from '~/stores/project'
 import { useEditorStore } from '~/stores/editor'
 import { useTourStore } from '~/stores/tour'
 import { useCloud } from '~/composables/useCloud'
+import { useSupportChat } from '~/composables/useSupportChat'
 import { ZVID_DISCORD_URL } from '~/utils/community'
 import {
   RESOLUTION_PRESET_NAMES,
@@ -15,6 +16,31 @@ const project = useProjectStore()
 const editor = useEditorStore()
 const cloud = useCloud()
 const tour = useTourStore()
+const support = useSupportChat()
+const helpOpen = ref(false)
+let supportRequest = 0
+
+function openHelp() {
+  supportRequest++
+  support.hide()
+  helpOpen.value = true
+  activePopover.value = null
+  newMenuOpen.value = false
+}
+
+function closeHelp() {
+  supportRequest++
+  helpOpen.value = false
+}
+
+async function openSupportChat() {
+  const request = ++supportRequest
+  if (!await support.load() || request !== supportRequest || !helpOpen.value || editor.modal) return
+  closeHelp()
+  // Release the Help dialog's focus trap before focusing the chat iframe.
+  await nextTick()
+  support.show()
+}
 
 const dims = computed(() => project.defaults)
 const isImage = computed(() => project.isImage)
@@ -28,16 +54,42 @@ const formatOptions = computed(() =>
 /* "New" chooser: video or image project */
 const newMenuOpen = ref(false)
 const newMenuRoot = ref<HTMLElement | null>(null)
+const activePopover = ref<'tools' | 'settings' | null>(null)
+const toolsRoot = ref<HTMLElement | null>(null)
+const settingsRoot = ref<HTMLElement | null>(null)
+function togglePopover(name: 'tools' | 'settings') {
+  activePopover.value = activePopover.value === name ? null : name
+  newMenuOpen.value = false
+}
+function closePopover() {
+  const root = activePopover.value === 'tools' ? toolsRoot.value : settingsRoot.value
+  activePopover.value = null
+  newMenuOpen.value = false
+  root?.querySelector<HTMLButtonElement>('.popover-toggle')?.focus()
+}
 function onDocClick(e: MouseEvent) {
+  if (activePopover.value) {
+    const root = activePopover.value === 'tools' ? toolsRoot.value : settingsRoot.value
+    if (!root?.contains(e.target as Node)) activePopover.value = null
+  }
   if (newMenuOpen.value && newMenuRoot.value && !newMenuRoot.value.contains(e.target as Node)) {
     newMenuOpen.value = false
   }
 }
-onMounted(() => document.addEventListener('mousedown', onDocClick))
-onBeforeUnmount(() => document.removeEventListener('mousedown', onDocClick))
+onMounted(() => document.addEventListener('pointerdown', onDocClick))
+onBeforeUnmount(() => document.removeEventListener('pointerdown', onDocClick))
+watch(() => editor.modal, () => {
+  activePopover.value = null
+  newMenuOpen.value = false
+  closeHelp()
+})
+watch(() => tour.current?.target, (target) => {
+  activePopover.value = target === 'project-settings' ? 'settings' : target === 'examples' ? 'tools' : null
+})
 
 function startNew(type: 'video' | 'image') {
   newMenuOpen.value = false
+  activePopover.value = null
   project.newProject(type)
   editor.clearSelection()
   editor.setContext('root')
@@ -62,7 +114,8 @@ function setResolution(e: Event) {
 </script>
 
 <template>
-  <header class="topbar">
+  <header class="topbar" @keydown.esc.stop="closePopover">
+    <div class="project-identity">
     <div class="brand" title="Zvid Editor">
       <span class="brand-logo-wrap">
         <img
@@ -82,9 +135,18 @@ function setResolution(e: Event) {
       placeholder="Untitled project"
       spellcheck="false"
       title="Project name (output file name)"
+      aria-label="Project name"
       @change="project.patchProject({ name: ($event.target as HTMLInputElement).value || undefined })"
     />
+    </div>
 
+    <div ref="settingsRoot" class="settings-wrap" :class="{ 'is-open': activePopover === 'settings' }">
+      <button class="icon-btn popover-toggle" title="Project settings" aria-label="Project settings"
+        aria-controls="topbar-settings" :aria-expanded="activePopover === 'settings'"
+        @click="togglePopover('settings')">
+        <UiIcon name="settings" />
+      </button>
+      <div id="topbar-settings" class="settings-popover">
     <div class="settings" data-tour="project-settings">
       <select
         class="ctl"
@@ -159,16 +221,23 @@ function setResolution(e: Event) {
         <option v-for="f in formatOptions" :key="f" :value="f">{{ f }}</option>
       </select>
     </div>
+      </div>
+    </div>
 
-    <div class="spacer" />
-
+    <div ref="toolsRoot" class="tools-wrap" :class="{ 'is-open': activePopover === 'tools' }">
+      <button class="icon-btn popover-toggle" title="More editor actions" aria-label="More editor actions"
+        aria-controls="topbar-tools" :aria-expanded="activePopover === 'tools'"
+        @click="togglePopover('tools')">
+        <UiIcon name="more" />
+      </button>
+      <div id="topbar-tools" class="secondary-actions">
     <button
       class="icon-btn"
       :disabled="!project.canUndo"
       title="Undo (Ctrl+Z)"
       @click="project.undo()"
     >
-      <UiIcon name="undo" />
+      <UiIcon name="undo" /><span class="compact-label">Undo</span>
     </button>
     <button
       class="icon-btn"
@@ -176,7 +245,7 @@ function setResolution(e: Event) {
       title="Redo (Ctrl+Y)"
       @click="project.redo()"
     >
-      <UiIcon name="redo" />
+      <UiIcon name="redo" /><span class="compact-label">Redo</span>
     </button>
 
     <button
@@ -185,14 +254,22 @@ function setResolution(e: Event) {
       @click="editor.toggleTheme()"
     >
       <UiIcon :name="editor.theme === 'dark' ? 'sun' : 'moon'" />
+      <span class="compact-label">{{ editor.theme === 'dark' ? 'Light mode' : 'Dark mode' }}</span>
     </button>
 
     <button class="icon-btn" title="Keyboard shortcuts (?)" @click="editor.openModal('shortcuts')">
       <UiIcon name="keyboard" />
+      <span class="compact-label">Shortcuts</span>
     </button>
 
     <button class="icon-btn" title="Product tour" @click="tour.start()">
       <UiIcon name="compass" />
+      <span class="compact-label">Product tour</span>
+    </button>
+
+    <button class="icon-btn" title="Help" aria-label="Help" @click="openHelp">
+      <UiIcon name="info" />
+      <span class="compact-label">Help</span>
     </button>
 
     <a
@@ -217,7 +294,7 @@ function setResolution(e: Event) {
       <UiIcon name="folder" :size="14" /> Examples
     </button>
     <div ref="newMenuRoot" class="new-wrap">
-      <button class="btn ghost" title="New empty project" @click="newMenuOpen = !newMenuOpen">
+      <button class="btn ghost" title="New empty project" :aria-expanded="newMenuOpen" @click="newMenuOpen = !newMenuOpen">
         New <UiIcon name="chevron_down" :size="12" />
       </button>
       <div v-if="newMenuOpen" class="new-menu">
@@ -232,9 +309,12 @@ function setResolution(e: Event) {
     <button class="btn" @click="editor.openModal('import')">
       <UiIcon name="upload" :size="14" /> Import
     </button>
+      </div>
+    </div>
     <div class="output-actions" data-tour="output">
       <button
-        class="btn"
+        class="btn save-action"
+        aria-label="Save"
         :title="
           editor.cloudProject
             ? `Save to “${editor.cloudProject.name}” in your account`
@@ -242,7 +322,7 @@ function setResolution(e: Event) {
         "
         @click="cloud.saveToCloud()"
       >
-        <UiIcon name="save" :size="14" /> Save
+        <UiIcon name="save" :size="14" /><span class="save-label">Save</span>
       </button>
       <button
         class="btn"
@@ -256,30 +336,107 @@ function setResolution(e: Event) {
       </button>
     </div>
 
-    <div class="divider" />
     <AccountMenu />
   </header>
+  <UiModal v-if="helpOpen" title="Help" width="400px" @close="closeHelp">
+    <div class="help-content">
+      <p>Need a hand with your project?</p>
+      <button class="btn primary" :disabled="support.loading.value" @click="openSupportChat">
+        {{ support.loading.value ? 'Opening chat…' : 'Chat with support' }}
+      </button>
+      <p v-if="support.error.value" role="status">Chat is unavailable right now. You can still contact us below.</p>
+      <p>Contact Zvid at <a href="https://zvid.io/contact" target="_blank" rel="noopener noreferrer">https://zvid.io/contact</a></p>
+    </div>
+  </UiModal>
 </template>
 
 <style scoped>
+.help-content { display: grid; gap: 12px; }
+.help-content p { margin: 0; line-height: 1.5; }
+.help-content .btn { justify-self: start; min-height: 40px; }
+.help-content a { color: var(--accent); }
 .topbar {
-  display: flex;
-  flex-wrap: wrap;
+  position: relative;
+  display: grid;
+  grid-template-columns: 36px 36px minmax(0, 1fr) auto;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   min-height: 52px;
-  padding: 7px 14px;
+  min-width: 0;
+  padding: 6px 8px;
   background: var(--bg-1);
   border-bottom: 1px solid var(--border-0);
   flex: 0 0 auto;
   z-index: 20;
 }
+.project-identity {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  grid-column: 1 / 4;
+  grid-row: 1;
+}
+.topbar > :deep(.account) {
+  grid-column: 4;
+  grid-row: 1;
+  justify-self: end;
+}
+.tools-wrap { grid-column: 1; grid-row: 2; }
+.settings-wrap { grid-column: 2; grid-row: 2; }
+.popover-toggle { width: 36px; height: 36px; }
+.secondary-actions,
+.settings-popover {
+  display: none;
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 8px;
+  right: 8px;
+  max-height: calc(100dvh - 120px);
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 8px;
+  background: var(--bg-1);
+  border: 1px solid var(--border-1);
+  border-radius: var(--radius-m);
+  box-shadow: var(--shadow-2);
+}
+.is-open > .secondary-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+}
+.is-open > .settings-popover { display: block; }
+.secondary-actions > .btn,
+.secondary-actions > .icon-btn,
+.new-wrap > .btn {
+  justify-content: flex-start;
+  width: 100%;
+  height: 36px;
+  gap: 8px;
+  padding-inline: 10px;
+  text-decoration: none;
+}
+.compact-label { font-size: 12px; white-space: nowrap; }
+.secondary-actions > .divider { display: none; }
+.topbar .btn { flex-shrink: 0; }
+.topbar > .output-actions {
+  grid-row: 2;
+  grid-column: 3 / 5;
+  justify-content: flex-end;
+  gap: 4px;
+}
+.output-actions .btn { height: 36px; padding-inline: 8px; }
+.save-label { display: none; }
+.save-action { width: 32px; }
+.brand-name { display: none; }
 .brand {
   display: flex;
   align-items: center;
   gap: 8px;
   user-select: none;
   margin-right: 2px;
+  flex-shrink: 0;
 }
 .brand-logo-wrap {
   display: inline-flex;
@@ -304,10 +461,13 @@ function setResolution(e: Event) {
   letter-spacing: -0.01em;
 }
 .name-input {
-  width: 170px;
+  width: 100%;
+  min-width: 0;
+  max-width: 220px;
+  text-overflow: ellipsis;
   height: 30px;
   padding: 0 9px;
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 600;
   color: var(--text-0);
   background: transparent;
@@ -342,6 +502,14 @@ function setResolution(e: Event) {
   border: 1px solid var(--border-0);
   border-radius: var(--radius-m);
   background: var(--bg-2);
+}
+.settings > :deep(*) { flex-shrink: 0; }
+.settings > select { max-width: 100%; }
+.settings :deep(.duration-control) { flex-wrap: wrap; min-width: 0; max-width: 100%; }
+.settings :deep(.duration-popover) {
+  position: static;
+  width: 100%;
+  box-shadow: none;
 }
 .sep {
   width: 1px;
@@ -400,10 +568,8 @@ function setResolution(e: Event) {
   gap: 8px;
 }
 .new-menu {
-  position: absolute;
-  top: calc(100% + 6px);
-  right: 0;
-  min-width: 160px;
+  position: relative;
+  min-width: 0;
   padding: 5px;
   background: var(--bg-2);
   border: 1px solid var(--border-1);
@@ -435,20 +601,77 @@ function setResolution(e: Event) {
   font-size: 10px;
   color: var(--text-3);
 }
-.spacer {
-  flex: 1;
-}
-
-@media (max-width: 1920px) {
-  .settings {
-    order: 1;
-    flex-basis: 100%;
+@media (min-width: 40rem) {
+  .name-input { font-size: 13px; }
+  .topbar {
+    grid-template-columns: minmax(120px, 1fr) auto auto auto auto;
+    padding: 7px 12px;
+    gap: 8px;
   }
+  .project-identity { grid-column: 1; }
+  .tools-wrap { grid-column: 2; grid-row: 1; }
+  .settings-wrap { grid-column: 3; grid-row: 1; }
+  .topbar > .output-actions { grid-column: 4; grid-row: 1; gap: 8px; }
+  .topbar > :deep(.account) { grid-column: 5; }
+  .save-label { display: inline; }
+  .save-action { width: auto; }
+  .secondary-actions { left: auto; width: 320px; }
+  .settings-popover { left: auto; width: min(680px, calc(100% - 24px)); }
 }
-
-@media (max-width: 1360px) {
-  .brand-name {
-    display: none;
+@media (min-width: 64rem) {
+  .settings-wrap { grid-column: 1 / -1; grid-row: 2; }
+  .settings-wrap > .popover-toggle { display: none; }
+  .settings-popover {
+    display: block;
+    position: static;
+    width: auto;
+    max-height: none;
+    overflow: visible;
+    padding: 0;
+    border: 0;
+    box-shadow: none;
   }
+  .settings :deep(.duration-control) { flex-wrap: nowrap; }
+  .settings :deep(.duration-popover) {
+    position: absolute;
+    width: 300px;
+    box-shadow: var(--shadow-2);
+  }
+  .brand-name { display: inline; }
+}
+@media (min-width: 80rem) {
+  .topbar { grid-template-columns: minmax(220px, 1fr) auto auto auto; }
+  .tools-wrap > .popover-toggle { display: none; }
+  .secondary-actions,
+  .is-open > .secondary-actions {
+    position: static;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    width: auto;
+    max-height: none;
+    overflow: visible;
+    padding: 0;
+    border: 0;
+    box-shadow: none;
+  }
+  .compact-label { display: none; }
+  .secondary-actions > .btn,
+  .new-wrap > .btn { width: auto; padding-inline: 10px; }
+  .secondary-actions > .icon-btn { width: 28px; padding: 0; justify-content: center; }
+  .secondary-actions > .divider { display: block; }
+  .topbar > .output-actions { grid-column: 3; }
+  .topbar > :deep(.account) { grid-column: 4; }
+  .new-menu { position: absolute; top: calc(100% + 6px); right: 0; min-width: 160px; }
+}
+@media (pointer: coarse) {
+  .name-input,
+  .settings :deep(input.ctl),
+  .settings select.ctl { font-size: 16px; }
+  .popover-toggle,
+  .output-actions .btn,
+  .secondary-actions > .btn,
+  .secondary-actions > .icon-btn,
+  .new-wrap > .btn { min-height: 44px; }
 }
 </style>

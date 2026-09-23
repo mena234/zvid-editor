@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { onMounted, onBeforeUnmount, computed } from 'vue'
+import { onMounted, onBeforeUnmount, computed, ref, nextTick } from 'vue'
 import { useProjectStore } from '~/stores/project'
 import { useEditorStore } from '~/stores/editor'
 import { canonicalVisualType } from '~/shared/schema/types'
+import { resolveVisualTiming, resolveAudioTiming } from '~/shared/schema/defaults'
+import { useEditorContext } from '~/composables/useEditorContext'
 
 const props = withDefaults(
   defineProps<{ x: number; y: number; itemId: string; kind?: 'visual' | 'audio' }>(),
@@ -12,6 +14,18 @@ const emit = defineEmits<{ close: [] }>()
 
 const project = useProjectStore()
 const editor = useEditorStore()
+const { contextDuration } = useEditorContext()
+const menuEl = ref<HTMLElement>()
+const position = ref({ x: 8, y: 8 })
+let resizeObserver: ResizeObserver | null = null
+function placeMenu() {
+  const box = menuEl.value?.getBoundingClientRect()
+  if (!box) return
+  position.value = {
+    x: Math.max(8, Math.min(props.x, window.innerWidth - box.width - 8)),
+    y: Math.max(8, Math.min(props.y, window.innerHeight - box.height - 8)),
+  }
+}
 
 const isAudio = computed(() => props.kind === 'audio')
 const item = computed(() =>
@@ -27,10 +41,16 @@ function onDocDown(e: MouseEvent) {
 onMounted(() => {
   document.addEventListener('pointerdown', onDocDown, true)
   document.addEventListener('keydown', onEsc)
+  resizeObserver = new ResizeObserver(placeMenu)
+  if (menuEl.value) resizeObserver.observe(menuEl.value)
+  nextTick(placeMenu)
+  window.addEventListener('resize', placeMenu)
 })
 onBeforeUnmount(() => {
   document.removeEventListener('pointerdown', onDocDown, true)
   document.removeEventListener('keydown', onEsc)
+  resizeObserver?.disconnect()
+  window.removeEventListener('resize', placeMenu)
 })
 function onEsc(e: KeyboardEvent) {
   if (e.key === 'Escape') emit('close')
@@ -95,15 +115,33 @@ function resetSize() {
   project.patchVisual(props.itemId, { width: undefined, height: undefined, resize: undefined })
 }
 
+const canSplit = computed(() => {
+  if (!item.value || project.isImage) return false
+  const timing = isAudio.value
+    ? resolveAudioTiming(item.value as any, contextDuration.value)
+    : resolveVisualTiming(item.value as any, contextDuration.value)
+  const start = 'enter' in timing ? timing.enter : timing.enterBegin
+  const end = 'exit' in timing ? timing.exit : timing.exitEnd
+  return editor.playhead > start + 0.01 && editor.playhead < end - 0.01
+})
+function split() {
+  if (isAudio.value) project.splitAudioAt(props.itemId, editor.playhead)
+  else project.splitVisualAt(props.itemId, editor.playhead)
+}
+
 const style = computed(() => ({
-  left: `${Math.min(props.x, window.innerWidth - 220)}px`,
-  top: `${Math.min(props.y, window.innerHeight - 320)}px`,
+  left: `${position.value.x}px`,
+  top: `${position.value.y}px`,
 }))
 </script>
 
 <template>
   <Teleport to="body">
-    <div class="ctx-menu" :style="style">
+    <div ref="menuEl" class="ctx-menu" :style="style" role="menu" aria-label="Element actions">
+      <button @click="run(() => editor.openInspector())">Edit properties</button>
+      <button v-if="!project.isImage" :disabled="!canSplit" @click="run(split)">
+        Split at playhead <kbd>S</kbd>
+      </button>
       <button @click="run(duplicate)">
         <UiIcon name="copy" :size="13" /> Duplicate <kbd>Ctrl+D</kbd>
       </button>
@@ -162,6 +200,9 @@ const style = computed(() => ({
   position: fixed;
   z-index: 300;
   min-width: 210px;
+  max-width: calc(100vw - 16px);
+  max-height: calc(100dvh - 16px);
+  overflow-y: auto;
   padding: 5px;
   background: var(--bg-1);
   border: 1px solid var(--border-1);
@@ -184,6 +225,13 @@ const style = computed(() => ({
 }
 .ctx-menu button:hover {
   background: var(--bg-3);
+}
+.ctx-menu button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+@media (pointer: coarse) {
+  .ctx-menu button { min-height: 40px; }
 }
 .ctx-menu button.danger:hover {
   background: color-mix(in srgb, var(--red) 12%, transparent);

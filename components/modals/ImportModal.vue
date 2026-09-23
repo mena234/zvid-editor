@@ -83,6 +83,7 @@ async function fromClipboard() {
 <style scoped>
 .actions {
   display: flex;
+  flex-wrap: wrap;
   gap: 6px;
   margin: 8px 0;
 }

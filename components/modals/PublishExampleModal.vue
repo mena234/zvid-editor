@@ -47,7 +47,7 @@ function retry() {
   <UiModal title="Publish example" width="560px" @close="editor.closeModal()">
     <p class="hint">
       Re-renders
-      <b>{{ source?.title }}</b> in the cloud, reuploads a fresh preview, and updates the example in
+      <b>{{ source?.title || publish.title || publish.slug }}</b> in the cloud, reuploads a fresh preview, and updates the example in
       the shared library. This replaces what every user sees for this example.
     </p>
 
@@ -132,6 +132,10 @@ function retry() {
 </template>
 
 <style scoped>
+.hint, .block, .ok {
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
 .center {
   display: flex;
   flex-direction: column;

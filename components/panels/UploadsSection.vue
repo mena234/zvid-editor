@@ -507,8 +507,19 @@ onBeforeUnmount(() => {
   transition: opacity 0.12s;
 }
 .cell:hover .del,
-.audio-row:hover .del {
+.cell:focus-within .del,
+.audio-row:hover .del,
+.audio-row:focus-within .del {
   opacity: 1;
+}
+@media (hover: none), (pointer: coarse) {
+  .del {
+    opacity: 1;
+    min-width: 32px;
+    min-height: 32px;
+    align-items: center;
+    justify-content: center;
+  }
 }
 .del:hover {
   background: var(--red);

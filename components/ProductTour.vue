@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref, watch, nextTick } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, shallowRef, watch, nextTick } from 'vue'
 import { useTourStore } from '~/stores/tour'
 
 /**
@@ -16,6 +16,19 @@ const GAP = 14 // card ↔ spotlight distance
 
 type Rect = { top: number; left: number; width: number; height: number }
 const rect = ref<Rect | null>(null)
+const cardEl = shallowRef<HTMLElement | null>(null)
+const cardHeight = ref(260)
+const viewport = ref({ width: CARD_W + 16, height: 600 })
+let cardObserver: ResizeObserver | null = null
+
+watch(cardEl, (el) => {
+  cardObserver?.disconnect()
+  if (!el) return
+  const measureCard = () => { cardHeight.value = el.getBoundingClientRect().height }
+  measureCard()
+  cardObserver = new ResizeObserver(measureCard)
+  cardObserver.observe(el)
+})
 
 function measure() {
   const step = tour.current
@@ -29,6 +42,10 @@ function measure() {
     return
   }
   const r = el.getBoundingClientRect()
+  if (r.width <= 0 || r.height <= 0) {
+    rect.value = null
+    return
+  }
   rect.value = { top: r.top, left: r.left, width: r.width, height: r.height }
 }
 
@@ -48,6 +65,7 @@ watch(
 
 let poll = 0
 function onResize() {
+  viewport.value = { width: window.innerWidth, height: window.innerHeight }
   if (tour.active) measure()
 }
 function onKey(e: KeyboardEvent) {
@@ -58,6 +76,7 @@ function onKey(e: KeyboardEvent) {
   else if (e.key === 'ArrowLeft') tour.prev()
 }
 onMounted(() => {
+  onResize()
   tour.maybeAutoStart()
   window.addEventListener('resize', onResize)
   // capture phase so the editor's global shortcuts never see tour keys
@@ -69,6 +88,7 @@ onBeforeUnmount(() => {
   window.removeEventListener('resize', onResize)
   window.removeEventListener('keydown', onKey, true)
   window.clearInterval(poll)
+  cardObserver?.disconnect()
 })
 
 const spot = computed(() => {
@@ -96,56 +116,51 @@ const spotStyle = computed(() =>
 const cardStyle = computed(() => {
   const step = tour.current
   if (!step) return undefined
-  const vw = window.innerWidth
-  const vh = window.innerHeight
+  const { width: vw, height: vh } = viewport.value
+  const width = Math.min(CARD_W, Math.max(0, vw - 16))
+  const height = Math.min(cardHeight.value, Math.max(0, vh - 16))
   const s = spot.value
   const placement = s ? step.placement : 'center'
 
-  let top = vh / 2
-  let left = vw / 2
-  let translate = '-50%, -50%'
+  let top = (vh - height) / 2
+  let left = (vw - width) / 2
 
   if (s) {
     const cx = s.left + s.width / 2
     const cy = s.top + s.height / 2
     switch (placement) {
       case 'right':
-        top = cy
+        top = cy - height / 2
         left = s.left + s.width + GAP
-        translate = '0, -50%'
         break
       case 'left':
-        top = cy
-        left = s.left - GAP - CARD_W
-        translate = '0, -50%'
+        top = cy - height / 2
+        left = s.left - GAP - width
         break
       case 'bottom':
         top = s.top + s.height + GAP
-        left = cx - CARD_W / 2
-        translate = '0, 0'
+        left = cx - width / 2
         break
       case 'top':
-        top = s.top - GAP
-        left = cx - CARD_W / 2
-        translate = '0, -100%'
+        top = s.top - GAP - height
+        left = cx - width / 2
         break
       case 'over':
       case 'center':
-        top = cy
-        left = cx
-        translate = '-50%, -50%'
+        top = cy - height / 2
+        left = cx - width / 2
         break
     }
-    // keep the card on screen whatever the layout does
-    left = Math.min(Math.max(8, left), vw - (translate.startsWith('-50%') ? CARD_W / 2 + 8 : CARD_W + 8))
-    top = Math.min(Math.max(8, top), vh - 8)
   }
+  // Clamp the complete card, including its measured height, to the viewport.
+  left = Math.max(8, Math.min(left, vw - width - 8))
+  top = Math.max(8, Math.min(top, vh - height - 8))
 
   return {
     top: `${top}px`,
     left: `${left}px`,
-    transform: `translate(${translate})`,
-    width: `${CARD_W}px`,
+    width: `${width}px`,
+    maxHeight: `${Math.max(0, vh - 16)}px`,
   }
 })
 </script>
@@ -157,7 +172,7 @@ const cardStyle = computed(() => {
       <div v-if="spot" class="spotlight" :style="spotStyle" />
       <div v-else class="backdrop" />
 
-      <div :key="tour.current.id" class="card" :style="cardStyle">
+      <div :key="tour.current.id" ref="cardEl" class="card" :style="cardStyle">
         <div class="meta">Step {{ tour.stepIndex + 1 }} of {{ tour.steps.length }}</div>
         <h3>{{ tour.current.title }}</h3>
         <p>{{ tour.current.body }}</p>
@@ -208,6 +223,10 @@ const cardStyle = computed(() => {
 }
 .card {
   position: fixed;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  overscroll-behavior: contain;
   padding: 16px 18px 14px;
   background: var(--bg-1);
   border: 1px solid var(--border-1);
@@ -225,6 +244,7 @@ const cardStyle = computed(() => {
   }
 }
 .meta {
+  flex: 0 0 auto;
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -233,18 +253,23 @@ const cardStyle = computed(() => {
   margin-bottom: 6px;
 }
 h3 {
+  flex: 0 0 auto;
   margin: 0 0 6px;
   font-size: 15px;
   font-weight: 700;
   color: var(--text-0);
 }
 p {
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
   margin: 0 0 12px;
   font-size: 12.5px;
   line-height: 1.55;
   color: var(--text-1);
 }
 .dots {
+  flex: 0 0 auto;
   display: flex;
   gap: 5px;
   margin-bottom: 12px;
@@ -264,10 +289,17 @@ p {
 }
 .row {
   display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
   align-items: center;
   gap: 8px;
 }
 .grow {
   flex: 1;
+}
+@media (pointer: coarse) {
+  .row .btn {
+    min-height: 40px;
+  }
 }
 </style>

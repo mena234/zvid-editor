@@ -37,7 +37,8 @@ defineProps<{
   font-size: 11px;
   font-weight: 500;
   color: var(--text-2);
-  white-space: nowrap;
+  white-space: normal;
+  overflow-wrap: anywhere;
   letter-spacing: 0.01em;
 }
 .field-ctl {
@@ -48,5 +49,6 @@ defineProps<{
 }
 .field-ctl > :deep(*) {
   flex: 1;
+  min-width: 0;
 }
 </style>

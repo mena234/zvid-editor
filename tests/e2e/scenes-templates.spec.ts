@@ -727,8 +727,8 @@ test('NumberInput: VarMenu inserts a number var as the exported value; string va
 
   // the picker offers only number-typed placeholders ({{s}} filtered out)
   await xField.locator('.vm-btn').click()
-  await expect(xField.locator('.vm-pop .vm-item.mono')).toHaveText(['{{n}}'])
-  await xField.locator('.vm-pop .vm-item.mono').click()
+  await expect(page.locator('.vm-pop .vm-item.mono')).toHaveText(['{{n}}'])
+  await page.locator('.vm-pop .vm-item.mono').click()
 
   await expect
     .poll(async () => (await exportedDoc(page)).visuals[0].x)

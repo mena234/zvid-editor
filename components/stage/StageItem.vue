@@ -162,6 +162,7 @@ let dragStart: {
   py: number
   items: { id: string; left: number; top: number; w: number; h: number; anchor: any }[]
   moved: boolean
+  touch: boolean
   /** top-most item under the pointer, selected on release if no drag happened */
   deferredSelect: string | null
 } | null = null
@@ -209,7 +210,7 @@ function onPointerDown(e: PointerEvent) {
 
   if (!dragSelection) {
     if (!alreadySelected || additive) editor.selectVisual(props.item._id, additive)
-    editor.openInspector()
+    if (e.pointerType !== 'touch') editor.openInspector()
     if (additive) return
   }
 
@@ -232,6 +233,7 @@ function onPointerDown(e: PointerEvent) {
     py: e.clientY,
     items,
     moved: false,
+    touch: e.pointerType === 'touch',
     deferredSelect: dragSelection ? props.item._id : null,
   }
   stageCtx.collectSnapLines(new Set(ids))
@@ -302,6 +304,7 @@ function finishDrag(selectOnRelease: boolean) {
     editor.selectVisual(dragStart.deferredSelect)
     editor.openInspector()
   }
+  else if (selectOnRelease && dragStart.touch) editor.openInspector()
   dragStart = null
 }
 

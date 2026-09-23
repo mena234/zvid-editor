@@ -91,8 +91,8 @@ const sizeKb = computed(() => Math.round((json.value.length / 1024) * 10) / 10)
         Render it anywhere: <code>npx zvid render {{ name }}.json --out ./dist</code>
       </p>
       <button class="btn" @click="copy"><UiIcon name="copy" :size="13" /> Copy</button>
-      <button class="btn primary" @click="download">
-        <UiIcon name="download" :size="13" /> Download {{ name }}.json
+      <button class="btn primary" :title="`Download ${name}.json`" @click="download">
+        <UiIcon name="download" :size="13" /> Download JSON
       </button>
     </template>
   </UiModal>
@@ -101,6 +101,7 @@ const sizeKb = computed(() => Math.round((json.value.length / 1024) * 10) / 10)
 <style scoped>
 .status-row {
   display: flex;
+  flex-wrap: wrap;
   gap: 6px;
   margin-bottom: 10px;
 }
@@ -134,11 +135,15 @@ const sizeKb = computed(() => Math.round((json.value.length / 1024) * 10) / 10)
 }
 .tabs {
   display: flex;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
   gap: 2px;
   border-bottom: 1px solid var(--border-0);
   margin-bottom: 10px;
 }
 .tabs button {
+  flex: 0 0 auto;
+  white-space: nowrap;
   padding: 6px 12px;
   border: none;
   background: none;
@@ -157,6 +162,7 @@ const sizeKb = computed(() => Math.round((json.value.length / 1024) * 10) / 10)
   background: var(--bg-0);
   max-height: 46vh;
   overflow: auto;
+  max-width: 100%;
 }
 .code {
   margin: 0;
@@ -211,9 +217,12 @@ const sizeKb = computed(() => Math.round((json.value.length / 1024) * 10) / 10)
 }
 .issue-msg {
   color: var(--text-1);
+  overflow-wrap: anywhere;
 }
 .foot-hint {
   margin-right: auto;
+  min-width: 0;
+  flex: 1 1 180px;
 }
 code {
   font-family: var(--font-mono);
@@ -221,5 +230,16 @@ code {
   background: var(--bg-3);
   padding: 2px 5px;
   border-radius: 3px;
+}
+@media (max-width: 600px) {
+  .tabs button {
+    min-height: 40px;
+  }
+  .issue {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+  .issue-msg {
+    grid-column: 1 / -1;
+  }
 }
 </style>

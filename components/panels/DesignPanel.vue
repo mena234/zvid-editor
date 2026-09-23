@@ -280,8 +280,18 @@ function openSignIn() {
   opacity: 0;
   transition: opacity 0.12s;
 }
-.design-card:hover .del {
+.design-card:hover .del,
+.design-card:focus-within .del {
   opacity: 1;
+}
+@media (hover: none), (pointer: coarse) {
+  .del {
+    opacity: 1;
+    min-width: 32px;
+    min-height: 32px;
+    align-items: center;
+    justify-content: center;
+  }
 }
 .del:hover {
   background: var(--red);

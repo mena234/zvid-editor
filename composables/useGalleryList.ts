@@ -76,9 +76,16 @@ export function useGalleryList(opts: UseGalleryListOptions) {
   }
   function scrollSelectedIntoView() {
     nextTick(() => {
-      scrollEl.value
-        ?.querySelector('[aria-selected="true"]')
-        ?.scrollIntoView({ block: 'nearest' })
+      const container = scrollEl.value
+      const selected = container?.querySelector<HTMLElement>('[aria-selected="true"]')
+      if (!container || !selected) return
+      const bounds = container.getBoundingClientRect()
+      const item = selected.getBoundingClientRect()
+      // Keep the selection visible inside this gallery only. scrollIntoView
+      // also scrolls the modal/inspector ancestors, hiding the canvas when a
+      // design opens or a different layer is selected on a compact screen.
+      if (item.top < bounds.top) container.scrollTop += item.top - bounds.top
+      else if (item.bottom > bounds.bottom) container.scrollTop += item.bottom - bounds.bottom
     })
   }
   function choose(value: string | undefined, index: number) {

@@ -382,6 +382,8 @@ onBeforeUnmount(() => {
   align-items: center;
   gap: 10px;
   padding: 26px 0;
+  min-width: 0;
+  text-align: center;
 }
 .btn.lg {
   height: 36px;
@@ -424,12 +426,15 @@ img.result {
 }
 .img-opts {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 18px;
   padding: 10px 14px;
   border: 1px solid var(--border-1);
   border-radius: var(--radius-m);
   background: var(--bg-2);
+  max-width: 100%;
+  text-align: left;
 }
 .opt {
   display: flex;
@@ -452,6 +457,7 @@ img.result {
 }
 .row {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
 }
 .block {
@@ -474,5 +480,18 @@ img.result {
 }
 .hint a {
   color: var(--accent);
+}
+@media (max-width: 600px) {
+  .btn.lg,
+  .row .btn {
+    min-height: 44px;
+  }
+  .img-opts {
+    width: 100%;
+    gap: 14px;
+  }
+  .opt.check {
+    flex-basis: 100%;
+  }
 }
 </style>

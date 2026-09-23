@@ -274,13 +274,18 @@ const toastIcon = computed(() =>
   display: flex;
   flex-direction: column;
   height: 100vh;
-  min-width: 1080px;
+  height: 100dvh;
+  min-width: 0;
+  overflow: hidden;
   background: var(--bg-0);
 }
 .shell-main {
   flex: 1;
   display: flex;
   min-height: 0;
+  min-width: 0;
+  position: relative;
+  isolation: isolate;
 }
 /* stage + timeline stack to the right of the full-height sidebar */
 .stage-col {
@@ -321,5 +326,15 @@ const toastIcon = computed(() =>
 }
 .toast.success .toast-icon {
   color: var(--green);
+}
+@media (max-width: 767px) {
+  .shell-main {
+    flex-direction: column-reverse;
+  }
+  .toast {
+    width: max-content;
+    max-width: calc(100vw - 24px);
+    bottom: calc(78px + env(safe-area-inset-bottom, 0px));
+  }
 }
 </style>

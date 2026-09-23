@@ -212,10 +212,14 @@ function timeAtClientX(clientX: number): number {
 }
 
 function onRulerDown(e: PointerEvent) {
+  if (e.button !== 0) return
+  e.preventDefault()
   scrubbing = true
   editor.seek(timeAtClientX(e.clientX), contextDuration.value)
   window.addEventListener('pointermove', onScrubMove)
   window.addEventListener('pointerup', onScrubUp)
+  window.addEventListener('pointercancel', onScrubUp)
+  window.addEventListener('blur', onScrubUp)
 }
 function onScrubMove(e: PointerEvent) {
   if (scrubbing) editor.seek(timeAtClientX(e.clientX), contextDuration.value)
@@ -224,7 +228,10 @@ function onScrubUp() {
   scrubbing = false
   window.removeEventListener('pointermove', onScrubMove)
   window.removeEventListener('pointerup', onScrubUp)
+  window.removeEventListener('pointercancel', onScrubUp)
+  window.removeEventListener('blur', onScrubUp)
 }
+onBeforeUnmount(onScrubUp)
 
 function onWheel(e: WheelEvent) {
   if (e.ctrlKey || e.metaKey) {
@@ -282,48 +289,66 @@ const hasScenes = computed(() => !!project.doc.scenes?.length)
     <!-- transport -->
     <div class="transport">
       <div class="tp-left">
-        <button
-          class="icon-btn"
-          title="Previous start point (Home)"
-          @click="jumpBack()"
-        >
-          <UiIcon name="skip-start" />
-        </button>
-        <button
-          class="icon-btn play-btn"
-          :title="editor.playing ? 'Pause (Space)' : 'Play (Space)'"
-          @click="editor.togglePlay()"
-        >
-          <UiIcon :name="editor.playing ? 'pause' : 'play'" :size="17" />
-        </button>
-        <button
-          class="icon-btn"
-          title="Next start point (End)"
-          @click="jumpForward()"
-        >
-          <UiIcon name="skip-end" />
-        </button>
-        <button
-          class="icon-btn"
-          :class="{ active: editor.loop }"
-          title="Loop (L)"
-          @click="editor.loop = !editor.loop"
-        >
-          <UiIcon name="loop" />
-        </button>
-        <button
-          class="icon-btn"
-          :class="{ active: !editor.muted }"
-          title="Mute (M)"
-          @click="editor.muted = !editor.muted"
-        >
-          <UiIcon :name="editor.muted ? 'mute' : 'volume'" />
-        </button>
+        <div class="playback-controls">
+          <button
+            class="icon-btn"
+            title="Previous start point (Home)"
+            @click="jumpBack()"
+          >
+            <UiIcon name="skip-start" />
+          </button>
+          <button
+            class="icon-btn"
+            title="Previous frame"
+            @click="editor.seek(editor.playhead - 1 / project.defaults.frameRate, contextDuration)"
+          >
+            <UiIcon name="chevron_left" />
+          </button>
+          <button
+            class="icon-btn play-btn"
+            :title="editor.playing ? 'Pause (Space)' : 'Play (Space)'"
+            @click="editor.togglePlay()"
+          >
+            <UiIcon :name="editor.playing ? 'pause' : 'play'" :size="17" />
+          </button>
+          <button
+            class="icon-btn"
+            title="Next frame"
+            @click="editor.seek(editor.playhead + 1 / project.defaults.frameRate, contextDuration)"
+          >
+            <UiIcon name="chevron_right" />
+          </button>
+          <button
+            class="icon-btn"
+            title="Next start point (End)"
+            @click="jumpForward()"
+          >
+            <UiIcon name="skip-end" />
+          </button>
+          <button
+            class="icon-btn"
+            :class="{ active: editor.loop }"
+            title="Loop (L)"
+            @click="editor.loop = !editor.loop"
+          >
+            <UiIcon name="loop" />
+          </button>
+          <button
+            class="icon-btn"
+            :class="{ active: !editor.muted }"
+            title="Mute (M)"
+            @click="editor.muted = !editor.muted"
+          >
+            <UiIcon :name="editor.muted ? 'mute' : 'volume'" />
+          </button>
+        </div>
         <span class="time mono">
           {{ formatTime(editor.playhead) }}
           <span class="time-total">/ {{ formatTime(contextDuration) }}</span>
           <span v-if="activeScene" class="time-total"> · Project {{ formatTime(totalDuration) }}</span>
         </span>
+      </div>
+      <div class="tp-right">
         <span
           v-if="overDuration"
           class="over-badge"
@@ -341,8 +366,6 @@ const hasScenes = computed(() => !!project.doc.scenes?.length)
         >
           Fit duration
         </button>
-      </div>
-      <div class="tp-right">
         <template v-if="hasScenes && editor.context === 'root'">
           <div class="seg">
             <button
@@ -515,7 +538,8 @@ const hasScenes = computed(() => !!project.doc.scenes?.length)
 
 <style scoped>
 .tl-panel {
-  height: 292px;
+  height: min(292px, 38dvh);
+  min-width: 0;
   display: flex;
   flex-direction: column;
   border-top: 1px solid var(--border-0);
@@ -530,10 +554,12 @@ const hasScenes = computed(() => !!project.doc.scenes?.length)
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 38px;
-  padding: 0 10px;
+  min-height: 38px;
+  padding: 3px 10px;
   border-bottom: 1px solid var(--border-0);
   flex: 0 0 auto;
+  flex-wrap: wrap;
+  gap: 4px 12px;
 }
 .tl-panel.collapsed .transport {
   border-bottom: none;
@@ -543,6 +569,24 @@ const hasScenes = computed(() => !!project.doc.scenes?.length)
   display: flex;
   align-items: center;
   gap: 6px;
+  min-width: 0;
+  flex-wrap: wrap;
+}
+.tp-left {
+  flex: 1 1 auto;
+}
+.tp-right {
+  margin-left: auto;
+}
+.playback-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+}
+.tp-right input[type='range'] {
+  width: 100px;
+  min-width: 60px;
 }
 .play-btn {
   width: 34px;
@@ -560,6 +604,7 @@ const hasScenes = computed(() => !!project.doc.scenes?.length)
   font-size: 12.5px;
   margin-left: 8px;
   font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 .time-total {
   color: var(--text-3);
@@ -575,6 +620,7 @@ const hasScenes = computed(() => !!project.doc.scenes?.length)
   background: color-mix(in srgb, var(--yellow) 10%, transparent);
   border: 1px solid color-mix(in srgb, var(--yellow) 35%, transparent);
   border-radius: 999px;
+  flex-wrap: wrap;
 }
 .link {
   background: none;
@@ -657,6 +703,7 @@ const hasScenes = computed(() => !!project.doc.scenes?.length)
   min-width: 0;
 }
 .ruler-lane {
+  touch-action: none;
   cursor: col-resize;
 }
 .audio-lane {
@@ -716,6 +763,7 @@ const hasScenes = computed(() => !!project.doc.scenes?.length)
   pointer-events: none;
 }
 .playhead-grip {
+  touch-action: none;
   position: sticky;
   top: 3px;
   margin-left: -5.5px;
@@ -726,5 +774,45 @@ const hasScenes = computed(() => !!project.doc.scenes?.length)
   clip-path: polygon(0 0, 100% 0, 100% 62%, 50% 100%, 0 62%);
   pointer-events: auto;
   cursor: col-resize;
+}
+@media (max-width: 1100px) {
+  .transport {
+    padding: 4px 8px;
+  }
+  .time {
+    margin-left: 0;
+    font-size: 11px;
+  }
+  .over-badge {
+    margin-left: 0;
+  }
+}
+@media (max-width: 767px) {
+  .tl-panel {
+    height: min(248px, 34dvh);
+  }
+  .tp-left,
+  .tp-right {
+    gap: 4px;
+  }
+  .playback-controls {
+    gap: 3px;
+  }
+  .playback-controls .icon-btn {
+    width: 30px;
+    height: 34px;
+  }
+  .playback-controls .play-btn {
+    width: 34px;
+  }
+  .time {
+    font-size: 10px;
+  }
+  .seg {
+    margin-right: 0;
+  }
+  .tp-right input[type='range'] {
+    width: 76px;
+  }
 }
 </style>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watchEffect } from 'vue'
+import { computed, ref, watchEffect, onBeforeUnmount } from 'vue'
 import type { AudioDoc } from '~/shared/schema/types'
 import { resolveAudioTiming } from '~/shared/schema/defaults'
 import { useProjectStore } from '~/stores/project'
@@ -121,8 +121,12 @@ type Mode = 'move' | 'trim-l' | 'trim-r'
 let gesture: {
   mode: Mode
   startX: number
+  // Preserve an authored track variable unless the pointer reaches a real
+  // numeric lane. No lane reassignment is pending at gesture start.
+  targetTrack: number | null
   t0: { enter: number; exit: number; audioBegin: number }
   moved: boolean
+  touch: boolean
 } | null = null
 
 function beginGesture(e: PointerEvent, mode: Mode) {
@@ -130,19 +134,23 @@ function beginGesture(e: PointerEvent, mode: Mode) {
   e.stopPropagation()
   e.preventDefault()
   editor.selectAudio(props.audio._id)
-  editor.openInspector()
+  if (e.pointerType !== 'touch') editor.openInspector()
   gesture = {
     mode,
     startX: e.clientX,
+    targetTrack: null,
     t0: {
       enter: timing.value.enter,
       exit: timing.value.exit,
       audioBegin: timing.value.audioBegin,
     },
     moved: false,
+    touch: e.pointerType === 'touch',
   }
   window.addEventListener('pointermove', onMove)
   window.addEventListener('pointerup', onUp)
+  window.addEventListener('pointercancel', cancelGesture)
+  window.addEventListener('blur', cancelGesture)
 }
 
 function onMove(e: PointerEvent) {
@@ -165,7 +173,7 @@ function onMove(e: PointerEvent) {
       ?.closest('[data-audio-track]') as HTMLElement | null
     if (laneEl) {
       const track = Number(laneEl.dataset.audioTrack)
-      if (!Number.isNaN(track) && track !== (props.audio.track ?? 0)) patch.track = track
+      if (Number.isFinite(track)) g.targetTrack = track
     }
     project.patchAudio(props.audio._id, patch, false)
   } else if (g.mode === 'trim-l') {
@@ -188,11 +196,22 @@ function onMove(e: PointerEvent) {
 }
 
 function onUp() {
+  // A lane change remounts this clip; defer it until the pointer is released.
+  if (gesture?.moved && gesture.mode === 'move' && gesture.targetTrack !== null && gesture.targetTrack !== (props.audio.track ?? 0)) {
+    project.patchAudio(props.audio._id, { track: gesture.targetTrack }, false)
+  }
+  if (gesture?.touch && !gesture.moved) editor.openInspector()
+  cancelGesture()
+}
+function cancelGesture() {
   window.removeEventListener('pointermove', onMove)
   window.removeEventListener('pointerup', onUp)
+  window.removeEventListener('pointercancel', cancelGesture)
+  window.removeEventListener('blur', cancelGesture)
   if (gesture?.moved) project.commit()
   gesture = null
 }
+onBeforeUnmount(cancelGesture)
 </script>
 
 <template>
@@ -231,6 +250,7 @@ function onUp() {
 
 <style scoped>
 .aclip {
+  touch-action: none;
   position: absolute;
   top: 5px;
   height: 30px;
@@ -309,5 +329,8 @@ function onUp() {
 }
 .aclip.selected .trim {
   background: color-mix(in srgb, var(--text-0) 22%, transparent);
+}
+@media (pointer: coarse) {
+  .trim { width: 14px; }
 }
 </style>

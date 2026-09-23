@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onBeforeUnmount } from 'vue'
 import type { VisualDoc } from '~/shared/schema/types'
 import { canonicalVisualType } from '~/shared/schema/types'
 import { resolveVisualTiming } from '~/shared/schema/defaults'
@@ -120,8 +120,9 @@ let gesture: {
   t0: { enterBegin: number; enterEnd: number; exitBegin: number; exitEnd: number }
   videoBegin: number
   videoEnd?: number
-  track: number
+  targetTrack: number
   moved: boolean
+  touch: boolean
 } | null = null
 
 function beginGesture(e: PointerEvent, mode: Mode) {
@@ -129,7 +130,7 @@ function beginGesture(e: PointerEvent, mode: Mode) {
   e.stopPropagation()
   e.preventDefault()
   editor.selectVisual(props.item._id, e.shiftKey)
-  editor.openInspector()
+  if (e.pointerType !== 'touch') editor.openInspector()
   gesture = {
     mode,
     startX: e.clientX,
@@ -137,11 +138,14 @@ function beginGesture(e: PointerEvent, mode: Mode) {
     t0: { ...timing.value },
     videoBegin: props.item.videoBegin ?? 0,
     videoEnd: props.item.videoEnd,
-    track: props.item.track ?? 0,
+    targetTrack: props.item.track ?? 0,
     moved: false,
+    touch: e.pointerType === 'touch',
   }
   window.addEventListener('pointermove', onMove)
   window.addEventListener('pointerup', onUp)
+  window.addEventListener('pointercancel', cancelGesture)
+  window.addEventListener('blur', cancelGesture)
 }
 
 function onMove(e: PointerEvent) {
@@ -172,7 +176,7 @@ function onMove(e: PointerEvent) {
       ?.closest('[data-track]') as HTMLElement | null
     if (laneEl) {
       const track = Number(laneEl.dataset.track)
-      if (!Number.isNaN(track) && track !== (props.item.track ?? 0)) patch.track = track
+      if (!Number.isNaN(track)) g.targetTrack = track
     }
     project.patchVisual(props.item._id, patch, false)
   } else if (g.mode === 'trim-l') {
@@ -208,11 +212,23 @@ function onMove(e: PointerEvent) {
 }
 
 function onUp() {
+  // Changing lanes remounts this component. Apply that change on release so
+  // unmount cleanup cannot interrupt the rest of the same pointer gesture.
+  if (gesture?.moved && gesture.mode === 'move' && gesture.targetTrack !== (props.item.track ?? 0)) {
+    project.patchVisual(props.item._id, { track: gesture.targetTrack }, false)
+  }
+  if (gesture?.touch && !gesture.moved) editor.openInspector()
+  cancelGesture()
+}
+function cancelGesture() {
   window.removeEventListener('pointermove', onMove)
   window.removeEventListener('pointerup', onUp)
+  window.removeEventListener('pointercancel', cancelGesture)
+  window.removeEventListener('blur', cancelGesture)
   if (gesture?.moved) project.commit()
   gesture = null
 }
+onBeforeUnmount(cancelGesture)
 
 const showAnimHandles = computed(
   () => selected.value && width.value > 40
@@ -282,6 +298,7 @@ const showAnimHandles = computed(
 
 <style scoped>
 .clip {
+  touch-action: none;
   position: absolute;
   top: 5px;
   height: 30px;
@@ -392,5 +409,9 @@ const showAnimHandles = computed(
 .anim-handle.exit {
   top: auto;
   bottom: 0;
+}
+@media (pointer: coarse) {
+  .trim { width: 14px; }
+  .anim-handle { width: 14px; height: 12px; margin-left: -7px; }
 }
 </style>

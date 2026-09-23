@@ -162,6 +162,7 @@ function measureBoxes() {
 /* ---------------- drag to move ---------------- */
 const drag = ref<null | {
   id: string
+  pointerId: number
   startX: number
   startY: number
   origX: number
@@ -170,12 +171,15 @@ const drag = ref<null | {
 }>(null)
 
 function onBoxDown(e: PointerEvent, id: string) {
+  if (!e.isPrimary || e.button !== 0 || drag.value) return
   e.preventDefault()
+  e.stopPropagation()
   emit('update:selectedId', id)
   const layer = props.design.layers.find((l) => l.id === id)
   if (!layer) return
   drag.value = {
     id,
+    pointerId: e.pointerId,
     startX: e.clientX,
     startY: e.clientY,
     origX: layer.x,
@@ -184,11 +188,12 @@ function onBoxDown(e: PointerEvent, id: string) {
   }
   window.addEventListener('pointermove', onDragMove)
   window.addEventListener('pointerup', onDragUp)
+  window.addEventListener('pointercancel', onDragCancel)
 }
 
 function dragPosition(e: PointerEvent): { x: number; y: number } | null {
   const d = drag.value
-  if (!d) return null
+  if (!d || e.pointerId !== d.pointerId) return null
   const dx = ((e.clientX - d.startX) / (props.design.width * fit.value.scale)) * 100
   const dy = ((e.clientY - d.startY) / (props.design.height * fit.value.scale)) * 100
   return {
@@ -215,10 +220,24 @@ function onDragMove(e: PointerEvent) {
 function onDragUp(e: PointerEvent) {
   const d = drag.value
   const pos = dragPosition(e)
+  if (!d || !pos) return
+  clearDrag()
+  if (d.moved) emit('move', d.id, pos.x, pos.y)
+}
+
+function clearDrag() {
   window.removeEventListener('pointermove', onDragMove)
   window.removeEventListener('pointerup', onDragUp)
+  window.removeEventListener('pointercancel', onDragCancel)
   drag.value = null
-  if (d && pos && d.moved) emit('move', d.id, pos.x, pos.y)
+}
+
+function onDragCancel(e: PointerEvent) {
+  if (e.pointerId !== drag.value?.pointerId) return
+  clearDrag()
+  // A browser gesture can cancel a pointer. Restore the committed document
+  // instead of leaving the shadow preview at an unsaved drag position.
+  build()
 }
 
 /* ---------------- backdrop ---------------- */
@@ -242,8 +261,7 @@ onMounted(() => {
 onBeforeUnmount(() => {
   cancelAnimationFrame(raf)
   frameRo?.disconnect()
-  window.removeEventListener('pointermove', onDragMove)
-  window.removeEventListener('pointerup', onDragUp)
+  clearDrag()
 })
 
 watch(
@@ -263,12 +281,11 @@ watch(() => props.selectedId, () => requestAnimationFrame(measureBoxes))
       ref="frameEl"
       class="frame"
       :data-backdrop="backdrop"
-      @pointerdown.self="emit('update:selectedId', null)"
+      @pointerdown="emit('update:selectedId', null)"
     >
       <div
         class="canvas-fit"
         :style="{ width: `${fit.w}px`, height: `${fit.h}px` }"
-        @pointerdown.self="emit('update:selectedId', null)"
       >
         <div
           ref="hostEl"
@@ -308,6 +325,7 @@ watch(() => props.selectedId, () => requestAnimationFrame(measureBoxes))
       </button>
       <input
         class="scrub"
+        aria-label="Design preview time"
         type="range"
         min="0"
         :max="duration"
@@ -376,6 +394,7 @@ watch(() => props.selectedId, () => requestAnimationFrame(measureBoxes))
   position: absolute;
   pointer-events: auto;
   cursor: grab;
+  touch-action: none;
   border: 1px dashed transparent;
   border-radius: 2px;
 }

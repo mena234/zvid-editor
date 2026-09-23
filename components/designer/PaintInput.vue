@@ -59,7 +59,7 @@ function patch(part: Record<string, any>) {
           :min="0"
           :max="360"
           :step="5"
-          unit="Â°"
+          unit="°"
           @update:model-value="patch({ angle: $event ?? 120 })"
         />
       </UiField>
