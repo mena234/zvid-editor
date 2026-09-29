@@ -30,6 +30,7 @@ export type ModalKind =
   | 'import'
   | 'examples'
   | 'shortcuts'
+  | 'tutorial'
   | 'render'
   | 'projects'
   | 'designer'

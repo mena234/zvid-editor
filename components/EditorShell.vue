@@ -250,6 +250,7 @@ const toastIcon = computed(() =>
     <ModalsImportModal v-if="editor.modal === 'import'" />
     <ModalsExamplesModal v-if="editor.modal === 'examples'" />
     <ModalsShortcutsModal v-if="editor.modal === 'shortcuts'" />
+    <ModalsTutorialModal v-if="editor.modal === 'tutorial'" />
     <ModalsRenderModal v-if="editor.modal === 'render'" />
     <ModalsDesignerModal v-if="editor.modal === 'designer'" />
     <ModalsAuthModal v-if="editor.modal === 'auth'" />

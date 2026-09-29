@@ -5,6 +5,7 @@ import { useEditorStore } from '~/stores/editor'
 import { useTourStore } from '~/stores/tour'
 import { useCloud } from '~/composables/useCloud'
 import { useSupportChat } from '~/composables/useSupportChat'
+import { useEditorTutorial } from '~/composables/useEditorTutorial'
 import { ZVID_DISCORD_URL } from '~/utils/community'
 import {
   RESOLUTION_PRESET_NAMES,
@@ -17,6 +18,7 @@ const editor = useEditorStore()
 const cloud = useCloud()
 const tour = useTourStore()
 const support = useSupportChat()
+const { openTutorial } = useEditorTutorial()
 const helpOpen = ref(false)
 let supportRequest = 0
 
@@ -31,6 +33,12 @@ function openHelp() {
 function closeHelp() {
   supportRequest++
   helpOpen.value = false
+}
+
+function showTutorial() {
+  closeHelp()
+  support.hide()
+  void openTutorial()
 }
 
 async function openSupportChat() {
@@ -138,6 +146,9 @@ function setResolution(e: Event) {
       aria-label="Project name"
       @change="project.patchProject({ name: ($event.target as HTMLInputElement).value || undefined })"
     />
+    <button class="btn ghost learn-action" data-tutorial-trigger title="Learn the editor — video tutorial" @click="showTutorial">
+      <UiIcon name="play" :size="14" /> Learn
+    </button>
     </div>
 
     <div ref="settingsRoot" class="settings-wrap" :class="{ 'is-open': activePopover === 'settings' }">
@@ -340,8 +351,13 @@ function setResolution(e: Event) {
   </header>
   <UiModal v-if="helpOpen" title="Help" width="400px" @close="closeHelp">
     <div class="help-content">
+      <div class="help-tutorial">
+        <h3>Build your first Product Hero</h3>
+        <p>Our main tutorial walks you through images, video, music, scenes, variables and the Examples library.</p>
+        <button class="btn primary" @click="showTutorial"><UiIcon name="play" :size="14" /> Watch the tutorial</button>
+      </div>
       <p>Need a hand with your project?</p>
-      <button class="btn primary" :disabled="support.loading.value" @click="openSupportChat">
+      <button class="btn" :disabled="support.loading.value" @click="openSupportChat">
         {{ support.loading.value ? 'Opening chat…' : 'Chat with support' }}
       </button>
       <p v-if="support.error.value" role="status">Chat is unavailable right now. You can still contact us below.</p>
@@ -355,6 +371,9 @@ function setResolution(e: Event) {
 .help-content p { margin: 0; line-height: 1.5; }
 .help-content .btn { justify-self: start; min-height: 40px; }
 .help-content a { color: var(--accent); }
+.help-tutorial { display: grid; gap: 12px; padding-bottom: 18px; margin-bottom: 4px; border-bottom: 1px solid var(--border-1); }
+.help-tutorial h3 { margin: 0; font-size: 16px; }
+.learn-action { color: var(--accent-strong); min-height: 36px; }
 .topbar {
   position: relative;
   display: grid;

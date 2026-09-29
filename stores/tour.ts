@@ -24,7 +24,7 @@ const STEPS: TourStep[] = [
     target: null,
     placement: 'center',
     title: 'Welcome to Zvid Editor',
-    body: 'Design videos and images visually, then render them in the Zvid cloud or export the project as JSON for the API. This quick tour shows you around — it takes about a minute.',
+    body: 'Create videos and images visually. Watch the step-by-step tutorial to build a Product Hero, or select Next for a quick tour of the editor.',
   },
   {
     id: 'rail',
@@ -81,7 +81,7 @@ const STEPS: TourStep[] = [
     target: null,
     placement: 'center',
     title: 'You’re all set',
-    body: 'That’s the essentials. Replay this tour any time from the compass button in the top bar — now go make something.',
+    body: 'Ready to create? Watch the Product Hero tutorial for a complete example. You can always find it under Learn in the top bar, or replay this quick tour from the compass button.',
   },
 ]
 

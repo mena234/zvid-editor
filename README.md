@@ -66,6 +66,25 @@ npm test           # schema round-trip tests over the bundled examples
   editor origin is allowed by orch's `CORS_ORIGINS`.
   `GET /api/probe?src=…` provides an ffprobe fallback for CORS-blocked media.
 
+## Main editor tutorial
+
+The **Learn** button stays visible in the top bar at desktop and mobile widths.
+The same guide is featured in **Help** and offered on the welcome and final
+steps of the quick product tour. It opens without replacing the current project
+and pauses editor playback so it does not compete with the narration.
+
+The [Product Hero tutorial](https://www.youtube.com/watch?v=wAAyg6-r6TM) has
+chapter shortcuts for scenes, transitions, music, variables, rendering, and
+video/image examples. The locally served poster keeps YouTube unloaded until
+the visitor plays the guide or chooses a chapter. Closing the dialog removes
+the player and returns keyboard focus to Learn. A direct YouTube link remains
+available if embedded playback is blocked.
+
+Update `utils/editorTutorial.ts` and `public/tutorials/product-hero.jpg` when
+replacing the video; verify the duration and chapter times against the published
+version. The placement follows [NN/g's help and documentation guidance](https://www.nngroup.com/articles/help-and-documentation/):
+keep help available on demand and organize it around users' tasks.
+
 ## Google Fonts catalog
 
 Text, Design Studio, and subtitle font pickers share the complete bundled Google

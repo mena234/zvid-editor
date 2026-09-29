@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, shallowRef, watch, nextTick } from 'vue'
 import { useTourStore } from '~/stores/tour'
+import { useEditorTutorial } from '~/composables/useEditorTutorial'
+import { EDITOR_TUTORIAL } from '~/utils/editorTutorial'
 
 /**
  * Spotlight walkthrough over the live UI. Targets are located by their
@@ -9,6 +11,7 @@ import { useTourStore } from '~/stores/tour'
  * transitions on the hole's box.
  */
 const tour = useTourStore()
+const { openTutorial } = useEditorTutorial()
 
 const PAD = 6 // breathing room around the spotlit element
 const CARD_W = 330
@@ -71,6 +74,8 @@ function onResize() {
 function onKey(e: KeyboardEvent) {
   if (!tour.active) return
   e.stopPropagation()
+  // Let focused buttons activate normally, including the video tutorial option.
+  if (e.key === 'Enter' && (e.target as HTMLElement)?.closest('button, a')) return
   if (e.key === 'Escape') tour.finish()
   else if (e.key === 'ArrowRight' || e.key === 'Enter') tour.next()
   else if (e.key === 'ArrowLeft') tour.prev()
@@ -176,6 +181,9 @@ const cardStyle = computed(() => {
         <div class="meta">Step {{ tour.stepIndex + 1 }} of {{ tour.steps.length }}</div>
         <h3>{{ tour.current.title }}</h3>
         <p>{{ tour.current.body }}</p>
+        <button v-if="tour.current.id === 'welcome' || tour.isLast" class="btn tutorial-action" @click="openTutorial">
+          <UiIcon name="play" :size="14" /> Watch the tutorial · {{ EDITOR_TUTORIAL.duration }}
+        </button>
         <div class="dots" aria-hidden="true">
           <i
             v-for="(s, i) in tour.steps"
@@ -197,6 +205,7 @@ const cardStyle = computed(() => {
 </template>
 
 <style scoped>
+.tutorial-action { align-self: flex-start; min-height: 40px; margin: 0 0 12px; color: var(--accent-strong); }
 .tour {
   position: fixed;
   inset: 0;
