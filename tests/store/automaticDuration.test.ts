@@ -147,4 +147,38 @@ describe('automatic project timing', () => {
     expect(useRenderPayload()().duration).toBe(15)
     expect(p.exportRaw().scenes[0].duration).toBe('{{seconds}}')
   })
+
+  it.each([false, true])(
+    'keeps editor scene metadata out of render requests (template: %s)',
+    (template) => {
+      const p = useProjectStore()
+      p.loadRaw({
+        durationMode: 'auto',
+        ...(template ? { variables: { seconds: 5, title: 'Example' } } : {}),
+        scenes: Array.from({ length: 4 }, (_, i) => ({
+          id: `scene-${i + 1}`,
+          duration: template ? '{{seconds}}' : 5,
+          ...(i < 3
+            ? { transition: 'fade', transitionId: `scene-${i + 2}`, transitionDuration: 1 }
+            : {}),
+          visuals: [{ type: 'TEXT', text: template ? '{{title}}' : 'Example' }],
+        })),
+      })
+      const authoringDoc = JSON.stringify(p.doc)
+      const payload = useRenderPayload()()
+
+      expect(payload.duration).toBe(17)
+      expect(payload.scenes).toEqual(
+        Array.from({ length: 4 }, (_, i) => ({
+          id: `scene-${i + 1}`,
+          duration: 5,
+          ...(i < 3
+            ? { transition: 'fade', transitionId: `scene-${i + 2}`, transitionDuration: 1 }
+            : {}),
+          visuals: [{ type: 'TEXT', text: 'Example' }],
+        }))
+      )
+      expect(JSON.stringify(p.doc)).toBe(authoringDoc)
+    }
+  )
 })

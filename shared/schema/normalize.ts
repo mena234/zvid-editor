@@ -350,7 +350,8 @@ export function exportProject(doc: ProjectDoc): Record<string, any> {
 
   if (doc.scenes?.length) {
     out.scenes = doc.scenes.map((s) => {
-      const { _id, visuals, audios, ...rest } = s
+      // Preview scene links are editor-only, just like the local scene ID.
+      const { _id, _sourceId, visuals, audios, ...rest } = s
       const scene: Record<string, any> = { ...rest }
       for (const k of Object.keys(scene)) {
         if (scene[k] === undefined) delete scene[k]
