@@ -7,6 +7,7 @@ import { useAuthStore } from '~/stores/auth'
 import { validateProjectDoc } from '~/shared/schema/validate'
 import { useEditorContext } from '~/composables/useEditorContext'
 import { useRenderPayload } from '~/composables/useRenderPayload'
+import { isOutputExpired, outputAvailabilityLabel } from '~/utils/outputAvailability'
 import { ZVID_DISCORD_URL } from '~/utils/community'
 import {
   connectRenderSocket,
@@ -53,6 +54,11 @@ const creditsReserved = ref<number | null>(null)
 const errorMsg = ref('')
 const errorDetails = ref<{ field?: string; message: string }[]>([])
 const videoUrl = ref('')
+const outputMeta = ref<{ outputExpiresAt?: string | null; outputExpiredAt?: string | null }>({})
+const now = ref(Date.now())
+let expiryTimer: ReturnType<typeof setInterval> | null = null
+const outputExpired = computed(() => isOutputExpired(outputMeta.value, now.value))
+const availability = computed(() => outputAvailabilityLabel(outputMeta.value, now.value))
 const taskId = ref('')
 
 let activeSocket: Socket | null = null
@@ -100,7 +106,7 @@ async function pollStatus() {
   }
   if (!r?.success) return
   if (r.state === 'completed') {
-    finish(typeof r.result === 'string' ? r.result : (r.result?.url ?? ''))
+    finish(typeof r.result === 'string' ? r.result : (r.result?.url ?? ''), r)
   } else if (r.state === 'failed') {
     unbindAll()
     stopPolling()
@@ -118,7 +124,11 @@ async function pollStatus() {
 }
 
 /** Terminal success, shared by the socket event and the status poll. */
-function finish(url: string) {
+function finish(url: string, metadata: any = {}) {
+  now.value = Date.now()
+  outputMeta.value = metadata
+  if (expiryTimer) clearInterval(expiryTimer)
+  expiryTimer = setInterval(() => { now.value = Date.now() }, 1000)
   unbindAll()
   stopPolling()
   progress.value = 100
@@ -146,6 +156,9 @@ async function start() {
   errorMsg.value = ''
   errorDetails.value = []
   videoUrl.value = ''
+  outputMeta.value = {}
+  if (expiryTimer) clearInterval(expiryTimer)
+  expiryTimer = null
 
   let socket: Socket
   try {
@@ -213,7 +226,14 @@ async function start() {
 
   bind(socket, 'taskComplete', (data) => {
     if (!mine(data)) return
-    finish(data.result?.url ?? '')
+    finish(data.result?.url ?? '', data.result || data)
+    // Completion events can precede persisted expiry metadata.
+    const completedTaskId = taskId.value
+    $fetch<any>(`/api/render-status/${encodeURIComponent(completedTaskId)}`)
+      .then((snapshot) => {
+        if (snapshot?.success && taskId.value === completedTaskId && status.value === 'done') outputMeta.value = snapshot
+      })
+      .catch(() => {})
   })
 
   bind(socket, 'taskFailed', (data) => {
@@ -236,6 +256,7 @@ const fileName = computed(() => {
 })
 
 onBeforeUnmount(() => {
+  if (expiryTimer) clearInterval(expiryTimer)
   unbindAll()
   stopPolling()
 })
@@ -246,7 +267,7 @@ onBeforeUnmount(() => {
     <p class="hint">
       Renders in the Zvid cloud — the finished {{ isImage ? 'image' : 'video' }} lands in
       <a :href="`${dashUrl}/videos`" target="_blank" rel="noopener">your dashboard</a>
-      and stays available on the CDN.
+      for download until its output expiry date.
     </p>
 
     <div v-if="errors.length" class="block err-block">
@@ -340,14 +361,16 @@ onBeforeUnmount(() => {
 
       <div v-else-if="status === 'done'" class="done">
         <!-- checkerboard behind transparent pngs/webps -->
-        <img v-if="isImage" :src="videoUrl" class="result checker" alt="rendered image" />
+        <p v-if="outputExpired || !videoUrl" class="hint">{{ outputExpired ? 'Output expired. Render again to create a new copy.' : 'Output unavailable.' }}</p>
+        <img v-else-if="isImage" :src="videoUrl" class="result checker" alt="rendered image" />
         <video v-else :src="videoUrl" controls autoplay class="result" />
         <div class="row">
-          <a class="btn primary" :href="videoUrl" :download="fileName" target="_blank" rel="noopener">
+          <a v-if="videoUrl && !outputExpired" class="btn primary" :href="videoUrl" :download="fileName" target="_blank" rel="noopener">
             <UiIcon name="download" :size="13" /> Download
           </a>
           <button class="btn ghost" @click="status = 'idle'">Render again</button>
         </div>
+        <p v-if="availability && !outputExpired" class="hint">{{ availability }}. Download a copy before expiry.</p>
         <p class="hint">
           Made something you want to share?
           <a :href="ZVID_DISCORD_URL" target="_blank" rel="noopener noreferrer" class="community-link">

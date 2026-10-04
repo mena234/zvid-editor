@@ -18,6 +18,9 @@ const { project, editor, contextDuration } = useEditorContext()
 const { tryReplace } = useMediaReplace()
 const auth = useAuthStore()
 const uploads = useUploadsStore()
+const storageLabel = (bytes: number) => bytes >= 1_000_000_000
+  ? `${(bytes / 1_000_000_000).toLocaleString(undefined, { maximumFractionDigits: 2 })} GB`
+  : `${(bytes / 1_000_000).toLocaleString(undefined, { maximumFractionDigits: 2 })} MB`
 
 const ACCEPT: Record<UploadKind, string> = {
   image: 'image/*',
@@ -237,6 +240,9 @@ onBeforeUnmount(() => {
         Upload
       </button>
     </div>
+    <p v-if="uploads.usage && !uploads.authRequired" class="hint">
+      {{ storageLabel(uploads.usage.usedBytes) }} of {{ storageLabel(uploads.usage.maxTotalBytes) }} used across all uploads
+    </p>
     <input
       ref="fileInput"
       type="file"

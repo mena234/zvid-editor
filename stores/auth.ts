@@ -17,6 +17,9 @@ export interface SessionCredits {
 export interface SessionPlan {
   name?: string
   isPaid?: boolean
+  maxProjects?: number | null
+  maxDesigns?: number | null
+  maxTemplates?: number | null
 }
 
 /**

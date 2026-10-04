@@ -141,6 +141,9 @@ export default defineNuxtConfig({
   sentry: {
     org: 'zvid',
     project: 'editor',
+    // Offline/local CI can verify production bundles without uploading artifacts.
+    sourcemaps: { disable: process.env.SENTRY_UPLOAD_DISABLED === '1' },
+    telemetry: false,
   },
 
   sourcemap: {

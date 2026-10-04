@@ -100,6 +100,9 @@ function openSignIn() {
     <div class="stock">
       <div class="stock-head">
         <h4 class="stock-title">Your designs</h4>
+        <span v-if="auth.plan?.maxDesigns !== undefined" class="hint">
+          {{ designs.total ?? savedDesigns.length }} saved · {{ auth.plan.maxDesigns === null ? 'Unlimited' : auth.plan.maxDesigns }} allowed
+        </span>
         <span v-if="savedDesigns.length" class="count">{{ savedDesigns.length }}</span>
       </div>
 
@@ -135,6 +138,10 @@ function openSignIn() {
           </button>
         </div>
       </div>
+      <p v-if="designs.loadMoreError" class="hint error" role="alert">{{ designs.loadMoreError }}</p>
+      <button v-if="designs.hasMore && !designs.authRequired" class="btn ghost sm" :disabled="designs.loadingMore" @click="designs.loadMore()">
+        {{ designs.loadingMore ? 'Loading…' : 'Load more designs' }}
+      </button>
     </div>
   </div>
 </template>

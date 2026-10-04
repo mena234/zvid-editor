@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import { useAuthStore } from '~/stores/auth'
 import { useProjectStore } from '~/stores/project'
 import { useEditorStore } from '~/stores/editor'
 import { useCloud, type CloudProjectRow } from '~/composables/useCloud'
 
 const project = useProjectStore()
+const auth = useAuthStore()
 const editor = useEditorStore()
 const cloud = useCloud()
 
@@ -15,13 +17,23 @@ const busyId = ref('')
 const confirmDeleteId = ref('')
 const renamingId = ref('')
 const renameValue = ref('')
+const loadedPage = ref(1)
+const hasMore = ref(false)
+const loadingMore = ref(false)
+const loadMoreError = ref('')
 
 async function load() {
   loading.value = true
   error.value = ''
   try {
-    const r = await $fetch<any>('/api/projects', { query: { limit: 50 } })
-    if (r.success) rows.value = r.projects
+    const r = await $fetch<any>('/api/projects', { query: { page: 1, limit: 50 } })
+    if (r.success) {
+      rows.value = r.projects
+      loadedPage.value = 1
+      hasMore.value = typeof r.pagination?.totalPages === 'number'
+        ? r.pagination.totalPages > 1 : r.projects.length === 50
+      loadMoreError.value = ''
+    }
     else if (!cloud.handleExpired(r, 'projects')) error.value = r.error
   } catch {
     error.value = 'Could not load projects — try again.'
@@ -29,6 +41,28 @@ async function load() {
   loading.value = false
 }
 onMounted(load)
+
+async function loadMore() {
+  if (loadingMore.value || !hasMore.value) return
+  loadingMore.value = true
+  loadMoreError.value = ''
+  try {
+    const nextPage = loadedPage.value + 1
+    const r = await $fetch<any>('/api/projects', { query: { page: nextPage, limit: 50 } })
+    if (r.success && Array.isArray(r.projects)) {
+      rows.value = [...new Map([...rows.value, ...r.projects].map((row) => [row.id, row])).values()]
+      loadedPage.value = nextPage
+      hasMore.value = typeof r.pagination?.totalPages === 'number'
+        ? nextPage < r.pagination.totalPages : r.projects.length === 50
+    } else if (!cloud.handleExpired(r, 'projects')) {
+      loadMoreError.value = r.error || 'Could not load more projects. Try again.'
+    }
+  } catch {
+    loadMoreError.value = 'Could not load more projects. Try again.'
+  } finally {
+    loadingMore.value = false
+  }
+}
 
 async function openProject(row: CloudProjectRow) {
   if (busyId.value) return
@@ -71,6 +105,7 @@ async function commitRename(row: CloudProjectRow) {
       if (editor.cloudProject?.id === row.id) {
         editor.setCloudProject({ id: row.id, name: r.project.name })
       }
+      await load()
     } else if (!cloud.handleExpired(r, 'projects')) {
       editor.notify(r.error || 'Rename failed', 'error')
     }
@@ -92,6 +127,7 @@ async function removeProject(row: CloudProjectRow) {
       rows.value = rows.value.filter((p) => p.id !== row.id)
       if (editor.cloudProject?.id === row.id) editor.setCloudProject(null)
       editor.notify('Project deleted', 'info')
+      await load()
     } else if (!cloud.handleExpired(r, 'projects')) {
       editor.notify(r.error || 'Delete failed', 'error')
     }
@@ -113,6 +149,9 @@ function fmtDate(value: string) {
 
 <template>
   <UiModal title="My projects" width="640px" @close="editor.closeModal()">
+    <p v-if="auth.plan?.maxProjects !== undefined" class="hint">
+      Saved project allowance: {{ auth.plan.maxProjects === null ? 'Unlimited' : auth.plan.maxProjects }}.
+    </p>
     <p v-if="loading" class="hint">Loading your projects…</p>
     <p v-else-if="error" class="err">{{ error }}</p>
     <p v-else-if="!rows.length" class="hint">
@@ -155,6 +194,11 @@ function fmtDate(value: string) {
         </div>
       </li>
     </ul>
+
+    <p v-if="loadMoreError" class="err">{{ loadMoreError }}</p>
+    <button v-if="hasMore && !loading && !error" class="btn ghost" :disabled="loadingMore" @click="loadMore">
+      {{ loadingMore ? 'Loading…' : 'Load more projects' }}
+    </button>
 
     <template #footer>
       <p class="foot-hint hint">Opening a project replaces the current document (undo works).</p>
