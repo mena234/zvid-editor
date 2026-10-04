@@ -7,6 +7,10 @@ dist
 tests/e2e/.results
 playwright-report
 tests/fidelity/.artifacts
+tests/live-e2e/.runs/
+.env.live
+.env.live.*
+!.env.live.example
 
 # Sentry Config File
 .env.sentry-build-plugin

@@ -16,6 +16,12 @@
     "test:responsive": "playwright test --config=playwright.responsive.config.ts",
     "test:fidelity": "playwright test --project=fidelity",
     "test:real-e2e": "playwright test --project=real-e2e",
+    "test:e2e:live": "playwright test --config=playwright.live.config.ts",
+    "test:e2e:live:headed": "playwright test --config=playwright.live.config.ts --headed",
+    "test:e2e:live:core": "playwright test --config=playwright.live.config.ts --grep @core",
+    "test:e2e:live:pin": "playwright test --config=playwright.live-pin.config.ts",
+    "test:e2e:live:cleanup": "playwright test --config=playwright.live-cleanup.config.ts",
+    "test:e2e:live:safety": "vitest run --config=vitest.live.config.ts",
     "test:all": "vitest run && playwright test --project=e2e",
     "ts-check": "nuxt typecheck"
   },
