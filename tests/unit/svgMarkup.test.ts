@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { stretchSvgToBox } from '../../utils/svgMarkup'
+import { normalizeLibraryRectangle, stretchSvgToBox } from '../../utils/svgMarkup'
+import { LIBRARY_RECTANGLE } from '../helpers/libraryRectangle'
 
 describe('stretchSvgToBox', () => {
   it('adds free-axis viewBox scaling to the root SVG without mutating the source', () => {
@@ -69,5 +70,38 @@ describe('stretchSvgToBox', () => {
 
   it('leaves non-SVG markup unchanged', () => {
     expect(stretchSvgToBox('<div>not an svg</div>')).toBe('<div>not an svg</div>')
+  })
+})
+
+describe('normalizeLibraryRectangle', () => {
+  it('fits the visible rectangle and retains its artwork', () => {
+    const result = normalizeLibraryRectangle(LIBRARY_RECTANGLE)
+    expect(result).toContain('viewBox="8 8 384 244"')
+    expect(result).toContain('preserveAspectRatio="none"')
+    expect(result.slice(result.indexOf('<rect'))).toBe(LIBRARY_RECTANGLE.slice(LIBRARY_RECTANGLE.indexOf('<rect')))
+    expect(normalizeLibraryRectangle(result)).toBe(result)
+  })
+
+  it('also recognizes recolored and previously resized rectangles', () => {
+    const source = stretchSvgToBox(LIBRARY_RECTANGLE.replace('#8b5cf6', '#ffffff'))
+    const result = normalizeLibraryRectangle(source.replaceAll('"', "'"))
+    expect(result).toContain('viewBox="8 8 384 244"')
+    expect(result).toContain("fill='#ffffff'")
+    expect(result.match(/preserveAspectRatio/g)).toHaveLength(1)
+  })
+
+  it.each([
+    LIBRARY_RECTANGLE.replace('width="384"', 'width="300"'),
+    LIBRARY_RECTANGLE.replace('0 0 400 260', '0 0 500 300'),
+    LIBRARY_RECTANGLE.replace('<rect ', '<rect stroke="red" stroke-width="8" '),
+    LIBRARY_RECTANGLE.replace('<rect ', '<rect transform="rotate(15)" '),
+    LIBRARY_RECTANGLE.replace('<rect ', '<rect style="filter: blur(8px)" '),
+    LIBRARY_RECTANGLE.replace('<rect ', '<rect class="custom" '),
+    LIBRARY_RECTANGLE.replace('</svg>', '<circle r="10"/></svg>'),
+    LIBRARY_RECTANGLE.replace('</svg>', '<style>rect { stroke: red; }</style></svg>'),
+    LIBRARY_RECTANGLE.replace('x="8"', 'x="{{offset}}"'),
+    '<div>not an svg</div>',
+  ])('preserves unrelated or customized artwork: %s', (source) => {
+    expect(normalizeLibraryRectangle(source)).toBe(source)
   })
 })

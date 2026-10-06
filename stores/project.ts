@@ -26,7 +26,7 @@ import {
   isValidPath,
 } from '~/shared/template/engine'
 import { useEditorStore } from '~/stores/editor'
-import { stretchSvgToBox } from '~/utils/svgMarkup'
+import { normalizeLibraryRectangle, stretchSvgToBox } from '~/utils/svgMarkup'
 
 const STORAGE_KEY = 'zvid-editor:autosave'
 const HISTORY_LIMIT = 100
@@ -69,6 +69,20 @@ interface AddMediaOptions {
 
 function clone<T>(v: T): T {
   return JSON.parse(JSON.stringify(v))
+}
+
+/** Migrate the legacy rectangle before history/autosave captures the document. */
+function normalizeLibraryShapes(doc: ProjectDoc) {
+  for (const visuals of [doc.visuals, ...(doc.scenes ?? []).map((scene) => scene.visuals)]) {
+    for (const item of visuals) {
+      if (
+        canonicalVisualType(item.type) === 'SVG' && typeof item.svg === 'string' &&
+        !item.customCode && !item.style
+      ) {
+        item.svg = normalizeLibraryRectangle(item.svg)
+      }
+    }
+  }
 }
 
 /** Keep a naturally sized media window attached to source trim/speed edits.
@@ -256,6 +270,7 @@ export const useProjectStore = defineStore('project', {
   actions: {
     /* ---------------- history ---------------- */
     commit() {
+      normalizeLibraryShapes(this.doc)
       const snapshot = JSON.stringify(this.doc)
       const h = this.history
       if (h.stack[h.index] === snapshot) return
@@ -281,6 +296,7 @@ export const useProjectStore = defineStore('project', {
       this.autosaveSoon()
     },
     resetHistory() {
+      normalizeLibraryShapes(this.doc)
       this.history = { stack: [JSON.stringify(this.doc)], index: 0 }
     },
 

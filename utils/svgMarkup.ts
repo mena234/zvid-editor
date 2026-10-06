@@ -168,3 +168,54 @@ export function stretchSvgToBox(markup: string): string {
     root.nameEnd
   )}`
 }
+
+/** Parse only the plain, quoted attributes used by the built-in rectangle. */
+function rectangleAttributes(
+  source: string,
+  allowed: string[]
+): Map<string, string> | null {
+  const attributes = new Map<string, string>()
+  const pattern = /\s+([\w:-]+)\s*=\s*(?:"([^"]*)"|'([^']*)')/gy
+  let cursor = 0
+  while (source.slice(cursor).trim()) {
+    pattern.lastIndex = cursor
+    const match = pattern.exec(source)
+    if (!match || !allowed.includes(match[1]) || attributes.has(match[1])) return null
+    attributes.set(match[1], match[2] ?? match[3])
+    cursor = pattern.lastIndex
+  }
+  return attributes
+}
+
+/**
+ * The original library rectangle has an 8-unit transparent gutter baked into
+ * its 400 × 260 viewport. Remove that gutter in the saved SVG, so selection,
+ * resizing and exported renders all use the same visible bounds.
+ *
+ * Match this legacy asset's geometry, not its paint or the item's dimensions
+ * (users can recolor/stretch it). Leave arbitrary SVGs, strokes, transforms,
+ * CSS, animation and composed artwork alone: their margins can be intentional.
+ */
+export function normalizeLibraryRectangle(markup: string): string {
+  const match = /^\s*<svg\b([^<>]*)>\s*<rect\b([^<>]*?)\s*(?:\/>|>\s*<\/rect>)\s*<\/svg>\s*$/.exec(markup)
+  if (!match) return markup
+  const root = rectangleAttributes(match[1], [
+    'xmlns', 'viewBox', 'preserveAspectRatio', 'width', 'height',
+  ])
+  const rect = rectangleAttributes(match[2], [
+    'x', 'y', 'width', 'height', 'rx', 'fill', 'opacity',
+  ])
+  if (!root || !rect) return markup
+  const viewBox = root.get('viewBox')?.trim().split(/[\s,]+/).map(Number)
+  if (!viewBox || viewBox.length !== 4 ||
+    !viewBox.every((v, i) => v === [0, 0, 400, 260][i])) return markup
+  for (const [key, expected] of Object.entries({ x: 8, y: 8, width: 384, height: 244, rx: 18 })) {
+    if (!rect.has(key) || Number(rect.get(key)) !== expected) return markup
+  }
+
+  const tag = findRootSvgStartTag(markup)!
+  const attribute = findAttribute(markup, tag.nameEnd, tag.end, 'viewbox')!
+  return stretchSvgToBox(
+    `${markup.slice(0, attribute.start)}viewBox="8 8 384 244"${markup.slice(attribute.end)}`
+  )
+}
