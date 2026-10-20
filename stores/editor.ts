@@ -38,6 +38,7 @@ export type ModalKind =
   | 'saveProject'
   | 'saveTemplate'
   | 'publishExample'
+  | 'reviewCampaign'
 
 /** The library example an admin opened for editing (drives the Publish flow). */
 export interface SourceExample {

@@ -4,6 +4,7 @@ import type { Socket } from 'socket.io-client'
 import { useProjectStore } from '~/stores/project'
 import { useEditorStore } from '~/stores/editor'
 import { useAuthStore } from '~/stores/auth'
+import { useReviewCampaignStore } from '~/stores/reviewCampaign'
 import { validateProjectDoc } from '~/shared/schema/validate'
 import { useEditorContext } from '~/composables/useEditorContext'
 import { useRenderPayload } from '~/composables/useRenderPayload'
@@ -18,6 +19,7 @@ import {
 const project = useProjectStore()
 const editor = useEditorStore()
 const auth = useAuthStore()
+const reviewCampaign = useReviewCampaignStore()
 const { totalDuration } = useEditorContext()
 const renderPayload = useRenderPayload()
 const dashUrl = useRuntimeConfig().public.dashUrl
@@ -60,6 +62,13 @@ let expiryTimer: ReturnType<typeof setInterval> | null = null
 const outputExpired = computed(() => isOutputExpired(outputMeta.value, now.value))
 const availability = computed(() => outputAvailabilityLabel(outputMeta.value, now.value))
 const taskId = ref('')
+let outputInteractionRecorded = false
+
+function onOutputInteraction() {
+  if (isImage.value || status.value !== 'done' || !videoUrl.value || outputExpired.value || outputInteractionRecorded) return
+  outputInteractionRecorded = true
+  reviewCampaign.outputUsed()
+}
 
 let activeSocket: Socket | null = null
 const boundEvents: [string, (data: any) => void][] = []
@@ -151,6 +160,7 @@ function fail(message: string, details: any[] = []) {
 }
 
 async function start() {
+  outputInteractionRecorded = false
   status.value = 'connecting'
   progress.value = 0
   errorMsg.value = ''
@@ -363,9 +373,9 @@ onBeforeUnmount(() => {
         <!-- checkerboard behind transparent pngs/webps -->
         <p v-if="outputExpired || !videoUrl" class="hint">{{ outputExpired ? 'Output expired. Render again to create a new copy.' : 'Output unavailable.' }}</p>
         <img v-else-if="isImage" :src="videoUrl" class="result checker" alt="rendered image" />
-        <video v-else :src="videoUrl" controls autoplay class="result" />
+        <video v-else :src="videoUrl" controls autoplay class="result" @pointerdown="onOutputInteraction" @keydown="onOutputInteraction" />
         <div class="row">
-          <a v-if="videoUrl && !outputExpired" class="btn primary" :href="videoUrl" :download="fileName" target="_blank" rel="noopener">
+          <a v-if="videoUrl && !outputExpired" class="btn primary" :href="videoUrl" :download="fileName" target="_blank" rel="noopener" @click="onOutputInteraction">
             <UiIcon name="download" :size="13" /> Download
           </a>
           <button class="btn ghost" @click="status = 'idle'">Render again</button>

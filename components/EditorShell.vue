@@ -4,12 +4,14 @@ import { useEditorContext } from '~/composables/useEditorContext'
 import { usePlayheadJumps } from '~/composables/usePlayheadJumps'
 import { usePlayback } from '~/composables/usePlayback'
 import { useCloud } from '~/composables/useCloud'
+import { useReviewCampaign } from '~/composables/useReviewCampaign'
 import { isVisibleAt } from '~/utils/itemGeometry'
 import { isInlineEditableText } from '~/utils/textTemplate'
 
 const { project, editor, contextDuration } = useEditorContext()
 const { jumpBack, jumpForward } = usePlayheadJumps()
 const cloud = useCloud()
+useReviewCampaign()
 
 usePlayback(() => contextDuration.value)
 
@@ -258,6 +260,7 @@ const toastIcon = computed(() =>
     <ModalsProjectsModal v-if="editor.modal === 'projects'" />
     <ModalsSaveTemplateModal v-if="editor.modal === 'saveTemplate'" />
     <ModalsPublishExampleModal v-if="editor.modal === 'publishExample'" />
+    <ModalsReviewCampaignModal v-if="editor.modal === 'reviewCampaign'" />
 
     <ProductTour />
 

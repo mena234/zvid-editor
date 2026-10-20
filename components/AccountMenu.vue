@@ -3,11 +3,13 @@ import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useAuthStore } from '~/stores/auth'
 import { useEditorStore } from '~/stores/editor'
 import { useCloud } from '~/composables/useCloud'
+import { useReviewCampaignStore } from '~/stores/reviewCampaign'
 import { ZVID_DISCORD_URL } from '~/utils/community'
 
 const auth = useAuthStore()
 const editor = useEditorStore()
 const cloud = useCloud()
+const reviewCampaign = useReviewCampaignStore()
 const dashUrl = useRuntimeConfig().public.dashUrl as string
 
 const open = ref(false)
@@ -85,6 +87,9 @@ function run(action: () => void) {
         <a class="item" :href="dashUrl" target="_blank" rel="noopener">
           <UiIcon name="link" :size="14" /> Open dashboard
         </a>
+        <button class="item" @click="run(() => reviewCampaign.show(true))">
+          <UiIcon name="link" :size="14" /> Share feedback / Review rewards
+        </button>
         <a
           class="item"
           :href="ZVID_DISCORD_URL"
