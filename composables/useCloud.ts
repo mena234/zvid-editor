@@ -142,7 +142,7 @@ export function useCloud() {
 
   /**
    * Public deep link (marketing site "Open in editor"): fetch a curated
-   * example's render payload straight from the content CDN and load it as a
+   * example's current render payload and load it as a
    * fresh, unsaved document. No account required — mirrors ExamplesModal's
    * load path. The URL is host-checked first (see trustedExampleUrl).
    */
@@ -153,7 +153,14 @@ export function useCloud() {
       return
     }
     try {
-      const config = await $fetch(href, { responseType: 'json' })
+      // Marketing pages and bookmarks may contain an older immutable CDN URL.
+      // Library links identify a template, so resolve its current public version
+      // rather than silently loading (or letting an admin republish) old content.
+      // Other trusted CDN/fixture links still load their explicit document.
+      const slug = exampleSlugFromContentUrl(href)
+      const config = slug
+        ? await fetchLibraryContent('examples', slug, { fresh: true })
+        : await $fetch(href, { responseType: 'json' })
       project.loadRaw(config)
       editor.setCloudProject(null)
       editor.setContext('root')
