@@ -338,6 +338,82 @@ test('scene settings: id, explicit vs auto duration, background color, transitio
   await expect(settings).toContainText('Last scene — transitions apply between')
 })
 
+test('scene ID validation gives immediate feedback and only commits valid unique IDs', async ({ page }, testInfo) => {
+  await loadProject(page, {
+    ...BASE,
+    scenes: [
+      { id: 'intro', duration: 2, transition: 'fade', transitionId: 'outro', visuals: [] },
+      { id: 'outro', duration: 2, visuals: [] },
+    ],
+  })
+  await openPanel(page, 'Scenes')
+  await sceneCards(page).nth(1).click()
+  const settings = page.locator('.rail-panel .scene-settings')
+  const input = field(settings, 'Scene id').locator('input.ctl')
+  const error = settings.getByRole('alert')
+
+  await input.fill('closing scene')
+  await expect(input).toHaveAttribute('aria-invalid', 'true')
+  await expect(error).toContainText('Spaces and other characters are not allowed. Example: "intro-1".')
+  await input.blur()
+  await expect(input).toHaveValue('closing scene')
+  expect((await exportedDoc(page)).scenes[1].id).toBe('outro')
+  expect((await exportedDoc(page)).scenes[0].transitionId).toBe('outro')
+  await page.screenshot({ path: testInfo.outputPath('scene-id-validation.png') })
+
+  for (const [value, message] of [
+    ['', 'Scene ID cannot be empty.'],
+    ['intro', 'Choose a unique ID for each scene.'],
+    ['a'.repeat(101), '100 characters or fewer (currently 101)'],
+  ]) {
+    await input.fill(value)
+    await expect(error).toContainText(message)
+    await input.blur()
+    expect((await exportedDoc(page)).scenes[1].id).toBe('outro')
+  }
+
+  await input.fill('Closing_02')
+  await expect(error).toHaveCount(0)
+  await expect(input).toHaveAttribute('aria-invalid', 'false')
+  await input.press('Enter')
+  await expect.poll(async () => (await exportedDoc(page)).scenes[1].id).toBe('Closing_02')
+  expect((await exportedDoc(page)).scenes[0].transitionId).toBe('Closing_02')
+
+  // Invalid drafts must not follow the selection to another scene.
+  await input.fill('invalid draft')
+  await sceneCards(page).nth(0).click()
+  await expect(input).toHaveValue('intro')
+  await expect(error).toHaveCount(0)
+  await sceneCards(page).nth(1).click()
+  await expect(input).toHaveValue('Closing_02')
+})
+
+test('imported invalid scene IDs show inline errors and block rendering until corrected', async ({ page }) => {
+  await loadProject(page, {
+    ...BASE,
+    scenes: [{ id: 'invalid scene', duration: 2, visuals: [] }],
+  })
+  await openPanel(page, 'Scenes')
+  await sceneCards(page).nth(0).click()
+  const settings = page.locator('.rail-panel .scene-settings')
+  await expect(settings.getByRole('alert')).toContainText('Spaces and other characters are not allowed.')
+
+  await page.evaluate(() => (window as any).__zvidTest.editor.openModal('render'))
+  const modal = page.getByRole('dialog', { name: 'Render video' })
+  await expect(modal).toContainText('validation error(s) must be fixed first')
+  await expect(modal).toContainText('scenes[0].id')
+  await expect(modal).toContainText('Example: "intro-1".')
+  await expect(modal.getByRole('button', { name: /Start render|Sign in to render/ })).toHaveCount(0)
+  await modal.getByRole('button', { name: 'Close', exact: true }).click()
+
+  const input = field(settings, 'Scene id').locator('input.ctl')
+  await input.fill('valid-scene')
+  await input.blur()
+  await page.evaluate(() => (window as any).__zvidTest.editor.openModal('render'))
+  await expect(modal.locator('.err-block')).toHaveCount(0)
+  await expect(modal.getByRole('button', { name: 'Sign in to render' })).toBeVisible()
+})
+
 test('scene-local editing: dblclick in the SceneStrip scopes stage + new elements to the scene', async ({
   page,
 }) => {

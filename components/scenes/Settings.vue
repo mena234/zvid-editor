@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref, useId, watch } from 'vue'
 import { useEditorContext } from '~/composables/useEditorContext'
 import { useTemplateVars } from '~/composables/useTemplateVars'
 import { variableTypeOf } from '~/shared/template/engine'
+import { sceneIdError } from '~/shared/schema/sceneId'
 
 const { project, editor, scenePlan } = useEditorContext()
 const tvars = useTemplateVars()
@@ -14,6 +15,25 @@ const scene = computed(() => {
   if (editor.context !== 'root') return project.sceneByEditorId(editor.context)
   return undefined
 })
+
+const sceneIdDraft = ref('')
+const sceneIdHelpId = useId()
+const sceneIdErrorId = useId()
+watch(
+  () => [scene.value?._id, scene.value?.id],
+  () => { sceneIdDraft.value = String(scene.value?.id ?? '') },
+  { immediate: true }
+)
+const idError = computed(() => sceneIdError(
+  sceneIdDraft.value,
+  (project.doc.scenes ?? []).filter((s) => s._id !== scene.value?._id).map((s) => s.id)
+))
+
+function commitSceneId() {
+  if (!idError.value && sceneIdDraft.value !== scene.value?.id) {
+    patch({ id: sceneIdDraft.value })
+  }
+}
 
 const entry = computed(() =>
   scenePlan.value?.entries.find((e) => e.scene._id === scene.value?._id)
@@ -96,12 +116,22 @@ function commitCondition(e: Event) {
 <template>
   <div v-if="scene" class="scene-settings">
     <UiField label="Scene id" hint="Referenced by the previous scene's transitionId">
-      <input
-        class="ctl"
-        :value="scene.id"
-        spellcheck="false"
-        @change="patch({ id: ($event.target as HTMLInputElement).value || scene.id })"
-      />
+      <div class="scene-id-field">
+        <input
+          v-model="sceneIdDraft"
+          class="ctl"
+          :class="{ invalid: idError }"
+          :aria-invalid="!!idError"
+          :aria-describedby="idError ? `${sceneIdHelpId} ${sceneIdErrorId}` : sceneIdHelpId"
+          spellcheck="false"
+          @change="commitSceneId"
+          @keydown.enter="($event.target as HTMLInputElement).blur()"
+        />
+        <span :id="sceneIdHelpId" class="hint">
+          1–100 characters: A–Z, a–z, 0–9, hyphens (-), or underscores (_). Must be unique.
+        </span>
+        <span v-if="idError" :id="sceneIdErrorId" class="err" role="alert">{{ idError }}</span>
+      </div>
     </UiField>
 
     <UiField
@@ -262,6 +292,17 @@ function commitCondition(e: Event) {
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+.scene-id-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.scene-id-field .ctl.invalid {
+  border-color: var(--red);
+}
+.scene-id-field .err {
+  overflow-wrap: anywhere;
 }
 .dur-row {
   display: flex;

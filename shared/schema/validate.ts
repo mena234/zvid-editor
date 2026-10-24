@@ -9,6 +9,7 @@ import { canonicalVisualType } from './types'
 import type { ProjectDoc, VisualDoc, SceneDoc } from './types'
 import { resolveVisualTiming, resolveProjectDefaults } from './defaults'
 import { projectTotalDuration, computeSceneAutoDuration } from './scenePlan'
+import { sceneIdError } from './sceneId'
 
 export interface ValidationIssue {
   level: 'error' | 'warning'
@@ -268,12 +269,15 @@ function checkScene(
     }
   }
 
-  const ids = scenes.map((s) => s.id)
-  if (ids.filter((i) => i === scene.id).length > 1) {
+  const idError = sceneIdError(
+    scene.id,
+    scenes.filter((_, i) => i !== index).map((s) => s.id)
+  )
+  if (idError) {
     issues.push({
       level: 'error',
       path: `${path}.id`,
-      message: `Duplicate scene id "${scene.id}".`,
+      message: idError,
     })
   }
 }
