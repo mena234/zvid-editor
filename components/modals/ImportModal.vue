@@ -16,7 +16,7 @@ function doImport(raw: string) {
   try {
     // forgiving parse: bare {{placeholders}} in value position are quoted
     const parsed = parseTemplateJson(raw)
-    project.loadRaw(parsed)
+    project.loadRaw(parsed, { undoable: true })
     editor.setContext('root')
     editor.clearSelection()
     editor.closeModal()
@@ -68,8 +68,8 @@ async function fromClipboard() {
     />
     <pre v-if="error" class="err">{{ error }}</pre>
     <p class="hint warn-note">
-      Importing replaces the current project (autosaved separately — undo works
-      after import).
+      Importing replaces the current project. Use Undo to restore your previous
+      work during this editing session.
     </p>
     <template #footer>
       <button class="btn ghost" @click="editor.closeModal()">Cancel</button>

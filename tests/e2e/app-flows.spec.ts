@@ -390,10 +390,16 @@ test('booting with ?type=image starts straight in an image project', async ({ pa
   expect(new URL(page.url()).searchParams.get('type')).toBeNull()
 })
 
-test('Import modal replaces the doc on valid JSON and shows a readable error on invalid', async ({
+test('Import modal preserves unsaved work for undo/redo and rejects invalid JSON', async ({
   page,
 }) => {
   await openEditor(page)
+  await page.fill('.name-input', 'unsaved original')
+  await page.locator('.name-input').blur()
+  await page.evaluate(() => (window as any).__zvidTest.project.addVisual('root', {
+    type: 'TEXT', text: 'Keep my work', position: 'center-center',
+  }))
+  const beforeImport = await exportedDoc(page)
   await page.getByRole('button', { name: 'Import', exact: true }).click()
   await expect(page.locator('.modal-backdrop')).toBeVisible()
 
@@ -410,6 +416,13 @@ test('Import modal replaces the doc on valid JSON and shows a readable error on 
   expect(doc.name).toBe('imported-flow')
   expect(doc.duration).toBe(5)
   expect(doc.visuals[0]).toMatchObject({ type: 'TEXT', text: 'hi' })
+  const imported = doc
+
+  await expect(page.locator('button[title="Undo (Ctrl+Z)"]')).toBeEnabled()
+  await page.click('button[title="Undo (Ctrl+Z)"]')
+  expect(await exportedDoc(page)).toEqual(beforeImport)
+  await page.keyboard.press('Control+y')
+  expect(await exportedDoc(page)).toEqual(imported)
 
   // invalid JSON: error shown, modal stays open, doc untouched
   await page.getByRole('button', { name: 'Import', exact: true }).click()
@@ -422,6 +435,28 @@ test('Import modal replaces the doc on valid JSON and shows a readable error on 
   doc = await exportedDoc(page)
   expect(doc.name).toBe('imported-flow')
   await page.click('.modal-backdrop button[aria-label="Close"]')
+  await page.keyboard.press('Control+z')
+  expect(await exportedDoc(page)).toEqual(beforeImport)
+})
+
+test('Importing a JSON file is one undoable edit', async ({ page }) => {
+  await openEditor(page)
+  await page.fill('.name-input', 'before file import')
+  await page.locator('.name-input').blur()
+  const beforeImport = await exportedDoc(page)
+  await page.getByRole('button', { name: 'Import', exact: true }).click()
+  await page.locator('.modal-backdrop input[type="file"]').setInputFiles({
+    name: 'project.json',
+    mimeType: 'application/json',
+    buffer: Buffer.from(JSON.stringify({ name: 'file import', duration: 5, visuals: [] })),
+  })
+  await expect(page.locator('.modal-backdrop')).toHaveCount(0)
+  expect((await exportedDoc(page)).name).toBe('file import')
+  await expect(page.locator('button[title="Undo (Ctrl+Z)"]')).toBeEnabled()
+  await page.keyboard.press('Control+z')
+  expect(await exportedDoc(page)).toEqual(beforeImport)
+  await page.click('button[title="Redo (Ctrl+Y)"]')
+  expect((await exportedDoc(page)).name).toBe('file import')
 })
 
 test('Export modal shows the exported JSON, snippet tabs, clean validation and a copy button', async ({

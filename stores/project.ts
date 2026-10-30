@@ -334,11 +334,15 @@ export const useProjectStore = defineStore('project', {
       this.resetHistory()
       this.autosaveNow()
     },
-    loadRaw(raw: unknown) {
+    loadRaw(raw: unknown, { undoable = false }: { undoable?: boolean } = {}) {
       const { doc, warnings } = importProject(raw)
+      // Validate first, then preserve even edits that have not yet committed.
+      // Opening an existing project still starts a fresh history by default.
+      if (undoable) this.commit()
       this.doc = doc
       this.importWarnings = warnings
-      this.resetHistory()
+      if (undoable) this.commit()
+      else this.resetHistory()
       this.autosaveNow()
     },
     exportRaw(): Record<string, any> {
