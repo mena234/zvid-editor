@@ -1,4 +1,5 @@
 import { textFontCssUrls } from '../../shared/textFontPolicy'
+import { normalizeFontFaceMetrics } from '../../shared/fontMetrics'
 
 // Match the renderer's server-requested font faces. Google Fonts sends browser
 // user agents subset WOFFs that can omit symbols (e.g. → and ≈), causing an OS
@@ -15,7 +16,15 @@ async function fetchCss(family: string): Promise<string> {
       timeout: 8000,
       retry: 0,
     }).catch(() => null)
-    if (css?.includes('@font-face')) return css
+    if (css?.includes('@font-face')) {
+      const normalized = await normalizeFontFaceMetrics(css, async (fontUrl) => {
+        const bytes = await $fetch<ArrayBuffer>(fontUrl, {
+          responseType: 'arrayBuffer', timeout: 8000, retry: 0,
+        })
+        return new Uint8Array(bytes)
+      }).catch(() => null)
+      if (normalized) return normalized
+    }
   }
   throw createError({ statusCode: 404, statusMessage: 'font family unavailable' })
 }

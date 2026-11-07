@@ -71,7 +71,7 @@ describe('buildIframeDoc', () => {
   it('text mode: escaped text, default font + default font size, fit-content', () => {
     const doc = buildIframeDoc({ text: '<hi & bye>' })
     expect(doc).toContain('<!DOCTYPE html>')
-    expect(doc).toContain(`href="${googleFontCssUrl('Poppins')}"`)
+    expect(doc).toContain('href="/api/text-fonts?family=Poppins&amp;metrics=1"')
     expect(doc).toContain("font-family: 'Poppins', 'Noto Sans', sans-serif;")
     expect(doc).toContain('font-size: 42px;') // TEXT_DEFAULT_FONT_SIZE
     expect(doc).toContain('width: fit-content;')
@@ -84,7 +84,7 @@ describe('buildIframeDoc', () => {
       width: 300,
       height: 150,
     })
-    expect(doc).toContain(`href="${googleFontCssUrl('Inter')}"`)
+    expect(doc).toContain('href="/api/text-fonts?family=Inter&amp;metrics=1"')
     expect(doc).toContain("font-family: 'Inter', 'Noto Sans', sans-serif;")
     expect(doc).toContain('font-size: 30px;')
     expect(doc).toContain('color: #fff;')
@@ -131,11 +131,11 @@ describe('buildIframeDoc', () => {
       style: { fontFamily: 'Inter' },
       customCss: ".b { font-family: 'Lobster', cursive; }",
     })
-    expect(doc).toContain(`href="${googleFontCssUrl('Inter')}"`)
-    expect(doc).toContain(`href="${googleFontCssUrl('Kanit')}"`)
-    expect(doc).toContain(`href="${googleFontCssUrl('Lobster')}"`)
+    expect(doc).toContain('href="/api/text-fonts?family=Inter&amp;metrics=1"')
+    expect(doc).toContain('href="/api/text-fonts?family=Kanit&amp;metrics=1"')
+    expect(doc).toContain('href="/api/text-fonts?family=Lobster&amp;metrics=1"')
     expect(doc.match(/<link rel="stylesheet"/g)?.length).toBe(4)
-    expect(doc).toContain(`href="${googleFontCssUrl('Noto Sans')}"`)
+    expect(doc).toContain('href="/api/text-fonts?family=Noto%20Sans&amp;metrics=1"')
   })
 
   it('includes a fallback when only the main family is authored', () => {
@@ -228,17 +228,17 @@ describe('effectLabel', () => {
 describe('googleFontCssUrl', () => {
   it('requests the renderer-compatible server font CSS', () => {
     expect(googleFontCssUrl('Poppins')).toBe(
-      '/api/text-fonts?family=Poppins'
+      '/api/text-fonts?family=Poppins&metrics=1'
     )
   })
   it('encodes family names in the query', () => {
     expect(googleFontCssUrl('Open Sans')).toBe(
-      '/api/text-fonts?family=Open%20Sans'
+      '/api/text-fonts?family=Open%20Sans&metrics=1'
     )
   })
   it('trims surrounding whitespace', () => {
     expect(googleFontCssUrl('  Inter ')).toBe(
-      '/api/text-fonts?family=Inter'
+      '/api/text-fonts?family=Inter&metrics=1'
     )
   })
 })

@@ -77,7 +77,7 @@ export async function loadGoogleFonts(families: string[], text = '', variant: { 
 
 /** The server applies the renderer's bounded CSS fallback sequence. */
 export function googleFontCssUrl(family: string): string {
-  return `/api/text-fonts?family=${encodeURIComponent(family.trim())}`
+  return `/api/text-fonts?family=${encodeURIComponent(family.trim())}&metrics=1`
 }
 
 /** Sandboxed documents use the same complete faces as the main preview. */
