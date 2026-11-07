@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import StageTimelineGif from './TimelineGif.vue'
 import { computed, ref, watch, onMounted, onBeforeUnmount, nextTick } from 'vue'
 import type { VisualDoc } from '~/shared/schema/types'
 import { canonicalVisualType } from '~/shared/schema/types'
@@ -9,7 +10,7 @@ import { useEditorStore } from '~/stores/editor'
 import { useProjectStore } from '~/stores/project'
 import { useMediaProbe } from '~/composables/useMediaProbe'
 import { useMeasuredDims } from '~/composables/useMeasuredDims'
-import { extractFontFamilies, loadGoogleFonts, textFontStack } from '~/utils/fonts'
+import { extractFontFamilies, extractSvgFontFamilies, loadGoogleFonts, textFontStack } from '~/utils/fonts'
 import { fontSample, textFontHtml } from '~/shared/textFontPolicy'
 import {
   applyFitFactor,
@@ -17,10 +18,11 @@ import {
   fitActiveFor,
   fitBoxOf,
   measureFitFactor,
+  rendererWhiteSpaceFor,
 } from '~/utils/fitTextToBox'
 import {
   buildIframeDoc,
-  styleObjectToCss,
+  styleValueToCss,
   escapeHtml,
   isAutoHugText,
 } from '~/utils/textTemplate'
@@ -29,6 +31,7 @@ import {
   TEXT_DEFAULT_FONT_SIZE,
 } from '~/shared/schema/constants'
 import { clamp } from '~/utils/time'
+import { videoSeekTime } from '~/utils/videoTimeline'
 import {
   setPreviewVolume,
   releasePreviewVolume,
@@ -175,6 +178,42 @@ const cropInnerStyle = computed(() => {
 /* ---------------- video playback sync ---------------- */
 const videoEl = ref<HTMLVideoElement>()
 const imgEl = ref<HTMLImageElement>()
+const gifCanvas = ref<HTMLCanvasElement>()
+const gifRevision = ref(0)
+const gifFallback = ref(false)
+const gifResampled = computed(() => {
+  const item = props.item
+  const t = timing.value
+  return !!(item.zoom ||
+    (item.enterAnimation && t.enterEnd > t.enterBegin) ||
+    (item.exitAnimation && t.exitEnd > t.exitBegin &&
+      (!item.transition || !item.transitionId || item.transitionId === 'none')))
+})
+const gifFps = computed(() => props.item.frameRate ?? (props.item.zoom ? project.defaults.frameRate : 30))
+const gifTime = computed(() => {
+  if (!gifResampled.value) {
+    // Untransitioned GIFs retain their native centisecond timebase. The
+    // compositor selects the preceding source timestamp, without fps rounding.
+    const fps = project.defaults.frameRate
+    const clock = Math.floor(props.time * fps + 1e-7) / fps
+    return Math.max(0, clock - Math.trunc(timing.value.enterBegin * 100) / 100)
+  }
+  const rate = gifFps.value
+  const frame = Math.floor(props.time * rate + 1e-7)
+  const start = Math.trunc(timing.value.enterBegin / (1 / rate))
+  return Math.max(0, (frame - start) / rate)
+})
+watch(() => props.item.src, () => {
+  gifFallback.value = false
+  gifCanvas.value = undefined
+  gifRevision.value++
+})
+function onGifFrame(canvas: HTMLCanvasElement) {
+  gifCanvas.value = canvas
+  gifRevision.value++
+  mediaReady.value = true
+  mediaFailed.value = false
+}
 
 const targetMediaTime = computed(() => {
   if (type.value !== 'VIDEO') return 0
@@ -182,7 +221,7 @@ const targetMediaTime = computed(() => {
   const ve = props.item.videoEnd ?? Infinity
   const speed = props.item.speed ?? 1
   const t = vb + Math.max(0, props.time - timing.value.enterBegin) * speed
-  return clamp(t, vb, ve === Infinity ? t : ve)
+  return videoSeekTime(clamp(t, vb, ve === Infinity ? t : ve))
 })
 
 const isItemVisible = computed(
@@ -215,7 +254,9 @@ function syncVideo() {
     if (v.paused) v.play().catch(() => {})
   } else {
     if (!v.paused) v.pause()
-    if (Math.abs(v.currentTime - targetMediaTime.value) > 0.04) {
+    // Paused frame stepping must seek even one adjacent frame (30fps <40ms).
+    // Allow only the browser's microsecond timestamp rounding tolerance.
+    if (Math.abs(v.currentTime - targetMediaTime.value) > 0.000002) {
       v.currentTime = targetMediaTime.value
     }
   }
@@ -251,7 +292,7 @@ const fontFamily = computed(
    (all stack families plus deterministic script fallbacks). Loading only
    style.fontFamily left the rest in whatever fallback the container had. */
 const textFontFamilies = computed(() =>
-  extractFontFamilies({
+  type.value === 'SVG' ? extractSvgFontFamilies(props.item.svg ?? '', props.item.customCode?.css) : extractFontFamilies({
     style: { ...(props.item.style ?? {}), fontFamily: fontFamily.value },
     html: props.item.html,
     text: props.item.text,
@@ -262,26 +303,25 @@ watch(
   textFontFamilies,
   (families) => {
     if (type.value === 'TEXT') loadGoogleFonts(families, fontSample(props.item.text, props.item.html), { weight: props.item.style?.fontWeight, italic: props.item.style?.fontStyle === 'italic' })
+    else if (type.value === 'SVG') loadGoogleFonts(families, fontSample(undefined, props.item.svg))
   },
   { immediate: true }
 )
 
 const textInnerStyle = computed(() => {
-  const style = { ...(props.item.style ?? {}) }
-  const css: Record<string, string> = {}
+  // The capture page spreads style after the declared capture dimensions.
+  const style = { width: props.item.width, height: props.item.height, ...(props.item.style ?? {}) }
+  const css: Record<string, string> = { whiteSpace: rendererWhiteSpaceFor(props.item) }
   for (const [k, v] of Object.entries(style)) {
     if (v === undefined || v === null || k === 'fontFamily') continue
-    css[k] = String(v)
+    css[k] = styleValueToCss(k, v)
   }
   css.fontFamily = textFontStack(fontFamily.value, fontSample(props.item.text, props.item.html))
   if (!css.fontSize) css.fontSize = TEXT_DEFAULT_FONT_SIZE
-  if (props.item.width !== undefined) {
-    css.width = `${props.item.width}px`
-  } else {
+  if (!style.width) {
     css.width = 'max-content'
     css.maxWidth = 'none'
   }
-  if (props.item.height !== undefined) css.height = `${props.item.height}px`
   return css
 })
 
@@ -647,7 +687,19 @@ const iframeDoc = computed(() => {
     class="media-box"
     :style="{ borderRadius: radiusStyle }"
   >
+    <StageTimelineGif
+      v-if="type === 'GIF' && !gifFallback && item.src"
+      :src="item.src"
+      :time="gifTime"
+      :fps="gifFps"
+      :round-to-frame="gifResampled"
+      :class="{ 'filter-source': filteredMedia }"
+      :style="cropInnerStyle ?? mediaFitStyle"
+      @frame="onGifFrame"
+      @fallback="gifFallback = true; gifCanvas = undefined"
+    />
     <img
+      v-else
       :key="`${filteredMedia}:${mediaSrc}`"
       ref="imgEl"
       class="media"
@@ -662,7 +714,8 @@ const iframeDoc = computed(() => {
     />
     <StageFilteredMedia
       v-if="filteredMedia && !mediaFailed"
-      :media="imgEl"
+      :media="gifCanvas ?? imgEl"
+      :frame-revision="gifRevision"
       :filter="item.filter!"
       :width="width"
       :height="height"
@@ -763,6 +816,17 @@ const iframeDoc = computed(() => {
   </div>
 </template>
 
+<style>
+/* Match the capture document's universal reset without overriding authored
+   inline HTML rules. :where keeps the reset at universal-selector specificity. */
+:where(.text-inner, .text-inner *) {
+  margin: 0;
+  padding: 0;
+  box-sizing: content-box;
+  background: transparent;
+}
+</style>
+
 <style scoped>
 .media-box {
   position: relative;
@@ -839,7 +903,6 @@ const iframeDoc = computed(() => {
   position: absolute;
   top: 0;
   left: 0;
-  white-space: pre-wrap;
 }
 .text-inner.ghost {
   visibility: hidden;

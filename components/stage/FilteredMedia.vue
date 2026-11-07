@@ -5,7 +5,8 @@ import { drawFilterFrame } from '~/utils/filterFrame'
 import { renderGpuPreview, retainGpuPreview } from '~/utils/gpuFilterPreview'
 
 const props = defineProps<{
-  media?: HTMLImageElement | HTMLVideoElement
+  media?: HTMLImageElement | HTMLVideoElement | HTMLCanvasElement
+  frameRevision?: number
   filter: MediaFilter
   width: number
   height: number
@@ -58,7 +59,7 @@ function invalidate() {
   refineAt = performance.now() + 150
 }
 watch(
-  [shape, () => props.media],
+  [shape, () => props.media, () => props.frameRevision],
   () => {
     invalidate()
   },
@@ -107,7 +108,9 @@ function paint() {
   if (
     video
       ? video.readyState < 2 || video.seeking
-      : !(media as HTMLImageElement).complete || !(media as HTMLImageElement).naturalWidth
+      : media instanceof HTMLCanvasElement
+        ? !media.width || !media.height || media.dataset.gifState === 'loading'
+        : !(media instanceof HTMLImageElement) || !media.complete || !media.naturalWidth
   )
     return
   const time = video?.currentTime ?? props.time
@@ -155,7 +158,7 @@ function paint() {
 }
 
 async function refine(
-  media: HTMLImageElement | HTMLVideoElement,
+  media: HTMLImageElement | HTMLVideoElement | HTMLCanvasElement,
   width: number,
   height: number,
   time: number

@@ -103,7 +103,7 @@ interface FullEntry {
 
 const fullPreview = computed(() => {
   if (!hasMovieBackdrop.value || !scenePlan.value)
-    return { entries: [] as FullEntry[], plates: [] as Record<string, any>[] }
+    return { entries: [] as FullEntry[], plates: [] as Record<string, any>[], compositeFilter: undefined as string | undefined }
   const t = editor.playhead
   const entries = scenePlan.value.entries
   const list: FullEntry[] = entries.map((entry) => {
@@ -118,6 +118,7 @@ const fullPreview = computed(() => {
     }
   })
   const plates: Record<string, any>[] = []
+  let compositeFilter: string | undefined
   // scene→scene xfade: prev scene is stream A, next scene stream B
   for (let i = 1; i < entries.length; i++) {
     const prev = entries[i - 1]
@@ -130,10 +131,12 @@ const fullPreview = computed(() => {
       canvasW: projW.value,
       canvasH: projH.value,
       rasterScale: deviceScale(scale.value),
+      limitedRangeScene: true,
     })
     list[i - 1].layer = layerStyle(frame.a)
     list[i].layer = layerStyle(frame.b)
     if (frame.plate) plates.push(plateStyle(frame.plate))
+    if (frame.compositeFilter) compositeFilter = frame.compositeFilter
   }
   // per-scene video↔video linked transitions
   for (const e of list) {
@@ -149,7 +152,7 @@ const fullPreview = computed(() => {
   }
   // every scene stays mounted (hidden via v-show) so its media elements
   // keep their buffers — playback never waits on a scene-entry remount
-  return { entries: list, plates }
+  return { entries: list, plates, compositeFilter }
 })
 
 const fullEntries = computed(() => fullPreview.value.entries)
@@ -601,7 +604,7 @@ const contextLabel = computed(() => {
           @pointerdown="onFramePointerDown"
         >
           <!-- the movie itself: scene groups, always under the overlay track -->
-          <template v-if="hasMovieBackdrop">
+          <div v-if="hasMovieBackdrop" class="movie-backdrop" :style="{ filter: fullPreview.compositeFilter }">
             <!-- scene-transition fade-through-color plates (under both scenes) -->
             <div
               v-for="(ps, i) in scenePlates"
@@ -632,7 +635,7 @@ const contextLabel = computed(() => {
                 :group-fx="fe.groupFx?.styleById.get(item._id) ?? null"
               />
             </div>
-          </template>
+          </div>
 
           <!-- global overlays, read-only (full-movie preview) -->
           <template v-if="isFullPreview">
@@ -830,6 +833,10 @@ const contextLabel = computed(() => {
 }
 .stage-scroll.stock-drop .stage-frame {
   box-shadow: 0 0 0 2px var(--accent), var(--shadow-2);
+}
+.movie-backdrop {
+  position: absolute;
+  inset: 0;
 }
 .scene-group {
   position: absolute;

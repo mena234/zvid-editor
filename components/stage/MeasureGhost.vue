@@ -34,7 +34,7 @@ function build() {
   if (!el) return
   const shadow = el.shadowRoot ?? el.attachShadow({ mode: 'open' })
   const fontFamily = props.styleObject?.fontFamily ?? TEXT_DEFAULT_FONT_FAMILY
-  const style = { ...(props.styleObject ?? {}) }
+  const style: Record<string, any> = { width: props.explicitWidth, height: props.explicitHeight, ...(props.styleObject ?? {}) }
   if (!style.fontSize) style.fontSize = TEXT_DEFAULT_FONT_SIZE
   shadow.innerHTML = `
     <style>
@@ -43,8 +43,7 @@ function build() {
         ${props.plainText ? 'white-space: pre-wrap;' : ''}
         font-family: ${textFontStack(fontFamily, fontSample(undefined, props.html))};
         ${styleObjectToCss(style)}
-        ${props.explicitWidth ? `width: ${props.explicitWidth}px;` : 'width: max-content;'}
-        ${props.explicitHeight ? `height: ${props.explicitHeight}px;` : ''}
+        ${!style.width ? 'width: max-content;' : ''}
         position: absolute;
       }
       ${textFontCss(props.customCss ?? '', fontSample(undefined, props.html))}

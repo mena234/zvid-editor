@@ -90,7 +90,9 @@ function build() {
   if (!el) return
   const shadow = el.shadowRoot ?? el.attachShadow({ mode: 'open' })
   const fontFamily = props.styleObject?.fontFamily ?? TEXT_DEFAULT_FONT_FAMILY
-  const style = { ...(props.styleObject ?? {}) }
+  const style: Record<string, any> = props.svg
+    ? { ...(props.styleObject ?? {}) }
+    : { width: props.explicitWidth, height: props.explicitHeight, ...(props.styleObject ?? {}) }
   if (!style.fontSize && !props.svg) style.fontSize = TEXT_DEFAULT_FONT_SIZE
 
   markup = `
@@ -100,8 +102,8 @@ function build() {
         ${props.plainText ? 'white-space: pre-wrap;' : ''}
         font-family: ${textFontStack(fontFamily, fontSample(undefined, props.html))};
         ${styleObjectToCss(style)}
-        ${props.explicitWidth ? `width: ${props.explicitWidth}px;` : 'width: max-content;'}
-        ${props.explicitHeight ? `height: ${props.explicitHeight}px;` : ''}
+        ${props.svg ? (props.explicitWidth ? `width: ${props.explicitWidth}px;` : 'width: max-content;') : (!style.width ? 'width: max-content;' : '')}
+        ${props.svg && props.explicitHeight ? `height: ${props.explicitHeight}px;` : ''}
       }
       ${props.svg ? '.container svg { display: block; width: 100%; height: 100%; }' : ''}
       ${props.svg ? props.customCss ?? '' : textFontCss(props.customCss ?? '', fontSample(undefined, props.html))}

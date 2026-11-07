@@ -20,6 +20,9 @@ export function stageMediaReady(): boolean {
     // a failed <img> reports complete=true, so errors never gate here
     if (!img.complete) return false
   }
+  for (const gif of frame.querySelectorAll<HTMLCanvasElement>('.timeline-gif')) {
+    if (visible(gif) && gif.dataset.gifState !== 'ready') return false
+  }
   return true
 }
 

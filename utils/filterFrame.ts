@@ -1,16 +1,16 @@
 /** Rasterize the media's item box before color filtering, in project pixels. */
 export function drawFilterFrame(
   context: CanvasRenderingContext2D,
-  source: HTMLImageElement | HTMLVideoElement,
+  source: HTMLImageElement | HTMLVideoElement | HTMLCanvasElement,
   width: number,
   height: number,
   fit?: string,
   crop?: { x: number; y: number; width: number; height: number } | null,
   radius?: { tl?: number; tr?: number; br?: number; bl?: number } | null
 ) {
-  const sw = source instanceof HTMLVideoElement ? source.videoWidth : source.naturalWidth
+  const sw = source instanceof HTMLVideoElement ? source.videoWidth : source instanceof HTMLImageElement ? source.naturalWidth : source.width
   const sh =
-    source instanceof HTMLVideoElement ? source.videoHeight : source.naturalHeight
+    source instanceof HTMLVideoElement ? source.videoHeight : source instanceof HTMLImageElement ? source.naturalHeight : source.height
   if (!sw || !sh) throw new Error('Media has no decoded frame')
   context.clearRect(0, 0, width, height)
   context.save()

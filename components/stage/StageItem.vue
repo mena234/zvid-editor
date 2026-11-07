@@ -15,7 +15,7 @@ import {
 import { useEditorStore } from '~/stores/editor'
 import { useProjectStore } from '~/stores/project'
 import { isInlineEditableText } from '~/utils/textTemplate'
-import { round3 } from '~/utils/time'
+import { itemAnimationProgress, round3 } from '~/utils/time'
 
 const props = defineProps<{
   item: VisualDoc
@@ -58,7 +58,7 @@ const animFx = computed<{ frame: XfadeFrameCss; role: 'a' | 'b' } | null>(() => 
     rasterScale: deviceScale(stageCtx.scale),
   }
   if (item.enterAnimation && t >= tm.enterBegin && t < tm.enterEnd) {
-    const p = (t - tm.enterBegin) / Math.max(0.001, tm.enterEnd - tm.enterBegin)
+    const p = itemAnimationProgress(t, tm.enterBegin, tm.enterEnd, tm.enterBegin, item.frameRate ?? 30)
     return {
       frame: xfadeFrame(item.enterAnimation, p, { mode: 'enter', ...base }),
       role: 'b',
@@ -72,7 +72,7 @@ const animFx = computed<{ frame: XfadeFrameCss; role: 'a' | 'b' } | null>(() => 
     t > tm.exitBegin &&
     t <= tm.exitEnd
   ) {
-    const p = (t - tm.exitBegin) / Math.max(0.001, tm.exitEnd - tm.exitBegin)
+    const p = itemAnimationProgress(t, tm.exitBegin, tm.exitEnd, tm.enterBegin, item.frameRate ?? 30)
     return {
       frame: xfadeFrame(item.exitAnimation, p, { mode: 'exit', ...base }),
       role: 'a',

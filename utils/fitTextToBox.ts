@@ -364,7 +364,11 @@ export function applyFitFactor(container: HTMLElement, factor: number): void {
     container,
     ...Array.from(container.querySelectorAll<HTMLElement>('*')),
   ]
+  // Snapshot every computed value before changing any ancestor. Otherwise a
+  // child that inherits font-size is measured after its parent shrinks, then
+  // receives the same factor again (unlike the renderer's one-pass snapshot).
   const snapshot: FitRestoreEntry[] = []
+  const values: Record<string, string>[] = []
   for (const el of nodes) {
     const cs = getComputedStyle(el)
     const inline: Record<string, [string, string]> = {}
@@ -382,6 +386,11 @@ export function applyFitFactor(container: HTMLElement, factor: number): void {
       'letter-spacing': cs.letterSpacing,
       'word-spacing': cs.wordSpacing,
     }
+    values.push(resolved)
+  }
+  for (let i = 0; i < snapshot.length; i++) {
+    const { el, written } = snapshot[i]
+    const resolved = values[i]
     for (const prop of FIT_PROPS) {
       const raw = resolved[prop]
       if (raw == null || raw === '' || raw === 'normal') continue

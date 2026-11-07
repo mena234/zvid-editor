@@ -31,6 +31,23 @@ export function clamp(v: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, v))
 }
 
+/** FFmpeg xfade rounds duration/offset to frames; setpts truncates the item
+ * start to an integer PTS. Continuous seconds drift on fractional-frame edits. */
+export function itemAnimationProgress(
+  time: number,
+  begin: number,
+  end: number,
+  itemBegin: number,
+  fps = 30
+): number {
+  const rate = Number.isFinite(fps) && fps > 0 ? fps : 30
+  const frame = Math.floor(time * rate + 1e-7)
+  const itemStartFrame = Math.trunc(itemBegin / (1 / rate))
+  const localOffset = Math.round(Number((begin - itemBegin).toFixed(2)) * rate)
+  const duration = Math.max(1, Math.round(Number((end - begin).toFixed(2)) * rate))
+  return clamp((frame - itemStartFrame - localOffset) / duration, 0, 1)
+}
+
 /** Adaptive ruler tick spacing for a given px/sec zoom. */
 export function pickTickStep(pxPerSec: number): { major: number; minor: number } {
   const candidates = [

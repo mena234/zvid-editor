@@ -1,4 +1,4 @@
-import { extractFontFamilies, googleFontLinks, textFontStack } from './fonts'
+import { extractFontFamilies, extractSvgFontFamilies, googleFontLinks, textFontStack } from './fonts'
 import { fontSample, textFontHtml, textFontCss } from '../shared/textFontPolicy'
 import { fitScriptSource } from './fitTextToBox'
 import {
@@ -43,6 +43,20 @@ export function isAutoHugText(item: {
  * rendering (and the customCode iframe) match Puppeteer's capture page.
  */
 
+// Keep numeric CSS interpretation identical to buildHtmlContent in the renderer.
+// Vue's style object and raw CSS both ignore bare numeric lengths such as 48.
+const UNITLESS_STYLE_PROPS = new Set([
+  'opacity', 'line-height', 'font-weight', 'z-index', 'flex',
+  'flex-grow', 'flex-shrink', 'order',
+])
+
+export function styleValueToCss(key: string, value: unknown): string {
+  const cssKey = key.replace(/([A-Z])/g, '-$1').toLowerCase()
+  return typeof value === 'number' && !UNITLESS_STYLE_PROPS.has(cssKey)
+    ? `${value}px`
+    : String(value).replace(/[<>{}]/g, '')
+}
+
 export function styleObjectToCss(style: Record<string, any> | undefined): string {
   if (!style) return ''
   return Object.entries(style)
@@ -50,7 +64,7 @@ export function styleObjectToCss(style: Record<string, any> | undefined): string
     .map(([key, value]) => {
       if (value === undefined || value === null) return ''
       const cssKey = key.replace(/([A-Z])/g, '-$1').toLowerCase()
-      return `${cssKey}: ${value};`
+      return `${cssKey}: ${styleValueToCss(key, value)};`
     })
     .join('\n')
 }
@@ -72,7 +86,9 @@ export interface TextTemplateOptions {
 /** Full HTML document for the sandboxed iframe (TEXT + SVG customCode). */
 export function buildIframeDoc(opts: TextTemplateOptions): string {
   const fontFamily = opts.style?.fontFamily ?? TEXT_DEFAULT_FONT_FAMILY
-  const style = { ...(opts.style ?? {}) }
+  const style: Record<string, any> = opts.svg
+    ? { ...(opts.style ?? {}) }
+    : { width: opts.width, height: opts.height, ...(opts.style ?? {}) }
   if (!style.fontSize && !opts.svg) style.fontSize = TEXT_DEFAULT_FONT_SIZE
   const cssProps = styleObjectToCss(style)
   const sample = fontSample(opts.text, opts.html)
@@ -82,7 +98,7 @@ export function buildIframeDoc(opts: TextTemplateOptions): string {
   // injects do not reach it, so every family the element references — style,
   // inline html, customCode css — needs its own link here.
   const fontLinks = googleFontLinks(
-    extractFontFamilies({
+    opts.svg ? extractSvgFontFamilies(opts.svg, opts.customCss) : extractFontFamilies({
       style: { ...style, fontFamily },
       html: opts.html,
       text: opts.text,
@@ -113,8 +129,8 @@ ${fontLinks}
     ${!opts.svg && opts.html == null ? 'white-space: pre-wrap;' : ''}
     font-family: ${textFontStack(fontFamily, fontSample(opts.text, opts.html))};
     ${cssProps}
-    ${opts.width ? `width: ${opts.width}px;` : 'width: fit-content;'}
-    ${opts.height ? `height: ${opts.height}px;` : ''}
+    ${opts.svg ? (opts.width ? `width: ${opts.width}px;` : 'width: fit-content;') : (!style.width ? 'width: fit-content;' : '')}
+    ${opts.svg && opts.height ? `height: ${opts.height}px;` : ''}
   }
   ${opts.svg ? '.container svg { display:block; width:100%; height:100%; }' : ''}
   ${opts.svg ? opts.customCss ?? '' : textFontCss(opts.customCss ?? '', sample)}

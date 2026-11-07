@@ -1,12 +1,12 @@
 /**
  * Google Fonts support mirroring the package's downloadGoogleFont behaviour:
  * TEXT items fetch their fontFamily from fonts.googleapis.com at render time,
- * so any Google-Fonts family name is valid. The editor loads the same CSS so
- * the preview matches.
+ * so any Google-Fonts family name is valid. Request the CSS through the server
+ * so browser-specific font subsets cannot change glyph coverage or metrics.
  */
 
 import { parseFontFamilies } from '../shared/fontResolution'
-import { fontSample, referencedTextFamilies, textFontCssUrls } from '../shared/textFontPolicy'
+import { fontSample, referencedTextFamilies } from '../shared/textFontPolicy'
 export { MAX_FAMILIES_PER_ELEMENT, textFontStack } from '../shared/textFontPolicy'
 
 export function firstFamilyOf(stack: string): string | null {
@@ -25,6 +25,22 @@ export function extractFontFamilies(sources: {
   return referencedTextFamilies(String(declared || ''), fontSample(sources.text, html), html, sources.css)
 }
 
+/** Mirrors the renderer's text-bearing SVG capture font discovery. */
+export function extractSvgFontFamilies(svg: string, customCss?: string | null): string[] {
+  if (!/<(?:text|tspan|textPath|foreignObject)\b/i.test(svg)) return []
+  const declared = Array.from(
+    svg.matchAll(/\bfont-family\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))/gi),
+    match => match[1] ?? match[2] ?? match[3]
+  )
+  // Parse CSS separately: a style attribute's closing quote is not CSS and
+  // must never consume following SVG markup as part of a family name.
+  const css = [
+    ...Array.from(svg.matchAll(/\bstyle\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))/gi), match => match[1] ?? match[2] ?? match[3]),
+    ...Array.from(svg.matchAll(/<style\b[^>]*>([\s\S]*?)<\/style\s*>/gi), match => match[1]),
+  ]
+  return referencedTextFamilies(['Poppins', ...declared].join(', '), fontSample(undefined, svg), ...css, customCss)
+}
+
 const loaded = new Map<string, Promise<void>>()
 
 /** Deduplicate the stylesheet, then eagerly load this text's selected face. */
@@ -36,13 +52,12 @@ export async function loadGoogleFont(family: string, text = '', variant: { weigh
     loaded.set(clean, new Promise<void>((resolve) => {
       const link = document.createElement('link')
       link.rel = 'stylesheet'
-      const urls = textFontCssUrls(clean)
-      let candidate = 0
-      link.href = urls[candidate]
+      link.href = googleFontCssUrl(clean)
       link.onload = () => resolve()
       link.onerror = () => {
-        if (++candidate < urls.length) link.href = urls[candidate]
-        else { loaded.delete(clean); resolve() }
+        loaded.delete(clean)
+        link.remove()
+        resolve()
       }
       link.dataset.zvidFont = clean
       document.head.appendChild(link)
@@ -60,22 +75,20 @@ export async function loadGoogleFonts(families: string[], text = '', variant: { 
   await Promise.all(families.map(family => loadGoogleFont(family, text, variant)))
 }
 
-/** css2 URL for iframe/customCode previews. */
+/** The server applies the renderer's bounded CSS fallback sequence. */
 export function googleFontCssUrl(family: string): string {
-  return textFontCssUrls(family)[0]
+  return `/api/text-fonts?family=${encodeURIComponent(family.trim())}`
 }
 
-/** A fixed retry handler, with URL data in escaped attributes, for sandboxed documents. */
+/** Sandboxed documents use the same complete faces as the main preview. */
 export function googleFontLinks(families: string[]): string {
   const attr = (value: string) => value.replace(/&/g, '&amp;').replace(/"/g, '&quot;')
-  return [...new Set(families)].map(family => {
-    const urls = textFontCssUrls(family)
-    return `<link rel="stylesheet" href="${urls[0]}" data-fallback="${attr(JSON.stringify(urls.slice(1)))}" onerror="const a=JSON.parse(this.dataset.fallback);if(a.length){this.href=a.shift();this.dataset.fallback=JSON.stringify(a)}">`
-  }).join('\n')
+  return googleFontCssUrls(families)
+    .map(url => `<link rel="stylesheet" href="${attr(url)}">`).join('\n')
 }
 
 /**
- * One css2 URL per family — the sandboxed iframe is a separate document, so it
+ * One CSS URL per family — the sandboxed iframe is a separate document, so it
  * needs its own <link> for each family instead of the document-level ones.
  * `googleFontCssUrl`'s single-family shape is pinned by tests; this only maps.
  */

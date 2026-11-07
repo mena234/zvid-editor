@@ -19,7 +19,8 @@
  *   `b` (the item) + plates apply. FFmpeg runs this in straight (non
  *   premultiplied) alpha, so a plain fade lands at weight t² over the
  *   background (verified empirically); the flat-fade family compensates
- *   with brightness()+opacity, spatial ramps square the mask alpha.
+ *   with brightness()+opacity. Transparent spatial ramps scale color and
+ *   alpha separately so the backdrop still receives its correct weight.
  * - exit animations ('exit' mode): B is transparent — only `a` + plates.
  *
  * Ramped (smoothstep-boundary) effects are realized with multi-stop
@@ -57,6 +58,8 @@ export interface XfadeFrameCss {
   b: XfadeLayerCss
   /** layers move/scale — the canvas must clip them (overflow hidden) */
   clip?: boolean
+  /** Applied after both scene layers/plate have composited, before overlays. */
+  compositeFilter?: string
 }
 
 export interface Rect {
@@ -87,6 +90,8 @@ export interface XfadeOpts {
    * whole filtered layer vanishes at fractional zoom levels.
    */
   rasterScale?: number
+  /** Encoded opaque scene intermediates use limited-range BT.601 YUV. */
+  limitedRangeScene?: boolean
 }
 
 /** display scale helper for callers (SSR-safe) */
@@ -124,6 +129,34 @@ const FULL: Rect = { x: 0, y: 0, w: 0, h: 0 }
 /* ------------------------------------------------------------------ */
 
 type AlphaAt = (canvasCoord: number) => number
+type RampSvg = (rect: Rect, alphaAt: AlphaAt) => string
+
+/** SVG ramp images retain m in alpha for straight-alpha compositing below. */
+function rampSvg(rect: Rect, gradient: string): string {
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${rect.w}" height="${rect.h}" viewBox="0 0 ${rect.w} ${rect.h}"><defs>${gradient}</defs><rect width="100%" height="100%" fill="url(#ramp)"/></svg>`
+}
+
+function rampStops(alphaAt: AlphaAt, extent: number, start = 0): string {
+  return Array.from({ length: 97 }, (_, i) =>
+    `<stop offset="${i / 96}" stop-color="black" stop-opacity="${a3(alphaAt(start + i / 96 * extent))}"/>`
+  ).join('')
+}
+
+function axisRampSvg(axis: 'x' | 'y', rect: Rect, alphaAt: AlphaAt): string {
+  const extent = axis === 'x' ? rect.w : rect.h
+  const start = axis === 'x' ? rect.x : rect.y
+  // FFmpeg evaluates integer pixel coordinates; SVG samples pixel centers.
+  const end = extent + 0.5
+  return rampSvg(rect, `<linearGradient id="ramp" gradientUnits="userSpaceOnUse" x1="0.5" y1="0.5" x2="${axis === 'x' ? end : 0.5}" y2="${axis === 'y' ? end : 0.5}">${rampStops(alphaAt, extent, start)}</linearGradient>`)
+}
+
+function radialRampSvg(rect: Rect, W: number, H: number, alphaAt: AlphaAt): string {
+  const cx = W / 2 - rect.x
+  const cy = H / 2 - rect.y
+  const radius = Math.max(Math.hypot(cx, cy), Math.hypot(rect.w - cx, cy),
+    Math.hypot(cx, rect.h - cy), Math.hypot(rect.w - cx, rect.h - cy))
+  return rampSvg(rect, `<radialGradient id="ramp" gradientUnits="userSpaceOnUse" cx="${cx + 0.5}" cy="${cy + 0.5}" r="${radius}">${rampStops(alphaAt, radius)}</radialGradient>`)
+}
 
 /**
  * Sample an alpha profile along the x or y axis of the canvas into a
@@ -233,6 +266,60 @@ function svgFilterRef(id: string, build: () => string): string | undefined {
     host.insertAdjacentHTML('beforeend', build())
   }
   return `url(#${id})`
+}
+
+const animatedFilterIds = new Set<string>()
+let rampPrunePending = false
+
+function retainAnimatedFilter(id: string) {
+  animatedFilterIds.delete(id)
+  animatedFilterIds.add(id)
+  if (animatedFilterIds.size <= 256 || rampPrunePending) return
+  rampPrunePending = true
+  // Vue applies the returned styles before the next paint. Preserve all live
+  // references, and bound the inactive animation frames retained in the DOM.
+  requestAnimationFrame(() => {
+    rampPrunePending = false
+    const live = new Set<string>()
+    for (const element of document.querySelectorAll<HTMLElement>('[style*="zvid-xfade-"]')) {
+      for (const match of element.style.filter.matchAll(/#(zvid-xfade-(?:ramp|scene)-[\da-f]+)/g)) live.add(match[1]!)
+    }
+    for (const oldId of animatedFilterIds) {
+      if (animatedFilterIds.size <= 128) break
+      if (live.has(oldId)) continue
+      document.getElementById(oldId)?.remove()
+      animatedFilterIds.delete(oldId)
+    }
+  })
+}
+
+function straightAlphaRampFilter(svg: string): string | undefined {
+  // Stable IDs reuse identical geometry/progress without mutating filters
+  // that another visible item may still reference at a different time.
+  let hash = 2166136261
+  for (let i = 0; i < svg.length; i++) hash = Math.imul(hash ^ svg.charCodeAt(i), 16777619)
+  const id = `zvid-xfade-ramp-${(hash >>> 0).toString(16)}`
+  const href = `data:image/svg+xml,${encodeURIComponent(svg)}`
+  const filter = svgFilterRef(id, () => `<filter id="${id}" x="0" y="0" width="1" height="1" filterUnits="objectBoundingBox" primitiveUnits="objectBoundingBox" color-interpolation-filters="sRGB"><feImage href="${href}" x="0" y="0" width="1" height="1" preserveAspectRatio="none" result="ramp"/><feColorMatrix in="ramp" type="matrix" values="0 0 0 1 0  0 0 0 1 0  0 0 0 1 0  0 0 0 1 0" result="weight"/><feComposite in="SourceGraphic" in2="weight" operator="arithmetic" k1="1" k2="0" k3="0" k4="0"/></filter>`)
+  // The matrix produces premultiplied [m²,m²,m²,m]. Multiplying SourceGraphic
+  // gives color C*a*m² and alpha a*m, including semitransparent glyph edges.
+  if (filter) retainAnimatedFilter(id)
+  return filter
+}
+
+function sceneFadeRangeFilter(plateWeight: number, white: boolean): string | undefined {
+  // Native xfade uses Y=255/0 and Cb=Cr=127 for its white/black planes,
+  // even for limited-range scene inputs. Those colors are outside sRGB.
+  // Add the missing weighted offset AFTER the scene layers composite, where
+  // it can be clipped once without clipping either source prematurely.
+  const nativePlate = white
+    ? [276.69164, 279.49213, 276.27044]
+    : [-20.22616, -17.42568, -20.64737]
+  const offset = nativePlate.map((v) => (v - (white ? 255 : 0)) * plateWeight / 255)
+  const id = `zvid-xfade-scene-${white ? 'f' : 'b'}${Math.round(plateWeight * 1e6).toString(16)}`
+  const filter = svgFilterRef(id, () => `<filter id="${id}" x="0" y="0" width="1" height="1" color-interpolation-filters="sRGB"><feComponentTransfer><feFuncR type="linear" slope="1" intercept="${offset[0]}"/><feFuncG type="linear" slope="1" intercept="${offset[1]}"/><feFuncB type="linear" slope="1" intercept="${offset[2]}"/></feComponentTransfer></filter>`)
+  if (filter) retainAnimatedFilter(id)
+  return filter
 }
 
 /**
@@ -352,9 +439,9 @@ function dissolveMask(threshold: number, invert: boolean): string | undefined {
 /**
  * FFmpeg mixes straight-alpha planes, so a stream shown at per-pixel
  * weight m over a transparent partner lands on screen at weight m²
- * (color and alpha both scale by m). Ramped masks square their alpha in
- * enter/exit modes; opaque content additionally gets a black plate
- * carrying the missing m·(1−m) darkening.
+ * (color and alpha both scale by m). The mask/plate realization below is
+ * used for opaque content; transparent linear/radial ramps instead use
+ * straightAlphaRampFilter so unpainted regions retain the backdrop.
  */
 function rampAlpha(m: number, single: boolean) {
   return single ? m * m : m
@@ -388,8 +475,18 @@ export function xfadeFrame(
   /** apply a B-coefficient ramp mask (m = per-pixel weight of stream B). */
   const applyRamp = (
     makeMask: (rect: Rect, alphaAt: AlphaAt) => string,
-    m: (coord: number) => number
+    m: (coord: number) => number,
+    makeSvg?: RampSvg
   ) => {
+    if (single && !opaque && makeSvg) {
+      const rect = mode === 'exit' ? rectA : rectB
+      const filter = straightAlphaRampFilter(makeSvg(rect, (c) => mode === 'exit' ? 1 - m(c) : m(c)))
+      if (filter) {
+        const layer = mode === 'exit' ? out.a : out.b
+        layer.filter = filter
+        return
+      }
+    }
     if (mode === 'exit') {
       // item is stream A → weight n = 1 − m
       out.a.maskImage = makeMask(rectA, (c) => rampAlpha(1 - m(c), true))
@@ -505,6 +602,9 @@ export function xfadeFrame(
         out.b.opacity = clamp01(Cb)
         out.a.opacity = Cb >= 1 ? 0 : clamp01(Ca / (1 - Cb))
         out.plate = { color, opacity: 1 }
+        if (opts.limitedRangeScene) {
+          out.compositeFilter = sceneFadeRangeFilter(Cplate, effect === 'fadewhite')
+        }
       } else if (mode === 'enter') {
         // alpha planes: item pixels α1 = 1−P·s1, plate-only α0 = P(1−s1)+t·s2
         const a1 = 1 - P * s1
@@ -666,25 +766,29 @@ export function xfadeFrame(
     case 'smoothleft': // m = ss(0,1, 1 + x/W − 2P)
       applyRamp(
         (r, al) => axisMask('x', r, al),
-        (x) => smoothstep(0, 1, 1 + x / W - 2 * P)
+        (x) => smoothstep(0, 1, 1 + x / W - 2 * P),
+        (r, al) => axisRampSvg('x', r, al)
       )
       break
     case 'smoothright':
       applyRamp(
         (r, al) => axisMask('x', r, al),
-        (x) => smoothstep(0, 1, 1 + (W - 1 - x) / W - 2 * P)
+        (x) => smoothstep(0, 1, 1 + (W - 1 - x) / W - 2 * P),
+        (r, al) => axisRampSvg('x', r, al)
       )
       break
     case 'smoothup':
       applyRamp(
         (r, al) => axisMask('y', r, al),
-        (y) => smoothstep(0, 1, 1 + y / H - 2 * P)
+        (y) => smoothstep(0, 1, 1 + y / H - 2 * P),
+        (r, al) => axisRampSvg('y', r, al)
       )
       break
     case 'smoothdown':
       applyRamp(
         (r, al) => axisMask('y', r, al),
-        (y) => smoothstep(0, 1, 1 + (H - 1 - y) / H - 2 * P)
+        (y) => smoothstep(0, 1, 1 + (H - 1 - y) / H - 2 * P),
+        (r, al) => axisRampSvg('y', r, al)
       )
       break
 
@@ -694,7 +798,8 @@ export function xfadeFrame(
       const z = Math.hypot(W / 2, H / 2)
       applyRamp(
         (r, al) => radialMask(r, W, H, al),
-        (dist) => 1 - smoothstep(0, 1, dist / z + (P - 0.5) * 3)
+        (dist) => 1 - smoothstep(0, 1, dist / z + (P - 0.5) * 3),
+        (r, al) => radialRampSvg(r, W, H, al)
       )
       break
     }
@@ -702,32 +807,37 @@ export function xfadeFrame(
       const z = Math.hypot(W / 2, H / 2)
       applyRamp(
         (r, al) => radialMask(r, W, H, al),
-        (dist) => smoothstep(0, 1, dist / z + (0.5 - P) * 3)
+        (dist) => smoothstep(0, 1, dist / z + (0.5 - P) * 3),
+        (r, al) => radialRampSvg(r, W, H, al)
       )
       break
     }
     case 'horzopen': // m = ss(0,1, 2 − |y−h2|/h2 − 2P)
       applyRamp(
         (r, al) => axisMask('y', r, al, 32),
-        (y) => smoothstep(0, 1, 2 - Math.abs((y - H / 2) / (H / 2)) - 2 * P)
+        (y) => smoothstep(0, 1, 2 - Math.abs((y - H / 2) / (H / 2)) - 2 * P),
+        (r, al) => axisRampSvg('y', r, al)
       )
       break
     case 'horzclose':
       applyRamp(
         (r, al) => axisMask('y', r, al, 32),
-        (y) => smoothstep(0, 1, 1 + Math.abs((y - H / 2) / (H / 2)) - 2 * P)
+        (y) => smoothstep(0, 1, 1 + Math.abs((y - H / 2) / (H / 2)) - 2 * P),
+        (r, al) => axisRampSvg('y', r, al)
       )
       break
     case 'vertopen':
       applyRamp(
         (r, al) => axisMask('x', r, al, 32),
-        (x) => smoothstep(0, 1, 2 - Math.abs((x - W / 2) / (W / 2)) - 2 * P)
+        (x) => smoothstep(0, 1, 2 - Math.abs((x - W / 2) / (W / 2)) - 2 * P),
+        (r, al) => axisRampSvg('x', r, al)
       )
       break
     case 'vertclose':
       applyRamp(
         (r, al) => axisMask('x', r, al, 32),
-        (x) => smoothstep(0, 1, 1 + Math.abs((x - W / 2) / (W / 2)) - 2 * P)
+        (x) => smoothstep(0, 1, 1 + Math.abs((x - W / 2) / (W / 2)) - 2 * P),
+        (r, al) => axisRampSvg('x', r, al)
       )
       break
 
@@ -1031,19 +1141,6 @@ export function xfadeFrame(
       else if (mode === 'enter') applyFlat(t * t, P)
       else applyFlat(P * P, t)
       break
-  }
-
-  // slides run against the flattened-black canvas too: for enter/exit the
-  // vacated region shows BLACK in the render (same alpha flattening as the
-  // clip family), not the backdrop — plate the whole item canvas under the
-  // translated layer for opaque content
-  if (
-    single &&
-    opaque &&
-    !out.plate &&
-    /^slide(left|right|up|down)$/.test(effect)
-  ) {
-    out.plate = { color: '#000', opacity: 1 }
   }
 
   return out

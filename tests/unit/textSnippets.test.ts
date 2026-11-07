@@ -16,6 +16,7 @@ import {
   googleFontCssUrl,
   googleFontCssUrls,
   extractFontFamilies,
+  extractSvgFontFamilies,
 } from '../../utils/fonts'
 
 /* ------------------------------ textTemplate ----------------------------- */
@@ -225,21 +226,19 @@ describe('effectLabel', () => {
 /* --------------------------------- fonts --------------------------------- */
 
 describe('googleFontCssUrl', () => {
-  const SUFFIX =
-    ':ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&display=swap'
-  it('builds the css2 URL with the full weight axis', () => {
+  it('requests the renderer-compatible server font CSS', () => {
     expect(googleFontCssUrl('Poppins')).toBe(
-      `https://fonts.googleapis.com/css2?family=Poppins${SUFFIX}`
+      '/api/text-fonts?family=Poppins'
     )
   })
-  it('spaces become + (Google Fonts convention)', () => {
+  it('encodes family names in the query', () => {
     expect(googleFontCssUrl('Open Sans')).toBe(
-      `https://fonts.googleapis.com/css2?family=Open+Sans${SUFFIX}`
+      '/api/text-fonts?family=Open%20Sans'
     )
   })
   it('trims surrounding whitespace', () => {
     expect(googleFontCssUrl('  Inter ')).toBe(
-      `https://fonts.googleapis.com/css2?family=Inter${SUFFIX}`
+      '/api/text-fonts?family=Inter'
     )
   })
 })
@@ -250,6 +249,16 @@ describe('googleFontCssUrls', () => {
       googleFontCssUrl('Inter'),
       googleFontCssUrl('Kanit'),
     ])
+  })
+})
+
+describe('extractSvgFontFamilies', () => {
+  it('loads standalone SVG text families from attributes and CSS', () => {
+    const svg = '<svg><style>.label { font-family: Inter; }</style><text font-family="Space Grotesk">Label</text><text style="font-family: Sora" x="10">More</text></svg>'
+    expect(extractSvgFontFamilies(svg)).toEqual(['Poppins', 'Space Grotesk', 'Sora', 'Inter', 'Noto Sans'])
+  })
+  it('does not request fonts for shapes', () => {
+    expect(extractSvgFontFamilies('<svg><rect width="100" height="100"/></svg>')).toEqual([])
   })
 })
 
