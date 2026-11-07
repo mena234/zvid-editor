@@ -746,7 +746,7 @@ const iframeDoc = computed(() => {
       title="animated svg preview"
     />
     <StageShadowContent
-      v-else-if="cssOnlyCode"
+      v-else
       :item-id="item._id"
       :svg="svgMarkup"
       :style-object="item.style"
@@ -754,7 +754,6 @@ const iframeDoc = computed(() => {
       :explicit-width="item.width ?? Math.round(width)"
       :explicit-height="item.height ?? Math.round(height)"
     />
-    <div v-else class="svg-inner" v-html="svgMarkup" />
     <div v-if="tint" class="tint" :style="{ background: tint }" />
   </div>
 
@@ -857,15 +856,6 @@ const iframeDoc = computed(() => {
 }
 .svg-box {
   position: relative;
-  width: 100%;
-  height: 100%;
-}
-.svg-inner {
-  width: 100%;
-  height: 100%;
-}
-.svg-inner :deep(svg) {
-  display: block;
   width: 100%;
   height: 100%;
 }

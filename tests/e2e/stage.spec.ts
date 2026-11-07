@@ -288,7 +288,7 @@ test('side-handle resize stretches SVG artwork to fill the authored box', async 
   const painted = await page
     .locator('.stage-frame .stage-item')
     .evaluate((item) => {
-      const svg = item.querySelector('.svg-inner > svg') as SVGSVGElement
+      const svg = item.querySelector('.svg-box .shadow-content')?.shadowRoot?.querySelector('svg') as SVGSVGElement
       const rect = svg.querySelector('[data-resize-probe]') as SVGGraphicsElement
       const itemBox = item.getBoundingClientRect()
       const artworkBox = rect.getBoundingClientRect()

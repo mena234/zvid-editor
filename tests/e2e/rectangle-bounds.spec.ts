@@ -5,7 +5,7 @@ import { LIBRARY_RECTANGLE } from '../helpers/libraryRectangle'
 async function expectNoGutter(page: Page) {
   await expect.poll(() => page.evaluate(() => {
     const selection = document.querySelector('.sel-box.primary')?.getBoundingClientRect()
-    const rect = document.querySelector('.stage-frame .svg-inner rect')?.getBoundingClientRect()
+    const rect = document.querySelector('.stage-frame .svg-box .shadow-content')?.shadowRoot?.querySelector('rect')?.getBoundingClientRect()
     if (!selection || !rect) return Infinity
     return Math.max(...(['left', 'top', 'right', 'bottom'] as const).map((side) => Math.abs(selection[side] - rect[side])))
   })).toBeLessThan(0.5)

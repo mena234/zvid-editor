@@ -14,9 +14,12 @@ import {
 } from '~/shared/schema/constants'
 
 /**
- * Live Shadow-DOM renderer for customCode items that only use CSS (no JS):
+ * Live Shadow-DOM renderer for static SVGs and CSS-only customCode items:
  * CSS keyframe animations run in isolation with the document's fonts —
  * higher fidelity than the sandboxed iframe, which we reserve for JS code.
+ * Static SVGs need the same isolation: repeated scenes reuse gradient, mask
+ * and symbol IDs, and a hidden scene's definitions can otherwise suppress a
+ * visible scene's paint servers. Keep authored references unchanged.
  * Doubles as the measurer for auto-sized items.
  */
 const props = defineProps<{
