@@ -15,6 +15,7 @@ import {
   exampleCategory,
 } from '~/data/exampleCategories'
 import { useCloud } from '~/composables/useCloud'
+import { RESOLUTION_PRESETS, type ResolutionPreset } from '~/shared/schema/constants'
 
 const project = useProjectStore()
 const editor = useEditorStore()
@@ -28,6 +29,47 @@ const error = ref('')
 const loadingSlug = ref('')
 /** Card the pointer is over — that card swaps its thumbnail for the preview video. */
 const hoverSlug = ref('')
+const thumbnailRatios = ref<Record<string, number>>({})
+const videoRatios = ref<Record<string, number>>({})
+
+function dimensionRatio(width: unknown, height: unknown): number | undefined {
+  const w = Number(width)
+  const h = Number(height)
+  return Number.isFinite(w) && w > 0 && Number.isFinite(h) && h > 0
+    ? w / h
+    : undefined
+}
+
+/** Reserve the template's shape before its lazy thumbnail or hover video loads. */
+function previewRatio(item: LibraryItem): number {
+  const meta = item.meta
+  let metadataRatio: number | undefined
+  for (const value of [meta?.size, meta?.resolution]) {
+    if (typeof value !== 'string') continue
+    const preset = RESOLUTION_PRESETS[value as ResolutionPreset]
+    const dimensions = value.match(/^\s*(\d+)\s*[x×]\s*(\d+)\s*$/i)
+    metadataRatio = dimensionRatio(preset?.width, preset?.height)
+      ?? (dimensions ? dimensionRatio(dimensions[1], dimensions[2]) : undefined)
+    if (metadataRatio) break
+  }
+  return videoRatios.value[item.slug]
+    ?? metadataRatio
+    ?? dimensionRatio(meta?.width, meta?.height)
+    ?? thumbnailRatios.value[item.slug]
+    ?? 16 / 9
+}
+
+function onThumbnailLoad(slug: string, event: Event) {
+  const image = event.currentTarget as HTMLImageElement
+  const ratio = dimensionRatio(image.naturalWidth, image.naturalHeight)
+  if (ratio) thumbnailRatios.value[slug] = ratio
+}
+
+function onVideoMetadata(slug: string, event: Event) {
+  const video = event.currentTarget as HTMLVideoElement
+  const ratio = dimensionRatio(video.videoWidth, video.videoHeight)
+  if (ratio) videoRatios.value[slug] = ratio
+}
 
 /** Search box + selected category chip ('all' = every category). */
 const query = ref('')
@@ -381,13 +423,14 @@ async function editExample(item: LibraryItem) {
             @focus="onEnter(ex.slug)"
             @blur="onLeave(ex.slug)"
           >
-            <span class="shot">
+            <span class="shot" :style="{ aspectRatio: previewRatio(ex) }">
               <img
                 v-if="ex.meta?.thumbnail"
                 class="thumb"
                 :src="ex.meta.thumbnail"
                 :alt="ex.title"
                 loading="lazy"
+                @load="onThumbnailLoad(ex.slug, $event)"
               />
               <span v-else class="thumb thumb-fallback">
                 <UiIcon
@@ -403,6 +446,7 @@ async function editExample(item: LibraryItem) {
                 muted
                 loop
                 playsinline
+                @loadedmetadata="onVideoMetadata(ex.slug, $event)"
               />
               <span class="corner-badges">
                 <span v-if="isNew(ex)" class="new-badge">NEW</span>
@@ -584,6 +628,7 @@ async function editExample(item: LibraryItem) {
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr));
+  align-items: start;
   gap: 10px;
 }
 .card {
@@ -610,7 +655,7 @@ async function editExample(item: LibraryItem) {
   position: relative;
   display: block;
   width: 100%;
-  aspect-ratio: 3 / 4;
+  flex-shrink: 0;
   border-radius: calc(var(--radius-m) - 3px);
   overflow: hidden;
   background: var(--bg-3);
@@ -620,7 +665,7 @@ async function editExample(item: LibraryItem) {
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 .thumb-fallback {
   display: flex;
@@ -633,7 +678,7 @@ async function editExample(item: LibraryItem) {
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 .shot-badge {
   position: absolute;
