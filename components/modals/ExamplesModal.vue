@@ -626,14 +626,16 @@ async function editExample(item: LibraryItem) {
   color: var(--text-3);
 }
 .grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr));
-  align-items: start;
-  gap: 10px;
+  column-width: 170px;
+  column-gap: 10px;
 }
 .card {
-  display: flex;
+  display: inline-flex;
   flex-direction: column;
+  width: 100%;
+  margin-bottom: 10px;
+  break-inside: avoid;
+  vertical-align: top;
   gap: 5px;
   padding: 8px;
   border: 1px solid var(--border-1);
@@ -819,8 +821,12 @@ async function editExample(item: LibraryItem) {
     position: static;
   }
   .grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px;
+    column-width: auto;
+    column-count: 2;
+    column-gap: 8px;
+  }
+  .card {
+    margin-bottom: 8px;
   }
   .edit-badge {
     opacity: 1;
