@@ -54,6 +54,7 @@ const progress = ref(0)
 const queueAhead = ref(0)
 const creditsReserved = ref<number | null>(null)
 const errorMsg = ref('')
+const errorCode = ref('')
 const errorDetails = ref<{ field?: string; message: string }[]>([])
 const videoUrl = ref('')
 const outputMeta = ref<{ outputExpiresAt?: string | null; outputExpiredAt?: string | null }>({})
@@ -152,10 +153,11 @@ function signIn() {
   editor.openModal('auth')
 }
 
-function fail(message: string, details: any[] = []) {
+function fail(message: string, details: any[] = [], code = '') {
   stopPolling()
   status.value = 'error'
   errorMsg.value = message
+  errorCode.value = code
   errorDetails.value = Array.isArray(details) ? details : []
 }
 
@@ -164,6 +166,7 @@ async function start() {
   status.value = 'connecting'
   progress.value = 0
   errorMsg.value = ''
+  errorCode.value = ''
   errorDetails.value = []
   videoUrl.value = ''
   outputMeta.value = {}
@@ -202,7 +205,9 @@ async function start() {
   if (!ack.taskId || ack.error) {
     if (ack.error === 'insufficient_credits') {
       fail(
-        `${ack.message ?? 'Not enough credits for this render.'} (needs ${ack.creditsRequired}, you have ${ack.creditsAvailable})`
+        `${ack.message ?? 'Not enough credits for this render.'} (needs ${ack.creditsRequired}, you have ${ack.creditsAvailable})`,
+        ack.details,
+        ack.error
       )
     } else if (ack.error === 'Authentication required') {
       status.value = 'idle'
@@ -390,20 +395,38 @@ onBeforeUnmount(() => {
       </div>
 
       <div v-else class="block err-block">
-        <b>Render failed</b>
+        <b>{{ errorCode === 'insufficient_credits' ? 'Not enough credits' : 'Render failed' }}</b>
         <pre class="mono">{{ errorMsg }}</pre>
         <ul v-if="errorDetails.length">
           <li v-for="(d, i) in errorDetails.slice(0, 5)" :key="i">
             <span v-if="d.field" class="mono">{{ d.field }}</span> {{ d.message }}
           </li>
         </ul>
-        <button class="btn" @click="status = 'idle'">Try again</button>
+        <p v-if="errorCode === 'insufficient_credits'" class="hint">
+          Upgrade your plan or buy more credits, then return here to render your project.
+        </p>
+        <div class="error-actions">
+          <a
+            v-if="errorCode === 'insufficient_credits'"
+            class="btn primary"
+            :href="`${dashUrl}/subscription`"
+            target="_blank"
+            rel="noopener noreferrer"
+          >Upgrade or buy credits</a>
+          <button class="btn" @click="status = 'idle'">Try again</button>
+        </div>
       </div>
     </template>
   </UiModal>
 </template>
 
 <style scoped>
+.error-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.error-actions a { text-decoration: none; }
 .community-link {
   color: var(--text-0);
   text-decoration: underline;

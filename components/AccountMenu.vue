@@ -49,6 +49,15 @@ function run(action: () => void) {
 
 <template>
   <div ref="root" class="account" @keydown.esc.stop="closeMenu">
+    <a
+      class="btn upgrade-action"
+      :href="`${dashUrl}/subscription`"
+      target="_blank"
+      rel="noopener noreferrer"
+      title="Upgrade your plan or buy credits (opens in a new tab)"
+    >
+      Upgrade
+    </a>
     <button
       v-if="!auth.user"
       class="btn ghost"
@@ -78,6 +87,15 @@ function run(action: () => void) {
             {{ Number(auth.credits.balance).toLocaleString() }} credits
           </span>
         </div>
+        <a
+          class="item upgrade-item"
+          :href="`${dashUrl}/subscription`"
+          target="_blank"
+          rel="noopener noreferrer"
+          @click="open = false"
+        >
+          <UiIcon name="link" :size="14" /> Upgrade plan / Buy credits
+        </a>
         <button class="item" @click="run(cloud.openProjects)">
           <UiIcon name="folder" :size="14" /> My projects
         </button>
@@ -113,7 +131,19 @@ function run(action: () => void) {
   position: relative;
   display: flex;
   align-items: center;
+  gap: 8px;
   flex: 0 0 auto;
+}
+.upgrade-action {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.item.upgrade-item {
+  color: var(--accent);
+  font-weight: 600;
 }
 .avatar {
   width: 30px;
@@ -197,6 +227,14 @@ function run(action: () => void) {
   .account > .btn,
   .item {
     min-height: 40px;
+  }
+}
+@media (max-width: 400px) {
+  .account {
+    max-width: 94px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 4px;
   }
 }
 </style>
