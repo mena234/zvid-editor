@@ -79,7 +79,7 @@ export const useReviewCampaignStore = defineStore('reviewCampaign', {
       try {
         const response = await this.request({ action: 'show', manual })
         if (!response?.shown) {
-          if (manual && response) useEditorStore().notify('This invitation is already open in another tab. Please finish it there.', 'info')
+          if (manual && response) useEditorStore().notify('Could not open feedback and rewards. Please try again.', 'error')
           return
         }
         this.leaseToken = response.leaseToken ?? ''

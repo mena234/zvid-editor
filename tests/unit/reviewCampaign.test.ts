@@ -44,6 +44,22 @@ describe('editor review campaign', () => {
     expect(fetch.mock.calls[0][1].body).toMatchObject({ action: 'show', manual: false, source: 'editor_output' })
   })
 
+  it('requests manual access and opens rewards without an automatic admission check', async () => {
+    const campaign = useReviewCampaignStore()
+    fetch.mockResolvedValue(snapshot({ canPrompt: false }))
+    await campaign.show(true)
+    expect(fetch.mock.calls[0][1].body).toMatchObject({ action: 'show', manual: true, source: 'manual' })
+    expect(useEditorStore().modal).toBe('reviewCampaign')
+    expect(useEditorStore().notify).not.toHaveBeenCalled()
+  })
+
+  it('does not invent another open tab when manual access fails', async () => {
+    fetch.mockResolvedValue(snapshot({ shown: false }))
+    await useReviewCampaignStore().show(true)
+    expect(useEditorStore().modal).toBeNull()
+    expect(useEditorStore().notify).toHaveBeenCalledWith('Could not open feedback and rewards. Please try again.', 'error')
+  })
+
   it('does not restore account A after logout or a new login during the request', async () => {
     let resolve!: (response: ReviewCampaignResponse) => void
     fetch.mockImplementationOnce(() => new Promise(done => { resolve = done }))
