@@ -50,7 +50,7 @@ function run(action: () => void) {
 <template>
   <div ref="root" class="account" @keydown.esc.stop="closeMenu">
     <a
-      class="btn upgrade-action"
+      class="btn primary upgrade-action"
       :href="`${dashUrl}/subscription`"
       target="_blank"
       rel="noopener noreferrer"
@@ -135,19 +135,19 @@ function run(action: () => void) {
   flex: 0 0 auto;
 }
 .upgrade-action {
-  color: var(--accent);
-  border-color: var(--accent);
-  background: var(--accent-soft);
   text-decoration: none;
   white-space: nowrap;
+}
+.account > .btn {
+  height: var(--topbar-action-height, 36px);
 }
 .item.upgrade-item {
   color: var(--accent);
   font-weight: 600;
 }
 .avatar {
-  width: 30px;
-  height: 30px;
+  width: var(--topbar-action-height, 36px);
+  height: var(--topbar-action-height, 36px);
   border-radius: 50%;
   border: 1px solid var(--border-1);
   background: linear-gradient(135deg, var(--accent), var(--accent-2));
@@ -220,11 +220,6 @@ function run(action: () => void) {
   margin: 6px 0;
 }
 @media (max-width: 600px), (pointer: coarse) {
-  .avatar {
-    width: 40px;
-    height: 40px;
-  }
-  .account > .btn,
   .item {
     min-height: 40px;
   }

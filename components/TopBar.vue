@@ -342,7 +342,7 @@ function setResolution(e: Event) {
       >
         <UiIcon name="render" :size="14" /> Render
       </button>
-      <button class="btn primary" title="Export the zvid JSON" @click="editor.openModal('export')">
+      <button class="btn" title="Export the zvid JSON" @click="editor.openModal('export')">
         <UiIcon name="export" :size="14" /> Export
       </button>
     </div>
@@ -375,6 +375,7 @@ function setResolution(e: Event) {
 .help-tutorial h3 { margin: 0; font-size: 16px; }
 .learn-action { color: var(--accent-strong); min-height: 36px; }
 .topbar {
+  --topbar-action-height: 36px;
   position: relative;
   display: grid;
   grid-template-columns: 36px 36px minmax(0, 1fr) auto;
@@ -403,7 +404,7 @@ function setResolution(e: Event) {
 }
 .tools-wrap { grid-column: 1; grid-row: 2; }
 .settings-wrap { grid-column: 2; grid-row: 2; }
-.popover-toggle { width: 36px; height: 36px; }
+.popover-toggle { width: 36px; height: var(--topbar-action-height); }
 .secondary-actions,
 .settings-popover {
   display: none;
@@ -431,21 +432,21 @@ function setResolution(e: Event) {
 .new-wrap > .btn {
   justify-content: flex-start;
   width: 100%;
-  height: 36px;
+  height: var(--topbar-action-height);
   gap: 8px;
   padding-inline: 10px;
   text-decoration: none;
 }
 .compact-label { font-size: 12px; white-space: nowrap; }
 .secondary-actions > .divider { display: none; }
-.topbar .btn { flex-shrink: 0; }
+.topbar .btn { flex-shrink: 0; height: var(--topbar-action-height); }
 .topbar > .output-actions {
   grid-row: 2;
   grid-column: 3 / 5;
   justify-content: flex-end;
   gap: 4px;
 }
-.output-actions .btn { height: 36px; padding-inline: 8px; }
+.output-actions .btn { padding-inline: 8px; }
 .save-label { display: none; }
 .save-action { width: 32px; }
 .brand-name { display: none; }
@@ -683,14 +684,12 @@ function setResolution(e: Event) {
   .topbar > :deep(.account) { grid-column: 4; }
   .new-menu { position: absolute; top: calc(100% + 6px); right: 0; min-width: 160px; }
 }
+@media (max-width: 600px), (pointer: coarse) {
+  .topbar { --topbar-action-height: 44px; }
+}
 @media (pointer: coarse) {
   .name-input,
   .settings :deep(input.ctl),
   .settings select.ctl { font-size: 16px; }
-  .popover-toggle,
-  .output-actions .btn,
-  .secondary-actions > .btn,
-  .secondary-actions > .icon-btn,
-  .new-wrap > .btn { min-height: 44px; }
 }
 </style>
